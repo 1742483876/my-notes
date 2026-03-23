@@ -155,6 +155,11 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 
 <!-- 策略回测 -->
 <div class="page active" id="page-backtest">
+  <div id="loadingBacktest" style="display:flex;align-items:center;justify-content:center;padding:80px;flex-direction:column;gap:12px;color:var(--text2)">
+    <div class="spinner"></div>
+    <span>数据加载中，请稍候...</span>
+  </div>
+  <div id="contentBacktest" style="display:none">
   <div class="chart-grid">
     <div class="chart-card">
       <div class="chart-title">📊 各策略胜率对比（30日回测）</div>
@@ -188,6 +193,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
       <tbody id="strategyTbody"></tbody>
     </table>
   </div>
+  </div><!-- /contentBacktest -->
 </div>
 
 <!-- 权益曲线 -->
@@ -315,16 +321,9 @@ async function loadData() {
     setProgress(100, '加载完成！', `✅ 数据更新于 ${data.generated_at ? data.generated_at.slice(0,16) : '未知时间'}`);
     await new Promise(r => setTimeout(r, 400));
 
-    // 只有当前在 today tab 才显示 today 内容
-    const todayPage = document.getElementById('page-today');
-    if (todayPage?.classList.contains('active')) {
-      loading.style.display = 'none';
-      content.style.display = 'block';
-    } else {
-      // 隐藏 today 的 loading，等用户点进去再显示 content
-      loading.style.display = 'none';
-      content.style.display = 'block'; // 数据已就绪，点进去直接显示
-    }
+    // today tab 数据已就绪，隐藏 loading 显示 content（无论当前在哪个tab）
+    loading.style.display = 'none';
+    content.style.display = 'block';
   } catch(e) {
     loading.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div>加载失败：${e.message}</div><div style="margin-top:12px;font-size:12px">请先运行 python3 quant_engine.py 生成数据</div></div>`;
   }
@@ -416,6 +415,9 @@ async function renderAll() {
 
   setProgress(88, '渲染策略回测图...', '📈 绘制胜率/收益图表');
   await tick(); renderBacktestCharts(); renderStrategyTable();
+  // 策略回测渲染完立刻显示（用户默认看这个tab）
+  document.getElementById('loadingBacktest').style.display = 'none';
+  document.getElementById('contentBacktest').style.display = 'block';
 
   setProgress(93, '渲染权益曲线...', '📉 绘制历史净值曲线');
   await tick(); renderEquityCharts();
@@ -795,11 +797,9 @@ function updatePeriodBtnStyle() {
 const origSwitch = switchPeriod;
 window.switchPeriod = function(p) { origSwitch(p); updatePeriodBtnStyle(); };
 
-// 初始化：默认加载数据后渲染策略回测（今日推荐懒加载）
-async function init() {
-  await loadData();          // 加载数据（今日推荐 tab 不可见，但数据已入 G）
-  // 数据加载完后渲染默认 tab（策略回测）
-  if (G) setTimeout(() => renderBacktestCharts(), 50);
+// 初始化：不 await，页面立刻可交互，数据后台静默加载
+function init() {
+  loadData(); // 后台加载，不阻塞页面
 }
 init();
 </script>
