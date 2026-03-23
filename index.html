@@ -437,6 +437,7 @@
 const CATEGORIES = [
   { id: 'all',      label: '全部',    icon: '🏠' },
   { id: 'invest',   label: '投资理财', icon: '💰' },
+  { id: 'quant',    label: '量化交易', icon: '📊' },
   { id: 'fitness',  label: '健身生活', icon: '🏋️' },
   { id: 'life',     label: '生活指南', icon: '🌿' },
   { id: 'tech',     label: '科技数码', icon: '💻' },
@@ -445,6 +446,7 @@ const CATEGORIES = [
 
 const CAT_COLORS = {
   invest:  { bg: 'rgba(74,222,128,0.12)',  color: '#4ade80', tag_bg: 'rgba(74,222,128,0.15)',  tag_color: '#4ade80' },
+  quant:   { bg: 'rgba(139,92,246,0.12)',  color: '#8b5cf6', tag_bg: 'rgba(139,92,246,0.15)',  tag_color: '#8b5cf6' },
   fitness: { bg: 'rgba(251,113,133,0.12)', color: '#fb7185', tag_bg: 'rgba(251,113,133,0.15)', tag_color: '#fb7185' },
   life:    { bg: 'rgba(251,191,36,0.12)',  color: '#fbbf24', tag_bg: 'rgba(251,191,36,0.15)',  tag_color: '#fbbf24' },
   tech:    { bg: 'rgba(96,165,250,0.12)',  color: '#60a5fa', tag_bg: 'rgba(96,165,250,0.15)',  tag_color: '#60a5fa' },
@@ -478,6 +480,15 @@ const ITEMS = [
     category: 'fitness',
     date: '2026-03-23',
     file: '健身与日程规划.html',
+  },
+  {
+    id: 4,
+    title: '量化交易入门学习 — 从概念到实战',
+    desc: '系统梳理量化交易核心知识：Alpha/Beta/夏普比率等基础概念、四阶段学习路径、六大经典策略类型、回测评估指标及工具平台推荐。',
+    icon: '📊',
+    category: 'quant',
+    date: '2026-03-23',
+    file: '量化交易入门学习.html',
   },
   // ↑ 在这里继续添加新条目，格式如上
 ];

@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>量化交易入门学习</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card2: #21253a;
+    --border: #2a2d3e;
+    --accent: #7c6af7;
+    --accent2: #5eead4;
+    --accent3: #f472b6;
+    --accent4: #fb923c;
+    --accent5: #34d399;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --tag-bg: rgba(124,106,247,0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'PingFang SC', sans-serif; min-height: 100vh; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #12151f 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 0;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .header-icon { font-size: 28px; }
+  .header-title { font-size: 22px; font-weight: 700; }
+  .header-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 4px; overflow-x: auto; }
+  .tab {
+    padding: 10px 18px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; color: var(--muted);
+    border: 1px solid transparent; border-bottom: none;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .tab.active { color: var(--accent); background: var(--bg); border-color: var(--border); }
+
+  /* Content */
+  .content { display: none; padding: 28px 20px; max-width: 900px; margin: 0 auto; }
+  .content.active { display: block; }
+
+  /* Section */
+  .section { margin-bottom: 32px; }
+  .section-title {
+    font-size: 16px; font-weight: 700; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: ''; display: block; width: 4px; height: 18px;
+    background: var(--accent); border-radius: 2px;
+  }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-icon { font-size: 24px; margin-bottom: 10px; }
+  .card-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* Concept Cards */
+  .concept-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; margin-bottom: 14px;
+  }
+  .concept-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .concept-badge {
+    padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    background: var(--tag-bg); color: var(--accent);
+  }
+  .concept-name { font-size: 16px; font-weight: 700; }
+  .concept-en { font-size: 12px; color: var(--muted); }
+  .concept-body { font-size: 13px; color: var(--muted); line-height: 1.8; }
+  .concept-formula {
+    background: var(--card2); border-radius: 8px; padding: 12px 16px;
+    font-family: 'Courier New', monospace; font-size: 13px; color: var(--accent2);
+    margin: 10px 0;
+  }
+  .concept-tips {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .tip-item {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+  .tip-item.good { border-color: rgba(52,211,153,0.4); color: var(--accent5); background: rgba(52,211,153,0.08); }
+  .tip-item.bad { border-color: rgba(244,114,182,0.4); color: var(--accent3); background: rgba(244,114,182,0.08); }
+  .tip-item.neutral { border-color: rgba(94,234,212,0.4); color: var(--accent2); background: rgba(94,234,212,0.08); }
+
+  /* Road Map */
+  .roadmap { position: relative; padding-left: 28px; }
+  .roadmap::before {
+    content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    border-radius: 2px;
+  }
+  .roadmap-item { position: relative; margin-bottom: 24px; }
+  .roadmap-dot {
+    position: absolute; left: -24px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--accent); background: var(--bg);
+  }
+  .roadmap-item:nth-child(2) .roadmap-dot { border-color: var(--accent2); }
+  .roadmap-item:nth-child(3) .roadmap-dot { border-color: var(--accent3); }
+  .roadmap-item:nth-child(4) .roadmap-dot { border-color: var(--accent4); }
+  .roadmap-phase {
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .roadmap-item:nth-child(2) .roadmap-phase { color: var(--accent2); }
+  .roadmap-item:nth-child(3) .roadmap-phase { color: var(--accent3); }
+  .roadmap-item:nth-child(4) .roadmap-phase { color: var(--accent4); }
+  .roadmap-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .roadmap-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .roadmap-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .roadmap-tag {
+    padding: 2px 10px; border-radius: 20px; font-size: 11px;
+    background: var(--tag-bg); color: var(--accent);
+  }
+
+  /* Strategy Cards */
+  .strategy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .strategy-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px;
+  }
+  .strategy-icon { font-size: 22px; margin-bottom: 8px; }
+  .strategy-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .strategy-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+  .strategy-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta-tag {
+    padding: 2px 8px; border-radius: 4px; font-size: 11px;
+    background: rgba(255,255,255,0.06); color: var(--muted);
+  }
+  .meta-tag.diff-easy { background: rgba(52,211,153,0.1); color: var(--accent5); }
+  .meta-tag.diff-mid { background: rgba(251,146,60,0.1); color: var(--accent4); }
+  .meta-tag.diff-hard { background: rgba(244,114,182,0.1); color: var(--accent3); }
+
+  /* Tools */
+  .tool-list { display: flex; flex-direction: column; gap: 10px; }
+  .tool-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .tool-icon { font-size: 20px; flex-shrink: 0; }
+  .tool-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .tool-desc { font-size: 12px; color: var(--muted); }
+  .tool-type {
+    margin-left: auto; padding: 2px 10px; border-radius: 20px; font-size: 11px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .type-free { background: rgba(52,211,153,0.1); color: var(--accent5); }
+  .type-paid { background: rgba(251,146,60,0.1); color: var(--accent4); }
+  .type-lib { background: rgba(124,106,247,0.1); color: var(--accent); }
+
+  /* Indicator table */
+  .indicator-table { width: 100%; border-collapse: collapse; }
+  .indicator-table th {
+    text-align: left; padding: 10px 14px; font-size: 12px;
+    color: var(--muted); border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  .indicator-table td {
+    padding: 12px 14px; font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .indicator-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .indicator-name { font-weight: 700; color: var(--text); }
+  .indicator-en { font-size: 11px; color: var(--muted); }
+  .good-tag { color: var(--accent5); font-size: 12px; }
+  .bad-tag { color: var(--accent3); font-size: 12px; }
+
+  /* Progress bar */
+  .progress-wrap { margin-top: 6px; }
+  .progress-bar {
+    height: 4px; border-radius: 2px; background: var(--border);
+    overflow: hidden;
+  }
+  .progress-fill { height: 100%; border-radius: 2px; transition: width 0.6s; }
+
+  /* Note box */
+  .note-box {
+    background: rgba(124,106,247,0.08); border: 1px solid rgba(124,106,247,0.25);
+    border-radius: 10px; padding: 14px 18px; margin-top: 16px;
+    font-size: 13px; color: var(--muted); line-height: 1.7;
+  }
+  .note-box strong { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header { padding: 20px 16px 0; }
+    .content { padding: 20px 14px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .strategy-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-icon">📈</div>
+    <div>
+      <div class="header-title">量化交易入门学习</div>
+      <div class="header-sub">系统学习量化 · 从概念到实战</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('overview')">🏠 概览</div>
+    <div class="tab" onclick="switchTab('concepts')">🧠 核心概念</div>
+    <div class="tab" onclick="switchTab('roadmap')">🗺️ 学习路径</div>
+    <div class="tab" onclick="switchTab('strategies')">⚡ 策略类型</div>
+    <div class="tab" onclick="switchTab('indicators')">📊 评估指标</div>
+    <div class="tab" onclick="switchTab('tools')">🛠️ 工具平台</div>
+  </div>
+</div>
+
+<!-- ===== 概览 ===== -->
+<div class="content active" id="tab-overview">
+
+  <div class="section">
+    <div class="section-title">什么是量化交易？</div>
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <div class="card-desc" style="font-size:14px; line-height:2;">
+        量化交易是用 <strong style="color:var(--accent)">数学模型 + 统计方法 + 计算机程序</strong> 来自动做投资决策的交易方式。<br>
+        核心思路：把"什么时候买、买什么、买多少"这些问题，变成可以被计算机执行的规则。<br><br>
+        <strong style="color:var(--accent2)">优点：</strong>纪律性强、不受情绪影响、可以同时监控大量标的、可以回测验证历史表现<br>
+        <strong style="color:var(--accent3)">难点：</strong>需要数学/编程基础、过拟合风险、市场环境变化会导致策略失效
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">量化 vs 主观交易</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title" style="color:var(--accent)">量化交易</div>
+        <div class="card-desc">
+          ✅ 规则明确，严格执行<br>
+          ✅ 可以回测历史数据验证<br>
+          ✅ 不受情绪干扰<br>
+          ✅ 可以同时跑多个策略<br>
+          ❌ 需要编程能力<br>
+          ❌ 市场变化时需要更新模型
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <div class="card-title" style="color:var(--accent2)">主观交易</div>
+        <div class="card-desc">
+          ✅ 灵活应对突发事件<br>
+          ✅ 可以结合定性判断<br>
+          ✅ 无需编程<br>
+          ❌ 容易受情绪影响<br>
+          ❌ 难以保持一致性<br>
+          ❌ 无法处理大量数据
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">量化交易四大核心要素</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">数据</div>
+        <div class="card-desc">历史价格、成交量、财务报表、宏观数据等。数据质量直接决定策略好坏。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧮</div>
+        <div class="card-title">模型</div>
+        <div class="card-desc">从简单的均线到复杂的机器学习算法，模型是策略的核心逻辑。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">策略</div>
+        <div class="card-desc">定义何时买入、何时卖出、如何管理风险。好策略在不同市场环境都能保持稳定。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">执行</div>
+        <div class="card-desc">订单生成、路由和成交。执行质量影响实际收益，需要控制滑点和交易成本。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">完整量化交易流程</div>
+    <div class="card" style="padding: 24px;">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; justify-content:center;">
+        <div style="text-align:center; padding:10px 16px; background:rgba(124,106,247,0.1); border-radius:8px; font-size:13px;">
+          📊<br>数据获取
+        </div>
+        <div style="color:var(--muted);">→</div>
+        <div style="text-align:center; padding:10px 16px; background:rgba(94,234,212,0.1); border-radius:8px; font-size:13px;">
+          🧹<br>数据清洗
+        </div>
+        <div style="color:var(--muted);">→</div>
+        <div style="text-align:center; padding:10px 16px; background:rgba(244,114,182,0.1); border-radius:8px; font-size:13px;">
+          💡<br>策略设计
+        </div>
+        <div style="color:var(--muted);">→</div>
+        <div style="text-align:center; padding:10px 16px; background:rgba(251,146,60,0.1); border-radius:8px; font-size:13px;">
+          🔄<br>回测验证
+        </div>
+        <div style="color:var(--muted);">→</div>
+        <div style="text-align:center; padding:10px 16px; background:rgba(52,211,153,0.1); border-radius:8px; font-size:13px;">
+          🔧<br>参数优化
+        </div>
+        <div style="color:var(--muted);">→</div>
+        <div style="text-align:center; padding:10px 16px; background:rgba(124,106,247,0.15); border-radius:8px; font-size:13px;">
+          🚀<br>实盘上线
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    💡 <strong>小K给你的建议：</strong>量化入门最大的坑是一上来就想写复杂模型。先从最简单的双均线策略开始，把整个流程跑通（数据→回测→分析），比直接学机器学习有效多了～
+  </div>
+</div>
+
+<!-- ===== 核心概念 ===== -->
+<div class="content" id="tab-concepts">
+
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-badge">收益</div>
+      <div>
+        <div class="concept-name">年化收益率 <span class="concept-en">Annualized Return</span></div>
+      </div>
+    </div>
+    <div class="concept-body">
+      把任意周期的收益率换算成"如果持续一年能赚多少"的标准化指标，方便不同策略横向比较。
+    </div>
+    <div class="concept-formula">年化收益率 = (投资收益 / 本金 / 投资天数) × 365 × 100%</div>
+    <div class="concept-body">例：持有60天赚了5%，年化收益率 ≈ 5% ÷ 60 × 365 ≈ 30.4%</div>
+    <div class="concept-tips">
+      <span class="tip-item good">✅ 越高越好</span>
+      <span class="tip-item neutral">⚠️ 需结合风险一起看</span>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-badge" style="background:rgba(244,114,182,0.15);color:var(--accent3)">风险</div>
+      <div>
+        <div class="concept-name">最大回撤 <span class="concept-en">Max Drawdown</span></div>
+      </div>
+    </div>
+    <div class="concept-body">
+      从历史最高点跌到最低点的最大跌幅。是最重要的风险指标之一，代表你"最惨的时候亏了多少"。
+    </div>
+    <div class="concept-formula">最大回撤 = (历史最高净值 - 后续最低净值) / 历史最高净值</div>
+    <div class="concept-body">
+      例：净值从10万涨到20万，又跌到12万 → 最大回撤 = (20-12)/20 = 40%<br><br>
+      <strong style="color:var(--accent3)">为什么重要？</strong>每个产品都有止损线，回撤超过止损线会被强制平仓。一般来说最大回撤超过20%就需要警惕了。
+    </div>
+    <div class="concept-tips">
+      <span class="tip-item bad">❌ 越低越好</span>
+      <span class="tip-item neutral">⚠️ 比波动率更重要</span>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-badge" style="background:rgba(94,234,212,0.15);color:var(--accent2)">评估</div>
+      <div>
+        <div class="concept-name">夏普比率 <span class="concept-en">Sharpe Ratio</span></div>
+      </div>
+    </div>
+    <div class="concept-body">
+      "每承担一单位风险，能获得多少超额回报"。是衡量策略性价比最常用的指标。
+    </div>
+    <div class="concept-formula">夏普比率 = (策略年化收益率 - 无风险利率) / 策略年化波动率</div>
+    <div class="concept-body">
+      例：策略年化收益15%，无风险利率3%，波动率6%<br>
+      夏普比率 = (15%-3%) / 6% = 2.0 → 非常优秀！<br><br>
+      <strong style="color:var(--accent2)">参考标准：</strong>
+    </div>
+    <div class="concept-tips">
+      <span class="tip-item good">✅ &gt;2 非常优秀</span>
+      <span class="tip-item neutral">1~2 良好</span>
+      <span class="tip-item bad">❌ &lt;1 一般</span>
+      <span class="tip-item bad">❌ &lt;0 亏损</span>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-badge" style="background:rgba(251,146,60,0.15);color:var(--accent4)">系统风险</div>
+      <div>
+        <div class="concept-name">贝塔系数 <span class="concept-en">Beta (β)</span></div>
+      </div>
+    </div>
+    <div class="concept-body">
+      衡量策略相对于大盘的波动敏感性。Beta=1 表示跟大盘同步涨跌。
+    </div>
+    <div class="concept-formula">β = Cov(策略收益, 市场收益) / Var(市场收益)</div>
+    <div class="concept-body">
+      <strong style="color:var(--accent4)">怎么理解：</strong><br>
+      • β=1.5：大盘涨10%，策略涨15%；大盘跌10%，策略跌15%（放大了波动）<br>
+      • β=0.5：大盘涨10%，策略涨5%；大盘跌10%，策略跌5%（缩小了波动）<br>
+      • β&lt;0：与大盘反向（空头策略）<br><br>
+      <strong style="color:var(--accent4)">牛市选大Beta，熊市选小Beta！</strong>
+    </div>
+    <div class="concept-tips">
+      <span class="tip-item neutral">牛市：Beta大更好</span>
+      <span class="tip-item neutral">熊市：Beta小更好</span>
+      <span class="tip-item good">✅ 绝对值越小越稳</span>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-badge" style="background:rgba(52,211,153,0.15);color:var(--accent5)">超额收益</div>
+      <div>
+        <div class="concept-name">阿尔法系数 <span class="concept-en">Alpha (α)</span></div>
+      </div>
+    </div>
+    <div class="concept-body">
+      策略扣除市场系统性收益后，真正靠"主动管理"赚到的超额收益。这才是策略真正的价值。
+    </div>
+    <div class="concept-formula">α = 策略实际收益率 - 无风险利率 - β × (市场收益率 - 无风险利率)</div>
+    <div class="concept-body">
+      例：策略年化9%，无风险利率1.5%，β=1，沪深300涨了5.6%<br>
+      α = 9% - 1.5% - 1×(5.6%-1.5%) = 9% - 1.5% - 4.1% = 3.4%<br><br>
+      <strong style="color:var(--accent5)">α&gt;0</strong>：跑赢市场，策略有价值<br>
+      <strong style="color:var(--accent3)">α&lt;0</strong>：还不如买银行定存
+    </div>
+    <div class="concept-tips">
+      <span class="tip-item good">✅ 越高越好</span>
+      <span class="tip-item good">✅ &gt;0 才算有价值</span>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-badge" style="background:rgba(124,106,247,0.15);color:var(--accent)">其他</div>
+      <div>
+        <div class="concept-name">其他重要概念</div>
+      </div>
+    </div>
+    <div class="concept-body" style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <div>
+        <strong style="color:var(--text)">📉 波动率 Volatility</strong><br>
+        收益率的标准差年化值，越大说明策略越不稳定。
+      </div>
+      <div>
+        <strong style="color:var(--text)">🎯 胜率 Win Rate</strong><br>
+        盈利交易次数 / 总交易次数。高胜率不代表高收益，还需看盈亏比。
+      </div>
+      <div>
+        <strong style="color:var(--text)">⚖️ 盈亏比</strong><br>
+        平均盈利 / 平均亏损。盈亏比2:1+胜率40%，也能稳定盈利。
+      </div>
+      <div>
+        <strong style="color:var(--text)">💧 滑点 Slippage</strong><br>
+        预期成交价与实际成交价的差距，高频交易中影响显著。
+      </div>
+      <div>
+        <strong style="color:var(--text)">🔁 回测 Backtest</strong><br>
+        用历史数据模拟策略运行，验证策略有效性。
+      </div>
+      <div>
+        <strong style="color:var(--text)">⚠️ 过拟合 Overfitting</strong><br>
+        策略在历史数据上表现极好，但实盘表现差。量化最大的坑！
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== 学习路径 ===== -->
+<div class="content" id="tab-roadmap">
+
+  <div class="section">
+    <div class="section-title">四阶段学习路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-phase">Phase 1 · 约 4 周</div>
+        <div class="roadmap-title">🧱 打好基础</div>
+        <div class="roadmap-desc">
+          先搞懂金融市场的基本运作：股票怎么交易、K线怎么看、常见指标（MA、MACD、RSI）什么意思。<br>
+          同时学 Python 基础 + Pandas/NumPy 数据处理，能读写 CSV、算均值方差就够了。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">K线基础</span>
+          <span class="roadmap-tag">Python入门</span>
+          <span class="roadmap-tag">Pandas</span>
+          <span class="roadmap-tag">均线/MACD/RSI</span>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-phase">Phase 2 · 约 4 周</div>
+        <div class="roadmap-title">🔄 跑通第一个回测</div>
+        <div class="roadmap-desc">
+          选一个最简单的策略（推荐：双均线金叉死叉），用 Backtrader 或聚宽平台跑通完整流程。<br>
+          重点学会看回测报告：年化收益、最大回撤、夏普比率怎么解读。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">双均线策略</span>
+          <span class="roadmap-tag">Backtrader</span>
+          <span class="roadmap-tag">聚宽/BigQuant</span>
+          <span class="roadmap-tag">回测报告解读</span>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-phase">Phase 3 · 约 6 周</div>
+        <div class="roadmap-title">📐 学习经典策略</div>
+        <div class="roadmap-desc">
+          系统学习几类经典策略：趋势跟踪、均值回归、动量策略。理解每种策略适合什么市场环境。<br>
+          开始学习风险管理：止损设置、仓位管理、Kelly公式。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">趋势跟踪</span>
+          <span class="roadmap-tag">均值回归</span>
+          <span class="roadmap-tag">动量策略</span>
+          <span class="roadmap-tag">风险管理</span>
+          <span class="roadmap-tag">仓位管理</span>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-phase">Phase 4 · 持续进阶</div>
+        <div class="roadmap-title">🚀 多因子 & 实盘</div>
+        <div class="roadmap-desc">
+          学习多因子选股模型（最主流的量化方法）。小资金模拟实盘，积累经验。<br>
+          进阶方向：机器学习选股、高频策略、期权策略。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">多因子模型</span>
+          <span class="roadmap-tag">Alpha因子挖掘</span>
+          <span class="roadmap-tag">模拟实盘</span>
+          <span class="roadmap-tag">机器学习</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">需要掌握的知识体系</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📐</div>
+        <div class="card-title">数学统计</div>
+        <div class="progress-wrap">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">重要程度</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:90%;background:var(--accent)"></div></div>
+        </div>
+        <div class="card-desc" style="margin-top:10px;">概率论、统计学、线性代数基础。不需要很深，够用就行。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🐍</div>
+        <div class="card-title">Python编程</div>
+        <div class="progress-wrap">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">重要程度</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:95%;background:var(--accent2)"></div></div>
+        </div>
+        <div class="card-desc" style="margin-top:10px;">最核心的技能。Pandas处理数据、Matplotlib画图、Backtrader回测。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💹</div>
+        <div class="card-title">金融知识</div>
+        <div class="progress-wrap">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">重要程度</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:80%;background:var(--accent3)"></div></div>
+        </div>
+        <div class="card-desc" style="margin-top:10px;">K线、技术指标、市场微观结构、财务报表基础知识。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">策略逻辑</div>
+        <div class="progress-wrap">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">重要程度</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--accent4)"></div></div>
+        </div>
+        <div class="card-desc" style="margin-top:10px;">交易思路才是核心！编程只是工具，策略逻辑才决定能不能赚钱。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    💡 <strong>避坑提示：</strong>新手最容易犯的错误是在回测上过度优化参数，导致"过拟合"——历史数据完美，实盘一塌糊涂。建议回测时留出30%的数据做"样本外验证"，才算真正有效的策略。
+  </div>
+</div>
+
+<!-- ===== 策略类型 ===== -->
+<div class="content" id="tab-strategies">
+
+  <div class="section">
+    <div class="section-title">六大经典策略类型</div>
+    <div class="strategy-grid">
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent);">
+        <div class="strategy-icon">📈</div>
+        <div class="strategy-name">趋势跟踪策略</div>
+        <div class="strategy-desc">
+          识别市场趋势方向，顺势而为。经典的双均线金叉/死叉就是最简单的趋势策略。<br><br>
+          <strong style="color:var(--text)">核心逻辑：</strong>短期均线上穿长期均线→买入，下穿→卖出
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag diff-easy">⭐ 入门首选</span>
+          <span class="meta-tag">适合趋势市</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent2);">
+        <div class="strategy-icon">🔁</div>
+        <div class="strategy-name">均值回归策略</div>
+        <div class="strategy-desc">
+          价格偏离均值后会回归，利用这个特性在偏低时买入、偏高时卖出。布林带是典型工具。<br><br>
+          <strong style="color:var(--text)">核心逻辑：</strong>价格跌破布林下轨→超卖→买入
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag diff-easy">⭐ 易于理解</span>
+          <span class="meta-tag">适合震荡市</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent3);">
+        <div class="strategy-icon">🚀</div>
+        <div class="strategy-name">动量策略</div>
+        <div class="strategy-desc">
+          "强者恒强"——过去一段时间涨得好的股票，未来继续涨的概率更高。选近期涨幅最大的股票持有。<br><br>
+          <strong style="color:var(--text)">核心逻辑：</strong>每月选涨幅前20%的股票持有
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag diff-mid">⭐⭐ 中等难度</span>
+          <span class="meta-tag">适合牛市</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent4);">
+        <div class="strategy-icon">⚖️</div>
+        <div class="strategy-name">套利策略</div>
+        <div class="strategy-desc">
+          利用同一资产在不同市场/时间的价格差异获利。包括统计套利（配对交易）、跨期套利等。<br><br>
+          <strong style="color:var(--text)">核心逻辑：</strong>找两个高度相关的股票，价差扩大时做多便宜的、做空贵的
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag diff-hard">⭐⭐⭐ 较难</span>
+          <span class="meta-tag">低风险</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent5);">
+        <div class="strategy-icon">🧩</div>
+        <div class="strategy-name">多因子选股</div>
+        <div class="strategy-desc">
+          A股最主流的量化方法。用多个"因子"（如PE、ROE、动量、质量）给股票打分，选高分股票。<br><br>
+          <strong style="color:var(--text)">常见因子：</strong>价值因子(PE/PB)、动量因子、质量因子(ROE)、低波动因子
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag diff-mid">⭐⭐ 中等难度</span>
+          <span class="meta-tag">A股主流</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid #a78bfa;">
+        <div class="strategy-icon">🤖</div>
+        <div class="strategy-name">机器学习策略</div>
+        <div class="strategy-desc">
+          用随机森林、LSTM等模型预测价格走势或涨跌方向。特征工程是关键，需要大量数据。<br><br>
+          <strong style="color:var(--text)">注意：</strong>不是越复杂越好，过拟合风险极高
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag diff-hard">⭐⭐⭐ 进阶</span>
+          <span class="meta-tag">需要大量数据</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">不同市场环境适合的策略</div>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="indicator-table">
+        <thead>
+          <tr>
+            <th>市场环境</th>
+            <th>特征</th>
+            <th>推荐策略</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="color:var(--accent5)">🐂 牛市趋势</span></td>
+            <td style="color:var(--muted)">持续上涨，量能放大</td>
+            <td>趋势跟踪、动量策略、高Beta</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--accent3)">🐻 熊市下跌</span></td>
+            <td style="color:var(--muted)">持续下跌，恐慌情绪</td>
+            <td>空仓/对冲、低Beta、套利</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--accent4)">🦀 震荡市</span></td>
+            <td style="color:var(--muted)">区间震荡，无明显趋势</td>
+            <td>均值回归、布林带、配对交易</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--accent)">📊 任何市场</span></td>
+            <td style="color:var(--muted)">长期持有</td>
+            <td>多因子选股（分散风险）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== 评估指标 ===== -->
+<div class="content" id="tab-indicators">
+
+  <div class="section">
+    <div class="section-title">策略评估核心指标一览</div>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="indicator-table">
+        <thead>
+          <tr>
+            <th>指标</th>
+            <th>含义</th>
+            <th>好的标准</th>
+            <th>越高/低越好</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="indicator-name">年化收益率</div><div class="indicator-en">Annualized Return</div></td>
+            <td style="color:var(--muted);font-size:12px;">折算成年度的收益率</td>
+            <td style="font-size:12px;">跑赢沪深300</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">最大回撤</div><div class="indicator-en">Max Drawdown</div></td>
+            <td style="color:var(--muted);font-size:12px;">历史最大亏损幅度</td>
+            <td style="font-size:12px;">&lt; 20%</td>
+            <td><span class="bad-tag">↓ 越低越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">夏普比率</div><div class="indicator-en">Sharpe Ratio</div></td>
+            <td style="color:var(--muted);font-size:12px;">单位风险的超额收益</td>
+            <td style="font-size:12px;">&gt; 1.5</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">阿尔法</div><div class="indicator-en">Alpha (α)</div></td>
+            <td style="color:var(--muted);font-size:12px;">超越市场的超额收益</td>
+            <td style="font-size:12px;">&gt; 0</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">贝塔</div><div class="indicator-en">Beta (β)</div></td>
+            <td style="color:var(--muted);font-size:12px;">相对市场的波动敏感性</td>
+            <td style="font-size:12px;">视市场环境</td>
+            <td><span style="color:var(--muted);font-size:12px;">视情况</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">索提诺比率</div><div class="indicator-en">Sortino Ratio</div></td>
+            <td style="color:var(--muted);font-size:12px;">只考虑下行风险的夏普</td>
+            <td style="font-size:12px;">&gt; 2</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">信息比率</div><div class="indicator-en">Information Ratio</div></td>
+            <td style="color:var(--muted);font-size:12px;">相对基准的超额收益稳定性</td>
+            <td style="font-size:12px;">&gt; 1</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">胜率</div><div class="indicator-en">Win Rate</div></td>
+            <td style="color:var(--muted);font-size:12px;">盈利交易占总交易比例</td>
+            <td style="font-size:12px;">&gt; 50%（配合盈亏比）</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">盈亏比</div><div class="indicator-en">Profit/Loss Ratio</div></td>
+            <td style="color:var(--muted);font-size:12px;">平均盈利/平均亏损</td>
+            <td style="font-size:12px;">&gt; 1.5</td>
+            <td><span class="good-tag">↑ 越高越好</span></td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">波动率</div><div class="indicator-en">Volatility</div></td>
+            <td style="color:var(--muted);font-size:12px;">收益率的年化标准差</td>
+            <td style="font-size:12px;">&lt; 20%</td>
+            <td><span class="bad-tag">↓ 越低越稳</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">如何综合评估一个策略？</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">收益维度</div>
+        <div class="card-desc">年化收益率 > 沪深300基准收益，Alpha > 0，说明策略有真实价值。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">风险维度</div>
+        <div class="card-desc">最大回撤 < 20%，波动率适中，Sortino比率高，说明策略控风险能力强。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">性价比维度</div>
+        <div class="card-desc">夏普比率 > 1.5，信息比率 > 1，说明承担的风险是值得的。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">稳定性维度</div>
+        <div class="card-desc">胜率 + 盈亏比组合合理，样本外回测也表现良好，不过拟合。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    ⚠️ <strong>常见骗局识别：</strong>只展示年化收益不说最大回撤；用周收益率算夏普比率（会虚高）；回测期间恰好是大牛市；没有样本外验证。看到这些情况要警惕！
+  </div>
+</div>
+
+<!-- ===== 工具平台 ===== -->
+<div class="content" id="tab-tools">
+
+  <div class="section">
+    <div class="section-title">🇨🇳 A股量化平台（推荐新手）</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-icon">🍊</div>
+        <div>
+          <div class="tool-name">聚宽 JoinQuant</div>
+          <div class="tool-desc">国内最流行的量化平台，数据完整，文档详细，新手友好。支持A股全市场回测。</div>
+        </div>
+        <div class="tool-type type-free">免费</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">🧠</div>
+        <div>
+          <div class="tool-name">BigQuant</div>
+          <div class="tool-desc">AI量化平台，内置大量因子和数据，支持机器学习策略，可视化拖拽建模。</div>
+        </div>
+        <div class="tool-type type-free">免费</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">🐯</div>
+        <div>
+          <div class="tool-name">老虎量化 TQuant</div>
+          <div class="tool-desc">老虎证券旗下，支持A股+港股+美股，可以直接连接实盘交易。</div>
+        </div>
+        <div class="tool-type type-free">免费</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🐍 Python 核心库</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-icon">🐼</div>
+        <div>
+          <div class="tool-name">Pandas</div>
+          <div class="tool-desc">数据处理神器，读取/清洗/分析金融数据必备，时间序列支持很好。</div>
+        </div>
+        <div class="tool-type type-lib">数据处理</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">🔢</div>
+        <div>
+          <div class="tool-name">NumPy</div>
+          <div class="tool-desc">数值计算基础库，矩阵运算、统计计算都依赖它。</div>
+        </div>
+        <div class="tool-type type-lib">数值计算</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">📊</div>
+        <div>
+          <div class="tool-name">Matplotlib / Plotly</div>
+          <div class="tool-desc">数据可视化，画K线图、收益曲线、回撤图等。Plotly做出来的图更漂亮。</div>
+        </div>
+        <div class="tool-type type-lib">可视化</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">🔄</div>
+        <div>
+          <div class="tool-name">Backtrader</div>
+          <div class="tool-desc">本地回测框架，事件驱动，支持多品种、多周期，文档完善，社区活跃。</div>
+        </div>
+        <div class="tool-type type-lib">回测框架</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">📡</div>
+        <div>
+          <div class="tool-name">AKShare / Tushare</div>
+          <div class="tool-desc">A股数据获取。AKShare完全免费，Tushare Pro需要积分，数据更全面。</div>
+        </div>
+        <div class="tool-type type-free">数据源</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📚 学习资源推荐</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📖</div>
+        <div class="card-title">入门书籍</div>
+        <div class="card-desc">
+          《量化投资：以Python为工具》<br>
+          《Python与量化投资从基础到实践》<br>
+          《海龟交易法则》（策略思维）
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">在线平台</div>
+        <div class="card-desc">
+          聚宽社区（策略分享）<br>
+          BigQuant社区<br>
+          知乎量化投资专栏<br>
+          GitHub量化开源项目
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎓</div>
+        <div class="card-title">进阶方向</div>
+        <div class="card-desc">
+          《统计套利》<br>
+          《主动投资组合管理》<br>
+          SSRN学术论文（因子研究）<br>
+          WorldQuant Brain
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    🎀 <strong>小K的学习建议：</strong>不要一口气装一堆工具，先选一个平台（推荐聚宽），把上面的教程从头跑一遍。边跑边学比看书快10倍！遇到不懂的概念再查，比从头学理论效率高多了～
+  </div>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
