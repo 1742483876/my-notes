@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健身 & 日程规划 🏋️</title>
+  <style>
+    :root {
+      --pink: #ff6b9d;
+      --pink-light: #ffe0ed;
+      --purple: #a855f7;
+      --purple-light: #f3e8ff;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --yellow: #eab308;
+      --yellow-light: #fef9c3;
+      --gray: #6b7280;
+      --gray-light: #f3f4f6;
+      --bg: #fdf4ff;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(168,85,247,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #ff6b9d 0%, #a855f7 100%);
+      color: white;
+      padding: 40px 24px 32px;
+      text-align: center;
+    }
+    .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .header p { font-size: 14px; opacity: 0.85; }
+    .header .stats {
+      display: flex; justify-content: center; gap: 24px; margin-top: 20px;
+    }
+    .stat-item {
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px; padding: 10px 20px; text-align: center;
+    }
+    .stat-item .val { font-size: 22px; font-weight: 700; }
+    .stat-item .lbl { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+
+    /* Nav Tabs */
+    .tabs {
+      display: flex; gap: 0; overflow-x: auto;
+      background: white; border-bottom: 2px solid #f3e8ff;
+      padding: 0 16px; position: sticky; top: 0; z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .tab {
+      padding: 14px 18px; font-size: 13px; font-weight: 600;
+      color: var(--text-light); cursor: pointer; white-space: nowrap;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab.active { color: var(--purple); border-bottom-color: var(--purple); }
+    .tab:hover { color: var(--purple); }
+
+    /* Content */
+    .content { padding: 20px 16px; max-width: 800px; margin: 0 auto; }
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* Card */
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 16px; font-weight: 700; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title .icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, #ff6b9d, #a855f7);
+      border-radius: 2px;
+    }
+    .tl-item { position: relative; margin-bottom: 18px; }
+    .tl-dot {
+      position: absolute; left: -22px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid white; box-shadow: 0 0 0 2px var(--purple);
+    }
+    .tl-time {
+      font-size: 11px; font-weight: 700; color: var(--purple);
+      margin-bottom: 2px;
+    }
+    .tl-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .tl-desc { font-size: 12px; color: var(--text-light); margin-top: 2px; line-height: 1.5; }
+    .tl-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; margin-top: 4px;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .badge-green { background: var(--green-light); color: #16a34a; }
+    .badge-red { background: var(--red-light); color: #dc2626; }
+    .badge-orange { background: var(--orange-light); color: #ea580c; }
+    .badge-blue { background: var(--blue-light); color: #2563eb; }
+    .badge-purple { background: var(--purple-light); color: #7c3aed; }
+    .badge-yellow { background: var(--yellow-light); color: #a16207; }
+
+    /* Tip boxes */
+    .tip {
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .tip-content .tip-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .tip-content .tip-text { font-size: 12px; line-height: 1.6; color: var(--text-light); }
+    .tip-good { background: var(--green-light); }
+    .tip-good .tip-title { color: #15803d; }
+    .tip-warn { background: var(--yellow-light); }
+    .tip-warn .tip-title { color: #a16207; }
+    .tip-bad { background: var(--red-light); }
+    .tip-bad .tip-title { color: #b91c1c; }
+    .tip-info { background: var(--blue-light); }
+    .tip-info .tip-title { color: #1d4ed8; }
+    .tip-purple { background: var(--purple-light); }
+    .tip-purple .tip-title { color: #6d28d9; }
+
+    /* Muscle plan */
+    .muscle-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+    }
+    .muscle-day {
+      border-radius: 12px; padding: 12px 8px; text-align: center;
+    }
+    .muscle-day .day-name { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .muscle-day .day-target { font-size: 11px; line-height: 1.5; }
+    .day-chest { background: #fce7f3; color: #be185d; }
+    .day-back { background: #dbeafe; color: #1e40af; }
+    .day-leg { background: #dcfce7; color: #15803d; }
+    .day-shoulder { background: #fef3c7; color: #92400e; }
+    .day-core { background: #f3e8ff; color: #6d28d9; }
+
+    /* Exercise list */
+    .exercise-list { list-style: none; }
+    .exercise-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+    }
+    .exercise-item:last-child { border-bottom: none; }
+    .ex-name { font-size: 13px; font-weight: 600; }
+    .ex-detail { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .ex-sets { font-size: 12px; font-weight: 700; color: var(--purple); }
+
+    /* Food table */
+    .food-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+    }
+    .food-row:last-child { border-bottom: none; }
+    .food-name { font-size: 13px; font-weight: 600; }
+    .food-cal { font-size: 12px; font-weight: 700; }
+    .food-note { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+    /* Progress bar */
+    .progress-wrap { margin-top: 6px; }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 12px; margin-bottom: 4px;
+    }
+    .progress-bar {
+      height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 4px;
+      background: linear-gradient(90deg, #ff6b9d, #a855f7);
+      transition: width 0.8s ease;
+    }
+
+    /* Optimize section */
+    .opt-item {
+      display: flex; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid #f3f4f6; align-items: flex-start;
+    }
+    .opt-item:last-child { border-bottom: none; }
+    .opt-num {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #ff6b9d, #a855f7);
+      color: white; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .opt-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .opt-text { font-size: 12px; color: var(--text-light); line-height: 1.6; }
+    .opt-before-after {
+      display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+    }
+    .before { background: var(--red-light); color: #b91c1c; padding: 4px 10px; border-radius: 8px; font-size: 11px; }
+    .after { background: var(--green-light); color: #15803d; padding: 4px 10px; border-radius: 8px; font-size: 11px; }
+    .arrow { font-size: 14px; color: var(--gray); align-self: center; }
+
+    /* Sleep chart */
+    .sleep-bar {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .sleep-label { font-size: 12px; color: var(--text-light); width: 60px; flex-shrink: 0; }
+    .sleep-track {
+      flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px;
+      position: relative; overflow: hidden;
+    }
+    .sleep-fill {
+      height: 100%; border-radius: 10px; position: absolute;
+    }
+    .sleep-val { font-size: 12px; font-weight: 700; width: 40px; text-align: right; flex-shrink: 0; }
+
+    /* Weekly overview */
+    .week-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+      text-align: center;
+    }
+    .week-col .wday { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+    .week-block {
+      border-radius: 8px; padding: 8px 4px; font-size: 10px;
+      font-weight: 600; line-height: 1.4;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .muscle-grid { grid-template-columns: repeat(3, 1fr); }
+      .week-grid { grid-template-columns: repeat(4, 1fr); }
+      .header .stats { gap: 12px; }
+      .stat-item { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏋️ 健身 & 日程规划</h1>
+  <p>身高 168cm · 体重 132斤 · 有肌肉基础 · 目标：减脂塑形</p>
+  <div class="stats">
+    <div class="stat-item">
+      <div class="val">BMI</div>
+      <div class="lbl">23.4 正常</div>
+    </div>
+    <div class="stat-item">
+      <div class="val">5天</div>
+      <div class="lbl">每周健身</div>
+    </div>
+    <div class="stat-item">
+      <div class="val">50min</div>
+      <div class="lbl">午间健身</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('schedule')">📅 日程</div>
+  <div class="tab" onclick="switchTab('fitness')">💪 健身计划</div>
+  <div class="tab" onclick="switchTab('diet')">🥗 饮食分析</div>
+  <div class="tab" onclick="switchTab('optimize')">✨ 优化建议</div>
+</div>
+
+<div class="content">
+
+  <!-- ===== 日程 Tab ===== -->
+  <div class="section active" id="tab-schedule">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#ffe0ed;">🌅</div>
+        工作日行程总览
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #f97316;"></div>
+          <div class="tl-time">09:00</div>
+          <div class="tl-title">起床</div>
+          <div class="tl-desc">建议：起床后喝一杯温水（200ml），补充睡眠流失的水分</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #a855f7;"></div>
+          <div class="tl-time">09:20</div>
+          <div class="tl-title">出门 🚶</div>
+          <div class="tl-desc">步行到班车站，轻量活动，唤醒身体</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #3b82f6;"></div>
+          <div class="tl-time">09:30</div>
+          <div class="tl-title">班车 🚌</div>
+          <div class="tl-desc">约50分钟车程，可以利用这段时间规划当天工作/看看资讯</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #22c55e;"></div>
+          <div class="tl-time">10:20</div>
+          <div class="tl-title">到公司</div>
+          <div class="tl-desc">整理工位，准备开始工作</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #f97316;"></div>
+          <div class="tl-time">10:30</div>
+          <div class="tl-title">早餐 🍳</div>
+          <div class="tl-desc">玉米 + 肉包 + 纯牛奶 + 鸡蛋，约 600 kcal</div>
+          <div><span class="tl-tag badge badge-orange">⚡ 碳水+蛋白质</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #a855f7;"></div>
+          <div class="tl-time">10:30 ~ 12:10</div>
+          <div class="tl-title">上午工作 💻</div>
+          <div class="tl-desc">高效工作时段，约1.5小时</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #ff6b9d;"></div>
+          <div class="tl-time">12:10 ~ 13:00</div>
+          <div class="tl-title">健身 🏋️ <span class="badge badge-purple" style="margin-left:6px;font-size:11px;">核心时段</span></div>
+          <div class="tl-desc">50分钟训练，按计划轮换部位（手臂/腰腹/腿）</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #22c55e;"></div>
+          <div class="tl-time">13:00 ~ 13:10</div>
+          <div class="tl-title">训练后补餐 🍽️</div>
+          <div class="tl-desc">玉米 + 肉包 + 鸡蛋，约 450 kcal，30分钟内补充蛋白质最佳</div>
+          <div><span class="tl-tag badge badge-green">✅ 合理补餐</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #6b7280;"></div>
+          <div class="tl-time">13:10 ~ 13:40</div>
+          <div class="tl-title">休息放松 📱</div>
+          <div class="tl-desc">玩手机放松，让身体从训练状态恢复</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #3b82f6;"></div>
+          <div class="tl-time">13:40 ~ 14:00</div>
+          <div class="tl-title">午休 😴</div>
+          <div class="tl-desc">20分钟小憩，有助于下午精力恢复</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #22c55e;"></div>
+          <div class="tl-time">14:00 ~ 17:50</div>
+          <div class="tl-title">下午工作 💻</div>
+          <div class="tl-desc">高强度工作，期间可补充蓝莓/提子等水果</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #f97316;"></div>
+          <div class="tl-time">17:50 ~ 18:30</div>
+          <div class="tl-title">晚餐 🍜</div>
+          <div class="tl-desc">热拌牛肉/牛肉粿条/小炒肉 + 自选菜</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #22c55e;"></div>
+          <div class="tl-time">18:30 ~ 19:00</div>
+          <div class="tl-title">饭后散步 🚶</div>
+          <div class="tl-desc">约30分钟，有助消化，也是很好的低强度有氧</div>
+          <div><span class="tl-tag badge badge-green">✅ 很好的习惯！</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #a855f7;"></div>
+          <div class="tl-time">19:00 ~ 20:10/20:40</div>
+          <div class="tl-title">继续工作 💻</div>
+          <div class="tl-desc">加班时段</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #3b82f6;"></div>
+          <div class="tl-time">20:10/20:40</div>
+          <div class="tl-title">班车回家 🚌</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #6b7280;"></div>
+          <div class="tl-time">21:20</div>
+          <div class="tl-title">到家 🏠</div>
+          <div class="tl-desc">看电视/打游戏/吃水果放松</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #ef4444;"></div>
+          <div class="tl-time">00:00</div>
+          <div class="tl-title">洗澡收拾</div>
+          <div class="tl-desc">⚠️ 建议提前到 22:30，有利于皮肤和睡眠质量</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="box-shadow:0 0 0 2px #ef4444;"></div>
+          <div class="tl-time">01:00 ~ 02:00</div>
+          <div class="tl-title">睡觉 😴</div>
+          <div class="tl-desc">⚠️ 凌晨1-2点入睡，严重影响肌肉恢复和减脂效果！</div>
+          <div><span class="tl-tag badge badge-red">❌ 需改善</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fef9c3;">😴</div>
+        睡眠质量分析
+      </div>
+      <div class="sleep-bar">
+        <div class="sleep-label">当前睡眠</div>
+        <div class="sleep-track">
+          <div class="sleep-fill" style="left:0;width:58%;background:linear-gradient(90deg,#ef4444,#f97316);"></div>
+        </div>
+        <div class="sleep-val" style="color:#ef4444;">~7h</div>
+      </div>
+      <div class="sleep-bar">
+        <div class="sleep-label">建议睡眠</div>
+        <div class="sleep-track">
+          <div class="sleep-fill" style="left:0;width:75%;background:linear-gradient(90deg,#22c55e,#3b82f6);"></div>
+        </div>
+        <div class="sleep-val" style="color:#22c55e;">8h+</div>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="tip tip-bad">
+          <div class="tip-icon">😱</div>
+          <div class="tip-content">
+            <div class="tip-title">凌晨1-2点才睡，是减脂增肌最大的敌人！</div>
+            <div class="tip-text">生长激素在22:00-02:00分泌最旺盛，这段时间睡着才能最大化肌肉修复。你现在凌晨1-2点才睡，直接损失了大量生长激素，训练效果打折扣。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 健身 Tab ===== -->
+  <div class="section" id="tab-fitness">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#f3e8ff;">📋</div>
+        推荐5日训练计划
+      </div>
+      <div class="muscle-grid">
+        <div class="muscle-day day-chest">
+          <div class="day-name">周一</div>
+          <div class="day-target">胸 + 三头</div>
+        </div>
+        <div class="muscle-day day-back">
+          <div class="day-name">周二</div>
+          <div class="day-target">背 + 二头</div>
+        </div>
+        <div class="muscle-day day-leg">
+          <div class="day-name">周三</div>
+          <div class="day-target">腿 + 臀</div>
+        </div>
+        <div class="muscle-day day-shoulder">
+          <div class="day-name">周四</div>
+          <div class="day-target">肩 + 核心</div>
+        </div>
+        <div class="muscle-day day-core">
+          <div class="day-name">周五</div>
+          <div class="day-target">腹 + 全身有氧</div>
+        </div>
+      </div>
+      <div class="tip tip-info" style="margin-top:14px;">
+        <div class="tip-icon">💡</div>
+        <div class="tip-content">
+          <div class="tip-title">为什么这样安排？</div>
+          <div class="tip-text">你有肌肉基础，但腹部脂肪较多。这个计划大肌群优先（胸背腿），搭配核心训练，最后一天加入有氧，有助于整体减脂的同时保持肌肉量。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fce7f3;">💪</div>
+        周一：胸部 + 三头肌
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">平板哑铃卧推</div>
+            <div class="ex-detail">胸大肌主要发力，三头协同</div>
+          </div>
+          <div class="ex-sets">4组 × 10次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">上斜哑铃飞鸟</div>
+            <div class="ex-detail">上胸塑形，拉伸感强</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">绳索夹胸</div>
+            <div class="ex-detail">胸肌内侧收缩，增加线条感</div>
+          </div>
+          <div class="ex-sets">3组 × 15次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">绳索下压（三头）</div>
+            <div class="ex-detail">三头肌孤立训练</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">俯身臂屈伸</div>
+            <div class="ex-detail">三头长头，增加手臂围度</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dbeafe;">🔙</div>
+        周二：背部 + 二头肌
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">高位下拉</div>
+            <div class="ex-detail">背阔肌宽度，V形背首选</div>
+          </div>
+          <div class="ex-sets">4组 × 10次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">坐姿绳索划船</div>
+            <div class="ex-detail">背中部厚度，菱形肌</div>
+          </div>
+          <div class="ex-sets">4组 × 10次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">哑铃单臂划船</div>
+            <div class="ex-detail">背阔肌深度，单侧发力</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">哑铃弯举</div>
+            <div class="ex-detail">二头肌，交替弯举</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">锤式弯举</div>
+            <div class="ex-detail">肱肌+前臂，增加手臂厚度</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">🦵</div>
+        周三：腿部 + 臀部
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">深蹲（史密斯机/自重）</div>
+            <div class="ex-detail">腿部之王，消耗热量最多</div>
+          </div>
+          <div class="ex-sets">4组 × 12次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">腿举</div>
+            <div class="ex-detail">股四头肌，膝盖压力小</div>
+          </div>
+          <div class="ex-sets">4组 × 15次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">罗马尼亚硬拉</div>
+            <div class="ex-detail">腘绳肌+臀部，翘臀必备</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">臀推</div>
+            <div class="ex-detail">臀大肌孤立，塑形效果好</div>
+          </div>
+          <div class="ex-sets">3组 × 15次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">坐姿腿弯举</div>
+            <div class="ex-detail">腘绳肌，平衡前后腿部力量</div>
+          </div>
+          <div class="ex-sets">3组 × 12次</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fef3c7;">🎯</div>
+        周五：腹部 + 全身有氧（减脂重点）
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">卷腹</div>
+            <div class="ex-detail">腹直肌上部，控制节奏</div>
+          </div>
+          <div class="ex-sets">4组 × 20次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">悬挂举腿</div>
+            <div class="ex-detail">腹直肌下部，腹肌分离感</div>
+          </div>
+          <div class="ex-sets">3组 × 15次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">平板支撑</div>
+            <div class="ex-detail">核心稳定性，腹横肌</div>
+          </div>
+          <div class="ex-sets">3组 × 45秒</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">俄罗斯转体</div>
+            <div class="ex-detail">腹斜肌，腰部线条</div>
+          </div>
+          <div class="ex-sets">3组 × 20次</div>
+        </li>
+        <li class="exercise-item">
+          <div>
+            <div class="ex-name">跑步机/椭圆机</div>
+            <div class="ex-detail">有氧燃脂，心率维持在130-150</div>
+          </div>
+          <div class="ex-sets">15-20分钟</div>
+        </li>
+      </ul>
+      <div class="tip tip-purple" style="margin-top:12px;">
+        <div class="tip-icon">🔥</div>
+        <div class="tip-content">
+          <div class="tip-title">减腹脂的关键</div>
+          <div class="tip-text">腹部脂肪无法靠单纯练腹消除，需要整体热量赤字 + 全身有氧。周五的有氧非常重要，坚持下去效果会很明显～</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#ffe0ed;">⏱️</div>
+        50分钟训练时间分配
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="progress-wrap">
+          <div class="progress-label"><span>热身</span><span style="color:#f97316;font-weight:700;">5分钟</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:10%;background:#f97316;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>力量训练</span><span style="color:#a855f7;font-weight:700;">35分钟</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:70%;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>有氧（周五）</span><span style="color:#3b82f6;font-weight:700;">15分钟</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:30%;background:#3b82f6;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>拉伸放松</span><span style="color:#22c55e;font-weight:700;">5分钟</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:10%;background:#22c55e;"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 饮食 Tab ===== -->
+  <div class="section" id="tab-diet">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">📊</div>
+        每日热量估算
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🌅 早餐（10:30）</div>
+          <div class="food-note">玉米 + 肉包 + 纯牛奶 + 鸡蛋</div>
+        </div>
+        <div class="food-cal" style="color:#f97316;">~600 kcal</div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">💪 训练后补餐（13:00）</div>
+          <div class="food-note">玉米 + 肉包 + 鸡蛋</div>
+        </div>
+        <div class="food-cal" style="color:#f97316;">~450 kcal</div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🍎 下午水果（14:00-17:00）</div>
+          <div class="food-note">蓝莓 + 提子</div>
+        </div>
+        <div class="food-cal" style="color:#22c55e;">~100 kcal</div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🍜 晚餐（17:50）</div>
+          <div class="food-note">牛肉/猪肉 + 自选菜</div>
+        </div>
+        <div class="food-cal" style="color:#f97316;">~700 kcal</div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🧋 奶茶/咖啡（偶尔）</div>
+          <div class="food-note">奶茶含糖量极高</div>
+        </div>
+        <div class="food-cal" style="color:#ef4444;">+300~500 kcal</div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🍓 晚上水果（21:00后）</div>
+          <div class="food-note">蓝莓 + 小番茄</div>
+        </div>
+        <div class="food-cal" style="color:#22c55e;">~80 kcal</div>
+      </div>
+      <div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,#f3e8ff,#ffe0ed);border-radius:12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">📈 每日总热量（不含奶茶）</div>
+        <div style="font-size:22px;font-weight:800;color:#a855f7;">约 1930 kcal</div>
+        <div style="font-size:12px;color:#6b7280;margin-top:4px;">你的基础代谢约 1550 kcal，加上运动消耗约 2200 kcal/天，热量略有赤字，减脂方向正确✅</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fef3c7;">🥗</div>
+        饮食评分
+      </div>
+      <div class="progress-wrap" style="margin-bottom:12px;">
+        <div class="progress-label"><span>蛋白质摄入</span><span style="color:#22c55e;font-weight:700;">良好 ✅</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:72%;background:#22c55e;"></div></div>
+      </div>
+      <div class="progress-wrap" style="margin-bottom:12px;">
+        <div class="progress-label"><span>碳水控制</span><span style="color:#f97316;font-weight:700;">偏高 ⚠️</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%;background:#f97316;"></div></div>
+      </div>
+      <div class="progress-wrap" style="margin-bottom:12px;">
+        <div class="progress-label"><span>蔬菜摄入</span><span style="color:#ef4444;font-weight:700;">不足 ❌</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:30%;background:#ef4444;"></div></div>
+      </div>
+      <div class="progress-wrap" style="margin-bottom:12px;">
+        <div class="progress-label"><span>饮水量</span><span style="color:#f97316;font-weight:700;">需关注 ⚠️</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:50%;background:#3b82f6;"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>加糖饮料控制</span><span style="color:#ef4444;font-weight:700;">需改善 ❌</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:35%;background:#ef4444;"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fee2e2;">🧋</div>
+        关于奶茶的问题
+      </div>
+      <div class="tip tip-bad">
+        <div class="tip-icon">❌</div>
+        <div class="tip-content">
+          <div class="tip-title">奶茶真的要少喝，你感觉对了！</div>
+          <div class="tip-text">一杯全糖奶茶含糖约 50-70g，热量 400-600 kcal，相当于你训练消耗的全部热量。而且大量精制糖会导致胰岛素飙升，促进脂肪合成，对减腹脂非常不利。</div>
+        </div>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-icon">✅</div>
+        <div class="tip-content">
+          <div class="tip-title">替代方案</div>
+          <div class="tip-text">想喝甜的 → 选少糖/无糖版本，或换成黑咖啡（无糖）。想要奶香 → 纯牛奶/无糖拿铁。偶尔一次全糖问题不大，但每周别超过1次哦～</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">💊</div>
+        营养补充建议
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🥛 乳清蛋白粉（可选）</div>
+          <div class="food-note">训练后30分钟内补充，帮助肌肉恢复</div>
+        </div>
+        <div><span class="badge badge-purple">推荐</span></div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">💧 每日饮水</div>
+          <div class="food-note">训练日至少 2500ml，普通日 2000ml</div>
+        </div>
+        <div><span class="badge badge-blue">必须</span></div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🥦 增加蔬菜</div>
+          <div class="food-note">晚餐多选蔬菜，补充膳食纤维和微量元素</div>
+        </div>
+        <div><span class="badge badge-green">建议</span></div>
+      </div>
+      <div class="food-row">
+        <div>
+          <div class="food-name">🍌 训练前香蕉</div>
+          <div class="food-note">训练前30分钟吃1根，快速补充能量</div>
+        </div>
+        <div><span class="badge badge-orange">可选</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 优化 Tab ===== -->
+  <div class="section" id="tab-optimize">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#f3e8ff;">✨</div>
+        行程优化建议（优先级排序）
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">1</div>
+        <div>
+          <div class="opt-title">🛌 睡眠时间前移 — 最重要！</div>
+          <div class="opt-text">凌晨2点睡、9点起，睡眠时间只有7小时且错过了黄金生长激素分泌时段（22:00-02:00）。这是你健身效果最大的瓶颈。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 现在：凌晨1-2点睡</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 目标：23:30前入睡</span>
+          </div>
+          <div class="opt-text" style="margin-top:8px;">实操：到家后玩手机/打游戏限制到22:30，22:30洗澡，23:15上床，23:30关灯。</div>
+        </div>
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">2</div>
+        <div>
+          <div class="opt-title">💪 健身计划规范化</div>
+          <div class="opt-text">现在手臂/腰/腿轮着练但没有规范，容易出现某些部位过度训练、某些部位欠缺的问题。按照推荐的5日分化计划，效果会翻倍。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 随机练</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 5日分化计划</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">3</div>
+        <div>
+          <div class="opt-title">🧋 奶茶控制</div>
+          <div class="opt-text">你自己也感觉到了，奶茶糖分太高。每周奶茶控制在1次以内，选少糖/无糖版本。这一条坚持1个月，腹部脂肪会有明显变化。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 偶尔喝全糖</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 每周≤1次，少糖</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">4</div>
+        <div>
+          <div class="opt-title">🚌 班车时间利用</div>
+          <div class="opt-text">每天上下班班车约1.5小时，可以用来做有意义的事情，比早到公司发呆强多了。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 刷手机</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 听播客/看书/规划当天任务</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">5</div>
+        <div>
+          <div class="opt-title">🥦 晚餐增加蔬菜</div>
+          <div class="opt-text">现在晚餐以肉类为主，蔬菜摄入明显不足。自选菜时多选绿叶蔬菜，补充膳食纤维，有助于肠道健康和减脂。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 以肉为主</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 肉:菜 = 1:1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">6</div>
+        <div>
+          <div class="opt-title">💧 增加饮水</div>
+          <div class="opt-text">健身后大量出汗，需要及时补水。建议在工位放一个大水杯（800ml），下午工作时保证喝完2杯。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 不规律喝水</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 每天2500ml+</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-item">
+        <div class="opt-num">7</div>
+        <div>
+          <div class="opt-title">🌅 起床后加个小习惯</div>
+          <div class="opt-text">起床后做5分钟伸展/拉伸，唤醒身体，改善一整天的状态。配合喝一杯温水，效果更好。</div>
+          <div class="opt-before-after">
+            <span class="before">❌ 起床直接出门</span>
+            <span class="arrow">→</span>
+            <span class="after">✅ 喝水+5分钟拉伸</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">🎯</div>
+        减腹脂核心策略
+      </div>
+      <div class="tip tip-info">
+        <div class="tip-icon">🔑</div>
+        <div class="tip-content">
+          <div class="tip-title">腹部脂肪是最后消的，但也是最有效果感的！</div>
+          <div class="tip-text">你有肌肉基础，这非常好。腹部脂肪多说明整体体脂偏高，需要通过「热量赤字 + 力量训练 + 有氧」三管齐下。</div>
+        </div>
+      </div>
+      <div class="tip tip-purple">
+        <div class="tip-icon">📌</div>
+        <div class="tip-content">
+          <div class="tip-title">3个月目标拆解</div>
+          <div class="tip-text">
+            第1个月：规范训练计划，戒掉奶茶，睡眠前移。<br/>
+            第2个月：增加每周有氧时长，晚餐减少精制碳水。<br/>
+            第3个月：腹肌线条开始显现，体重下降2-4斤。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#ffe0ed;">⭐</div>
+        你已经做得很好的事
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-icon">✅</div>
+        <div class="tip-content">
+          <div class="tip-title">饭后散步</div>
+          <div class="tip-text">每天饭后30分钟散步，这是非常好的低强度有氧，既助消化又燃脂，坚持下去！</div>
+        </div>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-icon">✅</div>
+        <div class="tip-content">
+          <div class="tip-title">工作日5天坚持健身</div>
+          <div class="tip-text">每周5天，执行力超强！这是很多人做不到的，你已经赢了大多数人。</div>
+        </div>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-icon">✅</div>
+        <div class="tip-content">
+          <div class="tip-title">训练后及时补餐</div>
+          <div class="tip-text">训练完立刻吃东西，蛋白质窗口期利用得很好，有利于肌肉合成。</div>
+        </div>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-icon">✅</div>
+        <div class="tip-content">
+          <div class="tip-title">下午吃水果代替零食</div>
+          <div class="tip-text">蓝莓、提子、小番茄都是低卡高营养的选择，比吃饼干薯片强多了！</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      const names = ['schedule','fitness','diet','optimize'];
+      t.classList.toggle('active', names[i] === name);
+    });
+    document.querySelectorAll('.section').forEach(s => {
+      s.classList.toggle('active', s.id === 'tab-' + name);
+    });
+  }
+</script>
+
+</body>
+</html>
