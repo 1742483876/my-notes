@@ -1,0 +1,2708 @@
+{
+  "date": "2026-03-23",
+  "update_time": "2026-03-23T17:17:03.355005",
+  "stock_count": 500,
+  "strategy_count": 15,
+  "weights": {
+    "maGoldenCross": 0.0667,
+    "volumeBreakout": 0.0667,
+    "rsiOversold": 0.0667,
+    "oversoldBounce": 0.0667,
+    "bollingerMeanReversion": 0.0667,
+    "kdjGoldenCross": 0.0667,
+    "supermarket": 0.0667,
+    "coldStock": 0.0667,
+    "bottomFishing76": 0.0667,
+    "equalWeight": 0.0667,
+    "permanentPortfolio": 0.0667,
+    "mainForceDivergence": 0.0667,
+    "mainForceDivRate": 0.0667,
+    "consecutiveYangLine": 0.0667,
+    "volumeNewHigh": 0.0667
+  },
+  "strategy_list": [
+    {
+      "id": "maGoldenCross",
+      "name": "均线金叉",
+      "desc": "MA5上穿MA20，短期趋势转强信号",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 50.7,
+        "avg_return": 0.91,
+        "total_return": 545.27,
+        "total_trades": 3506,
+        "signal_stocks": 500,
+        "sharpe": 0.93
+      },
+      "backtest_all": {
+        "win_rate": 47.6,
+        "avg_return": 0.58,
+        "total_return": 798.96,
+        "total_trades": 6295,
+        "signal_stocks": 300,
+        "sharpe": 0.55
+      }
+    },
+    {
+      "id": "volumeBreakout",
+      "name": "放量突破",
+      "desc": "价格突破20日高点且成交量放大1.5倍",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 44.3,
+        "avg_return": 0.5,
+        "total_return": 611.56,
+        "total_trades": 4358,
+        "signal_stocks": 499,
+        "sharpe": 0.36
+      },
+      "backtest_all": {
+        "win_rate": 40.8,
+        "avg_return": -0.37,
+        "total_return": -13.25,
+        "total_trades": 6815,
+        "signal_stocks": 300,
+        "sharpe": -0.24
+      }
+    },
+    {
+      "id": "rsiOversold",
+      "name": "RSI超卖",
+      "desc": "RSI从超卖区（<30）回升，反弹信号",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 62.9,
+        "avg_return": 1.23,
+        "total_return": 766.21,
+        "total_trades": 630,
+        "signal_stocks": 300,
+        "sharpe": 2.25
+      },
+      "backtest_all": {
+        "win_rate": 57.7,
+        "avg_return": 1.63,
+        "total_return": 1874.75,
+        "total_trades": 2467,
+        "signal_stocks": 298,
+        "sharpe": 1.53
+      }
+    },
+    {
+      "id": "oversoldBounce",
+      "name": "超跌反弹",
+      "desc": "10日跌幅超15%后出现3%以上反弹",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 58.9,
+        "avg_return": 1.9,
+        "total_return": 1662.65,
+        "total_trades": 504,
+        "signal_stocks": 265,
+        "sharpe": 1.81
+      },
+      "backtest_all": {
+        "win_rate": 64.3,
+        "avg_return": 3.76,
+        "total_return": 235482.99,
+        "total_trades": 1603,
+        "signal_stocks": 259,
+        "sharpe": 2.59
+      }
+    },
+    {
+      "id": "bollingerMeanReversion",
+      "name": "布林回归",
+      "desc": "价格触及布林下轨，均值回归机会",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 63.5,
+        "avg_return": 1.52,
+        "total_return": 1041.16,
+        "total_trades": 3541,
+        "signal_stocks": 490,
+        "sharpe": 2.44
+      },
+      "backtest_all": {
+        "win_rate": 55.9,
+        "avg_return": 1.41,
+        "total_return": 175.42,
+        "total_trades": 10770,
+        "signal_stocks": 300,
+        "sharpe": 1.36
+      }
+    },
+    {
+      "id": "kdjGoldenCross",
+      "name": "KDJ金叉",
+      "desc": "KDJ的J值从低位金叉，底部反转",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 53.2,
+        "avg_return": 0.93,
+        "total_return": 697.8,
+        "total_trades": 3976,
+        "signal_stocks": 500,
+        "sharpe": 1.16
+      },
+      "backtest_all": {
+        "win_rate": 50.4,
+        "avg_return": 0.72,
+        "total_return": 702.47,
+        "total_trades": 8792,
+        "signal_stocks": 300,
+        "sharpe": 0.7
+      }
+    },
+    {
+      "id": "supermarket",
+      "name": "超市战法",
+      "desc": "低价股+温和放量+均线上方，稳健选股",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 51.7,
+        "avg_return": 0.9,
+        "total_return": 4150.78,
+        "total_trades": 9775,
+        "signal_stocks": 445,
+        "sharpe": 1.04
+      },
+      "backtest_all": {
+        "win_rate": 49.1,
+        "avg_return": 0.74,
+        "total_return": 3162.46,
+        "total_trades": 17665,
+        "signal_stocks": 280,
+        "sharpe": 0.73
+      }
+    },
+    {
+      "id": "coldStock",
+      "name": "冷门股",
+      "desc": "价格处于120日历史低位区间（底部20%）",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 54.4,
+        "avg_return": 0.7,
+        "total_return": 5311.21,
+        "total_trades": 9539,
+        "signal_stocks": 330,
+        "sharpe": 1.06
+      },
+      "backtest_all": {
+        "win_rate": 50.0,
+        "avg_return": 0.79,
+        "total_return": -44.3,
+        "total_trades": 32297,
+        "signal_stocks": 296,
+        "sharpe": 0.71
+      }
+    },
+    {
+      "id": "bottomFishing76",
+      "name": "76%抄底",
+      "desc": "5日大跌+RSI极低+下影线长，抄底形态",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 46.7,
+        "avg_return": 0.07,
+        "total_return": -0.86,
+        "total_trades": 15,
+        "signal_stocks": 12,
+        "sharpe": 0.1
+      },
+      "backtest_all": {
+        "win_rate": 57.5,
+        "avg_return": 3.1,
+        "total_return": 67275.52,
+        "total_trades": 292,
+        "signal_stocks": 162,
+        "sharpe": 2.13
+      }
+    },
+    {
+      "id": "equalWeight",
+      "name": "等权指数",
+      "desc": "20日动量为正时定期轮动买入",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 58.0,
+        "avg_return": 1.43,
+        "total_return": 839.53,
+        "total_trades": 3023,
+        "signal_stocks": 499,
+        "sharpe": 1.44
+      },
+      "backtest_all": {
+        "win_rate": 45.7,
+        "avg_return": -0.1,
+        "total_return": 11.88,
+        "total_trades": 5012,
+        "signal_stocks": 299,
+        "sharpe": -0.09
+      }
+    },
+    {
+      "id": "permanentPortfolio",
+      "name": "永久组合",
+      "desc": "60日定期再平衡，长期持有策略",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 64.3,
+        "avg_return": 2.1,
+        "total_return": 4795.37,
+        "total_trades": 1490,
+        "signal_stocks": 500,
+        "sharpe": 2.39
+      },
+      "backtest_all": {
+        "win_rate": 45.6,
+        "avg_return": -0.06,
+        "total_return": -69.9,
+        "total_trades": 3193,
+        "signal_stocks": 300,
+        "sharpe": -0.07
+      }
+    },
+    {
+      "id": "mainForceDivergence",
+      "name": "主力分歧",
+      "desc": "价量波动率低且上涨，主力悄悄建仓",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 57.7,
+        "avg_return": 0.7,
+        "total_return": 487.98,
+        "total_trades": 4691,
+        "signal_stocks": 335,
+        "sharpe": 1.36
+      },
+      "backtest_all": {
+        "win_rate": 51.2,
+        "avg_return": 0.3,
+        "total_return": -21.69,
+        "total_trades": 6384,
+        "signal_stocks": 260,
+        "sharpe": 0.55
+      }
+    },
+    {
+      "id": "mainForceDivRate",
+      "name": "主力分歧率",
+      "desc": "主力分歧率快速收窄且上涨，加速吸筹",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 50.7,
+        "avg_return": 0.71,
+        "total_return": 3.13,
+        "total_trades": 2129,
+        "signal_stocks": 494,
+        "sharpe": 0.9
+      },
+      "backtest_all": {
+        "win_rate": 50.1,
+        "avg_return": 0.65,
+        "total_return": 49.91,
+        "total_trades": 3626,
+        "signal_stocks": 299,
+        "sharpe": 0.73
+      }
+    },
+    {
+      "id": "consecutiveYangLine",
+      "name": "连续阳线",
+      "desc": "连续3根阳线，短期多头强势",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 47.8,
+        "avg_return": 0.48,
+        "total_return": 1107.21,
+        "total_trades": 13283,
+        "signal_stocks": 500,
+        "sharpe": 0.47
+      },
+      "backtest_all": {
+        "win_rate": 46.4,
+        "avg_return": 0.26,
+        "total_return": 17.27,
+        "total_trades": 22991,
+        "signal_stocks": 300,
+        "sharpe": 0.23
+      }
+    },
+    {
+      "id": "volumeNewHigh",
+      "name": "成交额新高",
+      "desc": "成交额创60日新高且收涨，资金大幅流入",
+      "weight": 0.0667,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0
+      },
+      "backtest_1y": {
+        "win_rate": 42.6,
+        "avg_return": -0.07,
+        "total_return": -80.63,
+        "total_trades": 2172,
+        "signal_stocks": 484,
+        "sharpe": -0.05
+      },
+      "backtest_all": {
+        "win_rate": 38.4,
+        "avg_return": -1.07,
+        "total_return": -91.25,
+        "total_trades": 4364,
+        "signal_stocks": 297,
+        "sharpe": -0.7
+      }
+    }
+  ],
+  "recommendations": [
+    {
+      "code": "603406",
+      "name": "天富龙",
+      "score": 53.36,
+      "hit_count": 8,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 成交额新高",
+      "close": 40.25,
+      "chg_1d": 3.92,
+      "chg_5d": 8.55,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "300685",
+      "name": "艾德生物",
+      "score": 53.36,
+      "hit_count": 8,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 连续阳线",
+      "close": 21.93,
+      "chg_1d": 0.6,
+      "chg_5d": 8.83,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "688055",
+      "name": "龙腾光电",
+      "score": 53.36,
+      "hit_count": 8,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 连续阳线 + 成交额新高",
+      "close": 4.14,
+      "chg_1d": -5.26,
+      "chg_5d": -5.48,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "601398",
+      "name": "工商银行",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 连续阳线",
+      "close": 7.39,
+      "chg_1d": 1.93,
+      "chg_5d": 4.97,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002563",
+      "name": "森马服饰",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 主力分歧率 + 连续阳线",
+      "close": 5.54,
+      "chg_1d": 0.18,
+      "chg_5d": 3.17,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002480",
+      "name": "新筑股份",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线 + 成交额新高",
+      "close": 6.38,
+      "chg_1d": -3.04,
+      "chg_5d": -8.07,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "600628",
+      "name": "新世界",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 8.27,
+      "chg_1d": -6.97,
+      "chg_5d": -2.25,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002857",
+      "name": "三晖电气",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线 + 成交额新高",
+      "close": 25.9,
+      "chg_1d": 4.02,
+      "chg_5d": 2.74,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002063",
+      "name": "远光软件",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "KDJ金叉",
+        "主力分歧",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + KDJ金叉 + 主力分歧 + 连续阳线 + 成交额新高",
+      "close": 6.87,
+      "chg_1d": -2.69,
+      "chg_5d": -7.29,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002841",
+      "name": "视源股份",
+      "score": 46.69,
+      "hit_count": 7,
+      "strategies": [
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "76%抄底",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "bottomFishing76": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底 + 主力分歧率 + 连续阳线",
+      "close": 35.12,
+      "chg_1d": -0.96,
+      "chg_5d": -1.98,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "601311",
+      "name": "骆驼股份",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "超市战法",
+        "主力分歧",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + 超市战法 + 主力分歧 + 连续阳线",
+      "close": 9.61,
+      "chg_1d": -2.04,
+      "chg_5d": 0.73,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002224",
+      "name": "三 力 士",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 连续阳线",
+      "close": 4.74,
+      "chg_1d": -1.86,
+      "chg_5d": -1.25,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002061",
+      "name": "浙江交科",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "超市战法",
+        "主力分歧",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 超市战法 + 主力分歧 + 主力分歧率 + 连续阳线",
+      "close": 4.14,
+      "chg_1d": -0.48,
+      "chg_5d": 0.0,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002737",
+      "name": "葵花药业",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "主力分歧",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "mainForceDivergence": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "RSI超卖 + 布林回归 + KDJ金叉 + 主力分歧 + 主力分歧率 + 连续阳线",
+      "close": 12.64,
+      "chg_1d": 0.72,
+      "chg_5d": -7.6,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "688176",
+      "name": "亚虹医药",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "KDJ金叉",
+        "超市战法",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + KDJ金叉 + 超市战法 + 连续阳线 + 成交额新高",
+      "close": 14.5,
+      "chg_1d": -1.63,
+      "chg_5d": -14.25,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "600159",
+      "name": "大龙地产",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 3.27,
+      "chg_1d": 3.15,
+      "chg_5d": 4.14,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "601901",
+      "name": "方正证券",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧 + 连续阳线",
+      "close": 7.4,
+      "chg_1d": 0.27,
+      "chg_5d": 0.41,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "000895",
+      "name": "双汇发展",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "放量突破",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "volumeBreakout": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "放量突破 + KDJ金叉 + 超市战法 + 主力分歧 + 连续阳线 + 成交额新高",
+      "close": 28.42,
+      "chg_1d": -0.28,
+      "chg_5d": 4.26,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "605368",
+      "name": "蓝天燃气",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 超市战法 + 主力分歧率 + 连续阳线 + 成交额新高",
+      "close": 8.44,
+      "chg_1d": -1.63,
+      "chg_5d": -0.71,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "600168",
+      "name": "武汉控股",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "超市战法",
+        "主力分歧",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 超市战法 + 主力分歧 + 连续阳线 + 成交额新高",
+      "close": 5.37,
+      "chg_1d": -1.47,
+      "chg_5d": -0.74,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "300720",
+      "name": "海川智能",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "超跌反弹",
+        "主力分歧率",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "oversoldBounce": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 超跌反弹 + 主力分歧率 + 连续阳线 + 成交额新高",
+      "close": 49.5,
+      "chg_1d": 0.71,
+      "chg_5d": 18.73,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "002304",
+      "name": "洋河股份",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "主力分歧",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "mainForceDivergence": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "RSI超卖 + 布林回归 + KDJ金叉 + 主力分歧 + 主力分歧率 + 连续阳线",
+      "close": 51.55,
+      "chg_1d": -0.41,
+      "chg_5d": 0.35,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "601728",
+      "name": "中国电信",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "超市战法",
+        "主力分歧",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivergence": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 超市战法 + 主力分歧 + 主力分歧率 + 连续阳线",
+      "close": 6.1,
+      "chg_1d": -0.16,
+      "chg_5d": 2.52,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "300961",
+      "name": "深水海纳",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 布林回归 + KDJ金叉 + 超市战法 + 成交额新高",
+      "close": 17.17,
+      "chg_1d": 9.02,
+      "chg_5d": 19.4,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "603020",
+      "name": "爱普股份",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线 + 成交额新高",
+      "close": 10.8,
+      "chg_1d": -0.18,
+      "chg_5d": 3.05,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "601615",
+      "name": "明阳智能",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "oversoldBounce": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 20.68,
+      "chg_1d": -1.9,
+      "chg_5d": -2.45,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "000531",
+      "name": "穗恒运Ａ",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "volumeBreakout": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 放量突破 + 超市战法 + 主力分歧率 + 连续阳线 + 成交额新高",
+      "close": 6.98,
+      "chg_1d": -0.85,
+      "chg_5d": -1.69,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "688289",
+      "name": "圣湘生物",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 18.93,
+      "chg_1d": 0.0,
+      "chg_5d": 2.21,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "688347",
+      "name": "华虹公司",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "均线金叉",
+        "超跌反弹",
+        "KDJ金叉",
+        "主力分歧率",
+        "连续阳线",
+        "成交额新高"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 6.67,
+        "oversoldBounce": 6.67,
+        "kdjGoldenCross": 6.67,
+        "mainForceDivRate": 6.67,
+        "consecutiveYangLine": 6.67,
+        "volumeNewHigh": 6.67
+      },
+      "reason_text": "均线金叉 + 超跌反弹 + KDJ金叉 + 主力分歧率 + 连续阳线 + 成交额新高",
+      "close": 126.78,
+      "chg_1d": -5.14,
+      "chg_5d": 7.02,
+      "last_date": "2026-03-17"
+    },
+    {
+      "code": "003010",
+      "name": "若羽臣",
+      "score": 40.02,
+      "hit_count": 6,
+      "strategies": [
+        "RSI超卖",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "76%抄底",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 6.67,
+        "bollingerMeanReversion": 6.67,
+        "kdjGoldenCross": 6.67,
+        "supermarket": 6.67,
+        "bottomFishing76": 6.67,
+        "consecutiveYangLine": 6.67
+      },
+      "reason_text": "RSI超卖 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底 + 连续阳线",
+      "close": 29.94,
+      "chg_1d": 0.27,
+      "chg_5d": 3.31,
+      "last_date": "2026-03-17"
+    }
+  ],
+  "recommend_count": 496,
+  "equity_30d": [
+    {
+      "date": "2026-02-24",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-02-25",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-02-26",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-02-27",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-02",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-03",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-04",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-05",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-06",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-09",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-10",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-11",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-12",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-13",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-16",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-17",
+      "equity": 100.0
+    },
+    {
+      "date": "2026-03-18",
+      "equity": 100.0
+    }
+  ],
+  "equity_1y": [
+    {
+      "date": "2025-03-24",
+      "equity": 100.0
+    },
+    {
+      "date": "2025-03-25",
+      "equity": 100.0
+    },
+    {
+      "date": "2025-03-26",
+      "equity": 100.0
+    },
+    {
+      "date": "2025-03-27",
+      "equity": 99.81
+    },
+    {
+      "date": "2025-03-28",
+      "equity": 98.88
+    },
+    {
+      "date": "2025-03-31",
+      "equity": 98.48
+    },
+    {
+      "date": "2025-04-01",
+      "equity": 98.03
+    },
+    {
+      "date": "2025-04-02",
+      "equity": 97.67
+    },
+    {
+      "date": "2025-04-03",
+      "equity": 97.28
+    },
+    {
+      "date": "2025-04-07",
+      "equity": 97.68
+    },
+    {
+      "date": "2025-04-08",
+      "equity": 97.75
+    },
+    {
+      "date": "2025-04-09",
+      "equity": 97.97
+    },
+    {
+      "date": "2025-04-10",
+      "equity": 98.04
+    },
+    {
+      "date": "2025-04-11",
+      "equity": 98.07
+    },
+    {
+      "date": "2025-04-14",
+      "equity": 98.09
+    },
+    {
+      "date": "2025-04-15",
+      "equity": 98.24
+    },
+    {
+      "date": "2025-04-16",
+      "equity": 98.6
+    },
+    {
+      "date": "2025-04-17",
+      "equity": 98.8
+    },
+    {
+      "date": "2025-04-18",
+      "equity": 98.95
+    },
+    {
+      "date": "2025-04-21",
+      "equity": 98.99
+    },
+    {
+      "date": "2025-04-22",
+      "equity": 98.87
+    },
+    {
+      "date": "2025-04-23",
+      "equity": 99.06
+    },
+    {
+      "date": "2025-04-24",
+      "equity": 99.35
+    },
+    {
+      "date": "2025-04-25",
+      "equity": 99.7
+    },
+    {
+      "date": "2025-04-28",
+      "equity": 100.4
+    },
+    {
+      "date": "2025-04-29",
+      "equity": 100.73
+    },
+    {
+      "date": "2025-04-30",
+      "equity": 101.13
+    },
+    {
+      "date": "2025-05-06",
+      "equity": 101.25
+    },
+    {
+      "date": "2025-05-07",
+      "equity": 101.33
+    },
+    {
+      "date": "2025-05-08",
+      "equity": 101.28
+    },
+    {
+      "date": "2025-05-09",
+      "equity": 101.36
+    },
+    {
+      "date": "2025-05-12",
+      "equity": 101.33
+    },
+    {
+      "date": "2025-05-13",
+      "equity": 101.3
+    },
+    {
+      "date": "2025-05-14",
+      "equity": 101.29
+    },
+    {
+      "date": "2025-05-15",
+      "equity": 101.42
+    },
+    {
+      "date": "2025-05-16",
+      "equity": 101.54
+    },
+    {
+      "date": "2025-05-19",
+      "equity": 101.55
+    },
+    {
+      "date": "2025-05-20",
+      "equity": 101.5
+    },
+    {
+      "date": "2025-05-21",
+      "equity": 101.47
+    },
+    {
+      "date": "2025-05-22",
+      "equity": 101.77
+    },
+    {
+      "date": "2025-05-23",
+      "equity": 101.94
+    },
+    {
+      "date": "2025-05-26",
+      "equity": 102.19
+    },
+    {
+      "date": "2025-05-27",
+      "equity": 102.58
+    },
+    {
+      "date": "2025-05-28",
+      "equity": 102.78
+    },
+    {
+      "date": "2025-05-29",
+      "equity": 102.81
+    },
+    {
+      "date": "2025-05-30",
+      "equity": 103.08
+    },
+    {
+      "date": "2025-06-03",
+      "equity": 103.14
+    },
+    {
+      "date": "2025-06-04",
+      "equity": 103.2
+    },
+    {
+      "date": "2025-06-05",
+      "equity": 103.23
+    },
+    {
+      "date": "2025-06-06",
+      "equity": 103.23
+    },
+    {
+      "date": "2025-06-09",
+      "equity": 103.2
+    },
+    {
+      "date": "2025-06-10",
+      "equity": 103.23
+    },
+    {
+      "date": "2025-06-11",
+      "equity": 103.18
+    },
+    {
+      "date": "2025-06-12",
+      "equity": 103.22
+    },
+    {
+      "date": "2025-06-13",
+      "equity": 103.21
+    },
+    {
+      "date": "2025-06-16",
+      "equity": 103.18
+    },
+    {
+      "date": "2025-06-17",
+      "equity": 103.22
+    },
+    {
+      "date": "2025-06-18",
+      "equity": 103.37
+    },
+    {
+      "date": "2025-06-19",
+      "equity": 103.58
+    },
+    {
+      "date": "2025-06-20",
+      "equity": 103.85
+    },
+    {
+      "date": "2025-06-23",
+      "equity": 104.17
+    },
+    {
+      "date": "2025-06-24",
+      "equity": 104.36
+    },
+    {
+      "date": "2025-06-25",
+      "equity": 104.48
+    },
+    {
+      "date": "2025-06-26",
+      "equity": 104.56
+    },
+    {
+      "date": "2025-06-27",
+      "equity": 104.67
+    },
+    {
+      "date": "2025-06-30",
+      "equity": 104.73
+    },
+    {
+      "date": "2025-07-01",
+      "equity": 104.83
+    },
+    {
+      "date": "2025-07-02",
+      "equity": 104.93
+    },
+    {
+      "date": "2025-07-03",
+      "equity": 105.06
+    },
+    {
+      "date": "2025-07-04",
+      "equity": 105.26
+    },
+    {
+      "date": "2025-07-07",
+      "equity": 105.45
+    },
+    {
+      "date": "2025-07-08",
+      "equity": 105.46
+    },
+    {
+      "date": "2025-07-09",
+      "equity": 105.46
+    },
+    {
+      "date": "2025-07-10",
+      "equity": 105.43
+    },
+    {
+      "date": "2025-07-11",
+      "equity": 105.49
+    },
+    {
+      "date": "2025-07-14",
+      "equity": 105.66
+    },
+    {
+      "date": "2025-07-15",
+      "equity": 105.84
+    },
+    {
+      "date": "2025-07-16",
+      "equity": 105.92
+    },
+    {
+      "date": "2025-07-17",
+      "equity": 105.96
+    },
+    {
+      "date": "2025-07-18",
+      "equity": 106.1
+    },
+    {
+      "date": "2025-07-21",
+      "equity": 106.19
+    },
+    {
+      "date": "2025-07-22",
+      "equity": 106.13
+    },
+    {
+      "date": "2025-07-23",
+      "equity": 106.2
+    },
+    {
+      "date": "2025-07-24",
+      "equity": 106.05
+    },
+    {
+      "date": "2025-07-25",
+      "equity": 105.9
+    },
+    {
+      "date": "2025-07-28",
+      "equity": 106.0
+    },
+    {
+      "date": "2025-07-29",
+      "equity": 106.18
+    },
+    {
+      "date": "2025-07-30",
+      "equity": 106.09
+    },
+    {
+      "date": "2025-07-31",
+      "equity": 106.21
+    },
+    {
+      "date": "2025-08-01",
+      "equity": 106.32
+    },
+    {
+      "date": "2025-08-04",
+      "equity": 106.53
+    },
+    {
+      "date": "2025-08-05",
+      "equity": 106.68
+    },
+    {
+      "date": "2025-08-06",
+      "equity": 106.84
+    },
+    {
+      "date": "2025-08-07",
+      "equity": 106.79
+    },
+    {
+      "date": "2025-08-08",
+      "equity": 106.84
+    },
+    {
+      "date": "2025-08-11",
+      "equity": 106.87
+    },
+    {
+      "date": "2025-08-12",
+      "equity": 106.99
+    },
+    {
+      "date": "2025-08-13",
+      "equity": 107.13
+    },
+    {
+      "date": "2025-08-14",
+      "equity": 107.46
+    },
+    {
+      "date": "2025-08-15",
+      "equity": 107.69
+    },
+    {
+      "date": "2025-08-18",
+      "equity": 107.87
+    },
+    {
+      "date": "2025-08-19",
+      "equity": 108.04
+    },
+    {
+      "date": "2025-08-20",
+      "equity": 108.01
+    },
+    {
+      "date": "2025-08-21",
+      "equity": 107.99
+    },
+    {
+      "date": "2025-08-22",
+      "equity": 108.04
+    },
+    {
+      "date": "2025-08-25",
+      "equity": 108.04
+    },
+    {
+      "date": "2025-08-26",
+      "equity": 107.86
+    },
+    {
+      "date": "2025-08-27",
+      "equity": 107.68
+    },
+    {
+      "date": "2025-08-28",
+      "equity": 107.33
+    },
+    {
+      "date": "2025-08-29",
+      "equity": 107.1
+    },
+    {
+      "date": "2025-09-01",
+      "equity": 107.13
+    },
+    {
+      "date": "2025-09-02",
+      "equity": 107.05
+    },
+    {
+      "date": "2025-09-03",
+      "equity": 107.24
+    },
+    {
+      "date": "2025-09-04",
+      "equity": 107.47
+    },
+    {
+      "date": "2025-09-05",
+      "equity": 107.63
+    },
+    {
+      "date": "2025-09-08",
+      "equity": 107.71
+    },
+    {
+      "date": "2025-09-09",
+      "equity": 107.91
+    },
+    {
+      "date": "2025-09-10",
+      "equity": 108.06
+    },
+    {
+      "date": "2025-09-11",
+      "equity": 107.97
+    },
+    {
+      "date": "2025-09-12",
+      "equity": 107.88
+    },
+    {
+      "date": "2025-09-15",
+      "equity": 107.81
+    },
+    {
+      "date": "2025-09-16",
+      "equity": 107.68
+    },
+    {
+      "date": "2025-09-17",
+      "equity": 107.63
+    },
+    {
+      "date": "2025-09-18",
+      "equity": 107.57
+    },
+    {
+      "date": "2025-09-19",
+      "equity": 107.4
+    },
+    {
+      "date": "2025-09-22",
+      "equity": 107.3
+    },
+    {
+      "date": "2025-09-23",
+      "equity": 107.38
+    },
+    {
+      "date": "2025-09-24",
+      "equity": 107.33
+    },
+    {
+      "date": "2025-09-25",
+      "equity": 107.39
+    },
+    {
+      "date": "2025-09-26",
+      "equity": 107.47
+    },
+    {
+      "date": "2025-09-29",
+      "equity": 107.58
+    },
+    {
+      "date": "2025-09-30",
+      "equity": 107.7
+    },
+    {
+      "date": "2025-10-09",
+      "equity": 107.7
+    },
+    {
+      "date": "2025-10-10",
+      "equity": 107.69
+    },
+    {
+      "date": "2025-10-13",
+      "equity": 107.65
+    },
+    {
+      "date": "2025-10-14",
+      "equity": 107.7
+    },
+    {
+      "date": "2025-10-15",
+      "equity": 107.69
+    },
+    {
+      "date": "2025-10-16",
+      "equity": 107.66
+    },
+    {
+      "date": "2025-10-17",
+      "equity": 107.78
+    },
+    {
+      "date": "2025-10-20",
+      "equity": 107.91
+    },
+    {
+      "date": "2025-10-21",
+      "equity": 108.0
+    },
+    {
+      "date": "2025-10-22",
+      "equity": 107.97
+    },
+    {
+      "date": "2025-10-23",
+      "equity": 107.93
+    },
+    {
+      "date": "2025-10-24",
+      "equity": 107.97
+    },
+    {
+      "date": "2025-10-27",
+      "equity": 107.91
+    },
+    {
+      "date": "2025-10-28",
+      "equity": 107.85
+    },
+    {
+      "date": "2025-10-29",
+      "equity": 108.09
+    },
+    {
+      "date": "2025-10-30",
+      "equity": 108.38
+    },
+    {
+      "date": "2025-10-31",
+      "equity": 108.49
+    },
+    {
+      "date": "2025-11-03",
+      "equity": 108.66
+    },
+    {
+      "date": "2025-11-04",
+      "equity": 108.92
+    },
+    {
+      "date": "2025-11-05",
+      "equity": 109.0
+    },
+    {
+      "date": "2025-11-06",
+      "equity": 109.24
+    },
+    {
+      "date": "2025-11-07",
+      "equity": 109.53
+    },
+    {
+      "date": "2025-11-10",
+      "equity": 109.65
+    },
+    {
+      "date": "2025-11-11",
+      "equity": 109.68
+    },
+    {
+      "date": "2025-11-12",
+      "equity": 109.61
+    },
+    {
+      "date": "2025-11-13",
+      "equity": 109.41
+    },
+    {
+      "date": "2025-11-14",
+      "equity": 108.91
+    },
+    {
+      "date": "2025-11-17",
+      "equity": 108.67
+    },
+    {
+      "date": "2025-11-18",
+      "equity": 108.49
+    },
+    {
+      "date": "2025-11-19",
+      "equity": 108.28
+    },
+    {
+      "date": "2025-11-20",
+      "equity": 108.19
+    },
+    {
+      "date": "2025-11-21",
+      "equity": 108.42
+    },
+    {
+      "date": "2025-11-24",
+      "equity": 108.6
+    },
+    {
+      "date": "2025-11-25",
+      "equity": 108.61
+    },
+    {
+      "date": "2025-11-26",
+      "equity": 108.62
+    },
+    {
+      "date": "2025-11-27",
+      "equity": 108.53
+    },
+    {
+      "date": "2025-11-28",
+      "equity": 108.49
+    },
+    {
+      "date": "2025-12-01",
+      "equity": 108.52
+    },
+    {
+      "date": "2025-12-02",
+      "equity": 108.62
+    },
+    {
+      "date": "2025-12-03",
+      "equity": 108.65
+    },
+    {
+      "date": "2025-12-04",
+      "equity": 108.8
+    },
+    {
+      "date": "2025-12-05",
+      "equity": 108.82
+    },
+    {
+      "date": "2025-12-08",
+      "equity": 108.7
+    },
+    {
+      "date": "2025-12-09",
+      "equity": 108.52
+    },
+    {
+      "date": "2025-12-10",
+      "equity": 108.27
+    },
+    {
+      "date": "2025-12-11",
+      "equity": 108.23
+    },
+    {
+      "date": "2025-12-12",
+      "equity": 108.34
+    },
+    {
+      "date": "2025-12-15",
+      "equity": 108.48
+    },
+    {
+      "date": "2025-12-16",
+      "equity": 108.62
+    },
+    {
+      "date": "2025-12-17",
+      "equity": 108.8
+    },
+    {
+      "date": "2025-12-18",
+      "equity": 108.99
+    },
+    {
+      "date": "2025-12-19",
+      "equity": 109.1
+    },
+    {
+      "date": "2025-12-22",
+      "equity": 109.2
+    },
+    {
+      "date": "2025-12-23",
+      "equity": 109.32
+    },
+    {
+      "date": "2025-12-24",
+      "equity": 109.4
+    },
+    {
+      "date": "2025-12-25",
+      "equity": 109.54
+    },
+    {
+      "date": "2025-12-26",
+      "equity": 109.74
+    },
+    {
+      "date": "2025-12-29",
+      "equity": 109.88
+    },
+    {
+      "date": "2025-12-30",
+      "equity": 110.12
+    },
+    {
+      "date": "2025-12-31",
+      "equity": 110.49
+    },
+    {
+      "date": "2026-01-05",
+      "equity": 110.89
+    },
+    {
+      "date": "2026-01-06",
+      "equity": 111.17
+    },
+    {
+      "date": "2026-01-07",
+      "equity": 111.65
+    },
+    {
+      "date": "2026-01-08",
+      "equity": 111.83
+    },
+    {
+      "date": "2026-01-09",
+      "equity": 111.86
+    },
+    {
+      "date": "2026-01-12",
+      "equity": 111.87
+    },
+    {
+      "date": "2026-01-13",
+      "equity": 111.85
+    },
+    {
+      "date": "2026-01-14",
+      "equity": 111.85
+    },
+    {
+      "date": "2026-01-15",
+      "equity": 112.04
+    },
+    {
+      "date": "2026-01-16",
+      "equity": 112.26
+    },
+    {
+      "date": "2026-01-19",
+      "equity": 112.33
+    },
+    {
+      "date": "2026-01-20",
+      "equity": 112.29
+    },
+    {
+      "date": "2026-01-21",
+      "equity": 112.28
+    },
+    {
+      "date": "2026-01-22",
+      "equity": 112.24
+    },
+    {
+      "date": "2026-01-23",
+      "equity": 112.05
+    },
+    {
+      "date": "2026-01-26",
+      "equity": 111.9
+    },
+    {
+      "date": "2026-01-27",
+      "equity": 112.09
+    },
+    {
+      "date": "2026-01-28",
+      "equity": 112.16
+    },
+    {
+      "date": "2026-01-29",
+      "equity": 112.2
+    },
+    {
+      "date": "2026-01-30",
+      "equity": 112.2
+    },
+    {
+      "date": "2026-02-02",
+      "equity": 112.44
+    },
+    {
+      "date": "2026-02-03",
+      "equity": 112.54
+    },
+    {
+      "date": "2026-02-04",
+      "equity": 112.54
+    },
+    {
+      "date": "2026-02-05",
+      "equity": 112.49
+    },
+    {
+      "date": "2026-02-06",
+      "equity": 112.5
+    },
+    {
+      "date": "2026-02-09",
+      "equity": 112.59
+    },
+    {
+      "date": "2026-02-10",
+      "equity": 112.71
+    },
+    {
+      "date": "2026-02-11",
+      "equity": 112.83
+    },
+    {
+      "date": "2026-02-12",
+      "equity": 113.14
+    },
+    {
+      "date": "2026-02-13",
+      "equity": 113.23
+    },
+    {
+      "date": "2026-02-24",
+      "equity": 113.15
+    },
+    {
+      "date": "2026-02-25",
+      "equity": 112.91
+    },
+    {
+      "date": "2026-02-26",
+      "equity": 112.71
+    },
+    {
+      "date": "2026-02-27",
+      "equity": 112.66
+    },
+    {
+      "date": "2026-03-02",
+      "equity": 112.62
+    },
+    {
+      "date": "2026-03-03",
+      "equity": 112.77
+    },
+    {
+      "date": "2026-03-04",
+      "equity": 113.08
+    },
+    {
+      "date": "2026-03-05",
+      "equity": 113.17
+    },
+    {
+      "date": "2026-03-06",
+      "equity": 113.21
+    },
+    {
+      "date": "2026-03-09",
+      "equity": 113.13
+    },
+    {
+      "date": "2026-03-10",
+      "equity": 112.88
+    },
+    {
+      "date": "2026-03-11",
+      "equity": 112.73
+    },
+    {
+      "date": "2026-03-12",
+      "equity": 112.55
+    },
+    {
+      "date": "2026-03-13",
+      "equity": 112.52
+    },
+    {
+      "date": "2026-03-16",
+      "equity": 112.44
+    },
+    {
+      "date": "2026-03-17",
+      "equity": 112.32
+    },
+    {
+      "date": "2026-03-18",
+      "equity": 112.32
+    }
+  ],
+  "backtest_30d": {
+    "maGoldenCross": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "volumeBreakout": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "rsiOversold": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "oversoldBounce": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "bollingerMeanReversion": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "kdjGoldenCross": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "supermarket": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "coldStock": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "bottomFishing76": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "equalWeight": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "permanentPortfolio": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "mainForceDivergence": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "mainForceDivRate": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "consecutiveYangLine": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    },
+    "volumeNewHigh": {
+      "win_rate": 0,
+      "avg_return": 0,
+      "total_return": 0,
+      "total_trades": 0,
+      "signal_stocks": 0,
+      "sharpe": 0
+    }
+  },
+  "backtest_1y": {
+    "maGoldenCross": {
+      "win_rate": 50.7,
+      "avg_return": 0.91,
+      "total_return": 545.27,
+      "total_trades": 3506,
+      "signal_stocks": 500,
+      "sharpe": 0.93
+    },
+    "volumeBreakout": {
+      "win_rate": 44.3,
+      "avg_return": 0.5,
+      "total_return": 611.56,
+      "total_trades": 4358,
+      "signal_stocks": 499,
+      "sharpe": 0.36
+    },
+    "rsiOversold": {
+      "win_rate": 62.9,
+      "avg_return": 1.23,
+      "total_return": 766.21,
+      "total_trades": 630,
+      "signal_stocks": 300,
+      "sharpe": 2.25
+    },
+    "oversoldBounce": {
+      "win_rate": 58.9,
+      "avg_return": 1.9,
+      "total_return": 1662.65,
+      "total_trades": 504,
+      "signal_stocks": 265,
+      "sharpe": 1.81
+    },
+    "bollingerMeanReversion": {
+      "win_rate": 63.5,
+      "avg_return": 1.52,
+      "total_return": 1041.16,
+      "total_trades": 3541,
+      "signal_stocks": 490,
+      "sharpe": 2.44
+    },
+    "kdjGoldenCross": {
+      "win_rate": 53.2,
+      "avg_return": 0.93,
+      "total_return": 697.8,
+      "total_trades": 3976,
+      "signal_stocks": 500,
+      "sharpe": 1.16
+    },
+    "supermarket": {
+      "win_rate": 51.7,
+      "avg_return": 0.9,
+      "total_return": 4150.78,
+      "total_trades": 9775,
+      "signal_stocks": 445,
+      "sharpe": 1.04
+    },
+    "coldStock": {
+      "win_rate": 54.4,
+      "avg_return": 0.7,
+      "total_return": 5311.21,
+      "total_trades": 9539,
+      "signal_stocks": 330,
+      "sharpe": 1.06
+    },
+    "bottomFishing76": {
+      "win_rate": 46.7,
+      "avg_return": 0.07,
+      "total_return": -0.86,
+      "total_trades": 15,
+      "signal_stocks": 12,
+      "sharpe": 0.1
+    },
+    "equalWeight": {
+      "win_rate": 58.0,
+      "avg_return": 1.43,
+      "total_return": 839.53,
+      "total_trades": 3023,
+      "signal_stocks": 499,
+      "sharpe": 1.44
+    },
+    "permanentPortfolio": {
+      "win_rate": 64.3,
+      "avg_return": 2.1,
+      "total_return": 4795.37,
+      "total_trades": 1490,
+      "signal_stocks": 500,
+      "sharpe": 2.39
+    },
+    "mainForceDivergence": {
+      "win_rate": 57.7,
+      "avg_return": 0.7,
+      "total_return": 487.98,
+      "total_trades": 4691,
+      "signal_stocks": 335,
+      "sharpe": 1.36
+    },
+    "mainForceDivRate": {
+      "win_rate": 50.7,
+      "avg_return": 0.71,
+      "total_return": 3.13,
+      "total_trades": 2129,
+      "signal_stocks": 494,
+      "sharpe": 0.9
+    },
+    "consecutiveYangLine": {
+      "win_rate": 47.8,
+      "avg_return": 0.48,
+      "total_return": 1107.21,
+      "total_trades": 13283,
+      "signal_stocks": 500,
+      "sharpe": 0.47
+    },
+    "volumeNewHigh": {
+      "win_rate": 42.6,
+      "avg_return": -0.07,
+      "total_return": -80.63,
+      "total_trades": 2172,
+      "signal_stocks": 484,
+      "sharpe": -0.05
+    }
+  },
+  "backtest_all": {
+    "maGoldenCross": {
+      "win_rate": 47.6,
+      "avg_return": 0.58,
+      "total_return": 798.96,
+      "total_trades": 6295,
+      "signal_stocks": 300,
+      "sharpe": 0.55
+    },
+    "volumeBreakout": {
+      "win_rate": 40.8,
+      "avg_return": -0.37,
+      "total_return": -13.25,
+      "total_trades": 6815,
+      "signal_stocks": 300,
+      "sharpe": -0.24
+    },
+    "rsiOversold": {
+      "win_rate": 57.7,
+      "avg_return": 1.63,
+      "total_return": 1874.75,
+      "total_trades": 2467,
+      "signal_stocks": 298,
+      "sharpe": 1.53
+    },
+    "oversoldBounce": {
+      "win_rate": 64.3,
+      "avg_return": 3.76,
+      "total_return": 235482.99,
+      "total_trades": 1603,
+      "signal_stocks": 259,
+      "sharpe": 2.59
+    },
+    "bollingerMeanReversion": {
+      "win_rate": 55.9,
+      "avg_return": 1.41,
+      "total_return": 175.42,
+      "total_trades": 10770,
+      "signal_stocks": 300,
+      "sharpe": 1.36
+    },
+    "kdjGoldenCross": {
+      "win_rate": 50.4,
+      "avg_return": 0.72,
+      "total_return": 702.47,
+      "total_trades": 8792,
+      "signal_stocks": 300,
+      "sharpe": 0.7
+    },
+    "supermarket": {
+      "win_rate": 49.1,
+      "avg_return": 0.74,
+      "total_return": 3162.46,
+      "total_trades": 17665,
+      "signal_stocks": 280,
+      "sharpe": 0.73
+    },
+    "coldStock": {
+      "win_rate": 50.0,
+      "avg_return": 0.79,
+      "total_return": -44.3,
+      "total_trades": 32297,
+      "signal_stocks": 296,
+      "sharpe": 0.71
+    },
+    "bottomFishing76": {
+      "win_rate": 57.5,
+      "avg_return": 3.1,
+      "total_return": 67275.52,
+      "total_trades": 292,
+      "signal_stocks": 162,
+      "sharpe": 2.13
+    },
+    "equalWeight": {
+      "win_rate": 45.7,
+      "avg_return": -0.1,
+      "total_return": 11.88,
+      "total_trades": 5012,
+      "signal_stocks": 299,
+      "sharpe": -0.09
+    },
+    "permanentPortfolio": {
+      "win_rate": 45.6,
+      "avg_return": -0.06,
+      "total_return": -69.9,
+      "total_trades": 3193,
+      "signal_stocks": 300,
+      "sharpe": -0.07
+    },
+    "mainForceDivergence": {
+      "win_rate": 51.2,
+      "avg_return": 0.3,
+      "total_return": -21.69,
+      "total_trades": 6384,
+      "signal_stocks": 260,
+      "sharpe": 0.55
+    },
+    "mainForceDivRate": {
+      "win_rate": 50.1,
+      "avg_return": 0.65,
+      "total_return": 49.91,
+      "total_trades": 3626,
+      "signal_stocks": 299,
+      "sharpe": 0.73
+    },
+    "consecutiveYangLine": {
+      "win_rate": 46.4,
+      "avg_return": 0.26,
+      "total_return": 17.27,
+      "total_trades": 22991,
+      "signal_stocks": 300,
+      "sharpe": 0.23
+    },
+    "volumeNewHigh": {
+      "win_rate": 38.4,
+      "avg_return": -1.07,
+      "total_return": -91.25,
+      "total_trades": 4364,
+      "signal_stocks": 297,
+      "sharpe": -0.7
+    }
+  }
+}
