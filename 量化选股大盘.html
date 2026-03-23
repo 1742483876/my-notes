@@ -746,8 +746,8 @@ function renderWeightCards() {
       </div>
       <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">${s.desc||''}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:12px">
-        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="color:${parseFloat(wr)>=50?'var(--green)':'var(--red)';font-weight:600}">${wr}%</div></div>
-        <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="color:${parseFloat(ar)>=0?'var(--red)':'var(--green)';font-weight:600}">${parseFloat(ar)>=0?'+':''}${ar}%</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${parseFloat(wr)>=50?'var(--green)':'var(--red)'}">${wr}%</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="font-weight:600;color:${parseFloat(ar)>=0?'var(--red)':'var(--green)'}">${parseFloat(ar)>=0?'+':''}${ar}%</div></div>
         <div style="text-align:center"><div style="color:var(--text2)">Sharpe</div><div style="font-weight:600">${sh}</div></div>
       </div>
     </div>`;
