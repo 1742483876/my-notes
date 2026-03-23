@@ -1,7 +1,7 @@
 {
   "date": "2026-03-23",
-  "update_time": "2026-03-23T18:24:50.117779",
-  "stock_count": 5005,
+  "update_time": "2026-03-23T19:01:40.064065",
+  "stock_count": 5006,
   "strategy_count": 15,
   "weights": {
     "maGoldenCross": 0.01,
@@ -474,6 +474,39 @@
   ],
   "recommendations": [
     {
+      "code": "600996",
+      "name": "贵广网络",
+      "score": 94.0,
+      "hit_count": 9,
+      "strategies": [
+        "均线金叉",
+        "放量突破",
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 1.0,
+        "volumeBreakout": 1.0,
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "supermarket": 1.0,
+        "mainForceDivRate": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "均线金叉 + 放量突破 + RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 9.24,
+      "chg_1d": -0.75,
+      "chg_5d": 6.82,
+      "last_date": "2026-03-23"
+    },
+    {
       "code": "300295",
       "name": "三六五网",
       "score": 93.0,
@@ -502,6 +535,68 @@
       "close": 9.19,
       "chg_1d": -7.27,
       "chg_5d": -13.63,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "688062",
+      "name": "迈威生物",
+      "score": 93.0,
+      "hit_count": 8,
+      "strategies": [
+        "均线金叉",
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "76%抄底",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 1.0,
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "supermarket": 1.0,
+        "bottomFishing76": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "均线金叉 + RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底 + 连续阳线",
+      "close": 31.03,
+      "chg_1d": -6.03,
+      "chg_5d": -9.64,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "688180",
+      "name": "君实生物",
+      "score": 93.0,
+      "hit_count": 8,
+      "strategies": [
+        "均线金叉",
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 1.0,
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "supermarket": 1.0,
+        "mainForceDivRate": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "均线金叉 + RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 31.29,
+      "chg_1d": -3.43,
+      "chg_5d": -0.82,
       "last_date": "2026-03-23"
     },
     {
@@ -563,66 +658,8 @@
       "last_date": "2026-03-23"
     },
     {
-      "code": "600996",
-      "name": "贵广网络",
-      "score": 92.0,
-      "hit_count": 7,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉",
-        "超市战法",
-        "连续阳线",
-        "成交额新高"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0,
-        "supermarket": 1.0,
-        "consecutiveYangLine": 1.0,
-        "volumeNewHigh": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线 + 成交额新高",
-      "close": 8.27,
-      "chg_1d": -4.39,
-      "chg_5d": 0.0,
-      "last_date": "2026-03-17"
-    },
-    {
-      "code": "688062",
-      "name": "迈威生物",
-      "score": 92.0,
-      "hit_count": 7,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉",
-        "超市战法",
-        "76%抄底",
-        "连续阳线"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0,
-        "supermarket": 1.0,
-        "bottomFishing76": 1.0,
-        "consecutiveYangLine": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底 + 连续阳线",
-      "close": 34.8,
-      "chg_1d": 1.34,
-      "chg_5d": -2.47,
-      "last_date": "2026-03-17"
-    },
-    {
-      "code": "688180",
-      "name": "君实生物",
+      "code": "301011",
+      "name": "华立科技",
       "score": 92.0,
       "hit_count": 7,
       "strategies": [
@@ -644,10 +681,68 @@
         "consecutiveYangLine": 1.0
       },
       "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
-      "close": 32.49,
-      "chg_1d": 2.98,
-      "chg_5d": 2.27,
-      "last_date": "2026-03-17"
+      "close": 21.05,
+      "chg_1d": -7.59,
+      "chg_5d": -12.69,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "301381",
+      "name": "赛维时代",
+      "score": 92.0,
+      "hit_count": 7,
+      "strategies": [
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "supermarket": 1.0,
+        "mainForceDivRate": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率 + 连续阳线",
+      "close": 18.44,
+      "chg_1d": -6.82,
+      "chg_5d": -10.75,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "603992",
+      "name": "松霖科技",
+      "score": 92.0,
+      "hit_count": 7,
+      "strategies": [
+        "均线金叉",
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "超市战法",
+        "76%抄底"
+      ],
+      "strategy_scores": {
+        "maGoldenCross": 1.0,
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "supermarket": 1.0,
+        "bottomFishing76": 1.0
+      },
+      "reason_text": "均线金叉 + RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底",
+      "close": 33.67,
+      "chg_1d": 1.32,
+      "chg_5d": 11.23,
+      "last_date": "2026-03-23"
     },
     {
       "code": "688382",
@@ -733,8 +828,8 @@
       "last_date": "2026-03-23"
     },
     {
-      "code": "301011",
-      "name": "华立科技",
+      "code": "301413",
+      "name": "安培龙",
       "score": 91.0,
       "hit_count": 6,
       "strategies": [
@@ -742,7 +837,7 @@
         "超跌反弹",
         "布林回归",
         "KDJ金叉",
-        "超市战法",
+        "主力分歧率",
         "连续阳线"
       ],
       "strategy_scores": {
@@ -750,18 +845,18 @@
         "oversoldBounce": 50.0,
         "bollingerMeanReversion": 1.0,
         "kdjGoldenCross": 1.0,
-        "supermarket": 1.0,
+        "mainForceDivRate": 1.0,
         "consecutiveYangLine": 1.0
       },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线",
-      "close": 23.62,
-      "chg_1d": -2.03,
-      "chg_5d": -3.59,
-      "last_date": "2026-03-17"
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率 + 连续阳线",
+      "close": 109.9,
+      "chg_1d": -3.6,
+      "chg_5d": -10.8,
+      "last_date": "2026-03-23"
     },
     {
-      "code": "301381",
-      "name": "赛维时代",
+      "code": "603039",
+      "name": "泛微网络",
       "score": 91.0,
       "hit_count": 6,
       "strategies": [
@@ -769,7 +864,7 @@
         "超跌反弹",
         "布林回归",
         "KDJ金叉",
-        "超市战法",
+        "主力分歧率",
         "连续阳线"
       ],
       "strategy_scores": {
@@ -777,14 +872,14 @@
         "oversoldBounce": 50.0,
         "bollingerMeanReversion": 1.0,
         "kdjGoldenCross": 1.0,
-        "supermarket": 1.0,
+        "mainForceDivRate": 1.0,
         "consecutiveYangLine": 1.0
       },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线",
-      "close": 20.29,
-      "chg_1d": -1.79,
-      "chg_5d": -1.07,
-      "last_date": "2026-03-17"
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率 + 连续阳线",
+      "close": 38.0,
+      "chg_1d": -6.2,
+      "chg_5d": -12.42,
+      "last_date": "2026-03-23"
     },
     {
       "code": "603119",
@@ -808,14 +903,41 @@
         "consecutiveYangLine": 1.0
       },
       "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率 + 连续阳线",
-      "close": 79.42,
-      "chg_1d": -1.59,
-      "chg_5d": -11.63,
-      "last_date": "2026-03-17"
+      "close": 70.69,
+      "chg_1d": -4.95,
+      "chg_5d": -12.4,
+      "last_date": "2026-03-23"
     },
     {
-      "code": "603992",
-      "name": "松霖科技",
+      "code": "603429",
+      "name": "集友股份",
+      "score": 91.0,
+      "hit_count": 6,
+      "strategies": [
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "mainForceDivRate": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率 + 连续阳线",
+      "close": 8.52,
+      "chg_1d": 2.65,
+      "chg_5d": -5.96,
+      "last_date": "2026-03-20"
+    },
+    {
+      "code": "605168",
+      "name": "三人行",
       "score": 91.0,
       "hit_count": 6,
       "strategies": [
@@ -824,7 +946,7 @@
         "布林回归",
         "KDJ金叉",
         "超市战法",
-        "76%抄底"
+        "主力分歧率"
       ],
       "strategy_scores": {
         "rsiOversold": 37.0,
@@ -832,13 +954,13 @@
         "bollingerMeanReversion": 1.0,
         "kdjGoldenCross": 1.0,
         "supermarket": 1.0,
-        "bottomFishing76": 1.0
+        "mainForceDivRate": 1.0
       },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底",
-      "close": 33.3,
-      "chg_1d": 10.01,
-      "chg_5d": 12.96,
-      "last_date": "2026-03-17"
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 主力分歧率",
+      "close": 31.2,
+      "chg_1d": -7.58,
+      "chg_5d": -11.36,
+      "last_date": "2026-03-23"
     },
     {
       "code": "688046",
@@ -862,10 +984,10 @@
         "consecutiveYangLine": 1.0
       },
       "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 连续阳线",
-      "close": 15.06,
-      "chg_1d": -2.21,
-      "chg_5d": -3.59,
-      "last_date": "2026-03-17"
+      "close": 13.04,
+      "chg_1d": -5.16,
+      "chg_5d": -15.32,
+      "last_date": "2026-03-23"
     },
     {
       "code": "688165",
@@ -889,10 +1011,10 @@
         "bottomFishing76": 1.0
       },
       "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法 + 76%抄底",
-      "close": 19.31,
-      "chg_1d": -0.52,
-      "chg_5d": -0.21,
-      "last_date": "2026-03-17"
+      "close": 16.92,
+      "chg_1d": -4.41,
+      "chg_5d": -12.83,
+      "last_date": "2026-03-23"
     },
     {
       "code": "688585",
@@ -974,8 +1096,8 @@
       "last_date": "2026-03-23"
     },
     {
-      "code": "605168",
-      "name": "三人行",
+      "code": "300984",
+      "name": "金沃股份",
       "score": 90.0,
       "hit_count": 5,
       "strategies": [
@@ -983,20 +1105,95 @@
         "超跌反弹",
         "布林回归",
         "KDJ金叉",
-        "超市战法"
+        "主力分歧率"
       ],
       "strategy_scores": {
         "rsiOversold": 37.0,
         "oversoldBounce": 50.0,
         "bollingerMeanReversion": 1.0,
         "kdjGoldenCross": 1.0,
-        "supermarket": 1.0
+        "mainForceDivRate": 1.0
       },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 超市战法",
-      "close": 34.53,
-      "chg_1d": -1.9,
-      "chg_5d": -6.47,
-      "last_date": "2026-03-17"
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率",
+      "close": 51.86,
+      "chg_1d": -5.69,
+      "chg_5d": -15.92,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "603171",
+      "name": "税友股份",
+      "score": 90.0,
+      "hit_count": 5,
+      "strategies": [
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "主力分歧率"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "mainForceDivRate": 1.0
+      },
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率",
+      "close": 48.7,
+      "chg_1d": -6.62,
+      "chg_5d": -10.36,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "603755",
+      "name": "日辰股份",
+      "score": 90.0,
+      "hit_count": 5,
+      "strategies": [
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "主力分歧率"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "mainForceDivRate": 1.0
+      },
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 主力分歧率",
+      "close": 26.95,
+      "chg_1d": -4.4,
+      "chg_5d": -10.47,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "603956",
+      "name": "威派格",
+      "score": 90.0,
+      "hit_count": 5,
+      "strategies": [
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "主力分歧率",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "mainForceDivRate": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + 主力分歧率 + 连续阳线",
+      "close": 5.38,
+      "chg_1d": -6.43,
+      "chg_5d": -12.38,
+      "last_date": "2026-03-23"
     },
     {
       "code": "688068",
@@ -1018,10 +1215,35 @@
         "kdjGoldenCross": 1.0
       },
       "reason_text": "均线金叉 + RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉",
-      "close": 125.96,
-      "chg_1d": 0.66,
-      "chg_5d": -7.53,
-      "last_date": "2026-03-17"
+      "close": 106.88,
+      "chg_1d": -5.78,
+      "chg_5d": -14.58,
+      "last_date": "2026-03-23"
+    },
+    {
+      "code": "688235",
+      "name": "百济神州",
+      "score": 90.0,
+      "hit_count": 5,
+      "strategies": [
+        "RSI超卖",
+        "超跌反弹",
+        "布林回归",
+        "KDJ金叉",
+        "连续阳线"
+      ],
+      "strategy_scores": {
+        "rsiOversold": 37.0,
+        "oversoldBounce": 50.0,
+        "bollingerMeanReversion": 1.0,
+        "kdjGoldenCross": 1.0,
+        "consecutiveYangLine": 1.0
+      },
+      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 连续阳线",
+      "close": 215.51,
+      "chg_1d": -5.3,
+      "chg_5d": -6.83,
+      "last_date": "2026-03-23"
     },
     {
       "code": "688293",
@@ -1072,195 +1294,9 @@
       "chg_1d": -3.52,
       "chg_5d": 1.55,
       "last_date": "2026-03-17"
-    },
-    {
-      "code": "688500",
-      "name": "慧辰股份",
-      "score": 90.0,
-      "hit_count": 5,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉",
-        "连续阳线"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0,
-        "consecutiveYangLine": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉 + 连续阳线",
-      "close": 52.62,
-      "chg_1d": 0.42,
-      "chg_5d": 0.8,
-      "last_date": "2026-03-17"
-    },
-    {
-      "code": "000659",
-      "name": "珠海中富",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉",
-      "close": 3.69,
-      "chg_1d": -2.38,
-      "chg_5d": -4.9,
-      "last_date": "2026-03-23"
-    },
-    {
-      "code": "002862",
-      "name": "实丰文化",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉",
-      "close": 15.33,
-      "chg_1d": -5.02,
-      "chg_5d": -11.34,
-      "last_date": "2026-03-23"
-    },
-    {
-      "code": "003006",
-      "name": "百亚股份",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉",
-      "close": 17.0,
-      "chg_1d": -4.6,
-      "chg_5d": -8.99,
-      "last_date": "2026-03-23"
-    },
-    {
-      "code": "300984",
-      "name": "金沃股份",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉",
-      "close": 59.39,
-      "chg_1d": -3.71,
-      "chg_5d": -6.85,
-      "last_date": "2026-03-17"
-    },
-    {
-      "code": "600082",
-      "name": "海泰发展",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "连续阳线"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "consecutiveYangLine": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + 连续阳线",
-      "close": 3.79,
-      "chg_1d": -1.81,
-      "chg_5d": -2.57,
-      "last_date": "2026-03-17"
-    },
-    {
-      "code": "603039",
-      "name": "泛微网络",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "KDJ金叉",
-        "连续阳线"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "kdjGoldenCross": 1.0,
-        "consecutiveYangLine": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + KDJ金叉 + 连续阳线",
-      "close": 42.51,
-      "chg_1d": -2.03,
-      "chg_5d": -3.89,
-      "last_date": "2026-03-17"
-    },
-    {
-      "code": "603171",
-      "name": "税友股份",
-      "score": 89.0,
-      "hit_count": 4,
-      "strategies": [
-        "RSI超卖",
-        "超跌反弹",
-        "布林回归",
-        "KDJ金叉"
-      ],
-      "strategy_scores": {
-        "rsiOversold": 37.0,
-        "oversoldBounce": 50.0,
-        "bollingerMeanReversion": 1.0,
-        "kdjGoldenCross": 1.0
-      },
-      "reason_text": "RSI超卖 + 超跌反弹 + 布林回归 + KDJ金叉",
-      "close": 53.81,
-      "chg_1d": -0.96,
-      "chg_5d": -7.75,
-      "last_date": "2026-03-17"
     }
   ],
-  "recommend_count": 4949,
+  "recommend_count": 4951,
   "equity_30d": [
     {
       "date": "2026-02-24",
@@ -2678,5 +2714,4638 @@
       "signal_stocks": 300,
       "sharpe": -0.34
     }
+  },
+  "daily_picks": [
+    {
+      "pred_date": "2026-01-19",
+      "exit_date": "2026-01-26",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.61,
+          "exit_price": 4.2,
+          "return": 16.34,
+          "win": true
+        },
+        {
+          "code": "000551",
+          "name": "创元科技",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 15.78,
+          "exit_price": 15.24,
+          "return": -3.42,
+          "win": false
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.38,
+          "exit_price": 7.35,
+          "return": -0.41,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.58,
+          "exit_price": 4.6,
+          "return": 0.44,
+          "win": true
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.85,
+          "exit_price": 2.88,
+          "return": 1.05,
+          "win": true
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.36,
+          "exit_price": 5.33,
+          "return": -0.56,
+          "win": false
+        },
+        {
+          "code": "001255",
+          "name": "博菲电气",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 49.69,
+          "exit_price": 39.61,
+          "return": -20.29,
+          "win": false
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 8.45,
+          "exit_price": 9.76,
+          "return": 15.5,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.48,
+          "exit_price": 9.43,
+          "return": -10.02,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 16.66,
+          "exit_price": 16.55,
+          "return": -0.66,
+          "win": false
+        }
+      ],
+      "win_count": 4,
+      "total": 10,
+      "win_rate": 40.0,
+      "avg_return": -0.2
+    },
+    {
+      "pred_date": "2026-01-20",
+      "exit_date": "2026-01-27",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.58,
+          "exit_price": 4.15,
+          "return": 15.92,
+          "win": true
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.38,
+          "exit_price": 7.22,
+          "return": -2.17,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.59,
+          "exit_price": 4.54,
+          "return": -1.09,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.86,
+          "exit_price": 2.82,
+          "return": -1.4,
+          "win": false
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.27,
+          "exit_price": 5.29,
+          "return": 0.38,
+          "win": true
+        },
+        {
+          "code": "001255",
+          "name": "博菲电气",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 44.72,
+          "exit_price": 40.22,
+          "return": -10.06,
+          "win": false
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 8.4,
+          "exit_price": 9.49,
+          "return": 12.98,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.15,
+          "exit_price": 8.7,
+          "return": -14.29,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 16.41,
+          "exit_price": 16.92,
+          "return": 3.11,
+          "win": true
+        },
+        {
+          "code": "002163",
+          "name": "海南发展",
+          "score": 53.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "连续阳线"
+          ],
+          "entry_price": 17.42,
+          "exit_price": 16.57,
+          "return": -4.88,
+          "win": false
+        }
+      ],
+      "win_count": 4,
+      "total": 10,
+      "win_rate": 40.0,
+      "avg_return": -0.15
+    },
+    {
+      "pred_date": "2026-01-21",
+      "exit_date": "2026-01-28",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.56,
+          "exit_price": 3.96,
+          "return": 11.24,
+          "win": true
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 55.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.86,
+          "exit_price": 2.83,
+          "return": -1.05,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.5,
+          "exit_price": 18.91,
+          "return": 2.22,
+          "win": true
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.31,
+          "exit_price": 7.1,
+          "return": -2.87,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.58,
+          "exit_price": 4.49,
+          "return": -1.97,
+          "win": false
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.3,
+          "exit_price": 5.18,
+          "return": -2.26,
+          "win": false
+        },
+        {
+          "code": "001255",
+          "name": "博菲电气",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 40.25,
+          "exit_price": 39.2,
+          "return": -2.61,
+          "win": false
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 8.53,
+          "exit_price": 9.21,
+          "return": 7.97,
+          "win": true
+        },
+        {
+          "code": "002285",
+          "name": "世联行",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 2.86,
+          "exit_price": 2.73,
+          "return": -4.55,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.54,
+          "exit_price": 8.51,
+          "return": -10.8,
+          "win": false
+        }
+      ],
+      "win_count": 3,
+      "total": 10,
+      "win_rate": 30.0,
+      "avg_return": -0.47
+    },
+    {
+      "pred_date": "2026-01-22",
+      "exit_date": "2026-01-29",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.63,
+          "exit_price": 3.8,
+          "return": 4.68,
+          "win": true
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 55.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.42,
+          "exit_price": 7.21,
+          "return": -2.83,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 55.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.9,
+          "exit_price": 2.89,
+          "return": -0.34,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.05,
+          "exit_price": 18.33,
+          "return": 1.55,
+          "win": true
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.65,
+          "exit_price": 4.55,
+          "return": -2.15,
+          "win": false
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.46,
+          "exit_price": 5.11,
+          "return": -6.41,
+          "win": false
+        },
+        {
+          "code": "001255",
+          "name": "博菲电气",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 39.84,
+          "exit_price": 39.14,
+          "return": -1.76,
+          "win": false
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.07,
+          "exit_price": 9.18,
+          "return": 1.21,
+          "win": true
+        },
+        {
+          "code": "002285",
+          "name": "世联行",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 2.86,
+          "exit_price": 2.87,
+          "return": 0.35,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.6,
+          "exit_price": 8.4,
+          "return": -12.5,
+          "win": false
+        }
+      ],
+      "win_count": 4,
+      "total": 10,
+      "win_rate": 40.0,
+      "avg_return": -1.82
+    },
+    {
+      "pred_date": "2026-01-23",
+      "exit_date": "2026-01-30",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.82,
+          "exit_price": 3.69,
+          "return": -3.4,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 55.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.95,
+          "exit_price": 2.83,
+          "return": -4.07,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.98,
+          "exit_price": 18.23,
+          "return": -3.95,
+          "win": false
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.32,
+          "exit_price": 6.88,
+          "return": -6.01,
+          "win": false
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 7.48,
+          "exit_price": 7.11,
+          "return": -4.95,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.66,
+          "exit_price": 4.53,
+          "return": -2.79,
+          "win": false
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.52,
+          "exit_price": 5.17,
+          "return": -6.34,
+          "win": false
+        },
+        {
+          "code": "001255",
+          "name": "博菲电气",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 41.87,
+          "exit_price": 39.64,
+          "return": -5.33,
+          "win": false
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.32,
+          "exit_price": 9.6,
+          "return": 3.0,
+          "win": true
+        },
+        {
+          "code": "002285",
+          "name": "世联行",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 2.9,
+          "exit_price": 2.71,
+          "return": -6.55,
+          "win": false
+        }
+      ],
+      "win_count": 1,
+      "total": 10,
+      "win_rate": 10.0,
+      "avg_return": -4.04
+    },
+    {
+      "pred_date": "2026-01-26",
+      "exit_date": "2026-02-02",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 4.2,
+          "exit_price": 3.6,
+          "return": -14.29,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 19.26,
+          "exit_price": 18.0,
+          "return": -6.54,
+          "win": false
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 7.35,
+          "exit_price": 7.08,
+          "return": -3.67,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.6,
+          "exit_price": 4.51,
+          "return": -1.96,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.88,
+          "exit_price": 2.55,
+          "return": -11.46,
+          "win": false
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.33,
+          "exit_price": 5.09,
+          "return": -4.5,
+          "win": false
+        },
+        {
+          "code": "001255",
+          "name": "博菲电气",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 39.61,
+          "exit_price": 40.43,
+          "return": 2.07,
+          "win": true
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.76,
+          "exit_price": 10.28,
+          "return": 5.33,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.43,
+          "exit_price": 8.7,
+          "return": -7.74,
+          "win": false
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 7.02,
+          "exit_price": 6.73,
+          "return": -4.13,
+          "win": false
+        }
+      ],
+      "win_count": 2,
+      "total": 10,
+      "win_rate": 20.0,
+      "avg_return": -4.69
+    },
+    {
+      "pred_date": "2026-01-27",
+      "exit_date": "2026-02-03",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 4.15,
+          "exit_price": 3.76,
+          "return": -9.4,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 8.7,
+          "exit_price": 8.69,
+          "return": -0.11,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 19.2,
+          "exit_price": 18.05,
+          "return": -5.99,
+          "win": false
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 7.22,
+          "exit_price": 7.08,
+          "return": -1.94,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.54,
+          "exit_price": 4.6,
+          "return": 1.32,
+          "win": true
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.82,
+          "exit_price": 2.42,
+          "return": -14.18,
+          "win": false
+        },
+        {
+          "code": "000890",
+          "name": "法尔胜",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.29,
+          "exit_price": 5.22,
+          "return": -1.32,
+          "win": false
+        },
+        {
+          "code": "001330",
+          "name": "博纳影业",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.49,
+          "exit_price": 10.36,
+          "return": 9.17,
+          "win": true
+        },
+        {
+          "code": "000547",
+          "name": "航天发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "连续阳线"
+          ],
+          "entry_price": 27.73,
+          "exit_price": 32.38,
+          "return": 16.77,
+          "win": true
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 7.16,
+          "exit_price": 6.92,
+          "return": -3.35,
+          "win": false
+        }
+      ],
+      "win_count": 3,
+      "total": 10,
+      "win_rate": 30.0,
+      "avg_return": -0.9
+    },
+    {
+      "pred_date": "2026-01-28",
+      "exit_date": "2026-02-04",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.96,
+          "exit_price": 3.79,
+          "return": -4.29,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.91,
+          "exit_price": 18.02,
+          "return": -4.71,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.49,
+          "exit_price": 4.62,
+          "return": 2.9,
+          "win": true
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 16.83,
+          "exit_price": 17.67,
+          "return": 4.99,
+          "win": true
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.83,
+          "exit_price": 2.66,
+          "return": -6.01,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 8.51,
+          "exit_price": 9.56,
+          "return": 12.34,
+          "win": true
+        },
+        {
+          "code": "000547",
+          "name": "航天发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "连续阳线"
+          ],
+          "entry_price": 26.58,
+          "exit_price": 32.5,
+          "return": 22.27,
+          "win": true
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 7.01,
+          "exit_price": 7.07,
+          "return": 0.86,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 11.14,
+          "exit_price": 10.75,
+          "return": -3.5,
+          "win": false
+        },
+        {
+          "code": "000679",
+          "name": "大连友谊",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "超市战法",
+            "主力分歧率"
+          ],
+          "entry_price": 7.1,
+          "exit_price": 7.21,
+          "return": 1.55,
+          "win": true
+        }
+      ],
+      "win_count": 6,
+      "total": 10,
+      "win_rate": 60.0,
+      "avg_return": 2.64
+    },
+    {
+      "pred_date": "2026-01-29",
+      "exit_date": "2026-02-05",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.8,
+          "exit_price": 3.69,
+          "return": -2.89,
+          "win": false
+        },
+        {
+          "code": "002292",
+          "name": "奥飞娱乐",
+          "score": 55.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.37,
+          "exit_price": 9.59,
+          "return": 2.35,
+          "win": true
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.33,
+          "exit_price": 18.02,
+          "return": -1.69,
+          "win": false
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.55,
+          "exit_price": 4.72,
+          "return": 3.74,
+          "win": true
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 16.06,
+          "exit_price": 17.14,
+          "return": 6.72,
+          "win": true
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 28.09,
+          "exit_price": 27.74,
+          "return": -1.25,
+          "win": false
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 48.26,
+          "exit_price": 55.41,
+          "return": 14.82,
+          "win": true
+        },
+        {
+          "code": "000547",
+          "name": "航天发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "连续阳线"
+          ],
+          "entry_price": 27.18,
+          "exit_price": 32.0,
+          "return": 17.73,
+          "win": true
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 6.9,
+          "exit_price": 7.07,
+          "return": 2.46,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.57,
+          "exit_price": 11.83,
+          "return": 11.92,
+          "win": true
+        }
+      ],
+      "win_count": 7,
+      "total": 10,
+      "win_rate": 70.0,
+      "avg_return": 5.39
+    },
+    {
+      "pred_date": "2026-01-30",
+      "exit_date": "2026-02-06",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.69,
+          "exit_price": 3.8,
+          "return": 2.98,
+          "win": true
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.23,
+          "exit_price": 18.3,
+          "return": 0.38,
+          "win": true
+        },
+        {
+          "code": "000802",
+          "name": "北京文化",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.53,
+          "exit_price": 4.66,
+          "return": 2.87,
+          "win": true
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 16.08,
+          "exit_price": 17.05,
+          "return": 6.03,
+          "win": true
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 49.23,
+          "exit_price": 55.23,
+          "return": 12.19,
+          "win": true
+        },
+        {
+          "code": "002228",
+          "name": "合兴包装",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 4.39,
+          "exit_price": 4.47,
+          "return": 1.82,
+          "win": true
+        },
+        {
+          "code": "002292",
+          "name": "奥飞娱乐",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.37,
+          "exit_price": 9.44,
+          "return": 0.75,
+          "win": true
+        },
+        {
+          "code": "000547",
+          "name": "航天发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "连续阳线"
+          ],
+          "entry_price": 28.48,
+          "exit_price": 30.35,
+          "return": 6.57,
+          "win": true
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 6.88,
+          "exit_price": 7.11,
+          "return": 3.34,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.35,
+          "exit_price": 11.62,
+          "return": 12.27,
+          "win": true
+        }
+      ],
+      "win_count": 10,
+      "total": 10,
+      "win_rate": 100.0,
+      "avg_return": 4.92
+    },
+    {
+      "pred_date": "2026-02-02",
+      "exit_date": "2026-02-09",
+      "picks": [
+        {
+          "code": "000078",
+          "name": "海王生物",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 3.6,
+          "exit_price": 3.82,
+          "return": 6.11,
+          "win": true
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 52.5,
+          "exit_price": 54.68,
+          "return": 4.15,
+          "win": true
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.0,
+          "exit_price": 17.75,
+          "return": -1.39,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 15.75,
+          "exit_price": 17.6,
+          "return": 11.75,
+          "win": true
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 6.73,
+          "exit_price": 7.22,
+          "return": 7.28,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.05,
+          "exit_price": 11.47,
+          "return": 14.13,
+          "win": true
+        },
+        {
+          "code": "000681",
+          "name": "视觉中国",
+          "score": 53.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "连续阳线"
+          ],
+          "entry_price": 26.33,
+          "exit_price": 27.72,
+          "return": 5.28,
+          "win": true
+        },
+        {
+          "code": "000735",
+          "name": "罗 牛 山",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 7.98,
+          "exit_price": 7.87,
+          "return": -1.38,
+          "win": false
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 28.51,
+          "exit_price": 27.48,
+          "return": -3.61,
+          "win": false
+        },
+        {
+          "code": "002195",
+          "name": "岩山科技",
+          "score": 53.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "连续阳线"
+          ],
+          "entry_price": 9.84,
+          "exit_price": 10.14,
+          "return": 3.05,
+          "win": true
+        }
+      ],
+      "win_count": 7,
+      "total": 10,
+      "win_rate": 70.0,
+      "avg_return": 4.54
+    },
+    {
+      "pred_date": "2026-02-03",
+      "exit_date": "2026-02-10",
+      "picks": [
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 57.03,
+          "exit_price": 49.31,
+          "return": -13.54,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.05,
+          "exit_price": 17.37,
+          "return": -3.77,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 17.33,
+          "exit_price": 17.58,
+          "return": 1.44,
+          "win": true
+        },
+        {
+          "code": "000981",
+          "name": "山子高科",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 4.92,
+          "exit_price": 4.65,
+          "return": -5.49,
+          "win": false
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 6.92,
+          "exit_price": 7.12,
+          "return": 2.89,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.45,
+          "exit_price": 11.1,
+          "return": 6.22,
+          "win": true
+        },
+        {
+          "code": "000681",
+          "name": "视觉中国",
+          "score": 53.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "连续阳线"
+          ],
+          "entry_price": 27.77,
+          "exit_price": 30.49,
+          "return": 9.79,
+          "win": true
+        },
+        {
+          "code": "000710",
+          "name": "贝瑞基因",
+          "score": 53.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "连续阳线"
+          ],
+          "entry_price": 12.21,
+          "exit_price": 12.7,
+          "return": 4.01,
+          "win": true
+        },
+        {
+          "code": "000735",
+          "name": "罗 牛 山",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 7.88,
+          "exit_price": 7.74,
+          "return": -1.78,
+          "win": false
+        },
+        {
+          "code": "000796",
+          "name": "凯撒旅业",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 6.24,
+          "exit_price": 6.44,
+          "return": 3.21,
+          "win": true
+        }
+      ],
+      "win_count": 6,
+      "total": 10,
+      "win_rate": 60.0,
+      "avg_return": 0.3
+    },
+    {
+      "pred_date": "2026-02-04",
+      "exit_date": "2026-02-11",
+      "picks": [
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.66,
+          "exit_price": 2.66,
+          "return": 0.0,
+          "win": false
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 53.96,
+          "exit_price": 48.31,
+          "return": -10.47,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 55.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.53,
+          "exit_price": 10.42,
+          "return": -1.04,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.56,
+          "exit_price": 9.09,
+          "return": -4.92,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.02,
+          "exit_price": 17.45,
+          "return": -3.16,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 17.67,
+          "exit_price": 17.5,
+          "return": -0.96,
+          "win": false
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 29.18,
+          "exit_price": 26.44,
+          "return": -9.39,
+          "win": false
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "主力分歧率"
+          ],
+          "entry_price": 7.07,
+          "exit_price": 7.05,
+          "return": -0.28,
+          "win": false
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 53.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.75,
+          "exit_price": 10.84,
+          "return": 0.84,
+          "win": true
+        },
+        {
+          "code": "000681",
+          "name": "视觉中国",
+          "score": 53.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "连续阳线"
+          ],
+          "entry_price": 26.8,
+          "exit_price": 29.27,
+          "return": 9.22,
+          "win": true
+        }
+      ],
+      "win_count": 2,
+      "total": 10,
+      "win_rate": 20.0,
+      "avg_return": -2.02
+    },
+    {
+      "pred_date": "2026-02-05",
+      "exit_date": "2026-02-12",
+      "picks": [
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.66,
+          "exit_price": 2.56,
+          "return": -3.76,
+          "win": false
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 55.41,
+          "exit_price": 50.0,
+          "return": -9.76,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.32,
+          "exit_price": 9.2,
+          "return": -1.29,
+          "win": false
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.02,
+          "exit_price": 18.06,
+          "return": 0.22,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 11.83,
+          "exit_price": 10.46,
+          "return": -11.58,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "超市战法"
+          ],
+          "entry_price": 10.17,
+          "exit_price": 10.07,
+          "return": -0.98,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 17.14,
+          "exit_price": 18.31,
+          "return": 6.83,
+          "win": true
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 27.74,
+          "exit_price": 26.26,
+          "return": -5.34,
+          "win": false
+        },
+        {
+          "code": "002320",
+          "name": "海峡股份",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 10.8,
+          "exit_price": 10.49,
+          "return": -2.87,
+          "win": false
+        },
+        {
+          "code": "000547",
+          "name": "航天发展",
+          "score": 53.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 32.0,
+          "exit_price": 28.42,
+          "return": -11.19,
+          "win": false
+        }
+      ],
+      "win_count": 2,
+      "total": 10,
+      "win_rate": 20.0,
+      "avg_return": -3.97
+    },
+    {
+      "pred_date": "2026-02-06",
+      "exit_date": "2026-02-13",
+      "picks": [
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.73,
+          "exit_price": 2.57,
+          "return": -5.86,
+          "win": false
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 55.23,
+          "exit_price": 49.3,
+          "return": -10.74,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.25,
+          "exit_price": 9.01,
+          "return": -2.59,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.68,
+          "exit_price": 3.94,
+          "return": 7.07,
+          "win": true
+        },
+        {
+          "code": "000048",
+          "name": "京基智农",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 18.3,
+          "exit_price": 17.97,
+          "return": -1.8,
+          "win": false
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "KDJ金叉",
+            "超市战法"
+          ],
+          "entry_price": 7.11,
+          "exit_price": 6.99,
+          "return": -1.69,
+          "win": false
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 11.62,
+          "exit_price": 10.6,
+          "return": -8.78,
+          "win": false
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 17.05,
+          "exit_price": 17.61,
+          "return": 3.28,
+          "win": true
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.34,
+          "exit_price": 11.97,
+          "return": 15.76,
+          "win": true
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 26.83,
+          "exit_price": 25.94,
+          "return": -3.32,
+          "win": false
+        }
+      ],
+      "win_count": 3,
+      "total": 10,
+      "win_rate": 30.0,
+      "avg_return": -0.87
+    },
+    {
+      "pred_date": "2026-02-09",
+      "exit_date": "2026-02-24",
+      "picks": [
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 93.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.58,
+          "exit_price": 3.27,
+          "return": -8.66,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 92.0,
+          "strategies": [
+            "均线金叉",
+            "RSI超卖",
+            "超跌反弹"
+          ],
+          "entry_price": 4.05,
+          "exit_price": 3.9,
+          "return": -3.7,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.66,
+          "exit_price": 9.72,
+          "return": -8.82,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.73,
+          "exit_price": 2.65,
+          "return": -2.93,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.23,
+          "exit_price": 10.06,
+          "return": -1.66,
+          "win": false
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 54.68,
+          "exit_price": 47.7,
+          "return": -12.77,
+          "win": false
+        },
+        {
+          "code": "000036",
+          "name": "华联控股",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 5.76,
+          "exit_price": 5.52,
+          "return": -4.17,
+          "win": false
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 11.47,
+          "exit_price": 10.93,
+          "return": -4.71,
+          "win": false
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.6,
+          "exit_price": 12.2,
+          "return": 15.09,
+          "win": true
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 27.48,
+          "exit_price": 26.22,
+          "return": -4.59,
+          "win": false
+        }
+      ],
+      "win_count": 1,
+      "total": 10,
+      "win_rate": 10.0,
+      "avg_return": -3.69
+    },
+    {
+      "pred_date": "2026-02-10",
+      "exit_date": "2026-02-25",
+      "picks": [
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 93.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.55,
+          "exit_price": 3.43,
+          "return": -3.38,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 92.0,
+          "strategies": [
+            "均线金叉",
+            "RSI超卖",
+            "超跌反弹"
+          ],
+          "entry_price": 4.02,
+          "exit_price": 3.92,
+          "return": -2.49,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.67,
+          "exit_price": 10.1,
+          "return": -5.34,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.69,
+          "exit_price": 2.77,
+          "return": 2.97,
+          "win": true
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.14,
+          "exit_price": 10.09,
+          "return": -0.49,
+          "win": false
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 49.31,
+          "exit_price": 49.03,
+          "return": -0.57,
+          "win": false
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 11.1,
+          "exit_price": 11.03,
+          "return": -0.63,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.16,
+          "exit_price": 9.65,
+          "return": 5.35,
+          "win": true
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 11.66,
+          "exit_price": 12.15,
+          "return": 4.2,
+          "win": true
+        },
+        {
+          "code": "000901",
+          "name": "航天科技",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 26.68,
+          "exit_price": 27.08,
+          "return": 1.5,
+          "win": true
+        }
+      ],
+      "win_count": 4,
+      "total": 10,
+      "win_rate": 40.0,
+      "avg_return": 0.11
+    },
+    {
+      "pred_date": "2026-02-11",
+      "exit_date": "2026-02-26",
+      "picks": [
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 93.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.37,
+          "exit_price": 3.32,
+          "return": -1.48,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.42,
+          "exit_price": 9.87,
+          "return": -5.28,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.66,
+          "exit_price": 2.63,
+          "return": -1.13,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.91,
+          "exit_price": 3.85,
+          "return": -1.53,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.01,
+          "exit_price": 9.99,
+          "return": -0.2,
+          "win": false
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.84,
+          "exit_price": 11.05,
+          "return": 1.94,
+          "win": true
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 48.31,
+          "exit_price": 50.45,
+          "return": 4.43,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.09,
+          "exit_price": 9.81,
+          "return": 7.92,
+          "win": true
+        },
+        {
+          "code": "000833",
+          "name": "粤桂股份",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 20.42,
+          "exit_price": 23.66,
+          "return": 15.87,
+          "win": true
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 54.0,
+          "strategies": [
+            "超跌反弹",
+            "布林回归",
+            "KDJ金叉"
+          ],
+          "entry_price": 11.44,
+          "exit_price": 12.03,
+          "return": 5.16,
+          "win": true
+        }
+      ],
+      "win_count": 5,
+      "total": 10,
+      "win_rate": 50.0,
+      "avg_return": 2.57
+    },
+    {
+      "pred_date": "2026-02-12",
+      "exit_date": "2026-02-27",
+      "picks": [
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 92.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.15,
+          "exit_price": 3.35,
+          "return": 6.35,
+          "win": true
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.07,
+          "exit_price": 9.84,
+          "return": -2.28,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.56,
+          "exit_price": 2.63,
+          "return": 2.73,
+          "win": true
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.75,
+          "exit_price": 3.82,
+          "return": 1.87,
+          "win": true
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.8,
+          "exit_price": 10.08,
+          "return": 2.86,
+          "win": true
+        },
+        {
+          "code": "002149",
+          "name": "西部材料",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 50.0,
+          "exit_price": 52.1,
+          "return": 4.2,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.2,
+          "exit_price": 9.97,
+          "return": 8.37,
+          "win": true
+        },
+        {
+          "code": "000060",
+          "name": "中金岭南",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.28,
+          "exit_price": 8.26,
+          "return": 13.46,
+          "win": true
+        },
+        {
+          "code": "000559",
+          "name": "万向钱潮",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 19.62,
+          "exit_price": 20.07,
+          "return": 2.29,
+          "win": true
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.46,
+          "exit_price": 11.82,
+          "return": 13.0,
+          "win": true
+        }
+      ],
+      "win_count": 9,
+      "total": 10,
+      "win_rate": 90.0,
+      "avg_return": 5.29
+    },
+    {
+      "pred_date": "2026-02-13",
+      "exit_date": "2026-03-02",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.09,
+          "exit_price": 9.37,
+          "return": -7.14,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.94,
+          "exit_price": 3.67,
+          "return": -6.85,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.57,
+          "exit_price": 2.52,
+          "return": -1.95,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.16,
+          "exit_price": 3.18,
+          "return": 0.63,
+          "win": true
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.75,
+          "exit_price": 9.72,
+          "return": -0.31,
+          "win": false
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 11.97,
+          "exit_price": 11.38,
+          "return": -4.93,
+          "win": false
+        },
+        {
+          "code": "002173",
+          "name": "创新医疗",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 29.46,
+          "exit_price": 30.5,
+          "return": 3.53,
+          "win": true
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.01,
+          "exit_price": 9.77,
+          "return": 8.44,
+          "win": true
+        },
+        {
+          "code": "000060",
+          "name": "中金岭南",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 7.07,
+          "exit_price": 8.37,
+          "return": 18.39,
+          "win": true
+        },
+        {
+          "code": "000559",
+          "name": "万向钱潮",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 20.31,
+          "exit_price": 18.68,
+          "return": -8.03,
+          "win": false
+        }
+      ],
+      "win_count": 4,
+      "total": 10,
+      "win_rate": 40.0,
+      "avg_return": 0.18
+    },
+    {
+      "pred_date": "2026-02-24",
+      "exit_date": "2026-03-03",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.72,
+          "exit_price": 9.18,
+          "return": -5.56,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.9,
+          "exit_price": 3.5,
+          "return": -10.26,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.65,
+          "exit_price": 2.45,
+          "return": -7.55,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.27,
+          "exit_price": 3.09,
+          "return": -5.5,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.06,
+          "exit_price": 9.47,
+          "return": -5.86,
+          "win": false
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 12.2,
+          "exit_price": 10.65,
+          "return": -12.7,
+          "win": false
+        },
+        {
+          "code": "002173",
+          "name": "创新医疗",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 29.28,
+          "exit_price": 27.45,
+          "return": -6.25,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.54,
+          "exit_price": 9.39,
+          "return": -1.57,
+          "win": false
+        },
+        {
+          "code": "000506",
+          "name": "招金黄金",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 20.34,
+          "exit_price": 21.6,
+          "return": 6.19,
+          "win": true
+        },
+        {
+          "code": "000559",
+          "name": "万向钱潮",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 19.88,
+          "exit_price": 17.2,
+          "return": -13.48,
+          "win": false
+        }
+      ],
+      "win_count": 1,
+      "total": 10,
+      "win_rate": 10.0,
+      "avg_return": -6.25
+    },
+    {
+      "pred_date": "2026-02-25",
+      "exit_date": "2026-03-04",
+      "picks": [
+        {
+          "code": "002314",
+          "name": "南山控股",
+          "score": 92.0,
+          "strategies": [
+            "放量突破",
+            "RSI超卖",
+            "超跌反弹"
+          ],
+          "entry_price": 2.72,
+          "exit_price": 2.51,
+          "return": -7.72,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.1,
+          "exit_price": 9.19,
+          "return": -9.01,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.92,
+          "exit_price": 3.46,
+          "return": -11.73,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.77,
+          "exit_price": 2.48,
+          "return": -10.47,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.43,
+          "exit_price": 3.06,
+          "return": -10.79,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.09,
+          "exit_price": 9.58,
+          "return": -5.05,
+          "win": false
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 12.15,
+          "exit_price": 10.67,
+          "return": -12.18,
+          "win": false
+        },
+        {
+          "code": "002173",
+          "name": "创新医疗",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 30.12,
+          "exit_price": 27.7,
+          "return": -8.03,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.65,
+          "exit_price": 9.76,
+          "return": 1.14,
+          "win": true
+        },
+        {
+          "code": "000506",
+          "name": "招金黄金",
+          "score": 54.0,
+          "strategies": [
+            "放量突破",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 20.05,
+          "exit_price": 20.41,
+          "return": 1.8,
+          "win": true
+        }
+      ],
+      "win_count": 2,
+      "total": 10,
+      "win_rate": 20.0,
+      "avg_return": -7.2
+    },
+    {
+      "pred_date": "2026-02-26",
+      "exit_date": "2026-03-05",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.87,
+          "exit_price": 9.18,
+          "return": -6.99,
+          "win": false
+        },
+        {
+          "code": "002314",
+          "name": "南山控股",
+          "score": 91.0,
+          "strategies": [
+            "放量突破",
+            "RSI超卖",
+            "超跌反弹"
+          ],
+          "entry_price": 2.63,
+          "exit_price": 2.56,
+          "return": -2.66,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.85,
+          "exit_price": 3.55,
+          "return": -7.79,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.63,
+          "exit_price": 2.48,
+          "return": -5.7,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.32,
+          "exit_price": 3.15,
+          "return": -5.12,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.99,
+          "exit_price": 9.79,
+          "return": -2.0,
+          "win": false
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 12.03,
+          "exit_price": 10.87,
+          "return": -9.64,
+          "win": false
+        },
+        {
+          "code": "002173",
+          "name": "创新医疗",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 29.83,
+          "exit_price": 29.24,
+          "return": -1.98,
+          "win": false
+        },
+        {
+          "code": "002300",
+          "name": "太阳电缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.81,
+          "exit_price": 10.15,
+          "return": 3.47,
+          "win": true
+        },
+        {
+          "code": "000559",
+          "name": "万向钱潮",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 19.44,
+          "exit_price": 17.86,
+          "return": -8.13,
+          "win": false
+        }
+      ],
+      "win_count": 1,
+      "total": 10,
+      "win_rate": 10.0,
+      "avg_return": -4.65
+    },
+    {
+      "pred_date": "2026-02-27",
+      "exit_date": "2026-03-06",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.84,
+          "exit_price": 9.51,
+          "return": -3.35,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.82,
+          "exit_price": 3.54,
+          "return": -7.33,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.63,
+          "exit_price": 2.57,
+          "return": -2.28,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.35,
+          "exit_price": 3.21,
+          "return": -4.18,
+          "win": false
+        },
+        {
+          "code": "002314",
+          "name": "南山控股",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.66,
+          "exit_price": 2.62,
+          "return": -1.5,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 10.08,
+          "exit_price": 10.77,
+          "return": 6.85,
+          "win": true
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 24.34,
+          "exit_price": 22.54,
+          "return": -7.4,
+          "win": false
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 16.59,
+          "exit_price": 15.69,
+          "return": -5.42,
+          "win": false
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 11.89,
+          "exit_price": 10.64,
+          "return": -10.51,
+          "win": false
+        },
+        {
+          "code": "002177",
+          "name": "御银股份",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 9.69,
+          "exit_price": 8.75,
+          "return": -9.7,
+          "win": false
+        }
+      ],
+      "win_count": 1,
+      "total": 10,
+      "win_rate": 10.0,
+      "avg_return": -4.48
+    },
+    {
+      "pred_date": "2026-03-02",
+      "exit_date": "2026-03-09",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.37,
+          "exit_price": 9.37,
+          "return": 0.0,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.67,
+          "exit_price": 3.45,
+          "return": -5.99,
+          "win": false
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.52,
+          "exit_price": 2.54,
+          "return": 0.79,
+          "win": true
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.18,
+          "exit_price": 3.15,
+          "return": -0.94,
+          "win": false
+        },
+        {
+          "code": "002314",
+          "name": "南山控股",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.59,
+          "exit_price": 2.65,
+          "return": 2.32,
+          "win": true
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.72,
+          "exit_price": 10.48,
+          "return": 7.82,
+          "win": true
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 23.84,
+          "exit_price": 22.12,
+          "return": -7.21,
+          "win": false
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 16.52,
+          "exit_price": 17.26,
+          "return": 4.48,
+          "win": true
+        },
+        {
+          "code": "000859",
+          "name": "国风新材",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 11.38,
+          "exit_price": 10.34,
+          "return": -9.14,
+          "win": false
+        },
+        {
+          "code": "002177",
+          "name": "御银股份",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 9.28,
+          "exit_price": 8.35,
+          "return": -10.02,
+          "win": false
+        }
+      ],
+      "win_count": 4,
+      "total": 10,
+      "win_rate": 40.0,
+      "avg_return": -1.79
+    },
+    {
+      "pred_date": "2026-03-03",
+      "exit_date": "2026-03-10",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.18,
+          "exit_price": 9.54,
+          "return": 3.92,
+          "win": true
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.5,
+          "exit_price": 3.51,
+          "return": 0.29,
+          "win": true
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.45,
+          "exit_price": 2.57,
+          "return": 4.9,
+          "win": true
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.09,
+          "exit_price": 3.21,
+          "return": 3.88,
+          "win": true
+        },
+        {
+          "code": "002314",
+          "name": "南山控股",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 2.54,
+          "exit_price": 2.6,
+          "return": 2.36,
+          "win": true
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.47,
+          "exit_price": 10.34,
+          "return": 9.19,
+          "win": true
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 15.29,
+          "exit_price": 17.01,
+          "return": 11.25,
+          "win": true
+        },
+        {
+          "code": "001208",
+          "name": "华菱线缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 20.49,
+          "exit_price": 23.12,
+          "return": 12.84,
+          "win": true
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 22.94,
+          "exit_price": 22.71,
+          "return": -1.0,
+          "win": false
+        },
+        {
+          "code": "002177",
+          "name": "御银股份",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 9.03,
+          "exit_price": 8.41,
+          "return": -6.87,
+          "win": false
+        }
+      ],
+      "win_count": 8,
+      "total": 10,
+      "win_rate": 80.0,
+      "avg_return": 4.08
+    },
+    {
+      "pred_date": "2026-03-04",
+      "exit_date": "2026-03-11",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.19,
+          "exit_price": 9.47,
+          "return": 3.05,
+          "win": true
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.46,
+          "exit_price": 3.48,
+          "return": 0.58,
+          "win": true
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.06,
+          "exit_price": 3.53,
+          "return": 15.36,
+          "win": true
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 2.48,
+          "exit_price": 2.46,
+          "return": -0.81,
+          "win": false
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.58,
+          "exit_price": 10.34,
+          "return": 7.93,
+          "win": true
+        },
+        {
+          "code": "002314",
+          "name": "南山控股",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "超市战法"
+          ],
+          "entry_price": 2.51,
+          "exit_price": 2.61,
+          "return": 3.98,
+          "win": true
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 15.18,
+          "exit_price": 17.0,
+          "return": 11.99,
+          "win": true
+        },
+        {
+          "code": "001208",
+          "name": "华菱线缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 21.32,
+          "exit_price": 22.83,
+          "return": 7.08,
+          "win": true
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 22.72,
+          "exit_price": 21.95,
+          "return": -3.39,
+          "win": false
+        },
+        {
+          "code": "000559",
+          "name": "万向钱潮",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 17.49,
+          "exit_price": 17.89,
+          "return": 2.29,
+          "win": true
+        }
+      ],
+      "win_count": 8,
+      "total": 10,
+      "win_rate": 80.0,
+      "avg_return": 4.81
+    },
+    {
+      "pred_date": "2026-03-05",
+      "exit_date": "2026-03-12",
+      "picks": [
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 9.18,
+          "exit_price": 9.37,
+          "return": 2.07,
+          "win": true
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.55,
+          "exit_price": 3.39,
+          "return": -4.51,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.15,
+          "exit_price": 3.46,
+          "return": 9.84,
+          "win": true
+        },
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 88.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.79,
+          "exit_price": 10.04,
+          "return": 2.55,
+          "win": true
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 15.67,
+          "exit_price": 17.11,
+          "return": 9.19,
+          "win": true
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 22.29,
+          "exit_price": 21.21,
+          "return": -4.85,
+          "win": false
+        },
+        {
+          "code": "000056",
+          "name": "皇庭国际",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 2.01,
+          "exit_price": 1.98,
+          "return": -1.49,
+          "win": false
+        },
+        {
+          "code": "001208",
+          "name": "华菱线缆",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 22.38,
+          "exit_price": 22.06,
+          "return": -1.43,
+          "win": false
+        },
+        {
+          "code": "000559",
+          "name": "万向钱潮",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 17.86,
+          "exit_price": 17.57,
+          "return": -1.62,
+          "win": false
+        },
+        {
+          "code": "000833",
+          "name": "粤桂股份",
+          "score": 54.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 23.93,
+          "exit_price": 27.57,
+          "return": 15.21,
+          "win": true
+        }
+      ],
+      "win_count": 5,
+      "total": 10,
+      "win_rate": 50.0,
+      "avg_return": 2.5
+    },
+    {
+      "pred_date": "2026-03-06",
+      "exit_date": "2026-03-13",
+      "picks": [
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 91.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 10.77,
+          "exit_price": 9.77,
+          "return": -9.29,
+          "win": false
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 3.54,
+          "exit_price": 3.3,
+          "return": -6.78,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 3.21,
+          "exit_price": 3.47,
+          "return": 8.1,
+          "win": true
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.51,
+          "exit_price": 9.31,
+          "return": -2.1,
+          "win": false
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 15.69,
+          "exit_price": 16.41,
+          "return": 4.59,
+          "win": true
+        },
+        {
+          "code": "001208",
+          "name": "华菱线缆",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 22.41,
+          "exit_price": 20.88,
+          "return": -6.83,
+          "win": false
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 22.54,
+          "exit_price": 21.28,
+          "return": -5.59,
+          "win": false
+        },
+        {
+          "code": "002246",
+          "name": "北化股份",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 24.81,
+          "exit_price": 24.12,
+          "return": -2.78,
+          "win": false
+        },
+        {
+          "code": "000056",
+          "name": "皇庭国际",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 2.02,
+          "exit_price": 1.96,
+          "return": -2.97,
+          "win": false
+        },
+        {
+          "code": "002064",
+          "name": "华峰化学",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 12.06,
+          "exit_price": 10.7,
+          "return": -11.28,
+          "win": false
+        }
+      ],
+      "win_count": 2,
+      "total": 10,
+      "win_rate": 20.0,
+      "avg_return": -3.49
+    },
+    {
+      "pred_date": "2026-03-09",
+      "exit_date": "2026-03-16",
+      "picks": [
+        {
+          "code": "002227",
+          "name": "奥 特 迅",
+          "score": 92.0,
+          "strategies": [
+            "均线金叉",
+            "RSI超卖",
+            "超跌反弹"
+          ],
+          "entry_price": 10.48,
+          "exit_price": 9.93,
+          "return": -5.25,
+          "win": false
+        },
+        {
+          "code": "002175",
+          "name": "东方智造",
+          "score": 90.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 3.15,
+          "exit_price": 3.54,
+          "return": 12.38,
+          "win": true
+        },
+        {
+          "code": "000016",
+          "name": "深康佳Ａ",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 3.45,
+          "exit_price": 3.38,
+          "return": -2.03,
+          "win": false
+        },
+        {
+          "code": "000610",
+          "name": "西安旅游",
+          "score": 89.0,
+          "strategies": [
+            "RSI超卖",
+            "超跌反弹",
+            "KDJ金叉"
+          ],
+          "entry_price": 9.37,
+          "exit_price": 9.61,
+          "return": 2.56,
+          "win": true
+        },
+        {
+          "code": "000066",
+          "name": "中国长城",
+          "score": 57.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 17.26,
+          "exit_price": 16.45,
+          "return": -4.69,
+          "win": false
+        },
+        {
+          "code": "000833",
+          "name": "粤桂股份",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 26.66,
+          "exit_price": 27.58,
+          "return": 3.45,
+          "win": true
+        },
+        {
+          "code": "001208",
+          "name": "华菱线缆",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 22.97,
+          "exit_price": 20.46,
+          "return": -10.93,
+          "win": false
+        },
+        {
+          "code": "002134",
+          "name": "天津普林",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 22.12,
+          "exit_price": 21.82,
+          "return": -1.36,
+          "win": false
+        },
+        {
+          "code": "002246",
+          "name": "北化股份",
+          "score": 56.0,
+          "strategies": [
+            "均线金叉",
+            "放量突破",
+            "超跌反弹"
+          ],
+          "entry_price": 24.78,
+          "exit_price": 24.66,
+          "return": -0.48,
+          "win": false
+        },
+        {
+          "code": "002115",
+          "name": "三维通信",
+          "score": 55.0,
+          "strategies": [
+            "均线金叉",
+            "超跌反弹",
+            "布林回归"
+          ],
+          "entry_price": 13.65,
+          "exit_price": 12.95,
+          "return": -5.13,
+          "win": false
+        }
+      ],
+      "win_count": 3,
+      "total": 10,
+      "win_rate": 30.0,
+      "avg_return": -1.15
+    }
+  ],
+  "daily_summary": {
+    "total_days": 30,
+    "win_days": 8,
+    "overall_win_rate": 26.7,
+    "trade_win_rate": 40.7,
+    "avg_daily_return": -0.48,
+    "total_trades": 300,
+    "equity_final": 84.83,
+    "equity_curve": [
+      {
+        "date": "2026-01-19",
+        "equity": 99.8
+      },
+      {
+        "date": "2026-01-20",
+        "equity": 99.65
+      },
+      {
+        "date": "2026-01-21",
+        "equity": 99.18
+      },
+      {
+        "date": "2026-01-22",
+        "equity": 97.38
+      },
+      {
+        "date": "2026-01-23",
+        "equity": 93.44
+      },
+      {
+        "date": "2026-01-26",
+        "equity": 89.06
+      },
+      {
+        "date": "2026-01-27",
+        "equity": 88.26
+      },
+      {
+        "date": "2026-01-28",
+        "equity": 90.59
+      },
+      {
+        "date": "2026-01-29",
+        "equity": 95.47
+      },
+      {
+        "date": "2026-01-30",
+        "equity": 100.17
+      },
+      {
+        "date": "2026-02-02",
+        "equity": 104.72
+      },
+      {
+        "date": "2026-02-03",
+        "equity": 105.03
+      },
+      {
+        "date": "2026-02-04",
+        "equity": 102.91
+      },
+      {
+        "date": "2026-02-05",
+        "equity": 98.82
+      },
+      {
+        "date": "2026-02-06",
+        "equity": 97.96
+      },
+      {
+        "date": "2026-02-09",
+        "equity": 94.35
+      },
+      {
+        "date": "2026-02-10",
+        "equity": 94.45
+      },
+      {
+        "date": "2026-02-11",
+        "equity": 96.88
+      },
+      {
+        "date": "2026-02-12",
+        "equity": 102.01
+      },
+      {
+        "date": "2026-02-13",
+        "equity": 102.19
+      },
+      {
+        "date": "2026-02-24",
+        "equity": 95.8
+      },
+      {
+        "date": "2026-02-25",
+        "equity": 88.9
+      },
+      {
+        "date": "2026-02-26",
+        "equity": 84.77
+      },
+      {
+        "date": "2026-02-27",
+        "equity": 80.97
+      },
+      {
+        "date": "2026-03-02",
+        "equity": 79.52
+      },
+      {
+        "date": "2026-03-03",
+        "equity": 82.77
+      },
+      {
+        "date": "2026-03-04",
+        "equity": 86.75
+      },
+      {
+        "date": "2026-03-05",
+        "equity": 88.92
+      },
+      {
+        "date": "2026-03-06",
+        "equity": 85.81
+      },
+      {
+        "date": "2026-03-09",
+        "equity": 84.83
+      }
+    ]
   }
 }

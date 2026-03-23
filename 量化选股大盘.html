@@ -134,7 +134,40 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   <div class="tab active" onclick="switchTab('backtest')">📊 策略回测</div>
   <div class="tab" onclick="switchTab('equity')">📈 权益曲线</div>
   <div class="tab" onclick="switchTab('weights')">⚖️ 权重分析</div>
+  <div class="tab" onclick="switchTab('daily')">🔬 每日选股</div>
   <div class="tab" onclick="switchTab('today')">🎯 今日推荐</div>
+</div>
+
+<!-- 每日选股走查 -->
+<div class="page" id="page-daily">
+  <div id="loadingDaily" style="display:flex;align-items:center;justify-content:center;padding:80px;flex-direction:column;gap:12px;color:var(--text2)">
+    <div class="spinner"></div><span>数据加载中，请稍候...</span>
+  </div>
+  <div id="contentDaily" style="display:none">
+    <!-- 汇总卡片 -->
+    <div class="stat-grid" id="dailySummaryGrid"></div>
+    <!-- 净值曲线 -->
+    <div class="chart-grid" style="margin-top:0">
+      <div class="chart-card" style="grid-column:1/-1">
+        <div class="chart-title">📈 每日选股模拟净值曲线（过去30天，持有5日）</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chartDailyEquity"></canvas></div>
+      </div>
+    </div>
+    <!-- 每日胜率柱状图 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-title">🎯 每日推荐胜率（%）</div>
+        <div class="chart-wrap"><canvas id="chartDailyWinRate"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">💰 每日平均收益（%）</div>
+        <div class="chart-wrap"><canvas id="chartDailyReturn"></canvas></div>
+      </div>
+    </div>
+    <!-- 每日明细折叠列表 -->
+    <div class="section-title">📋 每日推荐明细 <span style="font-size:12px;color:var(--text2);font-weight:400">（点击展开当天推荐股票）</span></div>
+    <div id="dailyPickList" style="display:flex;flex-direction:column;gap:8px;padding-bottom:32px"></div>
+  </div>
 </div>
 
 <!-- 今日推荐 -->
@@ -424,6 +457,9 @@ async function renderAll() {
 
   setProgress(97, '渲染权重分析...', '⚖️ 绘制权重分布');
   await tick(); renderWeightCharts(); renderWeightCards();
+
+  setProgress(99, '渲染每日选股...', '🔬 加载走查数据');
+  await tick(); renderDailyPicks();
 }
 
 function renderStats() {
@@ -585,6 +621,143 @@ function switchPeriod(p) {
   document.querySelectorAll('.period-btn').forEach(b => b.classList.toggle('active', b.dataset.p === p));
   renderBacktestCharts();
   renderStrategyTable();
+}
+
+// ===== 每日选股走查 =====
+function renderDailyPicks() {
+  const dp = G.daily_picks || [];
+  const ds = G.daily_summary || {};
+
+  // 隐藏loading，显示内容
+  document.getElementById('loadingDaily').style.display = 'none';
+  document.getElementById('contentDaily').style.display = 'block';
+
+  // 汇总卡片
+  document.getElementById('dailySummaryGrid').innerHTML = [
+    { label: '走查天数', value: ds.total_days || 0, unit: '天', color: 'var(--accent)' },
+    { label: '日胜率', value: (ds.overall_win_rate || 0) + '%', unit: '超半数推荐盈利', color: ds.overall_win_rate >= 50 ? 'var(--green)' : 'var(--red)' },
+    { label: '单笔胜率', value: (ds.trade_win_rate || 0) + '%', unit: '所有推荐', color: ds.trade_win_rate >= 50 ? 'var(--green)' : 'var(--red)' },
+    { label: '平均日收益', value: (ds.avg_daily_return || 0) + '%', unit: '持有5天', color: ds.avg_daily_return >= 0 ? 'var(--green)' : 'var(--red)' },
+    { label: '模拟净值', value: ds.equity_final || 100, unit: '初始100', color: ds.equity_final >= 100 ? 'var(--green)' : 'var(--red)' },
+    { label: '总交易笔数', value: ds.total_trades || 0, unit: '笔', color: 'var(--text)' },
+  ].map(c => `<div class="stat-card"><div class="stat-value" style="color:${c.color}">${c.value}</div><div class="stat-label">${c.label}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">${c.unit}</div></div>`).join('');
+
+  // 净值曲线
+  const ec = ds.equity_curve || [];
+  destroyChart('chartDailyEquity');
+  if (ec.length) {
+    charts.dailyEquity = new Chart(document.getElementById('chartDailyEquity'), {
+      type: 'line',
+      data: {
+        labels: ec.map(d => d.date.slice(5)),
+        datasets: [{
+          label: '模拟净值',
+          data: ec.map(d => d.equity),
+          borderColor: ec[ec.length-1]?.equity >= 100 ? '#3fb950' : '#f85149',
+          backgroundColor: ec[ec.length-1]?.equity >= 100 ? 'rgba(63,185,80,.08)' : 'rgba(248,81,73,.08)',
+          fill: true, tension: 0.3, pointRadius: 2,
+        }, {
+          label: '基准(100)',
+          data: ec.map(() => 100),
+          borderColor: 'rgba(139,148,158,.4)',
+          borderDash: [4,4], pointRadius: 0,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8b949e', font: { size: 12 } } } },
+        scales: {
+          x: { ticks: { color: '#8b949e', font: { size: 10 }, maxTicksLimit: 15 }, grid: { color: '#21262d' } },
+          y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }
+        }
+      }
+    });
+  }
+
+  // 每日胜率 & 收益柱状图
+  const dates  = dp.map(d => d.pred_date.slice(5));
+  const wrs    = dp.map(d => d.win_rate);
+  const rets   = dp.map(d => d.avg_return);
+
+  destroyChart('chartDailyWinRate');
+  charts.dailyWinRate = new Chart(document.getElementById('chartDailyWinRate'), {
+    type: 'bar',
+    data: {
+      labels: dates,
+      datasets: [{ label: '胜率%', data: wrs,
+        backgroundColor: wrs.map(v => v >= 50 ? 'rgba(63,185,80,.7)' : 'rgba(248,81,73,.7)'), borderRadius: 3 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' }, min: 0, max: 100 }
+      }
+    }
+  });
+
+  destroyChart('chartDailyReturn');
+  charts.dailyReturn = new Chart(document.getElementById('chartDailyReturn'), {
+    type: 'bar',
+    data: {
+      labels: dates,
+      datasets: [{ label: '平均收益%', data: rets,
+        backgroundColor: rets.map(v => v >= 0 ? 'rgba(63,185,80,.7)' : 'rgba(248,81,73,.7)'), borderRadius: 3 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }
+      }
+    }
+  });
+
+  // 每日明细折叠列表（最近的在前）
+  const list = document.getElementById('dailyPickList');
+  list.innerHTML = [...dp].reverse().map((day, di) => {
+    const isGoodDay = day.win_rate >= 50;
+    const pickRows = day.picks.map(p => `
+      <tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
+        <td style="padding:8px 12px;color:var(--text2);font-size:12px">${p.strategies.join(' · ')}</td>
+        <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
+        <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
+        <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--green)' : 'var(--red)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
+        <td style="padding:8px 12px">${p.win ? '<span style="color:var(--green)">✓ 盈</span>' : '<span style="color:var(--red)">✗ 亏</span>'}</td>
+      </tr>`).join('');
+    return `
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
+           style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
+        <span style="font-weight:600;color:var(--text)">${day.pred_date}</span>
+        <span style="font-size:12px;color:var(--text2)">→ 持有至 ${day.exit_date}</span>
+        <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isGoodDay?'var(--green)':'var(--red)'}">
+          胜率 ${day.win_rate}%
+        </span>
+        <span style="font-size:13px;font-weight:600;color:${day.avg_return>=0?'var(--green)':'var(--red)'}">
+          均收益 ${day.avg_return>=0?'+':''}${day.avg_return}%
+        </span>
+        <span style="font-size:12px;color:var(--text2)">${day.win_count}/${day.total} 盈利</span>
+        <span style="font-size:12px;color:var(--text2)">▼</span>
+      </div>
+      <div style="display:none">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="background:var(--surface)">
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">股票</th>
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">买入价</th>
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">卖出价</th>
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">收益</th>
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">结果</th>
+          </tr></thead>
+          <tbody>${pickRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ===== 权益曲线 =====
@@ -762,7 +935,7 @@ function destroyChart(id) {
 
 // ===== Tab 切换 =====
 function switchTab(name) {
-  const tabs = ['backtest','equity','weights','today'];
+  const tabs = ['backtest','equity','weights','daily','today'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', tabs[i] === name);
   });
@@ -779,6 +952,7 @@ function switchTab(name) {
       if (name === 'backtest') renderBacktestCharts();
       if (name === 'equity')   renderEquityCharts();
       if (name === 'weights')  renderWeightCharts();
+      if (name === 'daily')    renderDailyPicks();
     }, 50);
   }
 }
