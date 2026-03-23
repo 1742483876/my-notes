@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Knot 知识库</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: #1e1e2e;
+    --text: #e2e2e8;
+    --muted: #5a5a72;
+    --accent: #7c6af7;
+    --accent-soft: #1e1a3a;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --blue: #60a5fa;
+    --red: #f87171;
+    --orange: #fb923c;
+    --pink: #f472b6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── 顶部栏 ── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .topbar-logo {
+    font-size: 18px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #7c6af7, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+  }
+  .topbar-search {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235a5a72' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 12px center;
+  }
+  .topbar-search:focus { border-color: rgba(124,106,247,0.5); }
+  .topbar-search::placeholder { color: var(--muted); }
+
+  /* ── 主布局 ── */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── 侧边分类栏 ── */
+  .sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+  }
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0 8px;
+    margin-bottom: 8px;
+  }
+  .cat-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #a0a0b8;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .cat-btn:hover { background: var(--surface2); color: var(--text); }
+  .cat-btn.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .cat-btn .cat-icon { font-size: 16px; flex-shrink: 0; }
+  .cat-btn .cat-count {
+    margin-left: auto;
+    font-size: 11px;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 1px 6px;
+    color: var(--muted);
+  }
+  .cat-btn.active .cat-count { background: rgba(124,106,247,0.2); color: var(--accent); }
+
+  /* ── 手机底部分类栏 ── */
+  .mobile-cats {
+    display: none;
+    overflow-x: auto;
+    padding: 10px 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .mobile-cats::-webkit-scrollbar { display: none; }
+  @media (max-width: 768px) {
+    .mobile-cats { display: flex; }
+  }
+  .mobile-cat-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: #a0a0b8;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .mobile-cat-btn.active {
+    background: var(--accent-soft);
+    border-color: rgba(124,106,247,0.4);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── 内容区 ── */
+  .main {
+    flex: 1;
+    padding: 24px 20px;
+    min-width: 0;
+  }
+  @media (max-width: 480px) {
+    .main { padding: 16px 14px; }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 2px 8px;
+  }
+
+  /* ── 卡片网格 ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 480px) {
+    .cards-grid { grid-template-columns: 1fr; gap: 10px; }
+  }
+
+  /* ── 卡片 ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--card-color, var(--accent)), transparent);
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+  .card:hover {
+    border-color: rgba(124,106,247,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .card:hover::before { opacity: 1; }
+  .card:active { transform: translateY(0); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .card-info { flex: 1; min-width: 0; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .card-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .card-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+  .card-arrow {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    color: var(--muted);
+    font-size: 14px;
+    transition: transform 0.15s, color 0.15s;
+  }
+  .card:hover .card-arrow { transform: translateX(3px); color: var(--accent); }
+
+  /* ── 空状态 ── */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-text { font-size: 14px; }
+
+  /* ── 预览弹层 ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .overlay.open { display: flex; flex-direction: column; }
+
+  .preview-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .preview-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .preview-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .preview-close:hover { background: var(--border); }
+
+  .preview-iframe {
+    flex: 1;
+    border: none;
+    background: #fff;
+    width: 100%;
+  }
+
+  /* ── 统计栏 ── */
+  .stats-bar {
+    display: flex;
+    gap: 20px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .stats-bar::-webkit-scrollbar { display: none; }
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .stat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); }
+  .stat-val { font-size: 13px; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<div class="topbar">
+  <div class="topbar-logo">⚡ Knot</div>
+  <input class="topbar-search" type="search" placeholder="搜索内容..." id="searchInput" autocomplete="off">
+</div>
+
+<!-- 手机分类栏 -->
+<div class="mobile-cats" id="mobileCats"></div>
+
+<!-- 统计栏 -->
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="layout">
+  <!-- 侧边栏 -->
+  <div class="sidebar">
+    <div class="sidebar-title">分类</div>
+    <div id="sidebarCats"></div>
+  </div>
+
+  <!-- 主内容 -->
+  <div class="main">
+    <div class="section-header">
+      <div class="section-title" id="sectionTitle">全部内容</div>
+      <div class="section-count" id="sectionCount">0 篇</div>
+    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="empty" id="emptyState" style="display:none">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-text">没有找到相关内容</div>
+    </div>
+  </div>
+</div>
+
+<!-- 预览弹层 -->
+<div class="overlay" id="overlay">
+  <div class="preview-bar">
+    <div class="preview-title" id="previewTitle"></div>
+    <button class="preview-close" id="previewClose">✕</button>
+  </div>
+  <iframe class="preview-iframe" id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  数据配置 — 每次新增内容在这里加一条
+// ══════════════════════════════════════════════
+const CATEGORIES = [
+  { id: 'all',      label: '全部',    icon: '🏠' },
+  { id: 'invest',   label: '投资理财', icon: '💰' },
+  { id: 'life',     label: '生活指南', icon: '🌿' },
+  { id: 'tech',     label: '科技数码', icon: '💻' },
+  { id: 'other',    label: '其他',    icon: '📦' },
+];
+
+const CAT_COLORS = {
+  invest: { bg: 'rgba(74,222,128,0.12)', color: '#4ade80', tag_bg: 'rgba(74,222,128,0.15)', tag_color: '#4ade80' },
+  life:   { bg: 'rgba(251,191,36,0.12)', color: '#fbbf24', tag_bg: 'rgba(251,191,36,0.15)', tag_color: '#fbbf24' },
+  tech:   { bg: 'rgba(96,165,250,0.12)', color: '#60a5fa', tag_bg: 'rgba(96,165,250,0.15)', tag_color: '#60a5fa' },
+  other:  { bg: 'rgba(244,114,182,0.12)', color: '#f472b6', tag_bg: 'rgba(244,114,182,0.15)', tag_color: '#f472b6' },
+};
+
+const ITEMS = [
+  {
+    id: 1,
+    title: '大陆居民美股开户 & 买 SGOV 完整指南',
+    desc: '从零开始，手把手教你办港卡、开 IBKR 账户、买入美国短期国债 ETF，合法合规赚美元利息。',
+    icon: '📈',
+    category: 'invest',
+    date: '2025-03-23',
+    file: '美股开户买SGOV指南.html',
+  },
+  {
+    id: 2,
+    title: '盈立证券零手续费入金攻略 — 汇丰+众安专属方案',
+    desc: '已有汇丰+众安+盈立？这篇告诉你如何用 eDDA 和 FPS 转数快实现 0 手续费实时入金，以及换汇省钱技巧。',
+    icon: '💸',
+    category: 'invest',
+    date: '2026-03-23',
+    file: '盈立证券免手续费入金指南.html',
+  },
+  // ↑ 在这里继续添加新条目，格式如上
+];
+
+// ══════════════════════════════════════════════
+//  渲染逻辑
+// ══════════════════════════════════════════════
+let currentCat = 'all';
+let searchQuery = '';
+
+function getCatInfo(catId) {
+  return CATEGORIES.find(c => c.id === catId) || CATEGORIES[0];
+}
+
+function getColorScheme(catId) {
+  return CAT_COLORS[catId] || { bg: 'rgba(124,106,247,0.12)', color: '#7c6af7', tag_bg: 'rgba(124,106,247,0.15)', tag_color: '#7c6af7' };
+}
+
+function countByCategory(catId) {
+  if (catId === 'all') return ITEMS.length;
+  return ITEMS.filter(i => i.category === catId).length;
+}
+
+function getFilteredItems() {
+  return ITEMS.filter(item => {
+    const matchCat = currentCat === 'all' || item.category === currentCat;
+    const q = searchQuery.trim().toLowerCase();
+    const matchSearch = !q || item.title.toLowerCase().includes(q) || (item.desc||'').toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+}
+
+function renderSidebar() {
+  const container = document.getElementById('sidebarCats');
+  const mobileContainer = document.getElementById('mobileCats');
+  container.innerHTML = '';
+  mobileContainer.innerHTML = '';
+
+  CATEGORIES.forEach(cat => {
+    const count = countByCategory(cat.id);
+    const isActive = currentCat === cat.id;
+
+    // Desktop
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (isActive ? ' active' : '');
+    btn.innerHTML = `<span class="cat-icon">${cat.icon}</span>${cat.label}<span class="cat-count">${count}</span>`;
+    btn.onclick = () => selectCategory(cat.id);
+    container.appendChild(btn);
+
+    // Mobile
+    const mbtn = document.createElement('button');
+    mbtn.className = 'mobile-cat-btn' + (isActive ? ' active' : '');
+    mbtn.textContent = cat.icon + ' ' + cat.label;
+    mbtn.onclick = () => selectCategory(cat.id);
+    mobileContainer.appendChild(mbtn);
+  });
+}
+
+function renderStats() {
+  const bar = document.getElementById('statsBar');
+  bar.innerHTML = '';
+  const cats = CATEGORIES.filter(c => c.id !== 'all');
+  cats.forEach(cat => {
+    const count = countByCategory(cat.id);
+    if (count === 0) return;
+    const cs = getColorScheme(cat.id);
+    const item = document.createElement('div');
+    item.className = 'stat-item';
+    item.innerHTML = `<div class="stat-dot" style="background:${cs.color}"></div><span class="stat-label">${cat.label}</span><span class="stat-val">${count}</span>`;
+    bar.appendChild(item);
+  });
+}
+
+function renderCards() {
+  const grid = document.getElementById('cardsGrid');
+  const empty = document.getElementById('emptyState');
+  const sectionTitle = document.getElementById('sectionTitle');
+  const sectionCount = document.getElementById('sectionCount');
+
+  const items = getFilteredItems();
+  const catInfo = getCatInfo(currentCat);
+
+  sectionTitle.textContent = catInfo.label === '全部' ? '全部内容' : catInfo.label;
+  sectionCount.textContent = items.length + ' 篇';
+
+  if (items.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = items.map(item => {
+    const cs = getColorScheme(item.category);
+    const catName = getCatInfo(item.category).label;
+    return `
+      <div class="card" style="--card-color:${cs.color}" onclick="openPreview('${item.file}','${item.title.replace(/'/g,"\\'")}')">
+        <div class="card-top">
+          <div class="card-icon" style="background:${cs.bg}">${item.icon}</div>
+          <div class="card-info">
+            <div class="card-title">${item.title}</div>
+            <div class="card-desc">${item.desc || ''}</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag" style="background:${cs.tag_bg};color:${cs.tag_color}">${catName}</span>
+          <span class="card-date">${item.date}</span>
+        </div>
+        <span class="card-arrow">→</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectCategory(catId) {
+  currentCat = catId;
+  renderSidebar();
+  renderCards();
+}
+
+function openPreview(file, title) {
+  const overlay = document.getElementById('overlay');
+  const frame = document.getElementById('previewFrame');
+  const previewTitle = document.getElementById('previewTitle');
+  previewTitle.textContent = title;
+  frame.src = '/files/' + encodeURIComponent(file);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePreview() {
+  const overlay = document.getElementById('overlay');
+  const frame = document.getElementById('previewFrame');
+  overlay.classList.remove('open');
+  frame.src = '';
+  document.body.style.overflow = '';
+}
+
+// 搜索
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderCards();
+});
+
+// 关闭预览
+document.getElementById('previewClose').onclick = closePreview;
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closePreview();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePreview();
+});
+
+// 初始化
+renderSidebar();
+renderStats();
+renderCards();
+</script>
+</body>
+</html>

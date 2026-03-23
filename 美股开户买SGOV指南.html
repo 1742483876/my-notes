@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大陆居民美股开户 & 买 SGOV 完整指南</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #1e1e2e;
+    --text: #e2e2e8;
+    --muted: #6b6b80;
+    --accent: #7c6af7;
+    --accent-soft: #1e1a3a;
+    --green: #4ade80;
+    --green-soft: #0f2a1a;
+    --yellow: #fbbf24;
+    --yellow-soft: #2a1f0a;
+    --red: #f87171;
+    --red-soft: #2a0f0f;
+    --blue: #60a5fa;
+    --blue-soft: #0f1e2a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── 顶部 Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #0f0c29, #1a1060, #24243e);
+    padding: 60px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(124,106,247,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: #a0a0c0;
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── 主体布局 ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* ── SGOV 介绍卡 ── */
+  .sgov-card {
+    background: linear-gradient(135deg, var(--blue-soft), var(--accent-soft));
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 600px) { .sgov-card { grid-template-columns: 1fr; } }
+  .sgov-title {
+    grid-column: 1 / -1;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .sgov-sub { grid-column: 1 / -1; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .sgov-item {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .sgov-item-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .sgov-item-val { font-size: 18px; font-weight: 700; color: #fff; }
+  .sgov-item-val.green { color: var(--green); }
+  .sgov-item-val.blue { color: var(--blue); }
+
+  /* ── 警告框 ── */
+  .alert {
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 24px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body { flex: 1; }
+  .alert-title { font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+  .alert-text { font-size: 13px; line-height: 1.6; }
+  .alert.warn { background: var(--yellow-soft); border: 1px solid rgba(251,191,36,0.2); color: var(--yellow); }
+  .alert.info { background: var(--blue-soft); border: 1px solid rgba(96,165,250,0.2); color: var(--blue); }
+  .alert.danger { background: var(--red-soft); border: 1px solid rgba(248,113,113,0.2); color: var(--red); }
+  .alert.success { background: var(--green-soft); border: 1px solid rgba(74,222,128,0.2); color: var(--green); }
+
+  /* ── 步骤块 ── */
+  .phase {
+    margin: 40px 0;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .phase-num {
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .phase-title { font-size: 20px; font-weight: 700; color: #fff; }
+  .phase-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: border-color 0.15s;
+  }
+  .step:hover { border-color: rgba(124,106,247,0.3); }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 600; color: #fff; margin-bottom: 4px; font-size: 14px; }
+  .step-desc { font-size: 13px; color: #a0a0b8; line-height: 1.6; }
+  .step-desc strong { color: var(--text); }
+  .step-desc a { color: var(--accent); text-decoration: none; }
+  .step-desc a:hover { text-decoration: underline; }
+
+  /* ── 对比表 ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .compare-table th {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .compare-table th:first-child { border-radius: 8px 0 0 0; }
+  .compare-table th:last-child { border-radius: 0 8px 0 0; }
+  .compare-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: #c0c0d8;
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .compare-table td:first-child { color: #fff; font-weight: 500; }
+  .tag {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tag.green { background: var(--green-soft); color: var(--green); }
+  .tag.red { background: var(--red-soft); color: var(--red); }
+  .tag.yellow { background: var(--yellow-soft); color: var(--yellow); }
+  .tag.blue { background: var(--blue-soft); color: var(--blue); }
+
+  /* ── 材料清单 ── */
+  .checklist {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .checklist-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon { color: var(--green); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .check-text { color: #c0c0d8; }
+  .check-text strong { color: var(--text); }
+  .check-text .note { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── 路径卡片 ── */
+  .path-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  @media (max-width: 600px) { .path-grid { grid-template-columns: 1fr; } }
+  .path-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .path-card.recommended { border-color: rgba(124,106,247,0.4); }
+  .path-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .path-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .path-desc { font-size: 13px; color: #a0a0b8; margin-bottom: 12px; }
+  .path-pros { list-style: none; }
+  .path-pros li { font-size: 13px; color: #c0c0d8; padding: 3px 0; }
+  .path-pros li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+  .path-cons li::before { content: '✗ '; color: var(--red); font-weight: 700; }
+
+  /* ── 分隔线 ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ── Section 标题 ── */
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin: 40px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── 底部免责 ── */
+  .disclaimer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 48px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .disclaimer strong { color: #888; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">2025 最新实操指南</div>
+  <h1>大陆居民美股开户<br>买 <span>SGOV</span> 完整攻略</h1>
+  <p>从零开始，手把手教你办港卡、开券商账户、买入美国短期国债 ETF，合法合规赚美元利息。</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-val">~4%</div>
+      <div class="stat-label">SGOV 当前年化收益</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">0.09%</div>
+      <div class="stat-label">管理费率（极低）</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">$800亿+</div>
+      <div class="stat-label">基金规模（BlackRock）</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">月月派息</div>
+      <div class="stat-label">每月分红到账</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SGOV 是什么 -->
+  <h2 class="section-title">🏦 SGOV 是什么</h2>
+
+  <div class="sgov-card">
+    <div class="sgov-title">iShares 0-3 Month Treasury Bond ETF（代码：SGOV）</div>
+    <div class="sgov-sub">BlackRock 发行 · 纽交所上市 · 追踪美国0-3个月短期国债指数</div>
+    <div class="sgov-item">
+      <div class="sgov-item-label">当前年化收益率</div>
+      <div class="sgov-item-val green">≈ 3.5% ~ 4%</div>
+    </div>
+    <div class="sgov-item">
+      <div class="sgov-item-label">管理费</div>
+      <div class="sgov-item-val blue">0.09% / 年</div>
+    </div>
+    <div class="sgov-item">
+      <div class="sgov-item-label">基金规模</div>
+      <div class="sgov-item-val">$800 亿+</div>
+    </div>
+    <div class="sgov-item">
+      <div class="sgov-item-label">分红频率</div>
+      <div class="sgov-item-val">每月派息</div>
+    </div>
+    <div class="sgov-item">
+      <div class="sgov-item-label">净值波动</div>
+      <div class="sgov-item-val green">极低（≈$100）</div>
+    </div>
+    <div class="sgov-item">
+      <div class="sgov-item-label">成立时间</div>
+      <div class="sgov-item-val">2020年5月</div>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <div class="alert-icon">💡</div>
+    <div class="alert-body">
+      <div class="alert-title">为什么买 SGOV？</div>
+      <div class="alert-text">SGOV 本质上是持有美国政府3个月内短期国债的 ETF，风险极低（等同于持有美债），净值稳定在约 $100，每月把利息以分红形式派发给你。相比国内货币基金约1.5%的收益，SGOV 目前约 4% 的年化收益率高出一倍以上，且以美元计价，同时享受人民币贬值对冲。</div>
+    </div>
+  </div>
+
+  <!-- 两条路径 -->
+  <h2 class="section-title">🛤️ 大陆居民的两条路</h2>
+
+  <div class="path-grid">
+    <div class="path-card recommended">
+      <div class="path-badge">✦ 推荐路线</div>
+      <div class="path-name">路线A：境外券商开户</div>
+      <div class="path-desc">赴港办银行卡 → 在线开券商账户 → 直接交易 SGOV</div>
+      <ul class="path-pros">
+        <li>直接持有 SGOV，收益最高</li>
+        <li>可随时买卖，灵活度高</li>
+        <li>美元资产，抗汇率风险</li>
+        <li>IBKR / 长桥等支持大陆身份</li>
+      </ul>
+      <ul class="path-pros path-cons" style="margin-top:8px">
+        <li>需要港卡（需去香港一趟）</li>
+        <li>资金出境有5万美元/年限制</li>
+      </ul>
+    </div>
+    <div class="path-card">
+      <div class="path-name">路线B：QDII 基金（懒人版）</div>
+      <div class="path-desc">支付宝/基金App → 购买追踪美债的QDII基金</div>
+      <ul class="path-pros">
+        <li>无需港卡，人民币直接申购</li>
+        <li>门槛极低，几十元起</li>
+        <li>操作简单</li>
+      </ul>
+      <ul class="path-pros path-cons" style="margin-top:8px">
+        <li>管理费更高（约1%+）</li>
+        <li>部分产品有每日限额</li>
+        <li>不能直接持有 SGOV</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <div class="alert-title">富途/老虎已不对大陆新客开放</div>
+      <div class="alert-text">2022年底证监会要求富途、老虎停止向境内新客户开户。目前对大陆居民较友好的是 <strong>盈透证券（IBKR）</strong> 和 <strong>长桥证券（LongBridge）</strong>，下文以 IBKR 为主要示例。</div>
+    </div>
+  </div>
+
+  <!-- Phase 1: 港卡 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div>
+        <div class="phase-title">办理香港银行卡</div>
+        <div class="phase-sub">前提条件 · 需亲赴香港 · 约半天搞定</div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="checklist-title">出发前准备材料</div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        <div class="check-text">
+          <strong>港澳通行证（回乡证）</strong>
+          <div class="note">必须有效期内，没有的先去当地出入境管理局办理</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        <div class="check-text">
+          <strong>内地身份证</strong>
+          <div class="note">作为辅助身份证明</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        <div class="check-text">
+          <strong>大陆住址证明</strong>
+          <div class="note">近3个月水电费账单、银行账单、信用卡账单均可，显示姓名+地址</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        <div class="check-text">
+          <strong>开户现金（几百港币即可）</strong>
+          <div class="note">满足最低开户存款要求，港元现金在香港本地换</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">选择银行</div>
+          <div class="step-desc">推荐 <strong>汇丰银行（HSBC）</strong>，无需预约可直接排队，开户门槛低。也可选择 <strong>中银香港（BOCHK）</strong>（可提前官网预约，减少等待）。两家都支持后续用于券商入金。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">前往香港网点办理</div>
+          <div class="step-desc">携带上述材料，到银行柜台申请开立 <strong>储蓄账户（Savings Account）</strong> 或 <strong>综合理财账户</strong>。开户时填写香港地址可用当晚酒店地址。全程约1-2小时。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">设置网银 & 记录关键信息</div>
+          <div class="step-desc">当场让工作人员帮你开通手机网银。记录好：<strong>账号、银行电汇地址（SWIFT Code）、网银账号密码</strong>。回国后需要这些来向港卡转账。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">从大陆向港卡电汇</div>
+          <div class="step-desc">回国后，去大陆银行柜台（推荐中国银行"中银快汇"）办理 <strong>购汇+电汇</strong>。注意：个人每年换汇上限 <strong>5万美元</strong>，且须合规申报用途（如"个人境外投资"在合规允许范围内请咨询银行）。到账通常需3-7个工作日。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Phase 2: IBKR 开户 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div>
+        <div class="phase-title">开通盈透证券（IBKR）账户</div>
+        <div class="phase-sub">推荐首选 · 全程线上 · 审核约3-5个工作日</div>
+      </div>
+    </div>
+
+    <div class="alert success">
+      <div class="alert-icon">✅</div>
+      <div class="alert-body">
+        <div class="alert-title">为什么选 IBKR？</div>
+        <div class="alert-text">盈透证券支持大陆居民开户（国籍选中国），支持香港银行卡入金，换汇汇率好，佣金低，SIPC 保障高达50万美元，是目前大陆居民最可行的美股券商之一。</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">访问 IBKR 官网注册</div>
+          <div class="step-desc">打开 <a href="https://www.interactivebrokers.com" target="_blank">interactivebrokers.com</a>，点击「Open Account」。填写邮箱、设置密码，<strong>国家/地区选"中国"</strong>，账户类型选「个人」。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">填写个人信息</div>
+          <div class="step-desc">填写真实姓名、中国大陆地址、手机号（+86）。语言可切换为简体中文。基础货币选 <strong>美元（USD）</strong>。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">选择账户类型</div>
+          <div class="step-desc">账户类型选 <strong>「保证金账户（Margin）」</strong>（功能更全，但买 SGOV 不会用到杠杆）。投资经验选择符合实际情况的选项。<strong>不是美国绿卡/公民</strong> 的选"否"，享受资本利得税0%优惠。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">上传身份证件</div>
+          <div class="step-desc">上传 <strong>护照（首选）</strong> 或身份证照片，以及地址证明文件（近3个月水电费账单或银行账单）。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">签署 W-8BEN 表格</div>
+          <div class="step-desc">这是非美国居民的税务申报表，在线填写即可。填写姓名、国籍（中国）、地址、身份证号（作为外国税务识别号）。填完后<strong>股息税从30%降至10%</strong>（中美税收协定）。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">等待审核</div>
+          <div class="step-desc">提交后等待 <strong>3-5个工作日</strong>，IBKR 会发邮件通知审核结果。审核通过即可入金。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Phase 3: 入金 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div>
+        <div class="phase-title">向 IBKR 账户入金</div>
+        <div class="phase-sub">通过香港银行卡 FPS/电汇转入</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">在 IBKR 获取入金信息</div>
+          <div class="step-desc">登录 IBKR，进入「转账与支付」→「存款」，选择货币（港元或美元），系统会给出 IBKR 的收款银行账号和 SWIFT Code。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">用港卡通过 FPS 转账</div>
+          <div class="step-desc">打开 HSBC App 或中银香港 App，发起 <strong>FPS（转数快）</strong> 转账至 IBKR 提供的账户。FPS 通常 <strong>2小时内</strong> 到账。首次建议小额测试（如 1000 港元）。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">在 IBKR 内换汇（可选）</div>
+          <div class="step-desc">如果入金是港元，可以在 IBKR 内以极低点差换成美元。进入「兑换货币」，选择 HKD → USD，IBKR 的换汇汇率非常接近银行间汇率，比大多数银行划算。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Phase 4: 买 SGOV -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div>
+        <div class="phase-title">买入 SGOV</div>
+        <div class="phase-sub">资金到账后即可操作 · 全程5分钟</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">搜索 SGOV</div>
+          <div class="step-desc">在 IBKR 交易界面搜索代码 <strong>「SGOV」</strong>，选择交易所 <strong>NYSE</strong>（纽交所），确认是「iShares 0-3 Month Treasury Bond ETF」。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">下单</div>
+          <div class="step-desc">点击「买入」，订单类型选 <strong>「限价单（Limit）」</strong>，价格填当前市价（约 $100.58），数量按你的资金决定（1股≈$100）。美股交易时间：北京时间 <strong>周一至周五 21:30 - 次日4:00</strong>（夏令时提前1小时）。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">持有 & 收息</div>
+          <div class="step-desc">买入后持有即可，SGOV 每月初自动将利息以 <strong>分红（Dividend）</strong> 形式打入你的 IBKR 账户，可以选择再买入更多 SGOV 或提现。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 费用对比 -->
+  <h2 class="section-title">💰 费用与税务一览</h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>项目</th>
+        <th>说明</th>
+        <th>金额/比例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SGOV 管理费</td>
+        <td>BlackRock 每年收取，已在净值中扣除</td>
+        <td><span class="tag green">0.09%/年</span></td>
+      </tr>
+      <tr>
+        <td>IBKR 交易佣金</td>
+        <td>美股 ETF 买卖</td>
+        <td><span class="tag green">$0（免佣）</span></td>
+      </tr>
+      <tr>
+        <td>股息税（W-8BEN后）</td>
+        <td>每月分红时自动扣缴，中美税收协定</td>
+        <td><span class="tag yellow">10%</span></td>
+      </tr>
+      <tr>
+        <td>资本利得税</td>
+        <td>非美国居民买卖 ETF 差价</td>
+        <td><span class="tag green">0%</span></td>
+      </tr>
+      <tr>
+        <td>港卡入金（FPS）</td>
+        <td>香港银行转账至 IBKR</td>
+        <td><span class="tag green">通常免费</span></td>
+      </tr>
+      <tr>
+        <td>大陆→港卡电汇</td>
+        <td>中银快汇等，含换汇手续费</td>
+        <td><span class="tag yellow">约0.1-0.3%</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="alert info">
+    <div class="alert-icon">📊</div>
+    <div class="alert-body">
+      <div class="alert-title">实际到手收益估算（以 $10,000 为例）</div>
+      <div class="alert-text">
+        SGOV 年化收益约 4% → 全年分红约 $400<br>
+        扣除10%股息税 → 实际到手约 <strong>$360</strong>（约3.6%净收益）<br>
+        折合人民币约 ¥2,600，远高于国内货币基金
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 风险提示 -->
+  <h2 class="section-title">⚠️ 风险 & 注意事项</h2>
+
+  <div class="alert danger">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <div class="alert-title">资金出境合规红线</div>
+      <div class="alert-text">个人每年购汇上限 <strong>5万美元</strong>。购汇时须如实申报用途，不得用于境外证券投资（这是监管规定的资本项目限制）。实操中很多人通过香港银行卡进行，但请自行评估合规风险，本文不构成法律建议。</div>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-icon">💱</div>
+    <div class="alert-body">
+      <div class="alert-title">汇率风险</div>
+      <div class="alert-text">SGOV 以美元计价。若人民币升值，折算回人民币的收益会降低。但若人民币贬值，则是额外收益。长期来看，美元资产是对冲人民币贬值的有效工具。</div>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <div class="alert-icon">📉</div>
+    <div class="alert-body">
+      <div class="alert-title">利率风险</div>
+      <div class="alert-text">SGOV 收益率随美联储利率变化。目前美联储处于降息周期，SGOV 收益率已从高点约5.3%降至约3.5-4%，未来可能继续下降。但即便降到2-3%，仍高于国内货币基金。</div>
+    </div>
+  </div>
+
+  <!-- 常见问题 -->
+  <h2 class="section-title">❓ 常见问题</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">Q</div>
+      <div class="step-content">
+        <div class="step-title">一定要去香港吗？</div>
+        <div class="step-desc">路线A需要。但如果只想低门槛接触美债类资产，可以选路线B（QDII基金），支付宝直接买，无需出境。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Q</div>
+      <div class="step-content">
+        <div class="step-title">IBKR 最低入金要求？</div>
+        <div class="step-desc">IBKR 个人账户无强制最低入金要求，但建议至少入金 $500 以上以覆盖基本交易需求。买1股 SGOV 约需 $100。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Q</div>
+      <div class="step-content">
+        <div class="step-title">SGOV 和 SGOV 相似产品对比？</div>
+        <div class="step-desc"><strong>SGOV</strong>（0-3月美债，$800亿规模）vs <strong>BIL</strong>（1-3月美债）vs <strong>SHV</strong>（1年内美债）。三者差异极小，SGOV 管理费最低（0.09%），规模最大，流动性最好，首选 SGOV。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Q</div>
+      <div class="step-content">
+        <div class="step-title">什么时候卖出？</div>
+        <div class="step-desc">SGOV 没有锁定期，随时可在交易时间卖出，T+2结算。若美联储大幅降息导致收益率降至2%以下，可考虑转向其他资产。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 免责声明 -->
+  <div class="disclaimer">
+    <strong>⚠️ 免责声明</strong><br>
+    本文仅为信息分享，不构成任何投资、法律或税务建议。投资有风险，入市需谨慎。券商政策、外汇管制规定会随时调整，请以各机构官方最新公告为准。跨境资金流动请遵守中国外汇管理局相关规定，本文不对任何因参考本文操作导致的损失负责。
+  </div>
+
+</div>
+
+</body>
+</html>
