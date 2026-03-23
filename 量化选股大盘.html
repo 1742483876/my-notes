@@ -305,18 +305,26 @@ async function loadData() {
 
     G = data;
 
-    // Step 3: 渲染推荐
-    setProgress(75, '渲染今日推荐...', `🏆 计算 ${data.recommendations?.length || 0} 只候选股票`);
+    // Step 3: 渲染所有数据
+    setProgress(75, '渲染图表数据...', `📊 处理 ${data.recommendations?.length || 0} 只推荐股票`);
     await new Promise(r => setTimeout(r, 30));
 
-    await renderAll();
+    renderAll();
 
     // Step 4: 完成
     setProgress(100, '加载完成！', `✅ 数据更新于 ${data.generated_at ? data.generated_at.slice(0,16) : '未知时间'}`);
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r, 400));
 
-    loading.style.display = 'none';
-    content.style.display = 'block';
+    // 只有当前在 today tab 才显示 today 内容
+    const todayPage = document.getElementById('page-today');
+    if (todayPage?.classList.contains('active')) {
+      loading.style.display = 'none';
+      content.style.display = 'block';
+    } else {
+      // 隐藏 today 的 loading，等用户点进去再显示 content
+      loading.style.display = 'none';
+      content.style.display = 'block'; // 数据已就绪，点进去直接显示
+    }
   } catch(e) {
     loading.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div>加载失败：${e.message}</div><div style="margin-top:12px;font-size:12px">请先运行 python3 quant_engine.py 生成数据</div></div>`;
   }
