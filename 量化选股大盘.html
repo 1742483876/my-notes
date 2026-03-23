@@ -379,9 +379,18 @@ async function loadData() {
     setProgress(100, '加载完成！', `✅ 数据更新于 ${data.generated_at ? data.generated_at.slice(0,16) : '未知时间'}`);
     await new Promise(r => setTimeout(r, 400));
 
-    // today tab 数据已就绪，隐藏 loading 显示 content（无论当前在哪个tab）
+    // 所有 tab loading 都隐藏，显示内容
     loading.style.display = 'none';
     content.style.display = 'block';
+    // 其他 tab 的 loading 也一并隐藏
+    ['loadingBacktest','loadingEquity','loadingWeights','loadingDaily'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    ['contentBacktest','contentEquity','contentWeights','contentDaily'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'block';
+    });
   } catch(e) {
     loading.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div>加载失败：${e.message}</div><div style="margin-top:12px;font-size:12px">请先运行 python3 quant_engine.py 生成数据</div></div>`;
   }
@@ -971,11 +980,6 @@ function switchTab(name) {
   });
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name)?.classList.add('active');
-  // 今日推荐：点进去才触发加载（懒加载）
-  if (name === 'today' && !G) {
-    loadData();
-    return;
-  }
   // 延迟渲染图表（避免隐藏时尺寸为0）
   if (G) {
     setTimeout(() => {
@@ -1002,6 +1006,9 @@ function updatePeriodBtnStyle() {
 }
 const origSwitch = switchPeriod;
 window.switchPeriod = function(p) { origSwitch(p); updatePeriodBtnStyle(); };
+
+// 页面初始化：后台静默加载数据，不阻塞页面交互
+loadData();
 </script>
 
 <!-- K线弹窗 Modal -->
