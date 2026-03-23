@@ -369,7 +369,11 @@ async function loadData() {
     setProgress(75, '渲染图表数据...', `📊 处理 ${data.recommendations?.length || 0} 只推荐股票`);
     await new Promise(r => setTimeout(r, 30));
 
-    renderAll();
+    try {
+      await renderAll();
+    } catch(re) {
+      console.error('renderAll异常:', re.message);
+    }
 
     // Step 4: 完成
     setProgress(100, '加载完成！', `✅ 数据更新于 ${data.generated_at ? data.generated_at.slice(0,16) : '未知时间'}`);
@@ -531,12 +535,8 @@ function renderRecommend() {
     const chgClass = r.chg_1d > 0 ? 'up' : r.chg_1d < 0 ? 'down' : 'flat';
     const chgSign = r.chg_1d > 0 ? '+' : '';
     const scoreW = Math.min(r.score, 100);
-    const stockJson = encodeURIComponent(JSON.stringify({
-      code: r.code, name: r.name, score: r.score, strategies: r.strategies,
-      close: r.close, chg_1d: r.chg_1d, last_date: r.last_date, klines: r.klines || []
-    }));
     return `
-    <div class="stock-card" onclick="openKlineModal(JSON.parse(decodeURIComponent('${stockJson}')))">
+    <div class="stock-card" onclick="openKlineByIndex('rec',${i})">
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
       <div class="stock-name">${r.name}</div>
       <div class="stock-code">${r.code} · ${r.last_date || '--'}</div>
@@ -661,10 +661,10 @@ function renderDailyPicks() {
   // 汇总卡片
   document.getElementById('dailySummaryGrid').innerHTML = [
     { label: '走查天数', value: ds.total_days || 0, unit: '天', color: 'var(--accent)' },
-    { label: '日胜率', value: (ds.overall_win_rate || 0) + '%', unit: '超半数推荐盈利', color: ds.overall_win_rate >= 50 ? 'var(--green)' : 'var(--red)' },
-    { label: '单笔胜率', value: (ds.trade_win_rate || 0) + '%', unit: '所有推荐', color: ds.trade_win_rate >= 50 ? 'var(--green)' : 'var(--red)' },
-    { label: '平均日收益', value: (ds.avg_daily_return || 0) + '%', unit: '持有5天', color: ds.avg_daily_return >= 0 ? 'var(--green)' : 'var(--red)' },
-    { label: '模拟净值', value: ds.equity_final || 100, unit: '初始100', color: ds.equity_final >= 100 ? 'var(--green)' : 'var(--red)' },
+    { label: '日胜率', value: (ds.overall_win_rate || 0) + '%', unit: '超半数推荐盈利', color: ds.overall_win_rate >= 50 ? 'var(--red)' : 'var(--green)' },
+    { label: '单笔胜率', value: (ds.trade_win_rate || 0) + '%', unit: '所有推荐', color: ds.trade_win_rate >= 50 ? 'var(--red)' : 'var(--green)' },
+    { label: '平均日收益', value: (ds.avg_daily_return || 0) + '%', unit: '持有5天', color: ds.avg_daily_return >= 0 ? 'var(--red)' : 'var(--green)' },
+    { label: '模拟净值', value: ds.equity_final || 100, unit: '初始100', color: ds.equity_final >= 100 ? 'var(--red)' : 'var(--green)' },
     { label: '总交易笔数', value: ds.total_trades || 0, unit: '笔', color: 'var(--text)' },
   ].map(c => `<div class="stat-card"><div class="stat-value" style="color:${c.color}">${c.value}</div><div class="stat-label">${c.label}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">${c.unit}</div></div>`).join('');
 
@@ -745,18 +745,11 @@ function renderDailyPicks() {
   const list = document.getElementById('dailyPickList');
   list.innerHTML = [...dp].reverse().map((day, di) => {
     const isGoodDay = day.win_rate >= 50;
-    const pickRows = day.picks.map(p => {
-      const stockJson = encodeURIComponent(JSON.stringify({
-        code: p.code, name: p.name, score: p.score, strategies: p.strategies,
-        entry_price: p.entry_price, exit_price: p.exit_price,
-        entry_date: p.entry_date || day.pred_date,
-        exit_date: p.exit_date || day.exit_date,
-        return: p.return, klines: p.klines || []
-      }));
+    const pickRows = day.picks.map((p, pi) => {
       return `
       <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
           onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
-          onclick="openKlineModal(JSON.parse(decodeURIComponent('${stockJson}')))">
+          onclick="openKlineByIndex('daily',${di},${pi})">
         <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
         <td style="padding:8px 12px;color:var(--text2);font-size:12px">${p.strategies.join(' · ')}</td>
         <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
@@ -771,10 +764,10 @@ function renderDailyPicks() {
            style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
         <span style="font-weight:600;color:var(--text)">${day.pred_date}</span>
         <span style="font-size:12px;color:var(--text2)">→ 持有至 ${day.exit_date}</span>
-        <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isGoodDay?'var(--green)':'var(--red)'}">
+        <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isGoodDay?'var(--red)':'var(--green)'}">
           胜率 ${day.win_rate}%
         </span>
-        <span style="font-size:13px;font-weight:600;color:${day.avg_return>=0?'var(--green)':'var(--red)'}">
+        <span style="font-size:13px;font-weight:600;color:${day.avg_return>=0?'var(--red)':'var(--green)'}">
           均收益 ${day.avg_return>=0?'+':''}${day.avg_return}%
         </span>
         <span style="font-size:12px;color:var(--text2)">${day.win_count}/${day.total} 盈利</span>
@@ -958,7 +951,7 @@ function renderWeightCards() {
       </div>
       <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">${s.desc||''}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:12px">
-        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${parseFloat(wr)>=50?'var(--green)':'var(--red)'}">${wr}%</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${parseFloat(wr)>=50?'var(--red)':'var(--green)'}">${wr}%</div></div>
         <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="font-weight:600;color:${parseFloat(ar)>=0?'var(--red)':'var(--green)'}">${parseFloat(ar)>=0?'+':''}${ar}%</div></div>
         <div style="text-align:center"><div style="color:var(--text2)">Sharpe</div><div style="font-weight:600">${sh}</div></div>
       </div>
@@ -1009,6 +1002,7 @@ function updatePeriodBtnStyle() {
 }
 const origSwitch = switchPeriod;
 window.switchPeriod = function(p) { origSwitch(p); updatePeriodBtnStyle(); };
+</script>
 
 <!-- K线弹窗 Modal -->
 <div class="kline-modal-overlay hidden" id="klineModal" onclick="if(event.target===this)closeKlineModal()">
@@ -1046,6 +1040,32 @@ let klineExitDate  = ''; // 卖出日（可选）
 let klineChartInst = null;
 let klineVolInst   = null;
 let klineRange = 30;
+
+// 通过全局索引打开K线弹窗（避免把大JSON塞进HTML属性）
+function openKlineByIndex(type, idx, pickIdx) {
+  let stock = null;
+  if (type === 'rec') {
+    stock = (G.recommendations || [])[idx];
+    if (!stock) return;
+    stock = { ...stock };
+  } else if (type === 'daily') {
+    // di 是 reverse 后的索引，需要转回原始索引
+    const dp = G.daily_picks || [];
+    const realIdx = dp.length - 1 - idx;
+    const day = dp[realIdx];
+    if (!day) return;
+    const p = (day.picks || [])[pickIdx];
+    if (!p) return;
+    stock = {
+      code: p.code, name: p.name, score: p.score, strategies: p.strategies,
+      entry_price: p.entry_price, exit_price: p.exit_price,
+      entry_date: p.entry_date || day.pred_date,
+      exit_date: p.exit_date || day.exit_date,
+      return: p.return, klines: p.klines || []
+    };
+  }
+  if (stock) openKlineModal(stock);
+}
 
 async function openKlineModal(stock) {
   // 如果没有内嵌K线，按需从 data/klines/{code}.json 加载
