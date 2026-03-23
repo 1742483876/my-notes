@@ -172,8 +172,8 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   </div>
   <div class="section-title">📋 策略详情表</div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap" id="periodBtns">
-    <button onclick="switchPeriod('30d')" class="period-btn active" data-p="30d">30日回测</button>
-    <button onclick="switchPeriod('1y')" class="period-btn" data-p="1y">1年回测</button>
+    <button onclick="switchPeriod('30d')" class="period-btn" data-p="30d">30日回测</button>
+    <button onclick="switchPeriod('1y')" class="period-btn active" data-p="1y">1年回测</button>
     <button onclick="switchPeriod('all')" class="period-btn" data-p="all">全量回测</button>
   </div>
   <div class="table-wrap">
@@ -233,7 +233,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 <script>
 let G = null; // 全局数据
 let charts = {};
-let currentPeriod = '30d';
+let currentPeriod = '1y';
 
 // ===== 进度提示 =====
 function setProgress(pct, text, step = '') {
@@ -497,7 +497,8 @@ function renderRecommend() {
 
 // ===== 回测图表 =====
 function renderBacktestCharts() {
-  const bt = G.backtest_30d || {};
+  const periodKey = currentPeriod === '30d' ? 'backtest_30d' : currentPeriod === '1y' ? 'backtest_1y' : 'backtest_all';
+  const bt = G[periodKey] || {};
   const sl = G.strategy_list || [];
   const names = sl.map(s => s.name);
   const ids   = sl.map(s => s.id);
@@ -582,6 +583,7 @@ function renderStrategyTable() {
 function switchPeriod(p) {
   currentPeriod = p;
   document.querySelectorAll('.period-btn').forEach(b => b.classList.toggle('active', b.dataset.p === p));
+  renderBacktestCharts();
   renderStrategyTable();
 }
 
