@@ -124,15 +124,21 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   </div>
 </div>
 
+<!-- 全局加载进度条 -->
+<div id="globalLoadingBar" style="height:3px;background:var(--surface2);position:relative;overflow:hidden;display:none">
+  <div id="globalLoadingFill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));width:0%;transition:width .4s ease"></div>
+</div>
+<div id="globalLoadingTip" style="display:none;text-align:center;padding:10px;font-size:12px;color:var(--text2);background:var(--surface);border-bottom:1px solid var(--border)"></div>
+
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('today')">🎯 今日推荐</div>
-  <div class="tab" onclick="switchTab('backtest')">📊 策略回测</div>
+  <div class="tab active" onclick="switchTab('backtest')">📊 策略回测</div>
   <div class="tab" onclick="switchTab('equity')">📈 权益曲线</div>
   <div class="tab" onclick="switchTab('weights')">⚖️ 权重分析</div>
+  <div class="tab" onclick="switchTab('today')">🎯 今日推荐</div>
 </div>
 
 <!-- 今日推荐 -->
-<div class="page active" id="page-today">
+<div class="page" id="page-today">
   <div id="loadingToday" class="loading">
     <div class="spinner"></div>
     <span id="loadingText">正在连接数据...</span>
@@ -148,7 +154,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 </div>
 
 <!-- 策略回测 -->
-<div class="page" id="page-backtest">
+<div class="page active" id="page-backtest">
   <div class="chart-grid">
     <div class="chart-card">
       <div class="chart-title">📊 各策略胜率对比（30日回测）</div>
@@ -225,12 +231,28 @@ let currentPeriod = '30d';
 
 // ===== 进度提示 =====
 function setProgress(pct, text, step = '') {
+  // 今日推荐 tab 内的进度条
   const bar = document.getElementById('loadingBar');
   const txt = document.getElementById('loadingText');
   const stp = document.getElementById('loadingStep');
   if (bar) bar.style.width = pct + '%';
   if (txt) txt.textContent = text;
   if (stp) stp.textContent = step;
+
+  // 全局顶部进度条（所有 tab 可见）
+  const gBar = document.getElementById('globalLoadingBar');
+  const gFill = document.getElementById('globalLoadingFill');
+  const gTip = document.getElementById('globalLoadingTip');
+  if (pct >= 100) {
+    if (gFill) gFill.style.width = '100%';
+    setTimeout(() => {
+      if (gBar) gBar.style.display = 'none';
+      if (gTip) gTip.style.display = 'none';
+    }, 600);
+  } else {
+    if (gBar) { gBar.style.display = 'block'; gFill.style.width = pct + '%'; }
+    if (gTip) { gTip.style.display = 'block'; gTip.textContent = step || text; }
+  }
 }
 
 // ===== 数据加载 =====
@@ -287,7 +309,7 @@ async function loadData() {
     setProgress(75, '渲染今日推荐...', `🏆 计算 ${data.recommendations?.length || 0} 只候选股票`);
     await new Promise(r => setTimeout(r, 30));
 
-    renderAll();
+    await renderAll();
 
     // Step 4: 完成
     setProgress(100, '加载完成！', `✅ 数据更新于 ${data.generated_at ? data.generated_at.slice(0,16) : '未知时间'}`);
@@ -370,20 +392,28 @@ function generateDemoData() {
   };
 }
 
-// ===== 渲染全部 =====
-function renderAll() {
+// ===== 渲染全部（异步分步，避免阻塞UI）=====
+async function renderAll() {
   if (!G) return;
+  const tick = () => new Promise(r => setTimeout(r, 0)); // 让UI喘口气
+
   document.getElementById('updateTime').textContent = '更新: ' + (G.update_time || G.date || '--').slice(0,16).replace('T',' ');
   document.getElementById('headerMeta').textContent = `${G.stock_count?.toLocaleString() || '--'} 只股票 · ${G.strategy_count || 15} 个策略${G._demo ? ' · 演示数据' : ''}`;
 
-  renderStats();
-  renderTopBanner();
-  renderRecommend();
-  renderBacktestCharts();
-  renderStrategyTable();
-  renderEquityCharts();
-  renderWeightCharts();
-  renderWeightCards();
+  setProgress(78, '渲染统计卡片...', '📊 计算汇总指标');
+  await tick(); renderStats(); renderTopBanner();
+
+  setProgress(83, '渲染推荐列表...', `🏆 展示 ${(G.recommendations||[]).length} 只股票`);
+  await tick(); renderRecommend();
+
+  setProgress(88, '渲染策略回测图...', '📈 绘制胜率/收益图表');
+  await tick(); renderBacktestCharts(); renderStrategyTable();
+
+  setProgress(93, '渲染权益曲线...', '📉 绘制历史净值曲线');
+  await tick(); renderEquityCharts();
+
+  setProgress(97, '渲染权重分析...', '⚖️ 绘制权重分布');
+  await tick(); renderWeightCharts(); renderWeightCards();
 }
 
 function renderStats() {
@@ -720,12 +750,17 @@ function destroyChart(id) {
 
 // ===== Tab 切换 =====
 function switchTab(name) {
+  const tabs = ['backtest','equity','weights','today'];
   document.querySelectorAll('.tab').forEach((t,i) => {
-    const tabs = ['today','backtest','equity','weights'];
     t.classList.toggle('active', tabs[i] === name);
   });
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name)?.classList.add('active');
+  // 今日推荐：点进去才触发加载（懒加载）
+  if (name === 'today' && !G) {
+    loadData();
+    return;
+  }
   // 延迟渲染图表（避免隐藏时尺寸为0）
   if (G) {
     setTimeout(() => {
@@ -752,8 +787,13 @@ function updatePeriodBtnStyle() {
 const origSwitch = switchPeriod;
 window.switchPeriod = function(p) { origSwitch(p); updatePeriodBtnStyle(); };
 
-// 初始化
-loadData();
+// 初始化：默认加载数据后渲染策略回测（今日推荐懒加载）
+async function init() {
+  await loadData();          // 加载数据（今日推荐 tab 不可见，但数据已入 G）
+  // 数据加载完后渲染默认 tab（策略回测）
+  if (G) setTimeout(() => renderBacktestCharts(), 50);
+}
+init();
 </script>
 </body>
 </html>
