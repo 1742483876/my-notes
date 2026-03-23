@@ -84,6 +84,9 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 .loading{display:flex;align-items:center;justify-content:center;padding:80px;flex-direction:column;gap:16px;color:var(--text2)}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.loading-progress{width:260px;background:var(--surface2);border-radius:6px;height:6px;overflow:hidden;margin-top:4px}
+.loading-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--purple));transition:width .4s ease}
+.loading-step{font-size:13px;color:var(--text2);margin-top:2px;min-height:20px;text-align:center}
 /* 响应式 */
 @media(max-width:768px){
   .page{padding:16px}
@@ -130,7 +133,12 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 
 <!-- 今日推荐 -->
 <div class="page active" id="page-today">
-  <div id="loadingToday" class="loading"><div class="spinner"></div><span>计算中...</span></div>
+  <div id="loadingToday" class="loading">
+    <div class="spinner"></div>
+    <span id="loadingText">正在连接数据...</span>
+    <div class="loading-progress"><div class="loading-progress-fill" id="loadingBar" style="width:0%"></div></div>
+    <div class="loading-step" id="loadingStep"></div>
+  </div>
   <div id="contentToday" style="display:none">
     <div class="stat-grid" id="statGrid"></div>
     <div class="top-banner" id="topBanner"></div>
@@ -215,6 +223,16 @@ let G = null; // 全局数据
 let charts = {};
 let currentPeriod = '30d';
 
+// ===== 进度提示 =====
+function setProgress(pct, text, step = '') {
+  const bar = document.getElementById('loadingBar');
+  const txt = document.getElementById('loadingText');
+  const stp = document.getElementById('loadingStep');
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = text;
+  if (stp) stp.textContent = step;
+}
+
 // ===== 数据加载 =====
 async function loadData() {
   const loading = document.getElementById('loadingToday');
@@ -223,8 +241,11 @@ async function loadData() {
   content.style.display = 'none';
 
   try {
-    // 带超时的 fetch（3秒内没响应直接用演示数据）
-    const fetchWithTimeout = (url, ms = 3000) => {
+    // Step 1: 连接数据
+    setProgress(10, '正在读取量化数据...', '📡 连接本地数据源');
+    await new Promise(r => setTimeout(r, 50)); // 让UI刷新
+
+    const fetchWithTimeout = (url, ms = 5000) => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), ms);
       return fetch(url, { signal: controller.signal })
@@ -239,18 +260,39 @@ async function loadData() {
     let data = null;
     for (const p of paths) {
       try {
+        setProgress(25, '正在读取量化数据...', `📂 加载 ${p}`);
         const r = await fetchWithTimeout(p + '?t=' + Date.now());
-        if (r.ok) { data = await r.json(); break; }
+        if (r.ok) {
+          setProgress(45, '正在解析数据...', '🔍 解析 JSON 结构');
+          await new Promise(r => setTimeout(r, 30));
+          data = await r.json();
+          break;
+        }
       } catch(e) {}
     }
 
     if (!data) {
-      // fetch 失败或超时，使用演示数据
+      setProgress(50, '使用演示数据...', '⚠️ 未找到本地数据，加载演示模式');
+      await new Promise(r => setTimeout(r, 200));
       data = generateDemoData();
     }
 
+    // Step 2: 解析策略
+    setProgress(60, '解析策略权重...', `📊 共 ${data.strategies?.length || 0} 个策略`);
+    await new Promise(r => setTimeout(r, 30));
+
     G = data;
+
+    // Step 3: 渲染推荐
+    setProgress(75, '渲染今日推荐...', `🏆 计算 ${data.recommendations?.length || 0} 只候选股票`);
+    await new Promise(r => setTimeout(r, 30));
+
     renderAll();
+
+    // Step 4: 完成
+    setProgress(100, '加载完成！', `✅ 数据更新于 ${data.generated_at ? data.generated_at.slice(0,16) : '未知时间'}`);
+    await new Promise(r => setTimeout(r, 300));
+
     loading.style.display = 'none';
     content.style.display = 'block';
   } catch(e) {
