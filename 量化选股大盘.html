@@ -99,6 +99,27 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 /* tooltip */
 .tooltip{position:relative;cursor:help}
 .tooltip:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1c2128;border:1px solid var(--border);color:var(--text);font-size:12px;padding:6px 10px;border-radius:6px;white-space:nowrap;z-index:99;pointer-events:none}
+/* K线弹窗 Modal */
+.kline-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.kline-modal-overlay.hidden{display:none}
+.kline-modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:860px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.kline-modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
+.kline-modal-title{font-size:18px;font-weight:700}
+.kline-modal-close{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.kline-modal-close:hover{background:var(--border);color:var(--text)}
+.kline-modal-body{padding:20px 24px;overflow-y:auto;flex:1}
+.kline-info-row{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:20px;padding:14px 16px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)}
+.kline-info-item{display:flex;flex-direction:column;gap:2px}
+.kline-info-label{font-size:11px;color:var(--text2)}
+.kline-info-value{font-size:15px;font-weight:600}
+.kline-tabs{display:flex;gap:8px;margin-bottom:16px}
+.kline-tab{padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s}
+.kline-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.kline-chart-wrap{position:relative;height:320px;margin-bottom:16px}
+.kline-vol-wrap{position:relative;height:100px}
+.kline-mark-line{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,165,0,.6);pointer-events:none;z-index:5}
+.kline-mark-label{position:absolute;top:4px;font-size:10px;color:orange;white-space:nowrap;transform:translateX(-50%)}
+@media(max-width:600px){.kline-modal{max-height:95vh}.kline-info-row{gap:12px}.kline-chart-wrap{height:220px}}
 /* 顶部推荐条 */
 .top-banner{background:linear-gradient(135deg,rgba(88,166,255,.1),rgba(188,140,255,.1));border:1px solid rgba(88,166,255,.2);border-radius:var(--card-radius);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .top-banner-icon{font-size:24px}
@@ -510,8 +531,12 @@ function renderRecommend() {
     const chgClass = r.chg_1d > 0 ? 'up' : r.chg_1d < 0 ? 'down' : 'flat';
     const chgSign = r.chg_1d > 0 ? '+' : '';
     const scoreW = Math.min(r.score, 100);
+    const stockJson = encodeURIComponent(JSON.stringify({
+      code: r.code, name: r.name, score: r.score, strategies: r.strategies,
+      close: r.close, chg_1d: r.chg_1d, last_date: r.last_date, klines: r.klines || []
+    }));
     return `
-    <div class="stock-card">
+    <div class="stock-card" onclick="openKlineModal(JSON.parse(decodeURIComponent('${stockJson}')))">
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
       <div class="stock-name">${r.name}</div>
       <div class="stock-code">${r.code} · ${r.last_date || '--'}</div>
@@ -527,6 +552,7 @@ function renderRecommend() {
       </div>
       <div class="stock-score-bar"><div class="stock-score-fill" style="width:${scoreW}%"></div></div>
       <div class="strategy-tags">${(r.strategies||[]).map(s=>`<span class="stag">${s}</span>`).join('')}</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text2);opacity:.6">点击查看K线图 📈</div>
     </div>`;
   }).join('');
 }
@@ -719,15 +745,26 @@ function renderDailyPicks() {
   const list = document.getElementById('dailyPickList');
   list.innerHTML = [...dp].reverse().map((day, di) => {
     const isGoodDay = day.win_rate >= 50;
-    const pickRows = day.picks.map(p => `
-      <tr style="border-bottom:1px solid var(--border)">
-        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
+    const pickRows = day.picks.map(p => {
+      const stockJson = encodeURIComponent(JSON.stringify({
+        code: p.code, name: p.name, score: p.score, strategies: p.strategies,
+        entry_price: p.entry_price, exit_price: p.exit_price,
+        entry_date: p.entry_date || day.pred_date,
+        exit_date: p.exit_date || day.exit_date,
+        return: p.return, klines: p.klines || []
+      }));
+      return `
+      <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
+          onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
+          onclick="openKlineModal(JSON.parse(decodeURIComponent('${stockJson}')))">
+        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
         <td style="padding:8px 12px;color:var(--text2);font-size:12px">${p.strategies.join(' · ')}</td>
         <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
         <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
-        <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--green)' : 'var(--red)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
-        <td style="padding:8px 12px">${p.win ? '<span style="color:var(--green)">✓ 盈</span>' : '<span style="color:var(--red)">✗ 亏</span>'}</td>
-      </tr>`).join('');
+        <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
+        <td style="padding:8px 12px">${p.win ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
+      </tr>`;
+    }).join('');
     return `
     <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
       <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
@@ -973,11 +1010,253 @@ function updatePeriodBtnStyle() {
 const origSwitch = switchPeriod;
 window.switchPeriod = function(p) { origSwitch(p); updatePeriodBtnStyle(); };
 
-// 初始化：不 await，页面立刻可交互，数据后台静默加载
-function init() {
-  loadData(); // 后台加载，不阻塞页面
+<!-- K线弹窗 Modal -->
+<div class="kline-modal-overlay hidden" id="klineModal" onclick="if(event.target===this)closeKlineModal()">
+  <div class="kline-modal">
+    <div class="kline-modal-header">
+      <div>
+        <div class="kline-modal-title" id="klineModalTitle">--</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px" id="klineModalSub">--</div>
+      </div>
+      <button class="kline-modal-close" onclick="closeKlineModal()">✕</button>
+    </div>
+    <div class="kline-modal-body">
+      <!-- 基本信息行 -->
+      <div class="kline-info-row" id="klineInfoRow"></div>
+      <!-- 切换按钮 -->
+      <div class="kline-tabs">
+        <div class="kline-tab active" onclick="switchKlineRange(30, this)">近30日</div>
+        <div class="kline-tab" onclick="switchKlineRange(60, this)">近60日</div>
+        <div class="kline-tab" onclick="switchKlineRange(120, this)">近120日</div>
+      </div>
+      <!-- K线图 -->
+      <div class="kline-chart-wrap"><canvas id="klineChart"></canvas></div>
+      <!-- 成交量 -->
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px">📊 成交量</div>
+      <div class="kline-vol-wrap"><canvas id="klineVolChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== K线弹窗 =====
+let klineData = [];      // 当前弹窗的完整K线
+let klineEntryDate = ''; // 买入日（可选，daily_picks用）
+let klineExitDate  = ''; // 卖出日（可选）
+let klineChartInst = null;
+let klineVolInst   = null;
+let klineRange = 30;
+
+function openKlineModal(stock) {
+  klineData = stock.klines || [];
+  klineEntryDate = stock.entry_date || stock.last_date || '';
+  klineExitDate  = stock.exit_date  || '';
+  klineRange = 30;
+
+  // 标题
+  const chgSign = stock.return !== undefined ? (stock.return >= 0 ? '+' : '') : (stock.chg_1d >= 0 ? '+' : '');
+  const chgVal  = stock.return !== undefined ? stock.return : stock.chg_1d;
+  const chgColor = (chgVal || 0) >= 0 ? 'var(--red)' : 'var(--green)';
+  document.getElementById('klineModalTitle').textContent = `${stock.name}（${stock.code}）`;
+  document.getElementById('klineModalSub').textContent = stock.last_date || stock.entry_date || '';
+
+  // 基本信息行
+  const last = klineData[klineData.length - 1] || {};
+  const infoItems = [
+    { label: '最新收盘', value: `¥${(stock.close || last.close || '--')}`, color: 'var(--text)' },
+    { label: '今日涨跌', value: `${chgSign}${(chgVal||0).toFixed(2)}%`, color: chgColor },
+    { label: '评分', value: `${stock.score?.toFixed(1) || '--'} 分`, color: 'var(--accent)' },
+    { label: '命中策略', value: `${(stock.strategies||[]).join(' · ') || '--'}`, color: 'var(--text2)' },
+  ];
+  if (stock.entry_price) infoItems.push({ label: '买入价', value: `¥${stock.entry_price}`, color: 'var(--text)' });
+  if (stock.exit_price)  infoItems.push({ label: '卖出价', value: `¥${stock.exit_price}`, color: 'var(--text)' });
+  if (stock.return !== undefined) infoItems.push({ label: '持仓收益', value: `${chgSign}${stock.return}%`, color: chgColor });
+
+  document.getElementById('klineInfoRow').innerHTML = infoItems.map(it =>
+    `<div class="kline-info-item">
+      <div class="kline-info-label">${it.label}</div>
+      <div class="kline-info-value" style="color:${it.color}">${it.value}</div>
+    </div>`
+  ).join('');
+
+  // 重置切换按钮状态
+  document.querySelectorAll('.kline-tab').forEach((t,i) => {
+    t.classList.toggle('active', i === 0);
+  });
+
+  document.getElementById('klineModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  renderKlineCharts();
 }
-init();
+
+function closeKlineModal() {
+  document.getElementById('klineModal').classList.add('hidden');
+  document.body.style.overflow = '';
+  if (klineChartInst) { klineChartInst.destroy(); klineChartInst = null; }
+  if (klineVolInst)   { klineVolInst.destroy();   klineVolInst = null; }
+}
+
+function switchKlineRange(n, el) {
+  klineRange = n;
+  document.querySelectorAll('.kline-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderKlineCharts();
+}
+
+function renderKlineCharts() {
+  const slice = klineData.slice(-klineRange);
+  if (!slice.length) return;
+
+  const labels  = slice.map(k => k.date.slice(5));   // MM-DD
+  const closes  = slice.map(k => k.close);
+  const opens   = slice.map(k => k.open);
+  const highs   = slice.map(k => k.high);
+  const lows    = slice.map(k => k.low);
+  const vols    = slice.map(k => k.volume);
+
+  // 颜色（涨红跌绿，A股习惯）
+  const barColors = slice.map(k => k.close >= k.open ? 'rgba(248,81,73,.85)' : 'rgba(63,185,80,.85)');
+
+  // 计算MA5、MA10
+  const ma = (arr, n) => arr.map((_, i) => {
+    if (i < n - 1) return null;
+    return +(arr.slice(i - n + 1, i + 1).reduce((a, b) => a + b, 0) / n).toFixed(3);
+  });
+  const ma5  = ma(closes, 5);
+  const ma10 = ma(closes, 10);
+
+  // 找买入/卖出日在 slice 中的索引
+  const entryIdx = klineEntryDate ? slice.findIndex(k => k.date === klineEntryDate) : -1;
+  const exitIdx  = klineExitDate  ? slice.findIndex(k => k.date === klineExitDate)  : -1;
+
+  if (klineChartInst) klineChartInst.destroy();
+  klineChartInst = new Chart(document.getElementById('klineChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '价格区间',
+          data: slice.map(k => [Math.min(k.open, k.close), Math.max(k.open, k.close)]),
+          backgroundColor: barColors,
+          borderColor: barColors,
+          borderWidth: 1,
+          borderRadius: 1,
+          barPercentage: 0.6,
+          categoryPercentage: 0.8,
+        },
+        {
+          label: 'MA5',
+          type: 'line',
+          data: ma5,
+          borderColor: '#ffa657',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          tension: 0.3,
+          spanGaps: true,
+        },
+        {
+          label: 'MA10',
+          type: 'line',
+          data: ma10,
+          borderColor: '#bc8cff',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          tension: 0.3,
+          spanGaps: true,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 16 } },
+        tooltip: {
+          callbacks: {
+            title: (ctx) => slice[ctx[0].dataIndex]?.date || '',
+            label: (ctx) => {
+              const k = slice[ctx.dataIndex];
+              if (!k) return '';
+              if (ctx.datasetIndex === 0) {
+                const ret = ((k.close - k.open) / k.open * 100).toFixed(2);
+                const sign = k.close >= k.open ? '+' : '';
+                return [`开: ${k.open}  收: ${k.close}`, `高: ${k.high}  低: ${k.low}`, `涨跌: ${sign}${ret}%`];
+              }
+              return `${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(2) || '--'}`;
+            }
+          }
+        },
+        // 标注买入/卖出线（用 annotation plugin 替代方案：手动 afterDraw）
+      },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' }, position: 'right' }
+      }
+    },
+    plugins: [{
+      id: 'markLines',
+      afterDraw(chart) {
+        const ctx = chart.ctx;
+        const xAxis = chart.scales.x;
+        const yAxis = chart.scales.y;
+        const drawMark = (idx, color, label) => {
+          if (idx < 0 || idx >= slice.length) return;
+          const x = xAxis.getPixelForValue(idx);
+          ctx.save();
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          ctx.moveTo(x, yAxis.top);
+          ctx.lineTo(x, yAxis.bottom);
+          ctx.stroke();
+          ctx.fillStyle = color;
+          ctx.font = '10px PingFang SC, sans-serif';
+          ctx.fillText(label, x + 3, yAxis.top + 12);
+          ctx.restore();
+        };
+        drawMark(entryIdx, '#ffa657', '买入');
+        drawMark(exitIdx,  '#58a6ff', '卖出');
+      }
+    }]
+  });
+
+  // 成交量图
+  if (klineVolInst) klineVolInst.destroy();
+  klineVolInst = new Chart(document.getElementById('klineVolChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: '成交量',
+        data: vols,
+        backgroundColor: barColors,
+        borderRadius: 1,
+        barPercentage: 0.6,
+        categoryPercentage: 0.8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: {
+          label: ctx => `成交量: ${(ctx.parsed.y / 10000).toFixed(1)} 万手`
+        }
+      }},
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 9 }, callback: v => (v/10000).toFixed(0)+'万' }, grid: { color: '#21262d' }, position: 'right' }
+      }
+    }
+  });
+}
+
+// ESC 关闭弹窗
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineModal(); });
 </script>
 </body>
 </html>
