@@ -99,6 +99,14 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 /* tooltip */
 .tooltip{position:relative;cursor:help}
 .tooltip:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1c2128;border:1px solid var(--border);color:var(--text);font-size:12px;padding:6px 10px;border-radius:6px;white-space:nowrap;z-index:99;pointer-events:none}
+/* 可排序表头 */
+.sortable-th{cursor:pointer;user-select:none;transition:.15s}
+.sortable-th:hover{color:var(--accent);background:rgba(88,166,255,.06)}
+.sortable-th .sort-icon{margin-left:4px;opacity:.4;font-size:11px;transition:.15s}
+.sortable-th.asc .sort-icon,.sortable-th.desc .sort-icon{opacity:1;color:var(--accent)}
+.sortable-th.asc .sort-icon::after{content:'↑'}
+.sortable-th.desc .sort-icon::after{content:'↓'}
+.sortable-th:not(.asc):not(.desc) .sort-icon::after{content:'↕'}
 /* K线弹窗 Modal */
 .kline-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
 .kline-modal-overlay.hidden{display:none}
@@ -234,14 +242,14 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
     <table class="strategy-table" id="strategyTable">
       <thead>
         <tr>
-          <th>策略名称</th>
+          <th class="sortable-th" onclick="sortStrategyTable('name')">策略名称<span class="sort-icon"></span></th>
           <th>描述</th>
-          <th>权重</th>
-          <th>胜率</th>
-          <th>平均收益</th>
-          <th>累计收益</th>
-          <th>Sharpe</th>
-          <th>交易次数</th>
+          <th class="sortable-th" onclick="sortStrategyTable('weight')">权重<span class="sort-icon"></span></th>
+          <th class="sortable-th" onclick="sortStrategyTable('win_rate')">胜率<span class="sort-icon"></span></th>
+          <th class="sortable-th" onclick="sortStrategyTable('avg_return')">平均收益<span class="sort-icon"></span></th>
+          <th class="sortable-th" onclick="sortStrategyTable('total_return')">累计收益<span class="sort-icon"></span></th>
+          <th class="sortable-th" onclick="sortStrategyTable('sharpe')">Sharpe<span class="sort-icon"></span></th>
+          <th class="sortable-th" onclick="sortStrategyTable('total_trades')">交易次数<span class="sort-icon"></span></th>
         </tr>
       </thead>
       <tbody id="strategyTbody"></tbody>
@@ -263,7 +271,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
     </div>
   </div>
   <div class="chart-card" style="margin-top:0">
-    <div class="chart-title">🎯 各策略综合评分雷达图（30日）</div>
+    <div class="chart-title">🎯 各策略综合评分雷达图（1年）</div>
     <div style="max-width:500px;margin:0 auto;height:360px"><canvas id="chartRadar"></canvas></div>
   </div>
 </div>
@@ -626,29 +634,109 @@ function renderBacktestCharts() {
 function renderStrategyTable() {
   const sl = G.strategy_list || [];
   const periodKey = currentPeriod === '30d' ? 'backtest_30d' : currentPeriod === '1y' ? 'backtest_1y' : 'backtest_all';
-  document.getElementById('strategyTbody').innerHTML = sl.map(s => {
+
+  // 排序
+  let sorted = [...sl];
+  if (strategySort.key) {
+    sorted.sort((a, b) => {
+      let va, vb;
+      if (strategySort.key === 'name') { va = a.name; vb = b.name; }
+      else if (strategySort.key === 'weight') { va = a.weight || 0; vb = b.weight || 0; }
+      else {
+        const bta = a[periodKey] || {}, btb = b[periodKey] || {};
+        va = bta[strategySort.key] || 0; vb = btb[strategySort.key] || 0;
+      }
+      if (typeof va === 'string') return strategySort.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+      return strategySort.dir === 'asc' ? va - vb : vb - va;
+    });
+  }
+
+  // 更新表头样式
+  document.querySelectorAll('#strategyTable .sortable-th').forEach(th => {
+    th.classList.remove('asc','desc');
+    const key = th.getAttribute('onclick').match(/sortStrategyTable\('(\w+)'\)/)?.[1];
+    if (key === strategySort.key) th.classList.add(strategySort.dir);
+  });
+
+  document.getElementById('strategyTbody').innerHTML = sorted.map(s => {
     const bt = s[periodKey] || {};
     const wr = bt.win_rate || 0;
     const ar = bt.avg_return || 0;
     const tr = bt.total_return || 0;
     const sh = bt.sharpe || 0;
+    const noData = bt.total_trades === 0;
     return `
     <tr>
       <td><b>${s.name}</b></td>
       <td style="color:var(--text2);font-size:12px;max-width:200px">${s.desc||''}</td>
       <td><span class="weight-badge">⚖️ ${((s.weight||0)*100).toFixed(1)}%</span></td>
       <td>
+        ${noData ? '<span style="color:var(--text2);font-size:12px">数据不足</span>' : `
         <div style="display:flex;align-items:center;gap:8px">
           <div class="progress-bar"><div class="progress-fill win-fill" style="width:${wr}%"></div></div>
           <span style="font-size:12px;min-width:36px">${wr.toFixed(1)}%</span>
-        </div>
+        </div>`}
       </td>
-      <td class="${ar>=0?'pos':'neg'}">${ar>=0?'+':''}${ar.toFixed(2)}%</td>
-      <td class="${tr>=0?'pos':'neg'}">${tr>=0?'+':''}${tr.toFixed(1)}%</td>
-      <td style="color:${sh>=1?'var(--green)':sh>=0?'var(--yellow)':'var(--red)'}">${sh.toFixed(2)}</td>
+      <td class="${noData?'':''+( ar>=0?'pos':'neg')}">${noData?'--':((ar>=0?'+':'')+ar.toFixed(2)+'%')}</td>
+      <td class="${noData?'':''+( tr>=0?'pos':'neg')}">${noData?'--':((tr>=0?'+':'')+tr.toFixed(1)+'%')}</td>
+      <td style="color:${noData?'var(--text2)':sh>=1?'var(--red)':sh>=0?'var(--yellow)':'var(--green)'}">${noData?'--':sh.toFixed(2)}</td>
       <td style="color:var(--text2)">${(bt.total_trades||0).toLocaleString()}</td>
     </tr>`;
   }).join('');
+}
+
+let strategySort = { key: '', dir: 'desc' };
+function sortStrategyTable(key) {
+  if (strategySort.key === key) {
+    strategySort.dir = strategySort.dir === 'desc' ? 'asc' : 'desc';
+  } else {
+    strategySort.key = key;
+    strategySort.dir = 'desc';
+  }
+  renderStrategyTable();
+}
+
+function sortDailyTable(tableId, key, di) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const prevKey = table.dataset.sortKey;
+  const prevDir = table.dataset.sortDir || 'desc';
+  const newDir = prevKey === key ? (prevDir === 'desc' ? 'asc' : 'desc') : 'desc';
+  table.dataset.sortKey = key;
+  table.dataset.sortDir = newDir;
+
+  // 更新表头样式
+  table.querySelectorAll('.sortable-th').forEach(th => {
+    th.classList.remove('asc','desc');
+    const thKey = th.getAttribute('onclick').match(/sortDailyTable\('[^']+','(\w+)'/)?.[1];
+    if (thKey === key) th.classList.add(newDir);
+  });
+
+  // 获取原始数据并重排
+  const dp = G.daily_picks || [];
+  const reversedDp = [...dp].reverse();
+  const day = reversedDp[di];
+  if (!day) return;
+
+  let sorted = [...day.picks];
+  sorted.sort((a, b) => {
+    let va = a[key], vb = b[key];
+    if (typeof va === 'string') return newDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+    return newDir==='asc'?va-vb:vb-va;
+  });
+
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = sorted.map(p => `
+    <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
+        onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
+        onclick="openKlineByIndex('daily',${di},${day.picks.indexOf(p)})">
+      <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
+      <td style="padding:8px 12px;color:var(--text2);font-size:12px">${p.strategies.join(' · ')}</td>
+      <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
+      <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
+      <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
+      <td style="padding:8px 12px">${p.win ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
+    </tr>`).join('');
 }
 
 function switchPeriod(p) {
@@ -754,19 +842,28 @@ function renderDailyPicks() {
   const list = document.getElementById('dailyPickList');
   list.innerHTML = [...dp].reverse().map((day, di) => {
     const isGoodDay = day.win_rate >= 50;
-    const pickRows = day.picks.map((p, pi) => {
-      return `
+    const tableId = `dailyPickTable_${di}`;
+    const pickRows = (picks, sortKey='', sortDir='desc') => {
+      let sorted = [...picks];
+      if (sortKey) {
+        sorted.sort((a, b) => {
+          let va = a[sortKey], vb = b[sortKey];
+          if (typeof va === 'string') return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+          return sortDir==='asc'?va-vb:vb-va;
+        });
+      }
+      return sorted.map((p, pi) => `
       <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
           onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
-          onclick="openKlineByIndex('daily',${di},${pi})">
+          onclick="openKlineByIndex('daily',${di},${picks.indexOf(p)})">
         <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
         <td style="padding:8px 12px;color:var(--text2);font-size:12px">${p.strategies.join(' · ')}</td>
         <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
         <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
         <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
         <td style="padding:8px 12px">${p.win ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
-      </tr>`;
-    }).join('');
+      </tr>`).join('');
+    };
     return `
     <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
       <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
@@ -783,16 +880,16 @@ function renderDailyPicks() {
         <span style="font-size:12px;color:var(--text2)">▼</span>
       </div>
       <div style="display:none">
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <table id="${tableId}" style="width:100%;border-collapse:collapse;font-size:13px" data-sort-key="" data-sort-dir="desc">
           <thead><tr style="background:var(--surface)">
-            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">股票</th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
             <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
-            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">买入价</th>
-            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">卖出价</th>
-            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">收益</th>
-            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">结果</th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','exit_price',${di})">卖出价<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return',${di})">收益<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','win',${di})">结果<span class="sort-icon"></span></th>
           </tr></thead>
-          <tbody>${pickRows}</tbody>
+          <tbody>${pickRows(day.picks)}</tbody>
         </table>
       </div>
     </div>`;
@@ -847,7 +944,7 @@ function renderEquityCharts() {
   }
 
   // 雷达图
-  const bt30 = G.backtest_30d || {};
+  const bt1y = G.backtest_1y || {};
   const sl = (G.strategy_list || []).slice(0, 8);
   destroyChart('chartRadar');
   charts.radar = new Chart(document.getElementById('chartRadar'), {
@@ -857,13 +954,13 @@ function renderEquityCharts() {
       datasets: [
         {
           label: '胜率(归一)',
-          data: sl.map(s => (bt30[s.id]?.win_rate||0)/100),
+          data: sl.map(s => (bt1y[s.id]?.win_rate||0)/100),
           borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,.15)',
           borderWidth: 2, pointRadius: 3,
         },
         {
           label: '收益(归一)',
-          data: sl.map(s => Math.max(0, Math.min(1, (bt30[s.id]?.avg_return||0)/3))),
+          data: sl.map(s => Math.max(0, Math.min(1, (bt1y[s.id]?.avg_return||0)/3))),
           borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,.15)',
           borderWidth: 2, pointRadius: 3,
         }
@@ -945,9 +1042,9 @@ function renderWeightCharts() {
 
 function renderWeightCards() {
   const sl = G.strategy_list || [];
-  const bt30 = G.backtest_30d || {};
+  const bt1y = G.backtest_1y || {};
   document.getElementById('weightCards').innerHTML = sl.map((s,i) => {
-    const bt = bt30[s.id] || {};
+    const bt = bt1y[s.id] || {};
     const w = ((s.weight||0)*100).toFixed(1);
     const wr = bt.win_rate?.toFixed(1) || '--';
     const ar = bt.avg_return?.toFixed(2) || '--';
