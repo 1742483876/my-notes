@@ -756,18 +756,43 @@ function switchPeriod(p) {
 
 // ===== 每日选股走查 =====
 function renderDailyPicks() {
-  const dp = G.daily_picks || {};
-  const dailyData = dp.daily_data || [];
+  let dp = G.daily_picks || {};
+  let dailyData = [];
+  let tradingDays = 0;
+  let overallWinRate = 0;
+  let tradeWinRate = 0;
+  let avgDailyReturn = 0;
+  let finalEquity = 100;
+  let totalTrades = 0;
+  let maxDrawdown = 0;
+  let equityCurve = [];
   
-  // 从新的数据结构读取
-  const tradingDays = dp.trading_days || 0;
-  const overallWinRate = dp.overall_win_rate || 0;
-  const tradeWinRate = dp.trade_win_rate || 0;
-  const avgDailyReturn = dp.avg_daily_return || 0;
-  const finalEquity = dp.final_equity || 100;
-  const totalTrades = dp.total_trades || 0;
-  const maxDrawdown = dp.max_drawdown || 0;
-  const equityCurve = dp.equity_curve || [];
+  // 兼容新旧两种数据格式
+  if (Array.isArray(dp)) {
+    // 旧格式：daily_picks 是数组
+    dailyData = dp;
+    // 从 daily_summary 读取汇总数据
+    const ds = G.daily_summary || {};
+    tradingDays = ds.total_days || dp.length;
+    overallWinRate = ds.overall_win_rate || 0;
+    tradeWinRate = ds.trade_win_rate || 0;
+    avgDailyReturn = ds.avg_daily_return || 0;
+    finalEquity = ds.equity_final || 100;
+    totalTrades = ds.total_trades || 0;
+    maxDrawdown = ds.max_drawdown || 0;
+    equityCurve = ds.equity_curve || [];
+  } else {
+    // 新格式：daily_picks 是对象
+    dailyData = dp.daily_data || [];
+    tradingDays = dp.trading_days || 0;
+    overallWinRate = dp.overall_win_rate || 0;
+    tradeWinRate = dp.trade_win_rate || 0;
+    avgDailyReturn = dp.avg_daily_return || 0;
+    finalEquity = dp.final_equity || 100;
+    totalTrades = dp.total_trades || 0;
+    maxDrawdown = dp.max_drawdown || 0;
+    equityCurve = dp.equity_curve || [];
+  }
 
   // 隐藏loading，显示内容
   document.getElementById('loadingDaily').style.display = 'none';
