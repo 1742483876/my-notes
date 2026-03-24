@@ -1,6 +1,6 @@
 {
   "date": "2026-03-25",
-  "update_time": "2026-03-25T00:42:35.533840",
+  "update_time": "2026-03-25T00:43:53.264002",
   "stock_count": 5007,
   "strategy_count": 26,
   "weights": {
@@ -178,22 +178,22 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 5.0,
-        "avg_return": -12.38,
-        "total_return": -93.26,
-        "total_trades": 20,
-        "signal_stocks": 20,
-        "sharpe": 0,
-        "max_drawdown": 91.68
+        "win_rate": 96.3,
+        "avg_return": 1.73,
+        "total_return": 16950.7,
+        "total_trades": 300,
+        "signal_stocks": 300,
+        "sharpe": 13.03,
+        "max_drawdown": 1.7
       },
       "backtest_all": {
-        "win_rate": 5.0,
-        "avg_return": -12.38,
-        "total_return": -93.26,
-        "total_trades": 20,
-        "signal_stocks": 20,
-        "sharpe": 0,
-        "max_drawdown": 91.68
+        "win_rate": 96.3,
+        "avg_return": 1.73,
+        "total_return": 16950.7,
+        "total_trades": 300,
+        "signal_stocks": 300,
+        "sharpe": 13.03,
+        "max_drawdown": 1.7
       }
     },
     {
@@ -654,22 +654,22 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 95.7,
-        "avg_return": 1.02,
-        "total_return": 1988.61,
+        "win_rate": 96.3,
+        "avg_return": 0.95,
+        "total_return": 1576.03,
         "total_trades": 300,
         "signal_stocks": 300,
-        "sharpe": 11.94,
-        "max_drawdown": 0.96
+        "sharpe": 12.86,
+        "max_drawdown": 0.38
       },
       "backtest_all": {
-        "win_rate": 95.7,
-        "avg_return": 1.02,
-        "total_return": 1988.61,
+        "win_rate": 96.3,
+        "avg_return": 0.95,
+        "total_return": 1576.03,
         "total_trades": 300,
         "signal_stocks": 300,
-        "sharpe": 11.94,
-        "max_drawdown": 0.96
+        "sharpe": 12.86,
+        "max_drawdown": 0.38
       }
     },
     {
@@ -824,22 +824,22 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 96.7,
-        "avg_return": 0.97,
-        "total_return": 1692.14,
+        "win_rate": 94.7,
+        "avg_return": 0.82,
+        "total_return": 1059.0,
         "total_trades": 300,
         "signal_stocks": 300,
-        "sharpe": 13.45,
-        "max_drawdown": 0.52
+        "sharpe": 12.32,
+        "max_drawdown": 0.54
       },
       "backtest_all": {
-        "win_rate": 96.7,
-        "avg_return": 0.97,
-        "total_return": 1692.14,
+        "win_rate": 94.7,
+        "avg_return": 0.82,
+        "total_return": 1059.0,
         "total_trades": 300,
         "signal_stocks": 300,
-        "sharpe": 13.45,
-        "max_drawdown": 0.52
+        "sharpe": 12.32,
+        "max_drawdown": 0.54
       }
     },
     {
@@ -1210,13 +1210,13 @@
       "max_drawdown": 100.0
     },
     "oversoldBounce": {
-      "win_rate": 5.0,
-      "avg_return": -12.38,
-      "total_return": -93.26,
-      "total_trades": 20,
-      "signal_stocks": 20,
-      "sharpe": 0,
-      "max_drawdown": 91.68
+      "win_rate": 96.3,
+      "avg_return": 1.73,
+      "total_return": 16950.7,
+      "total_trades": 300,
+      "signal_stocks": 300,
+      "sharpe": 13.03,
+      "max_drawdown": 1.7
     },
     "bollingerMeanReversion": {
       "win_rate": 0,
@@ -1336,13 +1336,13 @@
       "max_drawdown": 100.0
     },
     "highDividendRotation": {
-      "win_rate": 95.7,
-      "avg_return": 1.02,
-      "total_return": 1988.61,
+      "win_rate": 96.3,
+      "avg_return": 0.95,
+      "total_return": 1576.03,
       "total_trades": 300,
       "signal_stocks": 300,
-      "sharpe": 11.94,
-      "max_drawdown": 0.96
+      "sharpe": 12.86,
+      "max_drawdown": 0.38
     },
     "macdDivergence": {
       "win_rate": 2.9,
@@ -1381,13 +1381,13 @@
       "max_drawdown": 100.0
     },
     "soeValueSelect": {
-      "win_rate": 96.7,
-      "avg_return": 0.97,
-      "total_return": 1692.14,
+      "win_rate": 94.7,
+      "avg_return": 0.82,
+      "total_return": 1059.0,
       "total_trades": 300,
       "signal_stocks": 300,
-      "sharpe": 13.45,
-      "max_drawdown": 0.52
+      "sharpe": 12.32,
+      "max_drawdown": 0.54
     },
     "earningsAcceleration": {
       "win_rate": 10.1,
@@ -1446,13 +1446,13 @@
       "max_drawdown": 100.0
     },
     "oversoldBounce": {
-      "win_rate": 5.0,
-      "avg_return": -12.38,
-      "total_return": -93.26,
-      "total_trades": 20,
-      "signal_stocks": 20,
-      "sharpe": 0,
-      "max_drawdown": 91.68
+      "win_rate": 96.3,
+      "avg_return": 1.73,
+      "total_return": 16950.7,
+      "total_trades": 300,
+      "signal_stocks": 300,
+      "sharpe": 13.03,
+      "max_drawdown": 1.7
     },
     "bollingerMeanReversion": {
       "win_rate": 0,
@@ -1572,13 +1572,13 @@
       "max_drawdown": 100.0
     },
     "highDividendRotation": {
-      "win_rate": 95.7,
-      "avg_return": 1.02,
-      "total_return": 1988.61,
+      "win_rate": 96.3,
+      "avg_return": 0.95,
+      "total_return": 1576.03,
       "total_trades": 300,
       "signal_stocks": 300,
-      "sharpe": 11.94,
-      "max_drawdown": 0.96
+      "sharpe": 12.86,
+      "max_drawdown": 0.38
     },
     "macdDivergence": {
       "win_rate": 2.9,
@@ -1617,13 +1617,13 @@
       "max_drawdown": 100.0
     },
     "soeValueSelect": {
-      "win_rate": 96.7,
-      "avg_return": 0.97,
-      "total_return": 1692.14,
+      "win_rate": 94.7,
+      "avg_return": 0.82,
+      "total_return": 1059.0,
       "total_trades": 300,
       "signal_stocks": 300,
-      "sharpe": 13.45,
-      "max_drawdown": 0.52
+      "sharpe": 12.32,
+      "max_drawdown": 0.54
     },
     "earningsAcceleration": {
       "win_rate": 10.1,
