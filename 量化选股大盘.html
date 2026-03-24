@@ -1845,7 +1845,9 @@ function renderPredictResult(d) {
     { label: '20日涨跌', val: (d.ret_20d >= 0 ? '+' : '') + d.ret_20d + '%', color: d.ret_20d >= 0 ? 'var(--red)' : 'var(--green)' },
     { label: '量能', val: d.vol_trend, color: 'var(--yellow)' },
     { label: '大盘20日', val: (d.market_ret_20d >= 0 ? '+' : '') + d.market_ret_20d + '%', color: 'var(--text2)' },
-    { label: '看涨比例', val: d.bull_ratio + '%', color: d.direction_code === 'bullish' ? 'var(--red)' : 'var(--green)' },
+    { label: '综合得分', val: d.total_score != null ? d.total_score.toFixed(1) : '--', color: d.direction_code === 'bullish' ? 'var(--red)' : d.direction_code === 'bearish' ? 'var(--green)' : 'var(--text2)' },
+    { label: '市场均值', val: d.score_mean != null ? d.score_mean.toFixed(1) : '--', color: 'var(--text2)' },
+    { label: '偏离度(z)', val: d.score_z != null ? (d.score_z >= 0 ? '+' : '') + d.score_z.toFixed(2) : '--', color: d.score_z > 0 ? 'var(--red)' : d.score_z < 0 ? 'var(--green)' : 'var(--text2)' },
   ];
   document.getElementById('pIndicators').innerHTML = indicators.map(ind => `
     <div class="predict-ind-item">
