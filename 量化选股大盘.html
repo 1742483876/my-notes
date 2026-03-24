@@ -1530,9 +1530,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineMo
   <div class="predict-wrap">
     <!-- 搜索框 -->
     <div class="section-title">🔮 个股预测 <span class="badge">AI策略分析</span></div>
-    <div class="predict-search">
-      <input class="predict-input" id="predictInput" type="text" placeholder="输入股票代码（如 600519 贵州茅台）" maxlength="10"
-        onkeydown="if(event.key==='Enter') doPrediction()">
+    <div class="predict-search" style="position:relative">
+      <div style="flex:1;position:relative">
+        <input class="predict-input" id="predictInput" type="text"
+          placeholder="输入股票代码或中文名（如 600519 或 贵州茅台）" maxlength="20" autocomplete="off"
+          oninput="onPredictInput(this.value)"
+          onkeydown="onPredictKeydown(event)">
+        <!-- 自动补全下拉 -->
+        <div id="predictDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:999;max-height:260px;overflow-y:auto;margin-top:4px"></div>
+      </div>
       <button class="predict-btn" id="predictBtn" onclick="doPrediction()">🔮 开始预测</button>
     </div>
 
@@ -1612,7 +1618,95 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineMo
 <script>
 // ══════════ 个股预测逻辑 ══════════
 const PREDICT_API = 'http://localhost:18766/predict';
+const SEARCH_API  = 'http://localhost:18766/search';
 let predictHistory = JSON.parse(localStorage.getItem('predictHistory') || '[]');
+let _dropdownItems = [];
+let _dropdownIdx   = -1;
+let _searchTimer   = null;
+
+// 自动补全：输入防抖搜索
+async function onPredictInput(val) {
+  clearTimeout(_searchTimer);
+  const dd = document.getElementById('predictDropdown');
+  if (!val || val.length < 1) { dd.style.display = 'none'; return; }
+  _searchTimer = setTimeout(async () => {
+    try {
+      const resp = await fetch(`${SEARCH_API}?q=${encodeURIComponent(val)}`);
+      const data = await resp.json();
+      _dropdownItems = data.results || [];
+      _dropdownIdx = -1;
+      renderDropdown();
+    } catch(e) {
+      dd.style.display = 'none';
+    }
+  }, 200);
+}
+
+function renderDropdown() {
+  const dd = document.getElementById('predictDropdown');
+  if (!_dropdownItems.length) { dd.style.display = 'none'; return; }
+  dd.innerHTML = _dropdownItems.map((item, i) => `
+    <div class="predict-dd-item" data-idx="${i}"
+      style="padding:10px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);transition:.15s"
+      onmouseenter="highlightDd(${i})"
+      onclick="selectDdItem(${i})">
+      <span style="font-weight:600;color:var(--accent);font-size:13px;width:60px">${item.code}</span>
+      <span style="font-size:14px">${item.name}</span>
+    </div>
+  `).join('');
+  dd.style.display = 'block';
+}
+
+function highlightDd(idx) {
+  _dropdownIdx = idx;
+  document.querySelectorAll('.predict-dd-item').forEach((el, i) => {
+    el.style.background = i === idx ? 'var(--surface2)' : '';
+  });
+}
+
+function selectDdItem(idx) {
+  const item = _dropdownItems[idx];
+  if (!item) return;
+  document.getElementById('predictInput').value = item.code;
+  document.getElementById('predictDropdown').style.display = 'none';
+  doPrediction();
+}
+
+function onPredictKeydown(e) {
+  const dd = document.getElementById('predictDropdown');
+  if (dd.style.display !== 'none' && _dropdownItems.length) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      _dropdownIdx = Math.min(_dropdownIdx + 1, _dropdownItems.length - 1);
+      highlightDd(_dropdownIdx);
+      return;
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      _dropdownIdx = Math.max(_dropdownIdx - 1, 0);
+      highlightDd(_dropdownIdx);
+      return;
+    }
+    if (e.key === 'Enter' && _dropdownIdx >= 0) {
+      e.preventDefault();
+      selectDdItem(_dropdownIdx);
+      return;
+    }
+    if (e.key === 'Escape') {
+      dd.style.display = 'none';
+      return;
+    }
+  }
+  if (e.key === 'Enter') doPrediction();
+}
+
+// 点击外部关闭下拉
+document.addEventListener('click', e => {
+  if (!e.target.closest('#predictInput') && !e.target.closest('#predictDropdown')) {
+    const dd = document.getElementById('predictDropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
 
 function renderPredictHistory() {
   const wrap = document.getElementById('predictHistoryWrap');
