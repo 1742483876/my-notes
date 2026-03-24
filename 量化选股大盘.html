@@ -962,7 +962,7 @@ function renderEquityCharts() {
           borderWidth: 2,
         }]
       },
-      options: chartLineOptions('净值')
+      options: chartLineOptions('净值', e30.map(d => d.equity))
     });
   }
 
@@ -983,7 +983,7 @@ function renderEquityCharts() {
           borderWidth: 2,
         }]
       },
-      options: chartLineOptions('净值')
+      options: chartLineOptions('净值', e1y.map(d => d.equity))
     });
   }
 
@@ -1025,14 +1025,27 @@ function renderEquityCharts() {
   });
 }
 
-function chartLineOptions(yLabel) {
+function chartLineOptions(yLabel, dataArr) {
+  // 自适应Y轴范围，避免数据压缩成水平线
+  let yMin, yMax;
+  if (dataArr && dataArr.length) {
+    const mn = Math.min(...dataArr);
+    const mx = Math.max(...dataArr);
+    const pad = Math.max((mx - mn) * 0.1, 0.5);
+    yMin = parseFloat((mn - pad).toFixed(2));
+    yMax = parseFloat((mx + pad).toFixed(2));
+  }
   return {
     responsive: true, maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
     plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e', borderColor: '#30363d', borderWidth: 1 } },
     scales: {
       x: { ticks: { color: '#8b949e', maxTicksLimit: 8, font: { size: 11 } }, grid: { color: '#21262d' } },
-      y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' }, title: { display: true, text: yLabel, color: '#8b949e' } }
+      y: {
+        ticks: { color: '#8b949e' }, grid: { color: '#21262d' },
+        title: { display: true, text: yLabel, color: '#8b949e' },
+        ...(yMin !== undefined ? { min: yMin, max: yMax } : {})
+      }
     }
   };
 }
