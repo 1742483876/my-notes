@@ -1617,8 +1617,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineMo
 
 <script>
 // ══════════ 个股预测逻辑 ══════════
-const PREDICT_API = 'http://localhost:18766/predict';
-const SEARCH_API  = 'http://localhost:18766/search';
+const PREDICT_API = 'https://localhost:18767/predict';
+const SEARCH_API  = 'https://localhost:18767/search';
 let predictHistory = JSON.parse(localStorage.getItem('predictHistory') || '[]');
 let _dropdownItems = [];
 let _dropdownIdx   = -1;
