@@ -532,7 +532,7 @@ function renderStats() {
 }
 
 function renderTopBanner() {
-  const recs = (G.recommendations || []).slice(0, 5);
+  const recs = (G.today_recommendations || []).slice(0, 5);
   document.getElementById('topBanner').innerHTML = `
     <div class="top-banner-icon">🔥</div>
     <div class="top-banner-text">

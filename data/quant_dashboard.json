@@ -1,23 +1,23 @@
 {
   "date": "2026-03-24",
-  "update_time": "2026-03-24T15:27:58.209779",
+  "update_time": "2026-03-24T17:19:25.248806",
   "stock_count": 5007,
   "strategy_count": 15,
   "weights": {
     "maGoldenCross": 0.02,
-    "volumeBreakout": 0.05,
-    "rsiOversold": 0.11,
-    "oversoldBounce": 0.26,
-    "bollingerMeanReversion": 0.05,
-    "kdjGoldenCross": 0.02,
-    "supermarket": 0.11,
+    "volumeBreakout": 0.03,
+    "rsiOversold": 0.12,
+    "oversoldBounce": 0.21,
+    "bollingerMeanReversion": 0.07,
+    "kdjGoldenCross": 0.06,
+    "supermarket": 0.07,
     "coldStock": 0.03,
-    "bottomFishing76": 0.09,
-    "equalWeight": 0.04,
-    "permanentPortfolio": 0.04,
-    "mainForceDivergence": 0.06,
-    "mainForceDivRate": 0.02,
-    "consecutiveYangLine": 0.04,
+    "bottomFishing76": 0.08,
+    "equalWeight": 0.12,
+    "permanentPortfolio": 0.07,
+    "mainForceDivergence": 0.02,
+    "mainForceDivRate": 0.03,
+    "consecutiveYangLine": 0.03,
     "volumeNewHigh": 0.05
   },
   "strategy_list": [
@@ -36,29 +36,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 48.6,
-        "avg_return": 0.42,
-        "total_return": 149.85,
-        "total_trades": 731,
-        "signal_stocks": 236,
-        "sharpe": 0.82,
-        "max_drawdown": 9.32
+        "win_rate": 51.8,
+        "avg_return": 0.57,
+        "total_return": 146.8,
+        "total_trades": 495,
+        "signal_stocks": 340,
+        "sharpe": 0.76,
+        "max_drawdown": 17.27
       },
       "backtest_all": {
-        "win_rate": 50.2,
-        "avg_return": 0.49,
-        "total_return": 516.81,
-        "total_trades": 2097,
-        "signal_stocks": 275,
-        "sharpe": 0.83,
-        "max_drawdown": 36.48
+        "win_rate": 44.9,
+        "avg_return": 0.5,
+        "total_return": 298.98,
+        "total_trades": 1345,
+        "signal_stocks": 267,
+        "sharpe": 0.86,
+        "max_drawdown": 21.76
       }
     },
     {
       "id": "volumeBreakout",
       "name": "放量突破",
       "desc": "成交量突增2倍以上，伴随价格突破",
-      "weight": 0.05,
+      "weight": 0.03,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -69,29 +69,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 53.0,
-        "avg_return": 1.0,
-        "total_return": 162.29,
-        "total_trades": 305,
-        "signal_stocks": 317,
-        "sharpe": 1.17,
-        "max_drawdown": 13.41
+        "win_rate": 50.0,
+        "avg_return": 0.96,
+        "total_return": 224.12,
+        "total_trades": 465,
+        "signal_stocks": 181,
+        "sharpe": 1.04,
+        "max_drawdown": 21.65
       },
       "backtest_all": {
-        "win_rate": 51.6,
-        "avg_return": 1.03,
-        "total_return": 500.44,
-        "total_trades": 938,
-        "signal_stocks": 370,
-        "sharpe": 1.07,
-        "max_drawdown": 39.86
+        "win_rate": 50.5,
+        "avg_return": 0.85,
+        "total_return": 468.19,
+        "total_trades": 1087,
+        "signal_stocks": 267,
+        "sharpe": 1.14,
+        "max_drawdown": 23.32
       }
     },
     {
       "id": "rsiOversold",
       "name": "RSI超卖",
       "desc": "RSI从超卖区（<30）回升，反弹信号",
-      "weight": 0.11,
+      "weight": 0.12,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -102,29 +102,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 62.6,
-        "avg_return": 0.91,
-        "total_return": 259.01,
-        "total_trades": 452,
-        "signal_stocks": 231,
-        "sharpe": 1.95,
-        "max_drawdown": 11.64
+        "win_rate": 62.7,
+        "avg_return": 1.12,
+        "total_return": 510.35,
+        "total_trades": 727,
+        "signal_stocks": 297,
+        "sharpe": 1.92,
+        "max_drawdown": 16.95
       },
       "backtest_all": {
-        "win_rate": 64.2,
-        "avg_return": 1.13,
-        "total_return": 1640.94,
-        "total_trades": 2256,
-        "signal_stocks": 344,
-        "sharpe": 2.14,
-        "max_drawdown": 35.26
+        "win_rate": 67.7,
+        "avg_return": 1.27,
+        "total_return": 1208.65,
+        "total_trades": 1405,
+        "signal_stocks": 381,
+        "sharpe": 2.04,
+        "max_drawdown": 28.52
       }
     },
     {
       "id": "oversoldBounce",
       "name": "超跌反弹",
       "desc": "10日跌幅超15%后出现3%以上反弹",
-      "weight": 0.26,
+      "weight": 0.21,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -135,29 +135,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 59.9,
-        "avg_return": 2.17,
-        "total_return": 284.05,
-        "total_trades": 219,
-        "signal_stocks": 169,
-        "sharpe": 1.76,
-        "max_drawdown": 10.35
+        "win_rate": 57.1,
+        "avg_return": 2.08,
+        "total_return": 450.08,
+        "total_trades": 379,
+        "signal_stocks": 249,
+        "sharpe": 1.74,
+        "max_drawdown": 14.62
       },
       "backtest_all": {
-        "win_rate": 56.9,
-        "avg_return": 1.89,
-        "total_return": 1831.92,
-        "total_trades": 1703,
-        "signal_stocks": 385,
-        "sharpe": 1.65,
-        "max_drawdown": 15.91
+        "win_rate": 56.4,
+        "avg_return": 1.99,
+        "total_return": 3050.44,
+        "total_trades": 2721,
+        "signal_stocks": 352,
+        "sharpe": 1.72,
+        "max_drawdown": 23.17
       }
     },
     {
       "id": "bollingerMeanReversion",
       "name": "布林回归",
       "desc": "股价触及布林带下轨后反弹",
-      "weight": 0.05,
+      "weight": 0.07,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -168,29 +168,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 54.7,
-        "avg_return": 1.19,
-        "total_return": 204.71,
-        "total_trades": 314,
-        "signal_stocks": 159,
-        "sharpe": 1.47,
-        "max_drawdown": 22.08
+        "win_rate": 52.3,
+        "avg_return": 1.01,
+        "total_return": 191.74,
+        "total_trades": 363,
+        "signal_stocks": 282,
+        "sharpe": 1.44,
+        "max_drawdown": 16.07
       },
       "backtest_all": {
-        "win_rate": 54.6,
-        "avg_return": 1.32,
-        "total_return": 1945.7,
-        "total_trades": 2710,
-        "signal_stocks": 352,
-        "sharpe": 1.46,
-        "max_drawdown": 29.48
+        "win_rate": 54.9,
+        "avg_return": 1.21,
+        "total_return": 1781.98,
+        "total_trades": 2684,
+        "signal_stocks": 332,
+        "sharpe": 1.5,
+        "max_drawdown": 22.26
       }
     },
     {
       "id": "kdjGoldenCross",
       "name": "KDJ金叉",
       "desc": "K线上穿D线，且J值<50，买入信号",
-      "weight": 0.02,
+      "weight": 0.06,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -201,29 +201,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 53.2,
-        "avg_return": 0.75,
-        "total_return": 249.65,
-        "total_trades": 624,
-        "signal_stocks": 292,
-        "sharpe": 0.98,
-        "max_drawdown": 22.32
+        "win_rate": 51.0,
+        "avg_return": 0.85,
+        "total_return": 92.7,
+        "total_trades": 214,
+        "signal_stocks": 247,
+        "sharpe": 0.89,
+        "max_drawdown": 9.25
       },
       "backtest_all": {
-        "win_rate": 57.8,
-        "avg_return": 0.74,
-        "total_return": 808.8,
-        "total_trades": 1889,
-        "signal_stocks": 346,
-        "sharpe": 1.13,
-        "max_drawdown": 35.85
+        "win_rate": 54.8,
+        "avg_return": 0.64,
+        "total_return": 469.62,
+        "total_trades": 1331,
+        "signal_stocks": 310,
+        "sharpe": 0.95,
+        "max_drawdown": 30.48
       }
     },
     {
       "id": "supermarket",
       "name": "超市策略",
       "desc": "基本面稳健+低估值+高股息组合",
-      "weight": 0.11,
+      "weight": 0.07,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -234,22 +234,22 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 57.9,
-        "avg_return": 1.0,
-        "total_return": 415.64,
-        "total_trades": 721,
-        "signal_stocks": 269,
-        "sharpe": 1.77,
-        "max_drawdown": 10.83
+        "win_rate": 67.0,
+        "avg_return": 0.91,
+        "total_return": 486.49,
+        "total_trades": 799,
+        "signal_stocks": 313,
+        "sharpe": 1.71,
+        "max_drawdown": 20.37
       },
       "backtest_all": {
-        "win_rate": 62.6,
-        "avg_return": 0.95,
-        "total_return": 723.78,
-        "total_trades": 1213,
-        "signal_stocks": 348,
-        "sharpe": 1.74,
-        "max_drawdown": 22.84
+        "win_rate": 62.7,
+        "avg_return": 0.76,
+        "total_return": 1025.27,
+        "total_trades": 2160,
+        "signal_stocks": 241,
+        "sharpe": 1.66,
+        "max_drawdown": 19.45
       }
     },
     {
@@ -267,95 +267,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 53.7,
-        "avg_return": 0.65,
-        "total_return": 126.69,
-        "total_trades": 362,
-        "signal_stocks": 172,
-        "sharpe": 1.22,
-        "max_drawdown": 15.68
+        "win_rate": 54.5,
+        "avg_return": 0.47,
+        "total_return": 61.44,
+        "total_trades": 241,
+        "signal_stocks": 341,
+        "sharpe": 1.17,
+        "max_drawdown": 14.39
       },
       "backtest_all": {
-        "win_rate": 53.0,
-        "avg_return": 0.58,
-        "total_return": 810.73,
-        "total_trades": 2621,
-        "signal_stocks": 337,
-        "sharpe": 1.22,
-        "max_drawdown": 23.52
+        "win_rate": 58.9,
+        "avg_return": 0.69,
+        "total_return": 652.81,
+        "total_trades": 1614,
+        "signal_stocks": 293,
+        "sharpe": 1.15,
+        "max_drawdown": 27.75
       }
     },
     {
       "id": "bottomFishing76",
       "name": "76抄底",
       "desc": "股价回调至76.4%斐波那契位",
-      "weight": 0.09,
-      "backtest_30d": {
-        "win_rate": 0,
-        "avg_return": 0,
-        "total_return": 0,
-        "total_trades": 0,
-        "signal_stocks": 0,
-        "sharpe": 0,
-        "max_drawdown": 0
-      },
-      "backtest_1y": {
-        "win_rate": 57.7,
-        "avg_return": 1.56,
-        "total_return": 393.58,
-        "total_trades": 438,
-        "signal_stocks": 171,
-        "sharpe": 1.66,
-        "max_drawdown": 19.34
-      },
-      "backtest_all": {
-        "win_rate": 55.4,
-        "avg_return": 1.4,
-        "total_return": 2104.2,
-        "total_trades": 2705,
-        "signal_stocks": 342,
-        "sharpe": 1.56,
-        "max_drawdown": 37.35
-      }
-    },
-    {
-      "id": "equalWeight",
-      "name": "等权组合",
-      "desc": "所有策略等权重组合",
-      "weight": 0.04,
-      "backtest_30d": {
-        "win_rate": 0,
-        "avg_return": 0,
-        "total_return": 0,
-        "total_trades": 0,
-        "signal_stocks": 0,
-        "sharpe": 0,
-        "max_drawdown": 0
-      },
-      "backtest_1y": {
-        "win_rate": 52.5,
-        "avg_return": 0.81,
-        "total_return": 182.09,
-        "total_trades": 428,
-        "signal_stocks": 279,
-        "sharpe": 1.12,
-        "max_drawdown": 12.51
-      },
-      "backtest_all": {
-        "win_rate": 52.2,
-        "avg_return": 0.79,
-        "total_return": 364.01,
-        "total_trades": 884,
-        "signal_stocks": 224,
-        "sharpe": 1.27,
-        "max_drawdown": 33.97
-      }
-    },
-    {
-      "id": "permanentPortfolio",
-      "name": "永久组合",
-      "desc": "股票+债券+黄金+现金的25%均配",
-      "weight": 0.04,
+      "weight": 0.08,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -367,28 +301,28 @@
       },
       "backtest_1y": {
         "win_rate": 58.0,
-        "avg_return": 0.7,
-        "total_return": 156.41,
-        "total_trades": 386,
-        "signal_stocks": 262,
-        "sharpe": 1.99,
-        "max_drawdown": 24.33
+        "avg_return": 1.46,
+        "total_return": 678.19,
+        "total_trades": 799,
+        "signal_stocks": 326,
+        "sharpe": 1.33,
+        "max_drawdown": 20.39
       },
       "backtest_all": {
-        "win_rate": 59.9,
-        "avg_return": 0.4,
-        "total_return": 276.3,
-        "total_trades": 1155,
-        "signal_stocks": 313,
-        "sharpe": 1.75,
-        "max_drawdown": 32.89
+        "win_rate": 58.3,
+        "avg_return": 1.6,
+        "total_return": 1772.19,
+        "total_trades": 1897,
+        "signal_stocks": 268,
+        "sharpe": 1.43,
+        "max_drawdown": 16.01
       }
     },
     {
-      "id": "mainForceDivergence",
-      "name": "主力 divergence",
-      "desc": "价格与主力资金流向背离",
-      "weight": 0.06,
+      "id": "equalWeight",
+      "name": "等权组合",
+      "desc": "所有策略等权重组合",
+      "weight": 0.12,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -399,28 +333,61 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 49.7,
-        "avg_return": 0.92,
-        "total_return": 158.83,
-        "total_trades": 347,
-        "signal_stocks": 319,
-        "sharpe": 1.09,
-        "max_drawdown": 9.72
+        "win_rate": 57.5,
+        "avg_return": 1.12,
+        "total_return": 138.36,
+        "total_trades": 214,
+        "signal_stocks": 205,
+        "sharpe": 1.41,
+        "max_drawdown": 11.42
       },
       "backtest_all": {
-        "win_rate": 51.4,
-        "avg_return": 0.93,
-        "total_return": 642.34,
-        "total_trades": 1343,
-        "signal_stocks": 286,
-        "sharpe": 0.96,
-        "max_drawdown": 27.78
+        "win_rate": 51.9,
+        "avg_return": 0.84,
+        "total_return": 562.1,
+        "total_trades": 1286,
+        "signal_stocks": 270,
+        "sharpe": 1.25,
+        "max_drawdown": 19.67
       }
     },
     {
-      "id": "mainForceDivRate",
-      "name": "主力 divergence 率",
-      "desc": "主力资金 divergence 程度量化",
+      "id": "permanentPortfolio",
+      "name": "永久组合",
+      "desc": "股票+债券+黄金+现金的25%均配",
+      "weight": 0.07,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0,
+        "max_drawdown": 0
+      },
+      "backtest_1y": {
+        "win_rate": 59.9,
+        "avg_return": 0.6,
+        "total_return": 114.89,
+        "total_trades": 318,
+        "signal_stocks": 185,
+        "sharpe": 2.03,
+        "max_drawdown": 14.52
+      },
+      "backtest_all": {
+        "win_rate": 59.1,
+        "avg_return": 0.48,
+        "total_return": 586.09,
+        "total_trades": 2084,
+        "signal_stocks": 395,
+        "sharpe": 1.93,
+        "max_drawdown": 24.83
+      }
+    },
+    {
+      "id": "mainForceDivergence",
+      "name": "主力 divergence",
+      "desc": "价格与主力资金流向背离",
       "weight": 0.02,
       "backtest_30d": {
         "win_rate": 0,
@@ -432,29 +399,29 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 51.9,
-        "avg_return": 0.71,
-        "total_return": 256.07,
-        "total_trades": 696,
-        "signal_stocks": 327,
-        "sharpe": 0.69,
-        "max_drawdown": 17.36
+        "win_rate": 48.1,
+        "avg_return": 0.55,
+        "total_return": 70.15,
+        "total_trades": 265,
+        "signal_stocks": 176,
+        "sharpe": 1.06,
+        "max_drawdown": 24.95
       },
       "backtest_all": {
-        "win_rate": 50.6,
-        "avg_return": 0.87,
-        "total_return": 1190.66,
-        "total_trades": 2713,
-        "signal_stocks": 209,
-        "sharpe": 0.72,
-        "max_drawdown": 24.5
+        "win_rate": 47.3,
+        "avg_return": 0.82,
+        "total_return": 881.42,
+        "total_trades": 2269,
+        "signal_stocks": 297,
+        "sharpe": 1.04,
+        "max_drawdown": 15.6
       }
     },
     {
-      "id": "consecutiveYangLine",
-      "name": "连阳",
-      "desc": "连续3日以上收阳线，多头强势",
-      "weight": 0.04,
+      "id": "mainForceDivRate",
+      "name": "主力 divergence 率",
+      "desc": "主力资金 divergence 程度量化",
+      "weight": 0.03,
       "backtest_30d": {
         "win_rate": 0,
         "avg_return": 0,
@@ -465,22 +432,55 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 51.5,
-        "avg_return": 0.9,
-        "total_return": 171.59,
-        "total_trades": 370,
-        "signal_stocks": 217,
-        "sharpe": 0.8,
-        "max_drawdown": 12.16
+        "win_rate": 50.1,
+        "avg_return": 0.7,
+        "total_return": 178.89,
+        "total_trades": 512,
+        "signal_stocks": 231,
+        "sharpe": 0.82,
+        "max_drawdown": 13.5
       },
       "backtest_all": {
-        "win_rate": 49.2,
-        "avg_return": 0.73,
-        "total_return": 447.89,
-        "total_trades": 1241,
-        "signal_stocks": 351,
-        "sharpe": 0.8,
-        "max_drawdown": 27.36
+        "win_rate": 46.4,
+        "avg_return": 0.79,
+        "total_return": 740.02,
+        "total_trades": 2029,
+        "signal_stocks": 226,
+        "sharpe": 0.75,
+        "max_drawdown": 30.95
+      }
+    },
+    {
+      "id": "consecutiveYangLine",
+      "name": "连阳",
+      "desc": "连续3日以上收阳线，多头强势",
+      "weight": 0.03,
+      "backtest_30d": {
+        "win_rate": 0,
+        "avg_return": 0,
+        "total_return": 0,
+        "total_trades": 0,
+        "signal_stocks": 0,
+        "sharpe": 0,
+        "max_drawdown": 0
+      },
+      "backtest_1y": {
+        "win_rate": 52.2,
+        "avg_return": 0.83,
+        "total_return": 174.21,
+        "total_trades": 400,
+        "signal_stocks": 342,
+        "sharpe": 0.87,
+        "max_drawdown": 21.18
+      },
+      "backtest_all": {
+        "win_rate": 47.7,
+        "avg_return": 0.76,
+        "total_return": 614.48,
+        "total_trades": 1695,
+        "signal_stocks": 312,
+        "sharpe": 0.89,
+        "max_drawdown": 29.52
       }
     },
     {
@@ -498,22 +498,22 @@
         "max_drawdown": 0
       },
       "backtest_1y": {
-        "win_rate": 51.0,
-        "avg_return": 1.09,
-        "total_return": 121.84,
-        "total_trades": 220,
-        "signal_stocks": 175,
-        "sharpe": 1.23,
-        "max_drawdown": 15.86
+        "win_rate": 54.2,
+        "avg_return": 1.15,
+        "total_return": 125.55,
+        "total_trades": 202,
+        "signal_stocks": 292,
+        "sharpe": 1.13,
+        "max_drawdown": 21.59
       },
       "backtest_all": {
-        "win_rate": 52.7,
-        "avg_return": 1.06,
-        "total_return": 786.58,
-        "total_trades": 1403,
-        "signal_stocks": 342,
-        "sharpe": 1.07,
-        "max_drawdown": 25.42
+        "win_rate": 54.8,
+        "avg_return": 1.08,
+        "total_return": 1685.69,
+        "total_trades": 2849,
+        "signal_stocks": 200,
+        "sharpe": 1.12,
+        "max_drawdown": 31.04
       }
     }
   ],
@@ -656,276 +656,276 @@
   },
   "backtest_1y": {
     "maGoldenCross": {
-      "win_rate": 48.6,
-      "avg_return": 0.42,
-      "total_return": 149.85,
-      "total_trades": 731,
-      "signal_stocks": 236,
-      "sharpe": 0.82,
-      "max_drawdown": 9.32
+      "win_rate": 51.8,
+      "avg_return": 0.57,
+      "total_return": 146.8,
+      "total_trades": 495,
+      "signal_stocks": 340,
+      "sharpe": 0.76,
+      "max_drawdown": 17.27
     },
     "volumeBreakout": {
-      "win_rate": 53.0,
-      "avg_return": 1.0,
-      "total_return": 162.29,
-      "total_trades": 305,
-      "signal_stocks": 317,
-      "sharpe": 1.17,
-      "max_drawdown": 13.41
+      "win_rate": 50.0,
+      "avg_return": 0.96,
+      "total_return": 224.12,
+      "total_trades": 465,
+      "signal_stocks": 181,
+      "sharpe": 1.04,
+      "max_drawdown": 21.65
     },
     "rsiOversold": {
-      "win_rate": 62.6,
-      "avg_return": 0.91,
-      "total_return": 259.01,
-      "total_trades": 452,
-      "signal_stocks": 231,
-      "sharpe": 1.95,
-      "max_drawdown": 11.64
+      "win_rate": 62.7,
+      "avg_return": 1.12,
+      "total_return": 510.35,
+      "total_trades": 727,
+      "signal_stocks": 297,
+      "sharpe": 1.92,
+      "max_drawdown": 16.95
     },
     "oversoldBounce": {
-      "win_rate": 59.9,
-      "avg_return": 2.17,
-      "total_return": 284.05,
-      "total_trades": 219,
-      "signal_stocks": 169,
-      "sharpe": 1.76,
-      "max_drawdown": 10.35
+      "win_rate": 57.1,
+      "avg_return": 2.08,
+      "total_return": 450.08,
+      "total_trades": 379,
+      "signal_stocks": 249,
+      "sharpe": 1.74,
+      "max_drawdown": 14.62
     },
     "bollingerMeanReversion": {
-      "win_rate": 54.7,
-      "avg_return": 1.19,
-      "total_return": 204.71,
-      "total_trades": 314,
-      "signal_stocks": 159,
-      "sharpe": 1.47,
-      "max_drawdown": 22.08
+      "win_rate": 52.3,
+      "avg_return": 1.01,
+      "total_return": 191.74,
+      "total_trades": 363,
+      "signal_stocks": 282,
+      "sharpe": 1.44,
+      "max_drawdown": 16.07
     },
     "kdjGoldenCross": {
-      "win_rate": 53.2,
-      "avg_return": 0.75,
-      "total_return": 249.65,
-      "total_trades": 624,
-      "signal_stocks": 292,
-      "sharpe": 0.98,
-      "max_drawdown": 22.32
+      "win_rate": 51.0,
+      "avg_return": 0.85,
+      "total_return": 92.7,
+      "total_trades": 214,
+      "signal_stocks": 247,
+      "sharpe": 0.89,
+      "max_drawdown": 9.25
     },
     "supermarket": {
-      "win_rate": 57.9,
-      "avg_return": 1.0,
-      "total_return": 415.64,
-      "total_trades": 721,
-      "signal_stocks": 269,
-      "sharpe": 1.77,
-      "max_drawdown": 10.83
+      "win_rate": 67.0,
+      "avg_return": 0.91,
+      "total_return": 486.49,
+      "total_trades": 799,
+      "signal_stocks": 313,
+      "sharpe": 1.71,
+      "max_drawdown": 20.37
     },
     "coldStock": {
-      "win_rate": 53.7,
-      "avg_return": 0.65,
-      "total_return": 126.69,
-      "total_trades": 362,
-      "signal_stocks": 172,
-      "sharpe": 1.22,
-      "max_drawdown": 15.68
+      "win_rate": 54.5,
+      "avg_return": 0.47,
+      "total_return": 61.44,
+      "total_trades": 241,
+      "signal_stocks": 341,
+      "sharpe": 1.17,
+      "max_drawdown": 14.39
     },
     "bottomFishing76": {
-      "win_rate": 57.7,
-      "avg_return": 1.56,
-      "total_return": 393.58,
-      "total_trades": 438,
-      "signal_stocks": 171,
-      "sharpe": 1.66,
-      "max_drawdown": 19.34
+      "win_rate": 58.0,
+      "avg_return": 1.46,
+      "total_return": 678.19,
+      "total_trades": 799,
+      "signal_stocks": 326,
+      "sharpe": 1.33,
+      "max_drawdown": 20.39
     },
     "equalWeight": {
-      "win_rate": 52.5,
-      "avg_return": 0.81,
-      "total_return": 182.09,
-      "total_trades": 428,
-      "signal_stocks": 279,
-      "sharpe": 1.12,
-      "max_drawdown": 12.51
+      "win_rate": 57.5,
+      "avg_return": 1.12,
+      "total_return": 138.36,
+      "total_trades": 214,
+      "signal_stocks": 205,
+      "sharpe": 1.41,
+      "max_drawdown": 11.42
     },
     "permanentPortfolio": {
-      "win_rate": 58.0,
-      "avg_return": 0.7,
-      "total_return": 156.41,
-      "total_trades": 386,
-      "signal_stocks": 262,
-      "sharpe": 1.99,
-      "max_drawdown": 24.33
+      "win_rate": 59.9,
+      "avg_return": 0.6,
+      "total_return": 114.89,
+      "total_trades": 318,
+      "signal_stocks": 185,
+      "sharpe": 2.03,
+      "max_drawdown": 14.52
     },
     "mainForceDivergence": {
-      "win_rate": 49.7,
-      "avg_return": 0.92,
-      "total_return": 158.83,
-      "total_trades": 347,
-      "signal_stocks": 319,
-      "sharpe": 1.09,
-      "max_drawdown": 9.72
+      "win_rate": 48.1,
+      "avg_return": 0.55,
+      "total_return": 70.15,
+      "total_trades": 265,
+      "signal_stocks": 176,
+      "sharpe": 1.06,
+      "max_drawdown": 24.95
     },
     "mainForceDivRate": {
-      "win_rate": 51.9,
-      "avg_return": 0.71,
-      "total_return": 256.07,
-      "total_trades": 696,
-      "signal_stocks": 327,
-      "sharpe": 0.69,
-      "max_drawdown": 17.36
+      "win_rate": 50.1,
+      "avg_return": 0.7,
+      "total_return": 178.89,
+      "total_trades": 512,
+      "signal_stocks": 231,
+      "sharpe": 0.82,
+      "max_drawdown": 13.5
     },
     "consecutiveYangLine": {
-      "win_rate": 51.5,
-      "avg_return": 0.9,
-      "total_return": 171.59,
-      "total_trades": 370,
-      "signal_stocks": 217,
-      "sharpe": 0.8,
-      "max_drawdown": 12.16
+      "win_rate": 52.2,
+      "avg_return": 0.83,
+      "total_return": 174.21,
+      "total_trades": 400,
+      "signal_stocks": 342,
+      "sharpe": 0.87,
+      "max_drawdown": 21.18
     },
     "volumeNewHigh": {
-      "win_rate": 51.0,
-      "avg_return": 1.09,
-      "total_return": 121.84,
-      "total_trades": 220,
-      "signal_stocks": 175,
-      "sharpe": 1.23,
-      "max_drawdown": 15.86
+      "win_rate": 54.2,
+      "avg_return": 1.15,
+      "total_return": 125.55,
+      "total_trades": 202,
+      "signal_stocks": 292,
+      "sharpe": 1.13,
+      "max_drawdown": 21.59
     }
   },
   "backtest_all": {
     "maGoldenCross": {
-      "win_rate": 50.2,
-      "avg_return": 0.49,
-      "total_return": 516.81,
-      "total_trades": 2097,
-      "signal_stocks": 275,
-      "sharpe": 0.83,
-      "max_drawdown": 36.48
+      "win_rate": 44.9,
+      "avg_return": 0.5,
+      "total_return": 298.98,
+      "total_trades": 1345,
+      "signal_stocks": 267,
+      "sharpe": 0.86,
+      "max_drawdown": 21.76
     },
     "volumeBreakout": {
-      "win_rate": 51.6,
-      "avg_return": 1.03,
-      "total_return": 500.44,
-      "total_trades": 938,
-      "signal_stocks": 370,
-      "sharpe": 1.07,
-      "max_drawdown": 39.86
+      "win_rate": 50.5,
+      "avg_return": 0.85,
+      "total_return": 468.19,
+      "total_trades": 1087,
+      "signal_stocks": 267,
+      "sharpe": 1.14,
+      "max_drawdown": 23.32
     },
     "rsiOversold": {
-      "win_rate": 64.2,
-      "avg_return": 1.13,
-      "total_return": 1640.94,
-      "total_trades": 2256,
-      "signal_stocks": 344,
-      "sharpe": 2.14,
-      "max_drawdown": 35.26
+      "win_rate": 67.7,
+      "avg_return": 1.27,
+      "total_return": 1208.65,
+      "total_trades": 1405,
+      "signal_stocks": 381,
+      "sharpe": 2.04,
+      "max_drawdown": 28.52
     },
     "oversoldBounce": {
-      "win_rate": 56.9,
-      "avg_return": 1.89,
-      "total_return": 1831.92,
-      "total_trades": 1703,
-      "signal_stocks": 385,
-      "sharpe": 1.65,
-      "max_drawdown": 15.91
+      "win_rate": 56.4,
+      "avg_return": 1.99,
+      "total_return": 3050.44,
+      "total_trades": 2721,
+      "signal_stocks": 352,
+      "sharpe": 1.72,
+      "max_drawdown": 23.17
     },
     "bollingerMeanReversion": {
-      "win_rate": 54.6,
-      "avg_return": 1.32,
-      "total_return": 1945.7,
-      "total_trades": 2710,
-      "signal_stocks": 352,
-      "sharpe": 1.46,
-      "max_drawdown": 29.48
+      "win_rate": 54.9,
+      "avg_return": 1.21,
+      "total_return": 1781.98,
+      "total_trades": 2684,
+      "signal_stocks": 332,
+      "sharpe": 1.5,
+      "max_drawdown": 22.26
     },
     "kdjGoldenCross": {
-      "win_rate": 57.8,
-      "avg_return": 0.74,
-      "total_return": 808.8,
-      "total_trades": 1889,
-      "signal_stocks": 346,
-      "sharpe": 1.13,
-      "max_drawdown": 35.85
+      "win_rate": 54.8,
+      "avg_return": 0.64,
+      "total_return": 469.62,
+      "total_trades": 1331,
+      "signal_stocks": 310,
+      "sharpe": 0.95,
+      "max_drawdown": 30.48
     },
     "supermarket": {
-      "win_rate": 62.6,
-      "avg_return": 0.95,
-      "total_return": 723.78,
-      "total_trades": 1213,
-      "signal_stocks": 348,
-      "sharpe": 1.74,
-      "max_drawdown": 22.84
+      "win_rate": 62.7,
+      "avg_return": 0.76,
+      "total_return": 1025.27,
+      "total_trades": 2160,
+      "signal_stocks": 241,
+      "sharpe": 1.66,
+      "max_drawdown": 19.45
     },
     "coldStock": {
-      "win_rate": 53.0,
-      "avg_return": 0.58,
-      "total_return": 810.73,
-      "total_trades": 2621,
-      "signal_stocks": 337,
-      "sharpe": 1.22,
-      "max_drawdown": 23.52
+      "win_rate": 58.9,
+      "avg_return": 0.69,
+      "total_return": 652.81,
+      "total_trades": 1614,
+      "signal_stocks": 293,
+      "sharpe": 1.15,
+      "max_drawdown": 27.75
     },
     "bottomFishing76": {
-      "win_rate": 55.4,
-      "avg_return": 1.4,
-      "total_return": 2104.2,
-      "total_trades": 2705,
-      "signal_stocks": 342,
-      "sharpe": 1.56,
-      "max_drawdown": 37.35
+      "win_rate": 58.3,
+      "avg_return": 1.6,
+      "total_return": 1772.19,
+      "total_trades": 1897,
+      "signal_stocks": 268,
+      "sharpe": 1.43,
+      "max_drawdown": 16.01
     },
     "equalWeight": {
-      "win_rate": 52.2,
-      "avg_return": 0.79,
-      "total_return": 364.01,
-      "total_trades": 884,
-      "signal_stocks": 224,
-      "sharpe": 1.27,
-      "max_drawdown": 33.97
+      "win_rate": 51.9,
+      "avg_return": 0.84,
+      "total_return": 562.1,
+      "total_trades": 1286,
+      "signal_stocks": 270,
+      "sharpe": 1.25,
+      "max_drawdown": 19.67
     },
     "permanentPortfolio": {
-      "win_rate": 59.9,
-      "avg_return": 0.4,
-      "total_return": 276.3,
-      "total_trades": 1155,
-      "signal_stocks": 313,
-      "sharpe": 1.75,
-      "max_drawdown": 32.89
+      "win_rate": 59.1,
+      "avg_return": 0.48,
+      "total_return": 586.09,
+      "total_trades": 2084,
+      "signal_stocks": 395,
+      "sharpe": 1.93,
+      "max_drawdown": 24.83
     },
     "mainForceDivergence": {
-      "win_rate": 51.4,
-      "avg_return": 0.93,
-      "total_return": 642.34,
-      "total_trades": 1343,
-      "signal_stocks": 286,
-      "sharpe": 0.96,
-      "max_drawdown": 27.78
+      "win_rate": 47.3,
+      "avg_return": 0.82,
+      "total_return": 881.42,
+      "total_trades": 2269,
+      "signal_stocks": 297,
+      "sharpe": 1.04,
+      "max_drawdown": 15.6
     },
     "mainForceDivRate": {
-      "win_rate": 50.6,
-      "avg_return": 0.87,
-      "total_return": 1190.66,
-      "total_trades": 2713,
-      "signal_stocks": 209,
-      "sharpe": 0.72,
-      "max_drawdown": 24.5
+      "win_rate": 46.4,
+      "avg_return": 0.79,
+      "total_return": 740.02,
+      "total_trades": 2029,
+      "signal_stocks": 226,
+      "sharpe": 0.75,
+      "max_drawdown": 30.95
     },
     "consecutiveYangLine": {
-      "win_rate": 49.2,
-      "avg_return": 0.73,
-      "total_return": 447.89,
-      "total_trades": 1241,
-      "signal_stocks": 351,
-      "sharpe": 0.8,
-      "max_drawdown": 27.36
+      "win_rate": 47.7,
+      "avg_return": 0.76,
+      "total_return": 614.48,
+      "total_trades": 1695,
+      "signal_stocks": 312,
+      "sharpe": 0.89,
+      "max_drawdown": 29.52
     },
     "volumeNewHigh": {
-      "win_rate": 52.7,
-      "avg_return": 1.06,
-      "total_return": 786.58,
-      "total_trades": 1403,
-      "signal_stocks": 342,
-      "sharpe": 1.07,
-      "max_drawdown": 25.42
+      "win_rate": 54.8,
+      "avg_return": 1.08,
+      "total_return": 1685.69,
+      "total_trades": 2849,
+      "signal_stocks": 200,
+      "sharpe": 1.12,
+      "max_drawdown": 31.04
     }
   },
   "equity_30d": [
@@ -11912,12 +11912,22 @@
       "rank": 1,
       "code": "301129",
       "name": "瑞纳智能",
-      "score": 56.5,
-      "price": 75.36,
-      "change": 0.76,
+      "score": 55.3,
+      "close": 134.77,
+      "chg_1d": 3.0,
+      "chg_5d": -6.31,
+      "hit_count": 2,
+      "strategies": [
+        "超市策略",
+        "RSI超卖"
+      ],
+      "reason_text": "超市策略 + RSI超卖",
+      "last_date": "2026-03-24",
+      "price": 134.77,
+      "change": 3.0,
       "triggered_strategies": [
-        "permanentPortfolio",
-        "oversoldBounce"
+        "supermarket",
+        "rsiOversold"
       ],
       "reason": "触发2个策略信号"
     },
@@ -11925,28 +11935,53 @@
       "rank": 2,
       "code": "301584",
       "name": "建发致新",
-      "score": 56.5,
-      "price": 142.6,
-      "change": -2.12,
-      "triggered_strategies": [
-        "kdjGoldenCross",
-        "mainForceDivRate",
-        "permanentPortfolio"
+      "score": 58.4,
+      "close": 79.83,
+      "chg_1d": 3.91,
+      "chg_5d": 0.99,
+      "hit_count": 4,
+      "strategies": [
+        "新高放量",
+        "超跌反弹",
+        "超市策略",
+        "均线金叉"
       ],
-      "reason": "触发3个策略信号"
+      "reason_text": "新高放量 + 超跌反弹 + 超市策略 + 均线金叉",
+      "last_date": "2026-03-24",
+      "price": 79.83,
+      "change": 3.91,
+      "triggered_strategies": [
+        "volumeNewHigh",
+        "oversoldBounce",
+        "supermarket",
+        "maGoldenCross"
+      ],
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 3,
       "code": "600605",
       "name": "汇通能源",
-      "score": 57.4,
-      "price": 104.49,
-      "change": -3.65,
+      "score": 57.5,
+      "close": 147.2,
+      "chg_1d": 3.13,
+      "chg_5d": -6.25,
+      "hit_count": 4,
+      "strategies": [
+        "连阳",
+        "新高放量",
+        "等权组合",
+        "放量突破"
+      ],
+      "reason_text": "连阳 + 新高放量 + 等权组合 + 放量突破",
+      "last_date": "2026-03-24",
+      "price": 147.2,
+      "change": 3.13,
       "triggered_strategies": [
+        "consecutiveYangLine",
         "volumeNewHigh",
-        "permanentPortfolio",
-        "mainForceDivRate",
-        "bottomFishing76"
+        "equalWeight",
+        "volumeBreakout"
       ],
       "reason": "触发4个策略信号"
     },
@@ -11954,27 +11989,47 @@
       "rank": 4,
       "code": "603949",
       "name": "雪龙集团",
-      "score": 54.4,
-      "price": 46.45,
-      "change": -0.36,
-      "triggered_strategies": [
-        "coldStock",
-        "kdjGoldenCross",
-        "equalWeight",
-        "mainForceDivRate"
+      "score": 52.4,
+      "close": 113.32,
+      "chg_1d": -1.48,
+      "chg_5d": 10.22,
+      "hit_count": 3,
+      "strategies": [
+        "布林回归",
+        "等权组合",
+        "超市策略"
       ],
-      "reason": "触发4个策略信号"
+      "reason_text": "布林回归 + 等权组合 + 超市策略",
+      "last_date": "2026-03-24",
+      "price": 113.32,
+      "change": -1.48,
+      "triggered_strategies": [
+        "bollingerMeanReversion",
+        "equalWeight",
+        "supermarket"
+      ],
+      "reason": "触发3个策略信号"
     },
     {
       "rank": 5,
       "code": "000062",
       "name": "深圳华强",
-      "score": 51.6,
-      "price": 111.87,
-      "change": -4.0,
+      "score": 50.1,
+      "close": 109.8,
+      "chg_1d": 6.93,
+      "chg_5d": 7.6,
+      "hit_count": 2,
+      "strategies": [
+        "KDJ金叉",
+        "主力 divergence 率"
+      ],
+      "reason_text": "KDJ金叉 + 主力 divergence 率",
+      "last_date": "2026-03-24",
+      "price": 109.8,
+      "change": 6.93,
       "triggered_strategies": [
-        "maGoldenCross",
-        "kdjGoldenCross"
+        "kdjGoldenCross",
+        "mainForceDivRate"
       ],
       "reason": "触发2个策略信号"
     },
@@ -11982,29 +12037,51 @@
       "rank": 6,
       "code": "002896",
       "name": "中大力德",
-      "score": 54.3,
-      "price": 81.85,
-      "change": 7.11,
-      "triggered_strategies": [
-        "supermarket",
-        "equalWeight",
-        "permanentPortfolio",
-        "rsiOversold"
+      "score": 53.6,
+      "close": 113.74,
+      "chg_1d": 4.2,
+      "chg_5d": 2.89,
+      "hit_count": 3,
+      "strategies": [
+        "RSI超卖",
+        "放量突破",
+        "KDJ金叉"
       ],
-      "reason": "触发4个策略信号"
+      "reason_text": "RSI超卖 + 放量突破 + KDJ金叉",
+      "last_date": "2026-03-24",
+      "price": 113.74,
+      "change": 4.2,
+      "triggered_strategies": [
+        "rsiOversold",
+        "volumeBreakout",
+        "kdjGoldenCross"
+      ],
+      "reason": "触发3个策略信号"
     },
     {
       "rank": 7,
       "code": "300718",
       "name": "长盛轴承",
-      "score": 52.4,
-      "price": 127.05,
-      "change": -1.02,
+      "score": 57.3,
+      "close": 11.62,
+      "chg_1d": -2.04,
+      "chg_5d": 3.11,
+      "hit_count": 4,
+      "strategies": [
+        "等权组合",
+        "RSI超卖",
+        "主力 divergence 率",
+        "永久组合"
+      ],
+      "reason_text": "等权组合 + RSI超卖 + 主力 divergence 率 + 永久组合",
+      "last_date": "2026-03-24",
+      "price": 11.62,
+      "change": -2.04,
       "triggered_strategies": [
-        "coldStock",
-        "rsiOversold",
         "equalWeight",
-        "mainForceDivRate"
+        "rsiOversold",
+        "mainForceDivRate",
+        "permanentPortfolio"
       ],
       "reason": "触发4个策略信号"
     },
@@ -12012,117 +12089,210 @@
       "rank": 8,
       "code": "003021",
       "name": "兆威机电",
-      "score": 52.8,
-      "price": 52.25,
-      "change": 1.79,
-      "triggered_strategies": [
-        "rsiOversold",
-        "mainForceDivRate",
-        "oversoldBounce"
+      "score": 51.1,
+      "close": 56.2,
+      "chg_1d": -2.88,
+      "chg_5d": 8.39,
+      "hit_count": 2,
+      "strategies": [
+        "76抄底",
+        "连阳"
       ],
-      "reason": "触发3个策略信号"
+      "reason_text": "76抄底 + 连阳",
+      "last_date": "2026-03-24",
+      "price": 56.2,
+      "change": -2.88,
+      "triggered_strategies": [
+        "bottomFishing76",
+        "consecutiveYangLine"
+      ],
+      "reason": "触发2个策略信号"
     },
     {
       "rank": 9,
       "code": "603667",
       "name": "五洲新春",
-      "score": 52.7,
-      "price": 19.04,
-      "change": 1.32,
-      "triggered_strategies": [
-        "permanentPortfolio",
-        "kdjGoldenCross",
-        "mainForceDivRate"
+      "score": 51.7,
+      "close": 126.85,
+      "chg_1d": 4.6,
+      "chg_5d": 3.95,
+      "hit_count": 5,
+      "strategies": [
+        "76抄底",
+        "均线金叉",
+        "超跌反弹",
+        "新高放量",
+        "放量突破"
       ],
-      "reason": "触发3个策略信号"
+      "reason_text": "76抄底 + 均线金叉 + 超跌反弹 + 新高放量 + 放量突破",
+      "last_date": "2026-03-24",
+      "price": 126.85,
+      "change": 4.6,
+      "triggered_strategies": [
+        "bottomFishing76",
+        "maGoldenCross",
+        "oversoldBounce",
+        "volumeNewHigh",
+        "volumeBreakout"
+      ],
+      "reason": "触发5个策略信号"
     },
     {
       "rank": 10,
       "code": "300953",
       "name": "震裕科技",
-      "score": 45.3,
-      "price": 90.83,
-      "change": -5.0,
-      "triggered_strategies": [
-        "kdjGoldenCross",
-        "bollingerMeanReversion",
-        "volumeBreakout",
-        "coldStock",
-        "equalWeight"
+      "score": 47.9,
+      "close": 122.19,
+      "chg_1d": -3.38,
+      "chg_5d": 2.37,
+      "hit_count": 4,
+      "strategies": [
+        "均线金叉",
+        "布林回归",
+        "永久组合",
+        "新高放量"
       ],
-      "reason": "触发5个策略信号"
+      "reason_text": "均线金叉 + 布林回归 + 永久组合 + 新高放量",
+      "last_date": "2026-03-24",
+      "price": 122.19,
+      "change": -3.38,
+      "triggered_strategies": [
+        "maGoldenCross",
+        "bollingerMeanReversion",
+        "permanentPortfolio",
+        "volumeNewHigh"
+      ],
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 11,
       "code": "300100",
       "name": "双林股份",
-      "score": 49.5,
-      "price": 125.15,
-      "change": -2.59,
-      "triggered_strategies": [
-        "coldStock",
-        "rsiOversold",
-        "supermarket",
-        "mainForceDivergence",
-        "consecutiveYangLine"
+      "score": 54.1,
+      "close": 51.24,
+      "chg_1d": 6.68,
+      "chg_5d": 9.76,
+      "hit_count": 3,
+      "strategies": [
+        "超市策略",
+        "永久组合",
+        "KDJ金叉"
       ],
-      "reason": "触发5个策略信号"
+      "reason_text": "超市策略 + 永久组合 + KDJ金叉",
+      "last_date": "2026-03-24",
+      "price": 51.24,
+      "change": 6.68,
+      "triggered_strategies": [
+        "supermarket",
+        "permanentPortfolio",
+        "kdjGoldenCross"
+      ],
+      "reason": "触发3个策略信号"
     },
     {
       "rank": 12,
       "code": "601689",
       "name": "拓普集团",
-      "score": 51.3,
-      "price": 82.06,
-      "change": -2.33,
-      "triggered_strategies": [
-        "consecutiveYangLine",
-        "mainForceDivRate"
+      "score": 52.6,
+      "close": 41.13,
+      "chg_1d": -0.39,
+      "chg_5d": 7.22,
+      "hit_count": 5,
+      "strategies": [
+        "永久组合",
+        "连阳",
+        "布林回归",
+        "RSI超卖",
+        "等权组合"
       ],
-      "reason": "触发2个策略信号"
+      "reason_text": "永久组合 + 连阳 + 布林回归 + RSI超卖 + 等权组合",
+      "last_date": "2026-03-24",
+      "price": 41.13,
+      "change": -0.39,
+      "triggered_strategies": [
+        "permanentPortfolio",
+        "consecutiveYangLine",
+        "bollingerMeanReversion",
+        "rsiOversold",
+        "equalWeight"
+      ],
+      "reason": "触发5个策略信号"
     },
     {
       "rank": 13,
       "code": "002050",
       "name": "三花智控",
-      "score": 50.0,
-      "price": 49.25,
-      "change": 2.0,
+      "score": 49.1,
+      "close": 133.22,
+      "chg_1d": -3.48,
+      "chg_5d": 2.67,
+      "hit_count": 2,
+      "strategies": [
+        "冷门股",
+        "放量突破"
+      ],
+      "reason_text": "冷门股 + 放量突破",
+      "last_date": "2026-03-24",
+      "price": 133.22,
+      "change": -3.48,
       "triggered_strategies": [
-        "volumeNewHigh",
         "coldStock",
         "volumeBreakout"
       ],
-      "reason": "触发3个策略信号"
+      "reason": "触发2个策略信号"
     },
     {
       "rank": 14,
       "code": "603009",
       "name": "北特科技",
-      "score": 45.7,
-      "price": 103.69,
-      "change": -0.49,
-      "triggered_strategies": [
-        "consecutiveYangLine",
-        "volumeBreakout",
-        "oversoldBounce",
-        "bottomFishing76",
-        "permanentPortfolio"
+      "score": 47.6,
+      "close": 94.94,
+      "chg_1d": 3.45,
+      "chg_5d": 4.14,
+      "hit_count": 4,
+      "strategies": [
+        "放量突破",
+        "布林回归",
+        "连阳",
+        "超市策略"
       ],
-      "reason": "触发5个策略信号"
+      "reason_text": "放量突破 + 布林回归 + 连阳 + 超市策略",
+      "last_date": "2026-03-24",
+      "price": 94.94,
+      "change": 3.45,
+      "triggered_strategies": [
+        "volumeBreakout",
+        "bollingerMeanReversion",
+        "consecutiveYangLine",
+        "supermarket"
+      ],
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 15,
       "code": "300580",
       "name": "贝斯特",
-      "score": 49.8,
-      "price": 55.72,
-      "change": -1.62,
+      "score": 49.5,
+      "close": 20.53,
+      "chg_1d": 3.23,
+      "chg_5d": 10.43,
+      "hit_count": 5,
+      "strategies": [
+        "主力 divergence 率",
+        "冷门股",
+        "布林回归",
+        "超市策略",
+        "永久组合"
+      ],
+      "reason_text": "主力 divergence 率 + 冷门股 + 布林回归 + 超市策略 + 永久组合",
+      "last_date": "2026-03-24",
+      "price": 20.53,
+      "change": 3.23,
       "triggered_strategies": [
-        "equalWeight",
+        "mainForceDivRate",
         "coldStock",
-        "consecutiveYangLine",
-        "mainForceDivergence",
+        "bollingerMeanReversion",
+        "supermarket",
         "permanentPortfolio"
       ],
       "reason": "触发5个策略信号"
@@ -12131,99 +12301,192 @@
       "rank": 16,
       "code": "301550",
       "name": "斯菱股份",
-      "score": 46.8,
-      "price": 82.85,
-      "change": 7.1,
+      "score": 54.1,
+      "close": 120.53,
+      "chg_1d": 7.39,
+      "chg_5d": -6.24,
+      "hit_count": 3,
+      "strategies": [
+        "放量突破",
+        "布林回归",
+        "76抄底"
+      ],
+      "reason_text": "放量突破 + 布林回归 + 76抄底",
+      "last_date": "2026-03-24",
+      "price": 120.53,
+      "change": 7.39,
       "triggered_strategies": [
         "volumeBreakout",
-        "permanentPortfolio",
-        "kdjGoldenCross",
-        "coldStock",
-        "supermarket"
+        "bollingerMeanReversion",
+        "bottomFishing76"
       ],
-      "reason": "触发5个策略信号"
+      "reason": "触发3个策略信号"
     },
     {
       "rank": 17,
       "code": "688017",
       "name": "绿的谐波",
-      "score": 51.8,
-      "price": 76.99,
-      "change": 1.26,
+      "score": 47.0,
+      "close": 78.77,
+      "chg_1d": 5.64,
+      "chg_5d": 6.26,
+      "hit_count": 4,
+      "strategies": [
+        "超跌反弹",
+        "KDJ金叉",
+        "76抄底",
+        "主力 divergence"
+      ],
+      "reason_text": "超跌反弹 + KDJ金叉 + 76抄底 + 主力 divergence",
+      "last_date": "2026-03-24",
+      "price": 78.77,
+      "change": 5.64,
       "triggered_strategies": [
-        "bollingerMeanReversion",
+        "oversoldBounce",
+        "kdjGoldenCross",
+        "bottomFishing76",
         "mainForceDivergence"
       ],
-      "reason": "触发2个策略信号"
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 18,
       "code": "603728",
       "name": "鸣志电器",
-      "score": 52.5,
-      "price": 118.81,
-      "change": -4.78,
-      "triggered_strategies": [
-        "maGoldenCross",
-        "equalWeight",
-        "consecutiveYangLine",
-        "permanentPortfolio",
-        "supermarket"
+      "score": 48.8,
+      "close": 91.07,
+      "chg_1d": -3.96,
+      "chg_5d": 10.24,
+      "hit_count": 4,
+      "strategies": [
+        "超市策略",
+        "超跌反弹",
+        "KDJ金叉",
+        "RSI超卖"
       ],
-      "reason": "触发5个策略信号"
+      "reason_text": "超市策略 + 超跌反弹 + KDJ金叉 + RSI超卖",
+      "last_date": "2026-03-24",
+      "price": 91.07,
+      "change": -3.96,
+      "triggered_strategies": [
+        "supermarket",
+        "oversoldBounce",
+        "kdjGoldenCross",
+        "rsiOversold"
+      ],
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 19,
       "code": "300660",
       "name": "江苏雷利",
-      "score": 49.4,
-      "price": 44.63,
-      "change": -4.14,
-      "triggered_strategies": [
-        "supermarket",
-        "coldStock"
+      "score": 49.1,
+      "close": 113.87,
+      "chg_1d": -1.23,
+      "chg_5d": 3.84,
+      "hit_count": 5,
+      "strategies": [
+        "76抄底",
+        "连阳",
+        "主力 divergence 率",
+        "等权组合",
+        "均线金叉"
       ],
-      "reason": "触发2个策略信号"
+      "reason_text": "76抄底 + 连阳 + 主力 divergence 率 + 等权组合 + 均线金叉",
+      "last_date": "2026-03-24",
+      "price": 113.87,
+      "change": -1.23,
+      "triggered_strategies": [
+        "bottomFishing76",
+        "consecutiveYangLine",
+        "mainForceDivRate",
+        "equalWeight",
+        "maGoldenCross"
+      ],
+      "reason": "触发5个策略信号"
     },
     {
       "rank": 20,
       "code": "688160",
       "name": "步科股份",
-      "score": 52.2,
-      "price": 65.1,
-      "change": -2.87,
-      "triggered_strategies": [
-        "supermarket",
-        "oversoldBounce"
+      "score": 46.7,
+      "close": 146.44,
+      "chg_1d": 2.37,
+      "chg_5d": 0.52,
+      "hit_count": 5,
+      "strategies": [
+        "连阳",
+        "新高放量",
+        "冷门股",
+        "RSI超卖",
+        "超市策略"
       ],
-      "reason": "触发2个策略信号"
+      "reason_text": "连阳 + 新高放量 + 冷门股 + RSI超卖 + 超市策略",
+      "last_date": "2026-03-24",
+      "price": 146.44,
+      "change": 2.37,
+      "triggered_strategies": [
+        "consecutiveYangLine",
+        "volumeNewHigh",
+        "coldStock",
+        "rsiOversold",
+        "supermarket"
+      ],
+      "reason": "触发5个策略信号"
     },
     {
       "rank": 21,
       "code": "688320",
       "name": "禾川科技",
-      "score": 47.3,
-      "price": 142.73,
-      "change": -1.66,
-      "triggered_strategies": [
-        "mainForceDivRate",
-        "consecutiveYangLine"
+      "score": 46.0,
+      "close": 79.35,
+      "chg_1d": -2.96,
+      "chg_5d": 7.68,
+      "hit_count": 4,
+      "strategies": [
+        "连阳",
+        "超市策略",
+        "超跌反弹",
+        "主力 divergence 率"
       ],
-      "reason": "触发2个策略信号"
+      "reason_text": "连阳 + 超市策略 + 超跌反弹 + 主力 divergence 率",
+      "last_date": "2026-03-24",
+      "price": 79.35,
+      "change": -2.96,
+      "triggered_strategies": [
+        "consecutiveYangLine",
+        "supermarket",
+        "oversoldBounce",
+        "mainForceDivRate"
+      ],
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 22,
       "code": "002747",
       "name": "埃斯顿",
-      "score": 50.6,
-      "price": 106.88,
-      "change": 0.67,
+      "score": 44.0,
+      "close": 103.42,
+      "chg_1d": 1.9,
+      "chg_5d": 9.92,
+      "hit_count": 5,
+      "strategies": [
+        "冷门股",
+        "连阳",
+        "76抄底",
+        "主力 divergence",
+        "均线金叉"
+      ],
+      "reason_text": "冷门股 + 连阳 + 76抄底 + 主力 divergence + 均线金叉",
+      "last_date": "2026-03-24",
+      "price": 103.42,
+      "change": 1.9,
       "triggered_strategies": [
-        "kdjGoldenCross",
-        "volumeNewHigh",
-        "equalWeight",
-        "oversoldBounce",
-        "bollingerMeanReversion"
+        "coldStock",
+        "consecutiveYangLine",
+        "bottomFishing76",
+        "mainForceDivergence",
+        "maGoldenCross"
       ],
       "reason": "触发5个策略信号"
     },
@@ -12231,29 +12494,49 @@
       "rank": 23,
       "code": "300024",
       "name": "机器人",
-      "score": 44.3,
-      "price": 69.71,
-      "change": -4.03,
-      "triggered_strategies": [
-        "kdjGoldenCross",
-        "oversoldBounce",
-        "supermarket",
-        "mainForceDivRate",
-        "maGoldenCross"
+      "score": 44.9,
+      "close": 57.79,
+      "chg_1d": 2.1,
+      "chg_5d": 6.44,
+      "hit_count": 3,
+      "strategies": [
+        "新高放量",
+        "超市策略",
+        "连阳"
       ],
-      "reason": "触发5个策略信号"
+      "reason_text": "新高放量 + 超市策略 + 连阳",
+      "last_date": "2026-03-24",
+      "price": 57.79,
+      "change": 2.1,
+      "triggered_strategies": [
+        "volumeNewHigh",
+        "supermarket",
+        "consecutiveYangLine"
+      ],
+      "reason": "触发3个策略信号"
     },
     {
       "rank": 24,
       "code": "002472",
       "name": "双环传动",
-      "score": 46.2,
-      "price": 20.3,
-      "change": 0.61,
+      "score": 47.0,
+      "close": 141.87,
+      "chg_1d": 6.81,
+      "chg_5d": 10.89,
+      "hit_count": 3,
+      "strategies": [
+        "放量突破",
+        "布林回归",
+        "新高放量"
+      ],
+      "reason_text": "放量突破 + 布林回归 + 新高放量",
+      "last_date": "2026-03-24",
+      "price": 141.87,
+      "change": 6.81,
       "triggered_strategies": [
-        "equalWeight",
-        "rsiOversold",
-        "mainForceDivRate"
+        "volumeBreakout",
+        "bollingerMeanReversion",
+        "volumeNewHigh"
       ],
       "reason": "触发3个策略信号"
     },
@@ -12261,30 +12544,57 @@
       "rank": 25,
       "code": "000887",
       "name": "中鼎股份",
-      "score": 46.4,
-      "price": 112.45,
-      "change": 3.62,
-      "triggered_strategies": [
-        "consecutiveYangLine",
-        "bollingerMeanReversion",
-        "permanentPortfolio",
-        "maGoldenCross"
+      "score": 45.1,
+      "close": 111.94,
+      "chg_1d": -2.8,
+      "chg_5d": -4.33,
+      "hit_count": 5,
+      "strategies": [
+        "超市策略",
+        "连阳",
+        "超跌反弹",
+        "主力 divergence",
+        "76抄底"
       ],
-      "reason": "触发4个策略信号"
+      "reason_text": "超市策略 + 连阳 + 超跌反弹 + 主力 divergence + 76抄底",
+      "last_date": "2026-03-24",
+      "price": 111.94,
+      "change": -2.8,
+      "triggered_strategies": [
+        "supermarket",
+        "consecutiveYangLine",
+        "oversoldBounce",
+        "mainForceDivergence",
+        "bottomFishing76"
+      ],
+      "reason": "触发5个策略信号"
     },
     {
       "rank": 26,
       "code": "601100",
       "name": "恒立液压",
-      "score": 45.3,
-      "price": 120.44,
-      "change": -3.41,
+      "score": 45.4,
+      "close": 101.49,
+      "chg_1d": 2.9,
+      "chg_5d": 11.0,
+      "hit_count": 5,
+      "strategies": [
+        "超市策略",
+        "76抄底",
+        "连阳",
+        "等权组合",
+        "冷门股"
+      ],
+      "reason_text": "超市策略 + 76抄底 + 连阳 + 等权组合 + 冷门股",
+      "last_date": "2026-03-24",
+      "price": 101.49,
+      "change": 2.9,
       "triggered_strategies": [
-        "maGoldenCross",
-        "mainForceDivergence",
+        "supermarket",
+        "bottomFishing76",
+        "consecutiveYangLine",
         "equalWeight",
-        "mainForceDivRate",
-        "bollingerMeanReversion"
+        "coldStock"
       ],
       "reason": "触发5个策略信号"
     },
@@ -12292,29 +12602,55 @@
       "rank": 27,
       "code": "603638",
       "name": "艾迪精密",
-      "score": 50.1,
-      "price": 50.0,
-      "change": 0.99,
-      "triggered_strategies": [
-        "oversoldBounce",
-        "consecutiveYangLine",
-        "equalWeight"
+      "score": 45.3,
+      "close": 122.42,
+      "chg_1d": 2.17,
+      "chg_5d": -4.19,
+      "hit_count": 4,
+      "strategies": [
+        "放量突破",
+        "主力 divergence",
+        "RSI超卖",
+        "永久组合"
       ],
-      "reason": "触发3个策略信号"
+      "reason_text": "放量突破 + 主力 divergence + RSI超卖 + 永久组合",
+      "last_date": "2026-03-24",
+      "price": 122.42,
+      "change": 2.17,
+      "triggered_strategies": [
+        "volumeBreakout",
+        "mainForceDivergence",
+        "rsiOversold",
+        "permanentPortfolio"
+      ],
+      "reason": "触发4个策略信号"
     },
     {
       "rank": 28,
       "code": "688488",
       "name": "艾迪药业",
-      "score": 42.4,
-      "price": 44.5,
-      "change": 5.12,
+      "score": 50.9,
+      "close": 67.04,
+      "chg_1d": 0.13,
+      "chg_5d": 10.82,
+      "hit_count": 5,
+      "strategies": [
+        "超市策略",
+        "放量突破",
+        "均线金叉",
+        "等权组合",
+        "连阳"
+      ],
+      "reason_text": "超市策略 + 放量突破 + 均线金叉 + 等权组合 + 连阳",
+      "last_date": "2026-03-24",
+      "price": 67.04,
+      "change": 0.13,
       "triggered_strategies": [
-        "rsiOversold",
-        "consecutiveYangLine",
-        "permanentPortfolio",
-        "bollingerMeanReversion",
-        "volumeBreakout"
+        "supermarket",
+        "volumeBreakout",
+        "maGoldenCross",
+        "equalWeight",
+        "consecutiveYangLine"
       ],
       "reason": "触发5个策略信号"
     },
@@ -12322,14 +12658,26 @@
       "rank": 29,
       "code": "002698",
       "name": "博实股份",
-      "score": 45.0,
-      "price": 147.71,
-      "change": 3.8,
+      "score": 47.0,
+      "close": 57.47,
+      "chg_1d": -3.25,
+      "chg_5d": 5.53,
+      "hit_count": 4,
+      "strategies": [
+        "RSI超卖",
+        "超市策略",
+        "连阳",
+        "超跌反弹"
+      ],
+      "reason_text": "RSI超卖 + 超市策略 + 连阳 + 超跌反弹",
+      "last_date": "2026-03-24",
+      "price": 57.47,
+      "change": -3.25,
       "triggered_strategies": [
-        "coldStock",
-        "permanentPortfolio",
+        "rsiOversold",
         "supermarket",
-        "rsiOversold"
+        "consecutiveYangLine",
+        "oversoldBounce"
       ],
       "reason": "触发4个策略信号"
     },
@@ -12337,14 +12685,30 @@
       "rank": 30,
       "code": "300124",
       "name": "汇川技术",
-      "score": 45.5,
-      "price": 141.36,
-      "change": -2.29,
-      "triggered_strategies": [
-        "bollingerMeanReversion",
-        "permanentPortfolio"
+      "score": 41.7,
+      "close": 81.5,
+      "chg_1d": 4.87,
+      "chg_5d": -5.56,
+      "hit_count": 5,
+      "strategies": [
+        "冷门股",
+        "连阳",
+        "超市策略",
+        "放量突破",
+        "新高放量"
       ],
-      "reason": "触发2个策略信号"
+      "reason_text": "冷门股 + 连阳 + 超市策略 + 放量突破 + 新高放量",
+      "last_date": "2026-03-24",
+      "price": 81.5,
+      "change": 4.87,
+      "triggered_strategies": [
+        "coldStock",
+        "consecutiveYangLine",
+        "supermarket",
+        "volumeBreakout",
+        "volumeNewHigh"
+      ],
+      "reason": "触发5个策略信号"
     }
   ]
 }
