@@ -686,7 +686,7 @@ function renderStrategyTable() {
       <td class="${noData?'':''+( ar>=0?'pos':'neg')}">${noData?'--':((ar>=0?'+':'')+ar.toFixed(2)+'%')}</td>
       <td class="${noData?'':''+( tr>=0?'pos':'neg')}">${noData?'--':((tr>=0?'+':'')+tr.toFixed(1)+'%')}</td>
       <td style="color:${noData?'var(--text2)':sh>=1?'var(--red)':sh>=0?'var(--yellow)':'var(--green)'}">${noData?'--':sh.toFixed(2)}</td>
-      <td style="color:${noData?'var(--text2)':md<=10?'var(--green)':md<=20?'var(--yellow)':'var(--red)'}">${noData?'--':md.toFixed(1)+'%'}</td>
+      <td style="color:${noData?'var(--text2)':md<=10?'var(--green)':md<=20?'var(--yellow)':'var(--red)'}">${noData?'--':(currentPeriod==='all'?'<span style="color:var(--text2);font-size:11px">截面数据</span>':md.toFixed(1)+'%')}</td>
       <td style="color:var(--text2)">${(bt.total_trades||0).toLocaleString()}</td>
     </tr>`;
   }).join('');
