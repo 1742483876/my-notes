@@ -372,8 +372,19 @@ async function loadData() {
       data = generateDemoData();
     }
 
+    // 字段兼容映射（引擎输出字段名与前端可能不一致）
+    data.today_recommendations = data.today_recommendations || data.recommendations || [];
+    data.recommend_count = data.recommend_count || data.today_recommendations.length;
+    data.strategy_count  = data.strategy_count  || (data.strategy_list || []).length;
+    data.stock_count     = data.stock_count      || data.total_stocks || 5012;
+    data.update_time     = data.update_time      || data.generated_at || data.date || '';
+    // daily_picks 兼容
+    if (!data.daily_picks && data.daily_data) {
+      data.daily_picks = { daily_data: data.daily_data, equity_curve: data.equity_curve || [] };
+    }
+
     // Step 2: 解析策略
-    setProgress(60, '解析策略权重...', `📊 共 ${data.strategies?.length || 0} 个策略`);
+    setProgress(60, '解析策略权重...', `📊 共 ${data.strategy_list?.length || 0} 个策略`);
     await new Promise(r => setTimeout(r, 30));
 
     G = data;
