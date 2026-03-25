@@ -741,8 +741,8 @@ function sortDailyTable(tableId, key, di) {
         onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
       <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
       <td style="padding:8px 12px;color:var(--text2);font-size:12px">-</td>
-      <td style="padding:8px 12px;color:var(--text2)">${p.buy_price}</td>
-      <td style="padding:8px 12px;color:var(--text2)">${p.sell_price}</td>
+      <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
+      <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
       <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
       <td style="padding:8px 12px">${p.return >= 0 ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
     </tr>`).join('');
@@ -903,8 +903,8 @@ function renderDailyPicks() {
           onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
         <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
         <td style="padding:8px 12px;color:var(--text2);font-size:12px">-</td>
-        <td style="padding:8px 12px;color:var(--text2)">${p.buy_price}</td>
-        <td style="padding:8px 12px;color:var(--text2)">${p.sell_price}</td>
+        <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
+        <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
         <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
         <td style="padding:8px 12px">${p.return >= 0 ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
       </tr>`).join('');
@@ -929,8 +929,8 @@ function renderDailyPicks() {
           <thead><tr style="background:var(--surface)">
             <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
             <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','buy_price',${di})">买入价<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','sell_price',${di})">卖出价<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','exit_price',${di})">卖出价<span class="sort-icon"></span></th>
             <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return',${di})">收益<span class="sort-icon"></span></th>
             <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','result',${di})">结果<span class="sort-icon"></span></th>
           </tr></thead>
@@ -1224,9 +1224,9 @@ function openKlineByIndex(type, idx, pickIdx) {
     if (!p) return;
     stock = {
       code: p.code, name: p.name, score: 0, strategies: [],
-      entry_price: p.buy_price, exit_price: p.sell_price,
-      entry_date: day.date,
-      exit_date: '-',
+      entry_price: p.entry_price, exit_price: p.exit_price,
+      entry_date: day.pred_date || day.date,
+      exit_date: day.exit_date || '-',
       return: p.return, klines: []
     };
   }
