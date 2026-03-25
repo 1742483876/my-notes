@@ -415,6 +415,19 @@ async function loadData() {
       data.daily_picks.daily_data = data.daily_picks.daily_data.map(d => ({
         ...d, date: d.date || d.pred_date || ''
       }));
+      // 记录最新K线日期（用于判断持仓中）：从今日推荐的 last_date 或 daily_data picks 推算
+      const allPickDates = [];
+      data.daily_picks.daily_data.forEach(d => {
+        (d.picks || []).forEach(pk => {
+          if (pk.exit_date_now) allPickDates.push(pk.exit_date_now);
+          if (pk.exit_date_1d) allPickDates.push(pk.exit_date_1d);
+        });
+      });
+      if (allPickDates.length) {
+        window._latestKlineDate = allPickDates.sort().slice(-1)[0];
+      } else if (data.today_picks && data.today_picks.length) {
+        window._latestKlineDate = data.today_picks[0]?.last_date || '';
+      }
     }
     // backtest_1y/30d/all 顶层为空时，从 strategy_list 回填
     if (data.strategy_list && data.strategy_list.length) {
@@ -1050,14 +1063,20 @@ function renderDailyPicks() {
         }).join('');
       };
 
+      // 判断是否持仓中（exit_date 超出最新K线日期，即持仓未到期）
+      const latestDate = window._latestKlineDate || '';
+      const exitDate = day.exit_date || '';
+      const isPending = latestDate && exitDate && exitDate > latestDate;
+
       return `
       <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
         <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
              style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
           <span style="font-weight:600;color:var(--text)">${day.date}</span>
           <span style="font-size:12px;color:var(--text2);background:rgba(88,166,255,.1);padding:2px 8px;border-radius:4px">持有${p.label}</span>
+          ${isPending ? `<span style="font-size:11px;color:#f0a500;background:rgba(240,165,0,.12);padding:2px 7px;border-radius:4px;border:1px solid rgba(240,165,0,.3)">⏳ 持仓中</span>` : ''}
           <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isPeriodGood?'var(--red)':'var(--green)'}">
-            胜率 ${periodWinRate}%
+            胜率 ${isPending ? '<span style="font-size:11px;color:#f0a500">(浮动)</span> ' : ''}${periodWinRate}%
           </span>
           <span style="font-size:13px;font-weight:600;color:${parseFloat(periodAvgRet)>=0?'var(--red)':'var(--green)'}">
             均收益 ${parseFloat(periodAvgRet)>=0?'+':''}${periodAvgRet}%
