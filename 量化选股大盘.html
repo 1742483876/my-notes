@@ -810,17 +810,23 @@ function sortDailyTable(tableId, key, di) {
     return newDir==='asc'?va-vb:vb-va;
   });
 
+  const fmtR = (v) => {
+    if (v === null || v === undefined) return '<span style="color:var(--text2)">-</span>';
+    const c = v >= 0 ? 'var(--red)' : 'var(--green)';
+    return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${v}%</span>`;
+  };
   const tbody = table.querySelector('tbody');
   tbody.innerHTML = sorted.map(p => `
     <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
         onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
         onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
-      <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
-      <td style="padding:8px 12px;color:var(--text2);font-size:12px">-</td>
-      <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
-      <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
-      <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
-      <td style="padding:8px 12px">${p.return >= 0 ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
+      <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
+      <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
+      <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_1d ?? p.return)}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_5d ?? p.return)}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_20d)}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_now)}</td>
     </tr>`).join('');
 }
 
