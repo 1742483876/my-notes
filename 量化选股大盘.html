@@ -126,6 +126,9 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 .kline-tabs{display:flex;gap:8px;margin-bottom:16px}
 .kline-tab{padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s}
 .kline-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.hold-tab{padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s;font-weight:500}
+.hold-tab:hover{border-color:var(--accent);color:var(--accent)}
+.hold-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .kline-chart-wrap{position:relative;height:320px;margin-bottom:16px}
 .kline-vol-wrap{position:relative;height:100px}
 .kline-mark-line{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,165,0,.6);pointer-events:none;z-index:5}
@@ -198,7 +201,19 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
       </div>
     </div>
     <!-- 每日明细折叠列表 -->
-    <div class="section-title">📋 每日推荐明细 <span style="font-size:12px;color:var(--text2);font-weight:400">（点击展开当天推荐股票）</span></div>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0 12px">
+      <div class="section-title" style="margin:0">📋 每日推荐明细</div>
+      <span style="font-size:12px;color:var(--text2)">（点击展开当天推荐股票）</span>
+      <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+        <span style="font-size:12px;color:var(--text2)">持仓周期：</span>
+        <div id="holdPeriodTabs" style="display:flex;gap:4px">
+          <button class="hold-tab active" data-period="1d" onclick="switchHoldPeriod('1d',this)">1天</button>
+          <button class="hold-tab" data-period="5d" onclick="switchHoldPeriod('5d',this)">5天</button>
+          <button class="hold-tab" data-period="20d" onclick="switchHoldPeriod('20d',this)">20天</button>
+          <button class="hold-tab" data-period="now" onclick="switchHoldPeriod('now',this)">至今</button>
+        </div>
+      </div>
+    </div>
     <div id="dailyPickList" style="display:flex;flex-direction:column;gap:8px;padding-bottom:32px"></div>
   </div>
 </div>
@@ -816,18 +831,25 @@ function sortDailyTable(tableId, key, di) {
     return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${v}%</span>`;
   };
   const tbody = table.querySelector('tbody');
-  tbody.innerHTML = sorted.map(p => `
+  const HOLD_PERIODS = [
+    { key: '1d',  retKey: 'return_1d',  fallback: 'return' },
+    { key: '5d',  retKey: 'return_5d',  fallback: 'return' },
+    { key: '20d', retKey: 'return_20d', fallback: null },
+    { key: 'now', retKey: 'return_now', fallback: null },
+  ];
+  const curPeriod = HOLD_PERIODS.find(x => x.key === (window._currentHoldPeriod || '1d')) || HOLD_PERIODS[1];
+  tbody.innerHTML = sorted.map(p => {
+    const retVal = p[curPeriod.retKey] ?? (curPeriod.fallback ? p[curPeriod.fallback] : null);
+    return `
     <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
         onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
         onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
       <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
       <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
       <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
-      <td style="padding:8px 12px">${fmtR(p.return_1d ?? p.return)}</td>
-      <td style="padding:8px 12px">${fmtR(p.return_5d ?? p.return)}</td>
-      <td style="padding:8px 12px">${fmtR(p.return_20d)}</td>
-      <td style="padding:8px 12px">${fmtR(p.return_now)}</td>
-    </tr>`).join('');
+      <td style="padding:8px 12px">${fmtR(retVal)}</td>
+    </tr>`;
+  }).join('');
 }
 
 function switchPeriod(p) {
@@ -965,69 +987,114 @@ function renderDailyPicks() {
   });
 
   // 每日明细折叠列表（最近的在前）
-  const list = document.getElementById('dailyPickList');
-  list.innerHTML = [...dailyData].reverse().map((day, di) => {
-    const isGoodDay = day.win_rate >= 50;
-    const tableId = `dailyPickTable_${di}`;
-    const dayPicks = day.picks || [];
-    const pickRows = (picks, sortKey='', sortDir='desc') => {
-      let sorted = [...dayPicks];
-      if (sortKey) {
-        sorted.sort((a, b) => {
-          let va = a[sortKey], vb = b[sortKey];
-          if (typeof va === 'string') return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
-          return sortDir==='asc'?va-vb:vb-va;
-        });
-      }
-      const fmtRet = (v) => {
-        if (v === null || v === undefined) return '<span style="color:var(--text2)">-</span>';
-        const c = v >= 0 ? 'var(--red)' : 'var(--green)';
-        return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${v}%</span>`;
+  // 持仓周期配置
+  const HOLD_PERIODS = [
+    { key: '1d',  label: '1天',  retKey: 'return_1d',  fallback: 'return' },
+    { key: '5d',  label: '5天',  retKey: 'return_5d',  fallback: 'return' },
+    { key: '20d', label: '20天', retKey: 'return_20d', fallback: null },
+    { key: 'now', label: '至今', retKey: 'return_now', fallback: null },
+  ];
+  window._dailyPicksData = [...dailyData].reverse();  // 缓存供切换用
+  window._currentHoldPeriod = window._currentHoldPeriod || '1d';
+
+  const fmtRet = (v) => {
+    if (v === null || v === undefined) return '<span style="color:var(--text2)">-</span>';
+    const c = v >= 0 ? 'var(--red)' : 'var(--green)';
+    return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${parseFloat(v).toFixed(2)}%</span>`;
+  };
+
+  const renderPickList = (period) => {
+    const p = HOLD_PERIODS.find(x => x.key === period) || HOLD_PERIODS[1];
+    const list = document.getElementById('dailyPickList');
+    list.innerHTML = window._dailyPicksData.map((day, di) => {
+      const isGoodDay = day.win_rate >= 50;
+      const tableId = `dailyPickTable_${di}`;
+      const dayPicks = day.picks || [];
+
+      // 计算当前周期的胜率和均收益
+      const validPicks = dayPicks.filter(pk => {
+        const v = pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : null);
+        return v !== null && v !== undefined;
+      });
+      const winPicks = validPicks.filter(pk => {
+        const v = pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : null);
+        return v > 0;
+      });
+      const periodWinRate = validPicks.length ? Math.round(winPicks.length / validPicks.length * 100) : day.win_rate;
+      const periodAvgRet = validPicks.length
+        ? (validPicks.reduce((s, pk) => s + parseFloat(pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : 0) ?? 0), 0) / validPicks.length).toFixed(2)
+        : day.avg_return;
+      const isPeriodGood = periodWinRate >= 50;
+
+      const buildRows = (picks, sortKey='', sortDir='desc') => {
+        let sorted = [...picks];
+        if (sortKey) {
+          sorted.sort((a, b) => {
+            let va = a[sortKey] ?? null, vb = b[sortKey] ?? null;
+            if (va === null) return 1; if (vb === null) return -1;
+            if (typeof va === 'string') return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+            return sortDir==='asc'?va-vb:vb-va;
+          });
+        }
+        return sorted.map(pk => {
+          const retVal = pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : null);
+          return `
+          <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
+              onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
+              onclick="openKlineByIndex('daily',${di},${sorted.indexOf(pk)})">
+            <td style="padding:8px 12px;font-weight:500">${pk.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${pk.code}</span></td>
+            <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(pk.strategies||[]).join(' ')}</td>
+            <td style="padding:8px 12px;color:var(--text2)">${pk.entry_price ?? '-'}</td>
+            <td style="padding:8px 12px">${fmtRet(retVal)}</td>
+          </tr>`;
+        }).join('');
       };
-      return sorted.map((p, pi) => `
-      <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
-          onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
-          onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
-        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
-        <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
-        <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
-        <td style="padding:8px 12px">${fmtRet(p.return_1d ?? p.return)}</td>
-        <td style="padding:8px 12px">${fmtRet(p.return_5d ?? p.return)}</td>
-        <td style="padding:8px 12px">${fmtRet(p.return_20d)}</td>
-        <td style="padding:8px 12px">${fmtRet(p.return_now)}</td>
-      </tr>`).join('');
-    };
-    return `
-    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
-      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
-           style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
-        <span style="font-weight:600;color:var(--text)">${day.date}</span>
-        <span style="font-size:12px;color:var(--text2)">→ 持有5日</span>
-        <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isGoodDay?'var(--red)':'var(--green)'}">
-          胜率 ${day.win_rate}%
-        </span>
-        <span style="font-size:13px;font-weight:600;color:${day.avg_return>=0?'var(--red)':'var(--green)'}">
-          均收益 ${day.avg_return>=0?'+':''}${day.avg_return}%
-        </span>
-        <span style="font-size:12px;color:var(--text2)">${dayPicks.filter(p=>p.return>0).length}/${dayPicks.length} 盈利</span>
-        <span style="font-size:12px;color:var(--text2)">▼</span>
-      </div>
-      <div style="display:none">
-        <table id="${tableId}" style="width:100%;border-collapse:collapse;font-size:13px" data-sort-key="" data-sort-dir="desc">
-          <thead><tr style="background:var(--surface)">
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
-            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_1d',${di})">1天<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_5d',${di})">5天<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_20d',${di})">20天<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_now',${di})">至今<span class="sort-icon"></span></th>
-          </tr></thead>
-          <tbody>${pickRows(dayPicks)}</tbody>
-        </table>
-      </div>
-    </div>`;
-  }).join('');
+
+      return `
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
+             style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
+          <span style="font-weight:600;color:var(--text)">${day.date}</span>
+          <span style="font-size:12px;color:var(--text2);background:rgba(88,166,255,.1);padding:2px 8px;border-radius:4px">持有${p.label}</span>
+          <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isPeriodGood?'var(--red)':'var(--green)'}">
+            胜率 ${periodWinRate}%
+          </span>
+          <span style="font-size:13px;font-weight:600;color:${parseFloat(periodAvgRet)>=0?'var(--red)':'var(--green)'}">
+            均收益 ${parseFloat(periodAvgRet)>=0?'+':''}${periodAvgRet}%
+          </span>
+          <span style="font-size:12px;color:var(--text2)">${winPicks.length}/${validPicks.length} 盈利</span>
+          <span style="font-size:12px;color:var(--text2)">▼</span>
+        </div>
+        <div style="display:none">
+          <table id="${tableId}" style="width:100%;border-collapse:collapse;font-size:13px" data-sort-key="" data-sort-dir="desc">
+            <thead><tr style="background:var(--surface)">
+              <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
+              <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
+              <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
+              <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','${p.retKey}',${di})">${p.label}收益<span class="sort-icon"></span></th>
+            </tr></thead>
+            <tbody>${buildRows(dayPicks)}</tbody>
+          </table>
+        </div>
+      </div>`;
+    }).join('');
+  };
+
+  // 初始渲染
+  renderPickList(window._currentHoldPeriod);
+  // 同步tab高亮
+  document.querySelectorAll('.hold-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.period === window._currentHoldPeriod);
+  });
+  // 挂载到全局供切换调用
+  window._renderPickList = renderPickList;
+}
+
+function switchHoldPeriod(period, el) {
+  window._currentHoldPeriod = period;
+  document.querySelectorAll('.hold-tab').forEach(btn => btn.classList.remove('active'));
+  el.classList.add('active');
+  if (window._renderPickList) window._renderPickList(period);
 }
 
 // ===== 权益曲线 =====
