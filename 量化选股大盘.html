@@ -552,7 +552,26 @@ async function renderAll() {
   if (!G) return;
   const tick = () => new Promise(r => setTimeout(r, 0)); // 让UI喘口气
 
-  document.getElementById('updateTime').textContent = '更新: ' + (G.update_time || G.date || '--').slice(0,16).replace('T',' ');
+  const _ut = (G.update_time || G.date || '');
+  const _utEl = document.getElementById('updateTime');
+  const _utStr = _ut ? _ut.slice(0,16).replace('T',' ') : '--';
+  const _utDate = _ut ? _ut.slice(0,10) : '';
+  const _today = new Date().toISOString().slice(0,10);
+  const _isToday = _utDate === _today;
+  const _isYesterday = _utDate && (new Date(_today) - new Date(_utDate)) <= 86400000;
+  if (_isToday) {
+    _utEl.innerHTML = `✅ 今日已更新 <span style="opacity:.7">${_utStr}</span>`;
+    _utEl.style.borderColor = 'var(--green,#22c55e)';
+    _utEl.style.color = 'var(--green,#22c55e)';
+  } else if (_isYesterday) {
+    _utEl.innerHTML = `⚠️ 昨日数据 <span style="opacity:.7">${_utStr}</span>`;
+    _utEl.style.borderColor = '#f59e0b';
+    _utEl.style.color = '#f59e0b';
+  } else {
+    _utEl.innerHTML = `🕐 ${_utStr}`;
+    _utEl.style.borderColor = '';
+    _utEl.style.color = '';
+  }
   document.getElementById('headerMeta').textContent = `${G.stock_count?.toLocaleString() || '--'} 只股票 · ${G.strategy_count || 15} 个策略${G._demo ? ' · 演示数据' : ''}`;
 
   setProgress(78, '渲染统计卡片...', '📊 计算汇总指标');
