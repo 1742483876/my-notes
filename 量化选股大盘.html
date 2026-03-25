@@ -382,6 +382,28 @@ async function loadData() {
     if (!data.daily_picks && data.daily_data) {
       data.daily_picks = { daily_data: data.daily_data, equity_curve: data.equity_curve || [] };
     }
+    // equity_curve 字段名兼容：引擎输出 equity，前端读 value
+    if (data.daily_picks && Array.isArray(data.daily_picks.equity_curve)) {
+      data.daily_picks.equity_curve = data.daily_picks.equity_curve.map(p => ({
+        ...p, value: p.value ?? p.equity ?? 100
+      }));
+    }
+    // daily_data 日期字段兼容：pred_date → date
+    if (data.daily_picks && Array.isArray(data.daily_picks.daily_data)) {
+      data.daily_picks.daily_data = data.daily_picks.daily_data.map(d => ({
+        ...d, date: d.date || d.pred_date || ''
+      }));
+    }
+    // backtest_1y/30d/all 顶层为空时，从 strategy_list 回填
+    if (data.strategy_list && data.strategy_list.length) {
+      ['backtest_30d','backtest_1y','backtest_all'].forEach(key => {
+        if (!data[key] || !Object.keys(data[key]).length) {
+          const filled = {};
+          data.strategy_list.forEach(s => { if (s[key] && Object.keys(s[key]).length) filled[s.id] = s[key]; });
+          if (Object.keys(filled).length) data[key] = filled;
+        }
+      });
+    }
 
     // Step 2: 解析策略
     setProgress(60, '解析策略权重...', `📊 共 ${data.strategy_list?.length || 0} 个策略`);
@@ -1112,8 +1134,10 @@ function renderWeightCharts() {
 function renderWeightCards() {
   const sl = G.strategy_list || [];
   const bt1y = G.backtest_1y || {};
+  const bt30 = G.backtest_30d || {};
   document.getElementById('weightCards').innerHTML = sl.map((s,i) => {
-    const bt = bt1y[s.id] || {};
+    const bt = (bt1y[s.id] && Object.keys(bt1y[s.id]).length) ? bt1y[s.id] : (bt30[s.id] || {});
+    const btLabel = (bt1y[s.id] && Object.keys(bt1y[s.id]).length) ? '1年' : '30日';
     const w = ((s.weight||0)*100).toFixed(1);
     const wr = bt.win_rate?.toFixed(1) || '--';
     const ar = bt.avg_return?.toFixed(2) || '--';
