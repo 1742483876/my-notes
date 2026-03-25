@@ -468,9 +468,9 @@ function generateDemoData() {
 
   const bt30 = {}; const bt1y = {}; const btall = {};
   strats.forEach(s => {
-    bt30[s.id]  = {win_rate:45+Math.random()*25,avg_return:-0.5+Math.random()*2.5,total_return:-5+Math.random()*30,total_trades:Math.floor(50+Math.random()*200),signal_stocks:Math.floor(20+Math.random()*80),sharpe:-0.5+Math.random()*2};
-    bt1y[s.id]  = {win_rate:43+Math.random()*22,avg_return:-0.3+Math.random()*2.2,total_return:-10+Math.random()*60,total_trades:Math.floor(200+Math.random()*800),signal_stocks:Math.floor(100+Math.random()*300),sharpe:-0.3+Math.random()*1.8};
-    btall[s.id] = {win_rate:42+Math.random()*20,avg_return:-0.2+Math.random()*2,total_return:-20+Math.random()*120,total_trades:Math.floor(500+Math.random()*2000),signal_stocks:Math.floor(200+Math.random()*600),sharpe:-0.2+Math.random()*1.5};
+    bt30[s.id]  = {win_rate:45+Math.random()*25,avg_return:-0.5+Math.random()*2.5,total_return:-5+Math.random()*30,total_trades:Math.floor(50+Math.random()*200),signal_stocks:Math.floor(20+Math.random()*80),sharpe:-0.5+Math.random()*2,max_drawdown:5+Math.random()*20};
+    bt1y[s.id]  = {win_rate:43+Math.random()*22,avg_return:-0.3+Math.random()*2.2,total_return:-10+Math.random()*60,total_trades:Math.floor(200+Math.random()*800),signal_stocks:Math.floor(100+Math.random()*300),sharpe:-0.3+Math.random()*1.8,max_drawdown:8+Math.random()*25};
+    btall[s.id] = {win_rate:42+Math.random()*20,avg_return:-0.2+Math.random()*2,total_return:-20+Math.random()*120,total_trades:Math.floor(500+Math.random()*2000),signal_stocks:Math.floor(200+Math.random()*600),sharpe:-0.2+Math.random()*1.5,max_drawdown:10+Math.random()*30};
   });
 
   const strategyList = strats.map(s => ({...s, weight:weights[s.id], backtest_30d:bt30[s.id], backtest_1y:bt1y[s.id], backtest_all:btall[s.id]}));

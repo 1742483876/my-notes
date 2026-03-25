@@ -38,14 +38,23 @@
       "desc": "连续3日以上收阳线，多头强势",
       "weight": 0.1852,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 48.6,
+        "avg_return": -1.22,
+        "total_return": -42.5,
+        "total_trades": 35,
+        "signal_stocks": 35,
+        "sharpe": -0.87,
+        "max_drawdown": 11.8
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 48.6,
+        "avg_return": -1.22,
+        "total_return": -42.5,
+        "total_trades": 35,
+        "signal_stocks": 35,
+        "sharpe": -0.87,
+        "max_drawdown": 11.8
+      },
       "backtest_all": {}
     },
     {
@@ -70,14 +79,23 @@
       "desc": "股票+债券+黄金+现金的25%均配",
       "weight": 0.0963,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 43.3,
+        "avg_return": -0.46,
+        "total_return": -13.7,
+        "total_trades": 30,
+        "signal_stocks": 30,
+        "sharpe": -0.78,
+        "max_drawdown": 32.3
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 43.3,
+        "avg_return": -0.46,
+        "total_return": -13.7,
+        "total_trades": 30,
+        "signal_stocks": 30,
+        "sharpe": -0.78,
+        "max_drawdown": 32.3
+      },
       "backtest_all": {}
     },
     {
@@ -86,14 +104,23 @@
       "desc": "10日跌幅超15%后出现3%以上反弹",
       "weight": 0.0936,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 47.6,
+        "avg_return": 1.6,
+        "total_return": 951.5,
+        "total_trades": 593,
+        "signal_stocks": 593,
+        "sharpe": 1.1,
+        "max_drawdown": 90.4
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 47.6,
+        "avg_return": 1.6,
+        "total_return": 951.5,
+        "total_trades": 593,
+        "signal_stocks": 593,
+        "sharpe": 1.1,
+        "max_drawdown": 90.4
+      },
       "backtest_all": {}
     },
     {
@@ -102,14 +129,23 @@
       "desc": "MA5上穿MA20，短期趋势转强信号",
       "weight": 0.0902,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 46.6,
+        "avg_return": 0.11,
+        "total_return": 319.9,
+        "total_trades": 3005,
+        "signal_stocks": 3005,
+        "sharpe": 0.11,
+        "max_drawdown": 65.3
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 46.6,
+        "avg_return": 0.11,
+        "total_return": 319.9,
+        "total_trades": 3005,
+        "signal_stocks": 3005,
+        "sharpe": 0.11,
+        "max_drawdown": 65.3
+      },
       "backtest_all": {}
     },
     {
@@ -134,14 +170,23 @@
       "desc": "主力资金背离程度量化",
       "weight": 0.0649,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 76.9,
+        "avg_return": 4.59,
+        "total_return": 59.6,
+        "total_trades": 13,
+        "signal_stocks": 13,
+        "sharpe": 5.01,
+        "max_drawdown": 7.3
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 76.9,
+        "avg_return": 4.59,
+        "total_return": 59.6,
+        "total_trades": 13,
+        "signal_stocks": 13,
+        "sharpe": 5.01,
+        "max_drawdown": 7.3
+      },
       "backtest_all": {}
     },
     {
@@ -150,14 +195,23 @@
       "desc": "K线上穿D线，且J值<50，买入信号",
       "weight": 0.0632,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 48.6,
+        "avg_return": 0.26,
+        "total_return": 359.4,
+        "total_trades": 1409,
+        "signal_stocks": 1409,
+        "sharpe": 0.3,
+        "max_drawdown": 66.5
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 48.6,
+        "avg_return": 0.26,
+        "total_return": 359.4,
+        "total_trades": 1409,
+        "signal_stocks": 1409,
+        "sharpe": 0.3,
+        "max_drawdown": 66.5
+      },
       "backtest_all": {}
     },
     {
@@ -166,14 +220,23 @@
       "desc": "RSI从超卖区（<30）回升，反弹信号",
       "weight": 0.0425,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 49.9,
+        "avg_return": 0.94,
+        "total_return": 1346.7,
+        "total_trades": 1435,
+        "signal_stocks": 1435,
+        "sharpe": 0.96,
+        "max_drawdown": 58.1
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 49.9,
+        "avg_return": 0.94,
+        "total_return": 1346.7,
+        "total_trades": 1435,
+        "signal_stocks": 1435,
+        "sharpe": 0.96,
+        "max_drawdown": 58.1
+      },
       "backtest_all": {}
     },
     {
@@ -198,14 +261,23 @@
       "desc": "成交量突增2倍以上，伴随价格突破",
       "weight": 0.0377,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 45.1,
+        "avg_return": -0.04,
+        "total_return": -93.2,
+        "total_trades": 2202,
+        "signal_stocks": 2202,
+        "sharpe": -0.04,
+        "max_drawdown": 61.5
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 45.1,
+        "avg_return": -0.04,
+        "total_return": -93.2,
+        "total_trades": 2202,
+        "signal_stocks": 2202,
+        "sharpe": -0.04,
+        "max_drawdown": 61.5
+      },
       "backtest_all": {}
     },
     {
@@ -214,14 +286,23 @@
       "desc": "基本面稳健+低估值+高股息组合",
       "weight": 0.0353,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 43.8,
+        "avg_return": -0.52,
+        "total_return": -150.2,
+        "total_trades": 290,
+        "signal_stocks": 290,
+        "sharpe": -0.8,
+        "max_drawdown": 69.1
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 43.8,
+        "avg_return": -0.52,
+        "total_return": -150.2,
+        "total_trades": 290,
+        "signal_stocks": 290,
+        "sharpe": -0.8,
+        "max_drawdown": 69.1
+      },
       "backtest_all": {}
     },
     {
@@ -262,14 +343,23 @@
       "desc": "价格与主力资金流向背离",
       "weight": 0.0144,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 52.6,
+        "avg_return": 0.66,
+        "total_return": 12.5,
+        "total_trades": 19,
+        "signal_stocks": 19,
+        "sharpe": 1.87,
+        "max_drawdown": 6.1
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 52.6,
+        "avg_return": 0.66,
+        "total_return": 12.5,
+        "total_trades": 19,
+        "signal_stocks": 19,
+        "sharpe": 1.87,
+        "max_drawdown": 6.1
+      },
       "backtest_all": {}
     },
     {
@@ -310,14 +400,23 @@
       "desc": "股价触及布林带下轨后反弹",
       "weight": 0.001,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 49.6,
+        "avg_return": 0.79,
+        "total_return": 1454.8,
+        "total_trades": 1847,
+        "signal_stocks": 1847,
+        "sharpe": 0.8,
+        "max_drawdown": 42.1
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 49.6,
+        "avg_return": 0.79,
+        "total_return": 1454.8,
+        "total_trades": 1847,
+        "signal_stocks": 1847,
+        "sharpe": 0.8,
+        "max_drawdown": 42.1
+      },
       "backtest_all": {}
     },
     {
@@ -342,14 +441,23 @@
       "desc": "所有策略等权重组合",
       "weight": 0.001,
       "backtest_30d": {
-        "win_rate": 50,
-        "avg_return": 0.5,
-        "total_return": 5,
-        "total_trades": 10,
-        "signal_stocks": 5,
-        "sharpe": 0.5
+        "win_rate": 55.0,
+        "avg_return": 0.73,
+        "total_return": 29.4,
+        "total_trades": 40,
+        "signal_stocks": 40,
+        "sharpe": 0.93,
+        "max_drawdown": 28.0
       },
-      "backtest_1y": {},
+      "backtest_1y": {
+        "win_rate": 55.0,
+        "avg_return": 0.73,
+        "total_return": 29.4,
+        "total_trades": 40,
+        "signal_stocks": 40,
+        "sharpe": 0.93,
+        "max_drawdown": 28.0
+      },
       "backtest_all": {}
     },
     {
@@ -30972,215 +31080,224 @@
   ],
   "backtest_30d": {
     "maGoldenCross": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 46.6,
+      "avg_return": 0.11,
+      "total_return": 319.9,
+      "total_trades": 3005,
+      "signal_stocks": 3005,
+      "sharpe": 0.11,
+      "max_drawdown": 65.3
     },
     "volumeBreakout": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 45.1,
+      "avg_return": -0.04,
+      "total_return": -93.2,
+      "total_trades": 2202,
+      "signal_stocks": 2202,
+      "sharpe": -0.04,
+      "max_drawdown": 61.5
     },
     "rsiOversold": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 49.9,
+      "avg_return": 0.94,
+      "total_return": 1346.7,
+      "total_trades": 1435,
+      "signal_stocks": 1435,
+      "sharpe": 0.96,
+      "max_drawdown": 58.1
     },
     "oversoldBounce": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 47.6,
+      "avg_return": 1.6,
+      "total_return": 951.5,
+      "total_trades": 593,
+      "signal_stocks": 593,
+      "sharpe": 1.1,
+      "max_drawdown": 90.4
     },
     "bollingerMeanReversion": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 49.6,
+      "avg_return": 0.79,
+      "total_return": 1454.8,
+      "total_trades": 1847,
+      "signal_stocks": 1847,
+      "sharpe": 0.8,
+      "max_drawdown": 42.1
     },
     "kdjGoldenCross": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 48.6,
+      "avg_return": 0.26,
+      "total_return": 359.4,
+      "total_trades": 1409,
+      "signal_stocks": 1409,
+      "sharpe": 0.3,
+      "max_drawdown": 66.5
     },
     "supermarket": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "coldStock": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "bottomFishing76": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 43.8,
+      "avg_return": -0.52,
+      "total_return": -150.2,
+      "total_trades": 290,
+      "signal_stocks": 290,
+      "sharpe": -0.8,
+      "max_drawdown": 69.1
     },
     "equalWeight": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 55.0,
+      "avg_return": 0.73,
+      "total_return": 29.4,
+      "total_trades": 40,
+      "signal_stocks": 40,
+      "sharpe": 0.93,
+      "max_drawdown": 28.0
     },
     "permanentPortfolio": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 43.3,
+      "avg_return": -0.46,
+      "total_return": -13.7,
+      "total_trades": 30,
+      "signal_stocks": 30,
+      "sharpe": -0.78,
+      "max_drawdown": 32.3
     },
     "mainForceDivergence": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 52.6,
+      "avg_return": 0.66,
+      "total_return": 12.5,
+      "total_trades": 19,
+      "signal_stocks": 19,
+      "sharpe": 1.87,
+      "max_drawdown": 6.1
     },
     "mainForceDivRate": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 76.9,
+      "avg_return": 4.59,
+      "total_return": 59.6,
+      "total_trades": 13,
+      "signal_stocks": 13,
+      "sharpe": 5.01,
+      "max_drawdown": 7.3
     },
     "consecutiveYangLine": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "volumeNewHigh": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "smallCapMomentum": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "ahPremiumArb": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "highDividendRotation": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "macdDivergence": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "industryRotation": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "lowVolatility": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "priceMomentum": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "soeValueSelect": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "earningsAcceleration": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "insiderBuying": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
-    },
-    "idiosyncraticMomentum": {
-      "win_rate": 50,
-      "avg_return": 0.5,
-      "total_return": 5,
-      "total_trades": 10,
-      "signal_stocks": 5,
-      "sharpe": 0.5
+      "win_rate": 48.6,
+      "avg_return": -1.22,
+      "total_return": -42.5,
+      "total_trades": 35,
+      "signal_stocks": 35,
+      "sharpe": -0.87,
+      "max_drawdown": 11.8
     }
   },
-  "backtest_1y": {},
+  "backtest_1y": {
+    "maGoldenCross": {
+      "win_rate": 46.6,
+      "avg_return": 0.11,
+      "total_return": 319.9,
+      "total_trades": 3005,
+      "signal_stocks": 3005,
+      "sharpe": 0.11,
+      "max_drawdown": 65.3
+    },
+    "volumeBreakout": {
+      "win_rate": 45.1,
+      "avg_return": -0.04,
+      "total_return": -93.2,
+      "total_trades": 2202,
+      "signal_stocks": 2202,
+      "sharpe": -0.04,
+      "max_drawdown": 61.5
+    },
+    "rsiOversold": {
+      "win_rate": 49.9,
+      "avg_return": 0.94,
+      "total_return": 1346.7,
+      "total_trades": 1435,
+      "signal_stocks": 1435,
+      "sharpe": 0.96,
+      "max_drawdown": 58.1
+    },
+    "oversoldBounce": {
+      "win_rate": 47.6,
+      "avg_return": 1.6,
+      "total_return": 951.5,
+      "total_trades": 593,
+      "signal_stocks": 593,
+      "sharpe": 1.1,
+      "max_drawdown": 90.4
+    },
+    "bollingerMeanReversion": {
+      "win_rate": 49.6,
+      "avg_return": 0.79,
+      "total_return": 1454.8,
+      "total_trades": 1847,
+      "signal_stocks": 1847,
+      "sharpe": 0.8,
+      "max_drawdown": 42.1
+    },
+    "kdjGoldenCross": {
+      "win_rate": 48.6,
+      "avg_return": 0.26,
+      "total_return": 359.4,
+      "total_trades": 1409,
+      "signal_stocks": 1409,
+      "sharpe": 0.3,
+      "max_drawdown": 66.5
+    },
+    "supermarket": {
+      "win_rate": 43.8,
+      "avg_return": -0.52,
+      "total_return": -150.2,
+      "total_trades": 290,
+      "signal_stocks": 290,
+      "sharpe": -0.8,
+      "max_drawdown": 69.1
+    },
+    "equalWeight": {
+      "win_rate": 55.0,
+      "avg_return": 0.73,
+      "total_return": 29.4,
+      "total_trades": 40,
+      "signal_stocks": 40,
+      "sharpe": 0.93,
+      "max_drawdown": 28.0
+    },
+    "permanentPortfolio": {
+      "win_rate": 43.3,
+      "avg_return": -0.46,
+      "total_return": -13.7,
+      "total_trades": 30,
+      "signal_stocks": 30,
+      "sharpe": -0.78,
+      "max_drawdown": 32.3
+    },
+    "mainForceDivergence": {
+      "win_rate": 52.6,
+      "avg_return": 0.66,
+      "total_return": 12.5,
+      "total_trades": 19,
+      "signal_stocks": 19,
+      "sharpe": 1.87,
+      "max_drawdown": 6.1
+    },
+    "mainForceDivRate": {
+      "win_rate": 76.9,
+      "avg_return": 4.59,
+      "total_return": 59.6,
+      "total_trades": 13,
+      "signal_stocks": 13,
+      "sharpe": 5.01,
+      "max_drawdown": 7.3
+    },
+    "consecutiveYangLine": {
+      "win_rate": 48.6,
+      "avg_return": -1.22,
+      "total_return": -42.5,
+      "total_trades": 35,
+      "signal_stocks": 35,
+      "sharpe": -0.87,
+      "max_drawdown": 11.8
+    }
+  },
   "backtest_all": {},
   "daily_picks": {
     "daily_data": [
