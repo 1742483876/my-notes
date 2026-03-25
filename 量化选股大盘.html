@@ -648,8 +648,8 @@ function renderBacktestCharts() {
   const sl = G.strategy_list || [];
   const names = sl.map(s => s.name);
   const ids   = sl.map(s => s.id);
-  const winRates   = ids.map(id => bt[id]?.win_rate || 0);
-  const avgReturns = ids.map(id => bt[id]?.avg_return || 0);
+  const winRates   = ids.map(id => parseFloat(bt[id]?.win_rate) || 0);
+  const avgReturns = ids.map(id => parseFloat(bt[id]?.avg_return) || 0);
   const periodLabel = getPeriodLabel(currentPeriod);
 
   // 更新图表标题
@@ -741,12 +741,12 @@ function renderStrategyTable() {
 
   document.getElementById('strategyTbody').innerHTML = sorted.map(s => {
     const bt = getBt(s);
-    const wr = bt.win_rate || 0;
-    const ar = bt.avg_return || 0;
-    const tr = bt.total_return || 0;
-    const sh = bt.sharpe || 0;
-    const md = bt.max_drawdown || 0;
-    const noData = bt.total_trades === 0;
+    const wr = parseFloat(bt.win_rate) || 0;
+    const ar = parseFloat(bt.avg_return) || 0;
+    const tr = parseFloat(bt.total_return) || 0;
+    const sh = parseFloat(bt.sharpe) || 0;
+    const md = parseFloat(bt.max_drawdown) || 0;
+    const noData = !bt.total_trades && !bt.win_rate;
     return `
     <tr>
       <td><b>${s.name}</b></td>
@@ -924,9 +924,9 @@ function renderDailyPicks() {
   }
 
   // 每日胜率 & 收益柱状图
-  const dates  = dailyData.map(d => d.date.slice(5));
-  const wrs    = dailyData.map(d => d.win_rate);
-  const rets   = dailyData.map(d => d.avg_return);
+  const dates  = dailyData.map(d => (d.date || d.pred_date || '').slice(5));
+  const wrs    = dailyData.map(d => d.win_rate ?? 0);
+  const rets   = dailyData.map(d => d.avg_return ?? 0);
 
   destroyChart('chartDailyWinRate');
   charts.dailyWinRate = new Chart(document.getElementById('chartDailyWinRate'), {
@@ -1189,17 +1189,22 @@ function renderWeightCharts() {
 
 function renderWeightCards() {
   const sl = G.strategy_list || [];
-  const bt1y = G.backtest_1y || {};
-  const bt30 = G.backtest_30d || {};
+  // 优先从 strategy_list 自身拿 backtest_1y，再 fallback 顶层
   document.getElementById('weightCards').innerHTML = sl.map((s,i) => {
-    const bt = (bt1y[s.id] && Object.keys(bt1y[s.id]).length) ? bt1y[s.id] : (bt30[s.id] || {});
-    const btLabel = (bt1y[s.id] && Object.keys(bt1y[s.id]).length) ? '1年' : '30日';
+    const bt1y_s = (s.backtest_1y && Object.keys(s.backtest_1y).length) ? s.backtest_1y : null;
+    const bt30_s = (s.backtest_30d && Object.keys(s.backtest_30d).length) ? s.backtest_30d : null;
+    const bt1y_g = (G.backtest_1y || {})[s.id];
+    const bt30_g = (G.backtest_30d || {})[s.id];
+    const bt = bt1y_s || bt1y_g || bt30_s || bt30_g || {};
     const w = ((s.weight||0)*100).toFixed(1);
-    const wr = bt.win_rate?.toFixed(1) || '--';
-    const ar = bt.avg_return?.toFixed(2) || '--';
-    const sh = bt.sharpe?.toFixed(2) || '--';
-    const md = bt.max_drawdown?.toFixed(1) || '--';
-    const mdColor = parseFloat(md) <= 10 ? 'var(--green)' : parseFloat(md) <= 20 ? 'var(--yellow)' : 'var(--red)';
+    const toN = v => (v !== undefined && v !== null && v !== '') ? parseFloat(v) : NaN;
+    const wr = isNaN(toN(bt.win_rate)) ? '--' : toN(bt.win_rate).toFixed(1);
+    const ar = isNaN(toN(bt.avg_return)) ? '--' : toN(bt.avg_return).toFixed(2);
+    const sh = isNaN(toN(bt.sharpe)) ? '--' : toN(bt.sharpe).toFixed(2);
+    const md = isNaN(toN(bt.max_drawdown)) ? '--' : toN(bt.max_drawdown).toFixed(1);
+    const mdColor = md === '--' ? 'var(--text2)' : parseFloat(md) <= 10 ? 'var(--green)' : parseFloat(md) <= 20 ? 'var(--yellow)' : 'var(--red)';
+    const wrColor = wr === '--' ? 'var(--text2)' : parseFloat(wr) >= 50 ? 'var(--red)' : 'var(--green)';
+    const arColor = ar === '--' ? 'var(--text2)' : parseFloat(ar) >= 0 ? 'var(--red)' : 'var(--green)';
     return `
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
@@ -1208,10 +1213,10 @@ function renderWeightCards() {
       </div>
       <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">${s.desc||''}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;font-size:12px">
-        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${parseFloat(wr)>=50?'var(--red)':'var(--green)'}">${wr}%</div></div>
-        <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="font-weight:600;color:${parseFloat(ar)>=0?'var(--red)':'var(--green)'}">${parseFloat(ar)>=0?'+':''}${ar}%</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${wrColor}">${wr === '--' ? '--' : wr + '%'}</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="font-weight:600;color:${arColor}">${ar === '--' ? '--' : (parseFloat(ar)>=0?'+':'') + ar + '%'}</div></div>
         <div style="text-align:center"><div style="color:var(--text2)">Sharpe</div><div style="font-weight:600">${sh}</div></div>
-        <div style="text-align:center"><div style="color:var(--text2)">最大回撤</div><div style="font-weight:600;color:${mdColor}">${md}%</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">最大回撤</div><div style="font-weight:600;color:${mdColor}">${md === '--' ? '--' : md + '%'}</div></div>
       </div>
     </div>`;
   }).join('');
