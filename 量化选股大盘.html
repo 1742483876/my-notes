@@ -238,9 +238,16 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   </div>
   <div class="section-title">📋 策略详情表</div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap" id="periodBtns">
-    <button onclick="switchPeriod('30d')" class="period-btn" data-p="30d">30日回测</button>
-    <button onclick="switchPeriod('1y')" class="period-btn active" data-p="1y">1年回测</button>
-    <button onclick="switchPeriod('all')" class="period-btn" data-p="all">全量回测</button>
+    <span style="color:var(--text2);font-size:12px;line-height:28px;margin-right:4px">回测周期：</span>
+    <button onclick="switchPeriod('30d')" class="period-btn" data-p="30d">30日</button>
+    <button onclick="switchPeriod('1y')" class="period-btn active" data-p="1y">1年</button>
+    <button onclick="switchPeriod('all')" class="period-btn" data-p="all">全量</button>
+    <span style="color:var(--border);margin:0 4px">|</span>
+    <span style="color:var(--text2);font-size:12px;line-height:28px;margin-right:4px">持仓周期：</span>
+    <button onclick="switchPeriod('1d')" class="period-btn" data-p="1d">1天</button>
+    <button onclick="switchPeriod('5d')" class="period-btn" data-p="5d">5天</button>
+    <button onclick="switchPeriod('20d')" class="period-btn" data-p="20d">20天</button>
+    <button onclick="switchPeriod('hold_now')" class="period-btn" data-p="hold_now">持仓至今</button>
   </div>
   <div class="table-wrap">
     <table class="strategy-table" id="strategyTable">
@@ -613,14 +620,42 @@ function renderRecommend() {
 }
 
 // ===== 回测图表 =====
+function getPeriodKey(period) {
+  const map = {
+    '30d': 'backtest_30d',
+    '1y':  'backtest_1y',
+    'all': 'backtest_all',
+    '1d':  'backtest_1d',
+    '5d':  'backtest_5d',
+    '20d': 'backtest_20d',
+    'hold_now': 'backtest_hold_now',
+  };
+  return map[period] || 'backtest_1y';
+}
+
+function getPeriodLabel(period) {
+  const map = {
+    '30d': '30日回测', '1y': '1年回测', 'all': '全量回测',
+    '1d': '持仓1天', '5d': '持仓5天', '20d': '持仓20天', 'hold_now': '持仓至今',
+  };
+  return map[period] || period;
+}
+
 function renderBacktestCharts() {
-  const periodKey = currentPeriod === '30d' ? 'backtest_30d' : currentPeriod === '1y' ? 'backtest_1y' : 'backtest_all';
-  const bt = G[periodKey] || {};
+  const periodKey = getPeriodKey(currentPeriod);
+  const isTopLevel = ['1d','5d','20d','hold_now'].includes(currentPeriod);
+  const bt = isTopLevel ? (G[periodKey] || {}) : (G[periodKey] || {});
   const sl = G.strategy_list || [];
   const names = sl.map(s => s.name);
   const ids   = sl.map(s => s.id);
   const winRates   = ids.map(id => bt[id]?.win_rate || 0);
   const avgReturns = ids.map(id => bt[id]?.avg_return || 0);
+  const periodLabel = getPeriodLabel(currentPeriod);
+
+  // 更新图表标题
+  const chartTitles = document.querySelectorAll('#contentBacktest .chart-title');
+  if (chartTitles[0]) chartTitles[0].textContent = `📊 各策略胜率对比（${periodLabel}）`;
+  if (chartTitles[1]) chartTitles[1].textContent = `💰 各策略平均收益对比（${periodLabel}）`;
 
   destroyChart('chartWinRate');
   charts.winRate = new Chart(document.getElementById('chartWinRate'), {
@@ -671,7 +706,15 @@ function renderBacktestCharts() {
 
 function renderStrategyTable() {
   const sl = G.strategy_list || [];
-  const periodKey = currentPeriod === '30d' ? 'backtest_30d' : currentPeriod === '1y' ? 'backtest_1y' : 'backtest_all';
+  const periodKey = getPeriodKey(currentPeriod);
+  const periodLabel = getPeriodLabel(currentPeriod);
+
+  // 判断是否从顶层G取数据（持仓周期维度）
+  const isTopLevel = ['1d','5d','20d','hold_now'].includes(currentPeriod);
+  const topLevelBt = isTopLevel ? (G[periodKey] || {}) : null;
+
+  // 获取某策略的回测数据
+  const getBt = (s) => isTopLevel ? (topLevelBt[s.id] || {}) : (s[periodKey] || {});
 
   // 排序
   let sorted = [...sl];
@@ -681,7 +724,7 @@ function renderStrategyTable() {
       if (strategySort.key === 'name') { va = a.name; vb = b.name; }
       else if (strategySort.key === 'weight') { va = a.weight || 0; vb = b.weight || 0; }
       else {
-        const bta = a[periodKey] || {}, btb = b[periodKey] || {};
+        const bta = getBt(a), btb = getBt(b);
         va = bta[strategySort.key] || 0; vb = btb[strategySort.key] || 0;
       }
       if (typeof va === 'string') return strategySort.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
@@ -697,7 +740,7 @@ function renderStrategyTable() {
   });
 
   document.getElementById('strategyTbody').innerHTML = sorted.map(s => {
-    const bt = s[periodKey] || {};
+    const bt = getBt(s);
     const wr = bt.win_rate || 0;
     const ar = bt.avg_return || 0;
     const tr = bt.total_return || 0;
@@ -719,7 +762,7 @@ function renderStrategyTable() {
       <td class="${noData?'':''+( ar>=0?'pos':'neg')}">${noData?'--':((ar>=0?'+':'')+ar.toFixed(2)+'%')}</td>
       <td class="${noData?'':''+( tr>=0?'pos':'neg')}">${noData?'--':((tr>=0?'+':'')+tr.toFixed(1)+'%')}</td>
       <td style="color:${noData?'var(--text2)':sh>=1?'var(--red)':sh>=0?'var(--yellow)':'var(--green)'}">${noData?'--':sh.toFixed(2)}</td>
-      <td style="color:${noData?'var(--text2)':md<=10?'var(--green)':md<=20?'var(--yellow)':'var(--red)'}">${noData?'--':(currentPeriod==='all'?'<span style="color:var(--text2);font-size:11px">截面数据</span>':md.toFixed(1)+'%')}</td>
+      <td style="color:${noData?'var(--text2)':md<=10?'var(--green)':md<=20?'var(--yellow)':'var(--red)'}">${noData?'--':md.toFixed(1)+'%'}</td>
       <td style="color:var(--text2)">${(bt.total_trades||0).toLocaleString()}</td>
     </tr>`;
   }).join('');
@@ -930,16 +973,22 @@ function renderDailyPicks() {
           return sortDir==='asc'?va-vb:vb-va;
         });
       }
+      const fmtRet = (v) => {
+        if (v === null || v === undefined) return '<span style="color:var(--text2)">-</span>';
+        const c = v >= 0 ? 'var(--red)' : 'var(--green)';
+        return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${v}%</span>`;
+      };
       return sorted.map((p, pi) => `
       <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
           onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
           onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
-        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span><span style="font-size:10px;color:var(--accent);margin-left:6px">📈</span></td>
-        <td style="padding:8px 12px;color:var(--text2);font-size:12px">-</td>
-        <td style="padding:8px 12px;color:var(--text2)">${p.entry_price}</td>
-        <td style="padding:8px 12px;color:var(--text2)">${p.exit_price}</td>
-        <td style="padding:8px 12px;font-weight:600;color:${p.return >= 0 ? 'var(--red)' : 'var(--green)'}">${p.return >= 0 ? '+' : ''}${p.return}%</td>
-        <td style="padding:8px 12px">${p.return >= 0 ? '<span style="color:var(--red)">✓ 盈</span>' : '<span style="color:var(--green)">✗ 亏</span>'}</td>
+        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
+        <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
+        <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_1d ?? p.return)}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_5d ?? p.return)}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_20d)}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_now)}</td>
       </tr>`).join('');
     };
     return `
@@ -963,9 +1012,10 @@ function renderDailyPicks() {
             <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
             <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
             <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','exit_price',${di})">卖出价<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return',${di})">收益<span class="sort-icon"></span></th>
-            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','result',${di})">结果<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_1d',${di})">1天<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_5d',${di})">5天<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_20d',${di})">20天<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_now',${di})">至今<span class="sort-icon"></span></th>
           </tr></thead>
           <tbody>${pickRows(dayPicks)}</tbody>
         </table>
