@@ -923,10 +923,11 @@ function renderDailyPicks() {
     });
   }
 
-  // 每日胜率 & 收益柱状图
-  const dates  = dailyData.map(d => d.date.slice(5));
-  const wrs    = dailyData.map(d => d.win_rate);
-  const rets   = dailyData.map(d => d.avg_return);
+  // 每日胜率 & 收益柱状图（只取最近60天展示，避免太密）
+  const chartDays = dailyData.slice(-60);
+  const dates  = chartDays.map(d => d.date.slice(5));
+  const wrs    = chartDays.map(d => d.win_rate);
+  const rets   = chartDays.map(d => d.avg_return);
 
   destroyChart('chartDailyWinRate');
   charts.dailyWinRate = new Chart(document.getElementById('chartDailyWinRate'), {
@@ -964,9 +965,16 @@ function renderDailyPicks() {
     }
   });
 
-  // 每日明细折叠列表（最近的在前）
+  // 每日明细折叠列表（最近的在前，分页展示）
   const list = document.getElementById('dailyPickList');
-  list.innerHTML = [...dailyData].reverse().map((day, di) => {
+  const reversedData = [...dailyData].reverse();
+  const PAGE_SIZE = 30;
+  let _dailyPage = 1;
+
+  function renderDailyList(page) {
+    const sliced = reversedData.slice(0, page * PAGE_SIZE);
+    const hasMore = sliced.length < reversedData.length;
+    list.innerHTML = sliced.map((day, di) => {
     const isGoodDay = day.win_rate >= 50;
     const tableId = `dailyPickTable_${di}`;
     const dayPicks = day.picks || [];
@@ -1028,7 +1036,21 @@ function renderDailyPicks() {
       </div>
     </div>`;
   }).join('');
-}
+
+    // 加载更多按钮
+    if (hasMore) {
+      list.innerHTML += `<div style="text-align:center;padding:20px">
+        <button onclick="_dailyPage++;renderDailyList(_dailyPage)"
+          style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 28px;border-radius:8px;cursor:pointer;font-size:14px">
+          加载更多（已显示 ${sliced.length} / ${reversedData.length} 天）
+        </button>
+      </div>`;
+    } else if (reversedData.length > PAGE_SIZE) {
+      list.innerHTML += `<div style="text-align:center;padding:16px;color:var(--text2);font-size:13px">共 ${reversedData.length} 个交易日，已全部显示</div>`;
+    }
+  }
+
+  renderDailyList(_dailyPage);
 
 // ===== 权益曲线 =====
 function renderEquityCharts() {
