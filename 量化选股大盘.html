@@ -172,6 +172,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   <div class="tab" onclick="switchTab('daily')">🔬 每日选股</div>
   <div class="tab" onclick="switchTab('today')">🎯 今日推荐</div>
   <div class="tab" onclick="switchTab('predict')">🔮 个股预测</div>
+  <div class="tab" onclick="switchTab('zt')">🚀 涨停预测</div>
 </div>
 
 <!-- 每日选股走查 -->
@@ -1333,7 +1334,7 @@ function destroyChart(id) {
 
 // ===== Tab 切换 =====
 function switchTab(name) {
-  const tabs = ['backtest','equity','weights','daily','today','predict'];
+  const tabs = ['backtest','equity','weights','daily','today','predict','zt'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', tabs[i] === name);
   });
@@ -1346,6 +1347,7 @@ function switchTab(name) {
       if (name === 'equity')   renderEquityCharts();
       if (name === 'weights')  renderWeightCharts();
       if (name === 'daily')    renderDailyPicks();
+      if (name === 'zt')       renderZtPredict();
     }, 50);
   }
 }
@@ -1516,8 +1518,11 @@ function renderKlineCharts() {
   const lows    = slice.map(k => k.low);
   const vols    = slice.map(k => k.volume);
 
-  // 颜色（涨红跌绿，A股习惯）
-  const barColors = slice.map(k => k.close >= k.open ? 'rgba(248,81,73,.85)' : 'rgba(63,185,80,.85)');
+  // 颜色（涨红跌绿，A股习惯）：用前收盘价判断涨跌
+  const barColors = slice.map((k, i) => {
+    const prevClose = i > 0 ? slice[i-1].close : k.open;
+    return k.close >= prevClose ? 'rgba(248,81,73,.85)' : 'rgba(63,185,80,.85)';
+  });
 
   // 计算MA5、MA10
   const ma = (arr, n) => arr.map((_, i) => {
@@ -1582,8 +1587,10 @@ function renderKlineCharts() {
               const k = slice[ctx.dataIndex];
               if (!k) return '';
               if (ctx.datasetIndex === 0) {
-                const ret = ((k.close - k.open) / k.open * 100).toFixed(2);
-                const sign = k.close >= k.open ? '+' : '';
+                const i = ctx.dataIndex;
+                const prevClose = i > 0 ? slice[i-1].close : k.open;
+                const ret = ((k.close - prevClose) / prevClose * 100).toFixed(2);
+                const sign = k.close >= prevClose ? '+' : '';
                 return [`开: ${k.open}  收: ${k.close}`, `高: ${k.high}  低: ${k.low}`, `涨跌: ${sign}${ret}%`];
               }
               return `${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(2) || '--'}`;
@@ -2088,6 +2095,218 @@ function renderPredictResult(d) {
 
 // 初始化历史
 renderPredictHistory();
+</script>
+
+<!-- ══════════════════ 涨停预测 页面 ══════════════════ -->
+<div class="page" id="page-zt">
+<style>
+.zt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.zt-stat-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.zt-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;flex:1;min-width:120px;text-align:center}
+.zt-stat-label{font-size:11px;color:var(--text2);margin-bottom:4px}
+.zt-stat-value{font-size:22px;font-weight:700}
+.zt-filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.zt-filter-btn{padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s}
+.zt-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.zt-table{width:100%;border-collapse:collapse;font-size:13px}
+.zt-table th{padding:10px 12px;text-align:left;color:var(--text2);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+.zt-table th:hover{color:var(--text)}
+.zt-table td{padding:10px 12px;border-bottom:1px solid rgba(48,54,61,.5);vertical-align:middle}
+.zt-table tr:hover td{background:var(--surface2)}
+.zt-score-bar{display:flex;align-items:center;gap:8px}
+.zt-score-num{font-weight:700;width:32px;text-align:right}
+.zt-bar{height:6px;border-radius:3px;flex:1;background:var(--surface2);overflow:hidden}
+.zt-bar-fill{height:100%;border-radius:3px;transition:.3s}
+.zt-level{font-size:11px;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.zt-level-fire{background:rgba(248,81,73,.15);color:#f85149}
+.zt-level-star{background:rgba(255,166,87,.15);color:#ffa657}
+.zt-level-up{background:rgba(63,185,80,.15);color:#3fb950}
+.zt-level-eye{background:rgba(139,148,158,.15);color:#8b949e}
+.zt-chg-up{color:#f85149;font-weight:600}
+.zt-chg-dn{color:#3fb950;font-weight:600}
+.zt-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:4px;background:rgba(88,166,255,.15);color:#58a6ff}
+.zt-empty{text-align:center;padding:60px;color:var(--text2)}
+.zt-tip{font-size:12px;color:var(--text2);margin-bottom:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--accent)}
+</style>
+
+<div class="zt-header">
+  <div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:4px">🚀 次日涨停候选</div>
+    <div style="font-size:12px;color:var(--text2)" id="ztUpdateTime">加载中...</div>
+  </div>
+  <button onclick="loadZtData(true)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">🔄 刷新</button>
+</div>
+
+<div class="zt-tip">
+  ⚡ 基于量价特征+技术指标预测次日涨停概率，得分越高信号越强。<strong>注意：涨停预测难度极高，仅供参考，请结合基本面判断。</strong>
+</div>
+
+<div class="zt-stat-row" id="ztStatRow"></div>
+
+<div class="zt-filter-row">
+  <span style="font-size:12px;color:var(--text2)">筛选：</span>
+  <div class="zt-filter-btn active" onclick="ztFilter('all',this)">全部</div>
+  <div class="zt-filter-btn" onclick="ztFilter('fire',this)">🔥 强烈关注 ≥80</div>
+  <div class="zt-filter-btn" onclick="ztFilter('star',this)">⭐ 高概率 70-79</div>
+  <div class="zt-filter-btn" onclick="ztFilter('up',this)">📈 关注 60-69</div>
+  <div class="zt-filter-btn" onclick="ztFilter('zt_only',this)">仅今日涨停</div>
+</div>
+
+<div id="ztTableWrap">
+  <div class="zt-empty">数据加载中...</div>
+</div>
+</div>
+
+<script>
+let ztData = null;
+let ztFilterMode = 'all';
+
+async function loadZtData(force=false) {
+  if (ztData && !force) return;
+  try {
+    const r = await fetch('./data/api/zt_predict.json?t=' + Date.now());
+    ztData = await r.json();
+    renderZtPredict();
+  } catch(e) {
+    document.getElementById('ztTableWrap').innerHTML = '<div class="zt-empty">⚠️ 暂无数据，请先运行 zt_predictor.py</div>';
+  }
+}
+
+function renderZtPredict() {
+  if (!ztData) { loadZtData(); return; }
+
+  // 更新时间
+  const ut = ztData.update_time ? ztData.update_time.slice(0,16).replace('T',' ') : '--';
+  document.getElementById('ztUpdateTime').textContent = `更新时间：${ut}  |  扫描 ${ztData.total_scanned||0} 只`;
+
+  // 统计卡片
+  const top50 = ztData.top50 || [];
+  const fireCount = top50.filter(r=>r.score>=80).length;
+  const starCount = top50.filter(r=>r.score>=70&&r.score<80).length;
+  const ztTodayCount = ztData.today_zt_count || top50.filter(r=>r.features?.near_zt).length;
+  const avgBtPrec = top50.filter(r=>r.backtest?.precision>0).reduce((s,r)=>s+r.backtest.precision,0) /
+                    (top50.filter(r=>r.backtest?.precision>0).length||1);
+
+  document.getElementById('ztStatRow').innerHTML = `
+    <div class="zt-stat-card"><div class="zt-stat-label">候选总数</div><div class="zt-stat-value" style="color:var(--accent)">${ztData.candidate_count||top50.length}</div></div>
+    <div class="zt-stat-card"><div class="zt-stat-label">🔥强烈关注</div><div class="zt-stat-value" style="color:#f85149">${fireCount}</div></div>
+    <div class="zt-stat-card"><div class="zt-stat-label">⭐高概率</div><div class="zt-stat-value" style="color:#ffa657">${starCount}</div></div>
+    <div class="zt-stat-card"><div class="zt-stat-label">今日涨停数</div><div class="zt-stat-value" style="color:#3fb950">${ztTodayCount}</div></div>
+    <div class="zt-stat-card"><div class="zt-stat-label">回测平均精准率</div><div class="zt-stat-value" style="color:var(--purple)">${avgBtPrec.toFixed(0)}%</div></div>
+  `;
+
+  renderZtTable();
+}
+
+function ztFilter(mode, el) {
+  ztFilterMode = mode;
+  document.querySelectorAll('.zt-filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderZtTable();
+}
+
+function renderZtTable() {
+  if (!ztData) return;
+  let rows = ztData.top50 || [];
+
+  // 筛选
+  if (ztFilterMode === 'fire') rows = rows.filter(r=>r.score>=80);
+  else if (ztFilterMode === 'star') rows = rows.filter(r=>r.score>=70&&r.score<80);
+  else if (ztFilterMode === 'up') rows = rows.filter(r=>r.score>=60&&r.score<70);
+  else if (ztFilterMode === 'zt_only') rows = rows.filter(r=>r.features?.near_zt||r.chg_pct>=9);
+
+  if (!rows.length) {
+    document.getElementById('ztTableWrap').innerHTML = '<div class="zt-empty">该筛选条件下暂无候选股</div>';
+    return;
+  }
+
+  const levelClass = (score) => {
+    if (score>=80) return 'zt-level-fire';
+    if (score>=70) return 'zt-level-star';
+    if (score>=60) return 'zt-level-up';
+    return 'zt-level-eye';
+  };
+  const barColor = (score) => {
+    if (score>=80) return '#f85149';
+    if (score>=70) return '#ffa657';
+    if (score>=60) return '#3fb950';
+    return '#8b949e';
+  };
+
+  const html = `
+  <table class="zt-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>股票</th>
+        <th>得分</th>
+        <th>级别</th>
+        <th>今日涨幅</th>
+        <th>量比</th>
+        <th>收盘强度</th>
+        <th>RSI</th>
+        <th>连板</th>
+        <th>回测精准率</th>
+        <th>信号</th>
+      </tr>
+    </thead>
+    <tbody>
+    ${rows.map((r,i) => {
+      const f = r.features || {};
+      const bt = r.backtest || {};
+      const chgClass = r.chg_pct >= 0 ? 'zt-chg-up' : 'zt-chg-dn';
+      const chgSign = r.chg_pct >= 0 ? '+' : '';
+      const signals = [];
+      if (f.near_zt || r.chg_pct >= 9) signals.push('涨停');
+      if (f.consecutive_zt > 0) signals.push(`${f.consecutive_zt}连板`);
+      if (f.break_high_20d) signals.push('突破高点');
+      if (f.vol_ratio >= 3) signals.push(`量比${f.vol_ratio}x`);
+      if (f.macd_positive) signals.push('MACD金叉');
+      if (f.above_ma5 && f.above_ma10 && f.above_ma20) signals.push('均线多头');
+
+      return `<tr onclick="openKlineByCode('${r.code}','${r.name}')" style="cursor:pointer">
+        <td style="color:var(--text2)">${i+1}</td>
+        <td>
+          <div style="font-weight:600">${r.name}</div>
+          <div style="font-size:11px;color:var(--text2)">${r.code}</div>
+        </td>
+        <td>
+          <div class="zt-score-bar">
+            <span class="zt-score-num" style="color:${barColor(r.score)}">${r.score}</span>
+            <div class="zt-bar"><div class="zt-bar-fill" style="width:${r.score}%;background:${barColor(r.score)}"></div></div>
+          </div>
+        </td>
+        <td><span class="zt-level ${levelClass(r.score)}">${r.level||''}</span></td>
+        <td class="${chgClass}">${chgSign}${r.chg_pct}%</td>
+        <td style="color:${f.vol_ratio>=3?'#ffa657':f.vol_ratio>=2?'#58a6ff':'var(--text)'}">${f.vol_ratio||'--'}x</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:40px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden">
+              <div style="width:${f.close_strength||0}%;height:100%;background:#58a6ff;border-radius:3px"></div>
+            </div>
+            <span style="font-size:11px;color:var(--text2)">${f.close_strength||0}%</span>
+          </div>
+        </td>
+        <td style="color:${f.rsi>70?'#f85149':f.rsi<30?'#3fb950':'var(--text)'}">${f.rsi||'--'}</td>
+        <td style="color:${f.consecutive_zt>0?'#ffa657':'var(--text2)'}">${f.consecutive_zt>0?f.consecutive_zt+'板':'--'}</td>
+        <td style="color:${bt.precision>=50?'#3fb950':bt.precision>=30?'#ffa657':'var(--text2)'}">
+          ${bt.precision!=null ? bt.precision+'%' : '--'}
+          ${bt.zt_count!=null ? `<span style="font-size:10px;color:var(--text2)">(${bt.tp||0}/${bt.zt_count})</span>` : ''}
+        </td>
+        <td>${signals.map(s=>`<span class="zt-tag">${s}</span>`).join('')}</td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
+
+  document.getElementById('ztTableWrap').innerHTML = html;
+}
+
+// 按股票代码打开K线
+async function openKlineByCode(code, name) {
+  const stock = { code, name, klines: [] };
+  await openKlineModal(stock);
+}
 </script>
 </body>
 </html>
