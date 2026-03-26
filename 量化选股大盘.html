@@ -126,9 +126,6 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 .kline-tabs{display:flex;gap:8px;margin-bottom:16px}
 .kline-tab{padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s}
 .kline-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.hold-tab{padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s;font-weight:500}
-.hold-tab:hover{border-color:var(--accent);color:var(--accent)}
-.hold-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .kline-chart-wrap{position:relative;height:320px;margin-bottom:16px}
 .kline-vol-wrap{position:relative;height:100px}
 .kline-mark-line{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,165,0,.6);pointer-events:none;z-index:5}
@@ -172,7 +169,6 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   <div class="tab" onclick="switchTab('daily')">🔬 每日选股</div>
   <div class="tab" onclick="switchTab('today')">🎯 今日推荐</div>
   <div class="tab" onclick="switchTab('predict')">🔮 个股预测</div>
-  <div class="tab" onclick="switchTab('zt')">🚀 涨停预测</div>
 </div>
 
 <!-- 每日选股走查 -->
@@ -202,19 +198,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
       </div>
     </div>
     <!-- 每日明细折叠列表 -->
-    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0 12px">
-      <div class="section-title" style="margin:0">📋 每日推荐明细</div>
-      <span style="font-size:12px;color:var(--text2)">（点击展开当天推荐股票）</span>
-      <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
-        <span style="font-size:12px;color:var(--text2)">持仓周期：</span>
-        <div id="holdPeriodTabs" style="display:flex;gap:4px">
-          <button class="hold-tab active" data-period="1d" onclick="switchHoldPeriod('1d',this)">1天</button>
-          <button class="hold-tab" data-period="5d" onclick="switchHoldPeriod('5d',this)">5天</button>
-          <button class="hold-tab" data-period="20d" onclick="switchHoldPeriod('20d',this)">20天</button>
-          <button class="hold-tab" data-period="now" onclick="switchHoldPeriod('now',this)">至今</button>
-        </div>
-      </div>
-    </div>
+    <div class="section-title">📋 每日推荐明细 <span style="font-size:12px;color:var(--text2);font-weight:400">（点击展开当天推荐股票）</span></div>
     <div id="dailyPickList" style="display:flex;flex-direction:column;gap:8px;padding-bottom:32px"></div>
   </div>
 </div>
@@ -416,19 +400,6 @@ async function loadData() {
       data.daily_picks.daily_data = data.daily_picks.daily_data.map(d => ({
         ...d, date: d.date || d.pred_date || ''
       }));
-      // 记录最新K线日期（用于判断持仓中）：从今日推荐的 last_date 或 daily_data picks 推算
-      const allPickDates = [];
-      data.daily_picks.daily_data.forEach(d => {
-        (d.picks || []).forEach(pk => {
-          if (pk.exit_date_now) allPickDates.push(pk.exit_date_now);
-          if (pk.exit_date_1d) allPickDates.push(pk.exit_date_1d);
-        });
-      });
-      if (allPickDates.length) {
-        window._latestKlineDate = allPickDates.sort().slice(-1)[0];
-      } else if (data.today_picks && data.today_picks.length) {
-        window._latestKlineDate = data.today_picks[0]?.last_date || '';
-      }
     }
     // backtest_1y/30d/all 顶层为空时，从 strategy_list 回填
     if (data.strategy_list && data.strategy_list.length) {
@@ -553,26 +524,7 @@ async function renderAll() {
   if (!G) return;
   const tick = () => new Promise(r => setTimeout(r, 0)); // 让UI喘口气
 
-  const _ut = (G.update_time || G.date || '');
-  const _utEl = document.getElementById('updateTime');
-  const _utStr = _ut ? _ut.slice(0,16).replace('T',' ') : '--';
-  const _utDate = _ut ? _ut.slice(0,10) : '';
-  const _today = new Date().toISOString().slice(0,10);
-  const _isToday = _utDate === _today;
-  const _isYesterday = _utDate && (new Date(_today) - new Date(_utDate)) <= 86400000;
-  if (_isToday) {
-    _utEl.innerHTML = `✅ 今日已更新 <span style="opacity:.7">${_utStr}</span>`;
-    _utEl.style.borderColor = 'var(--green,#22c55e)';
-    _utEl.style.color = 'var(--green,#22c55e)';
-  } else if (_isYesterday) {
-    _utEl.innerHTML = `⚠️ 昨日数据 <span style="opacity:.7">${_utStr}</span>`;
-    _utEl.style.borderColor = '#f59e0b';
-    _utEl.style.color = '#f59e0b';
-  } else {
-    _utEl.innerHTML = `🕐 ${_utStr}`;
-    _utEl.style.borderColor = '';
-    _utEl.style.color = '';
-  }
+  document.getElementById('updateTime').textContent = '更新: ' + (G.update_time || G.date || '--').slice(0,16).replace('T',' ');
   document.getElementById('headerMeta').textContent = `${G.stock_count?.toLocaleString() || '--'} 只股票 · ${G.strategy_count || 15} 个策略${G._demo ? ' · 演示数据' : ''}`;
 
   setProgress(78, '渲染统计卡片...', '📊 计算汇总指标');
@@ -696,8 +648,8 @@ function renderBacktestCharts() {
   const sl = G.strategy_list || [];
   const names = sl.map(s => s.name);
   const ids   = sl.map(s => s.id);
-  const winRates   = ids.map(id => parseFloat(bt[id]?.win_rate) || 0);
-  const avgReturns = ids.map(id => parseFloat(bt[id]?.avg_return) || 0);
+  const winRates   = ids.map(id => bt[id]?.win_rate || 0);
+  const avgReturns = ids.map(id => bt[id]?.avg_return || 0);
   const periodLabel = getPeriodLabel(currentPeriod);
 
   // 更新图表标题
@@ -789,12 +741,12 @@ function renderStrategyTable() {
 
   document.getElementById('strategyTbody').innerHTML = sorted.map(s => {
     const bt = getBt(s);
-    const wr = parseFloat(bt.win_rate) || 0;
-    const ar = parseFloat(bt.avg_return) || 0;
-    const tr = parseFloat(bt.total_return) || 0;
-    const sh = parseFloat(bt.sharpe) || 0;
-    const md = parseFloat(bt.max_drawdown) || 0;
-    const noData = !bt.total_trades && !bt.win_rate;
+    const wr = bt.win_rate || 0;
+    const ar = bt.avg_return || 0;
+    const tr = bt.total_return || 0;
+    const sh = bt.sharpe || 0;
+    const md = bt.max_drawdown || 0;
+    const noData = bt.total_trades === 0;
     return `
     <tr>
       <td><b>${s.name}</b></td>
@@ -864,25 +816,18 @@ function sortDailyTable(tableId, key, di) {
     return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${v}%</span>`;
   };
   const tbody = table.querySelector('tbody');
-  const HOLD_PERIODS = [
-    { key: '1d',  retKey: 'return_1d',  fallback: 'return' },
-    { key: '5d',  retKey: 'return_5d',  fallback: 'return' },
-    { key: '20d', retKey: 'return_20d', fallback: null },
-    { key: 'now', retKey: 'return_now', fallback: null },
-  ];
-  const curPeriod = HOLD_PERIODS.find(x => x.key === (window._currentHoldPeriod || '1d')) || HOLD_PERIODS[1];
-  tbody.innerHTML = sorted.map(p => {
-    const retVal = p[curPeriod.retKey] ?? (curPeriod.fallback ? p[curPeriod.fallback] : null);
-    return `
+  tbody.innerHTML = sorted.map(p => `
     <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
         onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
         onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
       <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
       <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
       <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
-      <td style="padding:8px 12px">${fmtR(retVal)}</td>
-    </tr>`;
-  }).join('');
+      <td style="padding:8px 12px">${fmtR(p.return_1d ?? p.return)}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_5d ?? p.return)}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_20d)}</td>
+      <td style="padding:8px 12px">${fmtR(p.return_now)}</td>
+    </tr>`).join('');
 }
 
 function switchPeriod(p) {
@@ -904,9 +849,6 @@ function renderDailyPicks() {
   let totalTrades = 0;
   let maxDrawdown = 0;
   let equityCurve = [];
-  let skippedBear = 0;
-  let skippedThreshold = 0;
-  let holdDays = 5;
   
   // 兼容新旧两种数据格式
   if (Array.isArray(dp)) {
@@ -922,9 +864,6 @@ function renderDailyPicks() {
     totalTrades = ds.total_trades || 0;
     maxDrawdown = ds.max_drawdown || 0;
     equityCurve = ds.equity_curve || [];
-    skippedBear = ds.skipped_bear || 0;
-    skippedThreshold = ds.skipped_threshold || 0;
-    holdDays = ds.hold_days || 5;
   } else {
     // 新格式：daily_picks 是对象
     dailyData = dp.daily_data || [];
@@ -936,27 +875,21 @@ function renderDailyPicks() {
     totalTrades = dp.total_trades || 0;
     maxDrawdown = dp.max_drawdown || 0;
     equityCurve = dp.equity_curve || [];
-    skippedBear = dp.skipped_bear || 0;
-    skippedThreshold = dp.skipped_threshold || 0;
-    holdDays = dp.hold_days || 5;
   }
 
   // 隐藏loading，显示内容
   document.getElementById('loadingDaily').style.display = 'none';
   document.getElementById('contentDaily').style.display = 'block';
 
-  // 汇总卡片
-  const holdLabel = holdDays === 1 ? '次日收益' : `持有${holdDays}天`;
-  const vacantDays = skippedBear + skippedThreshold;
+  // 汇总卡片 - 添加最大回撤
   document.getElementById('dailySummaryGrid').innerHTML = [
-    { label: '走查天数', value: tradingDays, unit: `${vacantDays > 0 ? '空仓' + vacantDays + '天' : '个交易日'}`, color: 'var(--accent)' },
+    { label: '走查天数', value: tradingDays, unit: '个交易日', color: 'var(--accent)' },
     { label: '日胜率', value: overallWinRate + '%', unit: '盈利天数占比', color: overallWinRate >= 50 ? 'var(--red)' : 'var(--green)' },
     { label: '单笔胜率', value: tradeWinRate + '%', unit: '所有推荐', color: tradeWinRate >= 50 ? 'var(--red)' : 'var(--green)' },
-    { label: '平均日收益', value: (avgDailyReturn >= 0 ? '+' : '') + avgDailyReturn + '%', unit: holdLabel, color: avgDailyReturn >= 0 ? 'var(--red)' : 'var(--green)' },
+    { label: '平均日收益', value: (avgDailyReturn >= 0 ? '+' : '') + avgDailyReturn + '%', unit: '持有5天', color: avgDailyReturn >= 0 ? 'var(--red)' : 'var(--green)' },
     { label: '模拟净值', value: finalEquity, unit: '初始100', color: finalEquity >= 100 ? 'var(--red)' : 'var(--green)' },
     { label: '最大回撤', value: maxDrawdown + '%', unit: '峰值到谷底', color: maxDrawdown <= 10 ? 'var(--green)' : maxDrawdown <= 20 ? 'var(--yellow)' : 'var(--red)' },
     { label: '总交易笔数', value: totalTrades.toLocaleString(), unit: '笔', color: 'var(--text)' },
-    ...(skippedBear > 0 ? [{ label: '熊市空仓', value: skippedBear + '天', unit: 'MA5<MA20跳过', color: 'var(--yellow)' }] : []),
   ].map(c => `<div class="stat-card"><div class="stat-value" style="color:${c.color}">${c.value}</div><div class="stat-label">${c.label}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">${c.unit}</div></div>`).join('');
 
   // 净值曲线
@@ -991,9 +924,9 @@ function renderDailyPicks() {
   }
 
   // 每日胜率 & 收益柱状图
-  const dates  = dailyData.map(d => (d.date || d.pred_date || '').slice(5));
-  const wrs    = dailyData.map(d => d.win_rate ?? 0);
-  const rets   = dailyData.map(d => d.avg_return ?? 0);
+  const dates  = dailyData.map(d => d.date.slice(5));
+  const wrs    = dailyData.map(d => d.win_rate);
+  const rets   = dailyData.map(d => d.avg_return);
 
   destroyChart('chartDailyWinRate');
   charts.dailyWinRate = new Chart(document.getElementById('chartDailyWinRate'), {
@@ -1032,120 +965,69 @@ function renderDailyPicks() {
   });
 
   // 每日明细折叠列表（最近的在前）
-  // 持仓周期配置
-  const HOLD_PERIODS = [
-    { key: '1d',  label: '1天',  retKey: 'return_1d',  fallback: 'return' },
-    { key: '5d',  label: '5天',  retKey: 'return_5d',  fallback: 'return' },
-    { key: '20d', label: '20天', retKey: 'return_20d', fallback: null },
-    { key: 'now', label: '至今', retKey: 'return_now', fallback: null },
-  ];
-  window._dailyPicksData = [...dailyData].reverse();  // 缓存供切换用
-  window._currentHoldPeriod = window._currentHoldPeriod || '1d';
-
-  const fmtRet = (v) => {
-    if (v === null || v === undefined) return '<span style="color:var(--text2)">-</span>';
-    const c = v >= 0 ? 'var(--red)' : 'var(--green)';
-    return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${parseFloat(v).toFixed(2)}%</span>`;
-  };
-
-  const renderPickList = (period) => {
-    const p = HOLD_PERIODS.find(x => x.key === period) || HOLD_PERIODS[1];
-    const list = document.getElementById('dailyPickList');
-    list.innerHTML = window._dailyPicksData.map((day, di) => {
-      const isGoodDay = day.win_rate >= 50;
-      const tableId = `dailyPickTable_${di}`;
-      const dayPicks = day.picks || [];
-
-      // 计算当前周期的胜率和均收益
-      const validPicks = dayPicks.filter(pk => {
-        const v = pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : null);
-        return v !== null && v !== undefined;
-      });
-      const winPicks = validPicks.filter(pk => {
-        const v = pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : null);
-        return v > 0;
-      });
-      const periodWinRate = validPicks.length ? Math.round(winPicks.length / validPicks.length * 100) : day.win_rate;
-      const periodAvgRet = validPicks.length
-        ? (validPicks.reduce((s, pk) => s + parseFloat(pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : 0) ?? 0), 0) / validPicks.length).toFixed(2)
-        : day.avg_return;
-      const isPeriodGood = periodWinRate >= 50;
-
-      const buildRows = (picks, sortKey='', sortDir='desc') => {
-        let sorted = [...picks];
-        if (sortKey) {
-          sorted.sort((a, b) => {
-            let va = a[sortKey] ?? null, vb = b[sortKey] ?? null;
-            if (va === null) return 1; if (vb === null) return -1;
-            if (typeof va === 'string') return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
-            return sortDir==='asc'?va-vb:vb-va;
-          });
-        }
-        return sorted.map(pk => {
-          const retVal = pk[p.retKey] ?? (p.fallback ? pk[p.fallback] : null);
-          return `
-          <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
-              onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
-              onclick="openKlineByIndex('daily',${di},${sorted.indexOf(pk)})">
-            <td style="padding:8px 12px;font-weight:500">${pk.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${pk.code}</span></td>
-            <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(pk.strategies||[]).join(' ')}</td>
-            <td style="padding:8px 12px;color:var(--text2)">${pk.entry_price ?? '-'}</td>
-            <td style="padding:8px 12px">${fmtRet(retVal)}</td>
-          </tr>`;
-        }).join('');
+  const list = document.getElementById('dailyPickList');
+  list.innerHTML = [...dailyData].reverse().map((day, di) => {
+    const isGoodDay = day.win_rate >= 50;
+    const tableId = `dailyPickTable_${di}`;
+    const dayPicks = day.picks || [];
+    const pickRows = (picks, sortKey='', sortDir='desc') => {
+      let sorted = [...dayPicks];
+      if (sortKey) {
+        sorted.sort((a, b) => {
+          let va = a[sortKey], vb = b[sortKey];
+          if (typeof va === 'string') return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+          return sortDir==='asc'?va-vb:vb-va;
+        });
+      }
+      const fmtRet = (v) => {
+        if (v === null || v === undefined) return '<span style="color:var(--text2)">-</span>';
+        const c = v >= 0 ? 'var(--red)' : 'var(--green)';
+        return `<span style="font-weight:600;color:${c}">${v >= 0 ? '+' : ''}${v}%</span>`;
       };
-
-      // 判断是否持仓中（exit_date 超出最新K线日期，即持仓未到期）
-      const latestDate = window._latestKlineDate || '';
-      const exitDate = day.exit_date || '';
-      const isPending = latestDate && exitDate && exitDate > latestDate;
-
-      return `
-      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
-        <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
-             style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
-          <span style="font-weight:600;color:var(--text)">${day.date}</span>
-          <span style="font-size:12px;color:var(--text2);background:rgba(88,166,255,.1);padding:2px 8px;border-radius:4px">持有${p.label}</span>
-          ${isPending ? `<span style="font-size:11px;color:#f0a500;background:rgba(240,165,0,.12);padding:2px 7px;border-radius:4px;border:1px solid rgba(240,165,0,.3)">⏳ 持仓中</span>` : ''}
-          <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isPeriodGood?'var(--red)':'var(--green)'}">
-            胜率 ${isPending ? '<span style="font-size:11px;color:#f0a500">(浮动)</span> ' : ''}${periodWinRate}%
-          </span>
-          <span style="font-size:13px;font-weight:600;color:${parseFloat(periodAvgRet)>=0?'var(--red)':'var(--green)'}">
-            均收益 ${parseFloat(periodAvgRet)>=0?'+':''}${periodAvgRet}%
-          </span>
-          <span style="font-size:12px;color:var(--text2)">${winPicks.length}/${validPicks.length} 盈利</span>
-          <span style="font-size:12px;color:var(--text2)">▼</span>
-        </div>
-        <div style="display:none">
-          <table id="${tableId}" style="width:100%;border-collapse:collapse;font-size:13px" data-sort-key="" data-sort-dir="desc">
-            <thead><tr style="background:var(--surface)">
-              <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
-              <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
-              <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
-              <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','${p.retKey}',${di})">${p.label}收益<span class="sort-icon"></span></th>
-            </tr></thead>
-            <tbody>${buildRows(dayPicks)}</tbody>
-          </table>
-        </div>
-      </div>`;
-    }).join('');
-  };
-
-  // 初始渲染
-  renderPickList(window._currentHoldPeriod);
-  // 同步tab高亮
-  document.querySelectorAll('.hold-tab').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.period === window._currentHoldPeriod);
-  });
-  // 挂载到全局供切换调用
-  window._renderPickList = renderPickList;
-}
-
-function switchHoldPeriod(period, el) {
-  window._currentHoldPeriod = period;
-  document.querySelectorAll('.hold-tab').forEach(btn => btn.classList.remove('active'));
-  el.classList.add('active');
-  if (window._renderPickList) window._renderPickList(period);
+      return sorted.map((p, pi) => `
+      <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
+          onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
+          onclick="openKlineByIndex('daily',${di},${sorted.indexOf(p)})">
+        <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
+        <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
+        <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_1d ?? p.return)}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_5d ?? p.return)}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_20d)}</td>
+        <td style="padding:8px 12px">${fmtRet(p.return_now)}</td>
+      </tr>`).join('');
+    };
+    return `
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
+           style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface2);user-select:none">
+        <span style="font-weight:600;color:var(--text)">${day.date}</span>
+        <span style="font-size:12px;color:var(--text2)">→ 持有5日</span>
+        <span style="margin-left:auto;font-size:13px;font-weight:600;color:${isGoodDay?'var(--red)':'var(--green)'}">
+          胜率 ${day.win_rate}%
+        </span>
+        <span style="font-size:13px;font-weight:600;color:${day.avg_return>=0?'var(--red)':'var(--green)'}">
+          均收益 ${day.avg_return>=0?'+':''}${day.avg_return}%
+        </span>
+        <span style="font-size:12px;color:var(--text2)">${dayPicks.filter(p=>p.return>0).length}/${dayPicks.length} 盈利</span>
+        <span style="font-size:12px;color:var(--text2)">▼</span>
+      </div>
+      <div style="display:none">
+        <table id="${tableId}" style="width:100%;border-collapse:collapse;font-size:13px" data-sort-key="" data-sort-dir="desc">
+          <thead><tr style="background:var(--surface)">
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','name',${di})">股票<span class="sort-icon"></span></th>
+            <th style="padding:8px 12px;color:var(--text2);text-align:left;font-weight:500">命中策略</th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','entry_price',${di})">买入价<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_1d',${di})">1天<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_5d',${di})">5天<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_20d',${di})">20天<span class="sort-icon"></span></th>
+            <th class="sortable-th" style="padding:8px 12px;text-align:left;font-weight:500" onclick="sortDailyTable('${tableId}','return_now',${di})">至今<span class="sort-icon"></span></th>
+          </tr></thead>
+          <tbody>${pickRows(dayPicks)}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ===== 权益曲线 =====
@@ -1307,22 +1189,17 @@ function renderWeightCharts() {
 
 function renderWeightCards() {
   const sl = G.strategy_list || [];
-  // 优先从 strategy_list 自身拿 backtest_1y，再 fallback 顶层
+  const bt1y = G.backtest_1y || {};
+  const bt30 = G.backtest_30d || {};
   document.getElementById('weightCards').innerHTML = sl.map((s,i) => {
-    const bt1y_s = (s.backtest_1y && Object.keys(s.backtest_1y).length) ? s.backtest_1y : null;
-    const bt30_s = (s.backtest_30d && Object.keys(s.backtest_30d).length) ? s.backtest_30d : null;
-    const bt1y_g = (G.backtest_1y || {})[s.id];
-    const bt30_g = (G.backtest_30d || {})[s.id];
-    const bt = bt1y_s || bt1y_g || bt30_s || bt30_g || {};
+    const bt = (bt1y[s.id] && Object.keys(bt1y[s.id]).length) ? bt1y[s.id] : (bt30[s.id] || {});
+    const btLabel = (bt1y[s.id] && Object.keys(bt1y[s.id]).length) ? '1年' : '30日';
     const w = ((s.weight||0)*100).toFixed(1);
-    const toN = v => (v !== undefined && v !== null && v !== '') ? parseFloat(v) : NaN;
-    const wr = isNaN(toN(bt.win_rate)) ? '--' : toN(bt.win_rate).toFixed(1);
-    const ar = isNaN(toN(bt.avg_return)) ? '--' : toN(bt.avg_return).toFixed(2);
-    const sh = isNaN(toN(bt.sharpe)) ? '--' : toN(bt.sharpe).toFixed(2);
-    const md = isNaN(toN(bt.max_drawdown)) ? '--' : toN(bt.max_drawdown).toFixed(1);
-    const mdColor = md === '--' ? 'var(--text2)' : parseFloat(md) <= 10 ? 'var(--green)' : parseFloat(md) <= 20 ? 'var(--yellow)' : 'var(--red)';
-    const wrColor = wr === '--' ? 'var(--text2)' : parseFloat(wr) >= 50 ? 'var(--red)' : 'var(--green)';
-    const arColor = ar === '--' ? 'var(--text2)' : parseFloat(ar) >= 0 ? 'var(--red)' : 'var(--green)';
+    const wr = bt.win_rate?.toFixed(1) || '--';
+    const ar = bt.avg_return?.toFixed(2) || '--';
+    const sh = bt.sharpe?.toFixed(2) || '--';
+    const md = bt.max_drawdown?.toFixed(1) || '--';
+    const mdColor = parseFloat(md) <= 10 ? 'var(--green)' : parseFloat(md) <= 20 ? 'var(--yellow)' : 'var(--red)';
     return `
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
@@ -1331,10 +1208,10 @@ function renderWeightCards() {
       </div>
       <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">${s.desc||''}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;font-size:12px">
-        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${wrColor}">${wr === '--' ? '--' : wr + '%'}</div></div>
-        <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="font-weight:600;color:${arColor}">${ar === '--' ? '--' : (parseFloat(ar)>=0?'+':'') + ar + '%'}</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">胜率</div><div style="font-weight:600;color:${parseFloat(wr)>=50?'var(--red)':'var(--green)'}">${wr}%</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">均收益</div><div style="font-weight:600;color:${parseFloat(ar)>=0?'var(--red)':'var(--green)'}">${parseFloat(ar)>=0?'+':''}${ar}%</div></div>
         <div style="text-align:center"><div style="color:var(--text2)">Sharpe</div><div style="font-weight:600">${sh}</div></div>
-        <div style="text-align:center"><div style="color:var(--text2)">最大回撤</div><div style="font-weight:600;color:${mdColor}">${md === '--' ? '--' : md + '%'}</div></div>
+        <div style="text-align:center"><div style="color:var(--text2)">最大回撤</div><div style="font-weight:600;color:${mdColor}">${md}%</div></div>
       </div>
     </div>`;
   }).join('');
@@ -1346,7 +1223,7 @@ function destroyChart(id) {
 
 // ===== Tab 切换 =====
 function switchTab(name) {
-  const tabs = ['backtest','equity','weights','daily','today','predict','zt'];
+  const tabs = ['backtest','equity','weights','daily','today','predict'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', tabs[i] === name);
   });
@@ -1359,7 +1236,6 @@ function switchTab(name) {
       if (name === 'equity')   renderEquityCharts();
       if (name === 'weights')  renderWeightCharts();
       if (name === 'daily')    renderDailyPicks();
-      if (name === 'zt')       renderZtPredict();
     }, 50);
   }
 }
@@ -1530,11 +1406,8 @@ function renderKlineCharts() {
   const lows    = slice.map(k => k.low);
   const vols    = slice.map(k => k.volume);
 
-  // 颜色（涨红跌绿，A股习惯）：用前收盘价判断涨跌
-  const barColors = slice.map((k, i) => {
-    const prevClose = i > 0 ? slice[i-1].close : k.open;
-    return k.close >= prevClose ? 'rgba(248,81,73,.85)' : 'rgba(63,185,80,.85)';
-  });
+  // 颜色（涨红跌绿，A股习惯）
+  const barColors = slice.map(k => k.close >= k.open ? 'rgba(248,81,73,.85)' : 'rgba(63,185,80,.85)');
 
   // 计算MA5、MA10
   const ma = (arr, n) => arr.map((_, i) => {
@@ -1599,10 +1472,8 @@ function renderKlineCharts() {
               const k = slice[ctx.dataIndex];
               if (!k) return '';
               if (ctx.datasetIndex === 0) {
-                const i = ctx.dataIndex;
-                const prevClose = i > 0 ? slice[i-1].close : k.open;
-                const ret = ((k.close - prevClose) / prevClose * 100).toFixed(2);
-                const sign = k.close >= prevClose ? '+' : '';
+                const ret = ((k.close - k.open) / k.open * 100).toFixed(2);
+                const sign = k.close >= k.open ? '+' : '';
                 return [`开: ${k.open}  收: ${k.close}`, `高: ${k.high}  低: ${k.low}`, `涨跌: ${sign}${ret}%`];
               }
               return `${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(2) || '--'}`;
@@ -1612,14 +1483,8 @@ function renderKlineCharts() {
         // 标注买入/卖出线（用 annotation plugin 替代方案：手动 afterDraw）
       },
       scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20, includeBounds: true }, grid: { color: '#21262d' } },
-        y: {
-          ticks: { color: '#8b949e', font: { size: 10 } },
-          grid: { color: '#21262d' },
-          position: 'right',
-          min: +(Math.min(...lows) * 0.995).toFixed(2),
-          max: +(Math.max(...highs) * 1.005).toFixed(2),
-        }
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' }, position: 'right' }
       }
     },
     plugins: [{
@@ -1675,7 +1540,7 @@ function renderKlineCharts() {
         }
       }},
       scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20, includeBounds: true }, grid: { color: '#21262d' } },
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
         y: { ticks: { color: '#8b949e', font: { size: 9 }, callback: v => (v/10000).toFixed(0)+'万' }, grid: { color: '#21262d' }, position: 'right' }
       }
     }
@@ -1747,9 +1612,23 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineMo
     .predict-history-tag{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;transition:.2s}
     .predict-history-tag:hover{border-color:var(--accent);color:var(--accent)}
     .predict-error{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);border-radius:10px;padding:20px;color:#f85149;text-align:center;font-size:14px;display:none}
+    .predict-kline-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+    .predict-kline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .predict-kline-title{font-size:14px;font-weight:600;color:var(--text2)}
+    .predict-kline-today{display:flex;gap:16px;align-items:center}
+    .predict-kline-tabs{display:flex;gap:6px}
+    .predict-kline-tab{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--text2);transition:.2s}
+    .predict-kline-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .predict-kline-chart{height:200px;margin-bottom:10px}
+    .predict-kline-vol{height:60px}
+    .predict-today-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:12px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)}
+    .predict-today-item{text-align:center;min-width:70px}
+    .predict-today-label{font-size:11px;color:var(--text2);margin-bottom:3px}
+    .predict-today-val{font-size:15px;font-weight:700}
     @media(max-width:600px){
       .predict-price-grid{grid-template-columns:1fr}
       .predict-stock-title{flex-wrap:wrap}
+      .predict-kline-header{flex-direction:column;align-items:flex-start;gap:8px}
     }
   </style>
 
@@ -1826,6 +1705,23 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineMo
 
         <!-- 技术指标 -->
         <div class="predict-indicators" id="pIndicators"></div>
+      </div>
+
+      <!-- K线图 -->
+      <div class="predict-kline-wrap" id="pKlineWrap">
+        <div class="predict-kline-header">
+          <div class="predict-kline-title">📈 K线走势</div>
+          <div class="predict-kline-tabs">
+            <div class="predict-kline-tab active" onclick="switchPKlineRange(30,this)">近30日</div>
+            <div class="predict-kline-tab" onclick="switchPKlineRange(60,this)">近60日</div>
+            <div class="predict-kline-tab" onclick="switchPKlineRange(120,this)">近120日</div>
+          </div>
+        </div>
+        <!-- 今日实时行情条 -->
+        <div class="predict-today-bar" id="pTodayBar" style="display:none"></div>
+        <div class="predict-kline-chart"><canvas id="pKlineChart"></canvas></div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px">📊 成交量</div>
+        <div class="predict-kline-vol"><canvas id="pKlineVolChart"></canvas></div>
       </div>
 
       <!-- 触发策略 -->
@@ -2101,224 +1997,145 @@ function renderPredictResult(d) {
   // 总结
   document.getElementById('pSummary').textContent = d.summary;
 
+  // 加载K线图
+  loadPredictKline(d.code, d.last_date, d.last_close);
+
   // 显示
   document.getElementById('predictResult').style.display = 'block';
 }
 
+// ── 个股预测页 K线图 ──
+let _pKlineData = [];
+let _pKlineRange = 30;
+let _pKlineChart = null;
+let _pKlineVolChart = null;
+
+async function loadPredictKline(code, predictDate, predictClose) {
+  // 销毁旧图表
+  if (_pKlineChart)    { _pKlineChart.destroy();    _pKlineChart = null; }
+  if (_pKlineVolChart) { _pKlineVolChart.destroy();  _pKlineVolChart = null; }
+  _pKlineData = [];
+  document.getElementById('pTodayBar').style.display = 'none';
+
+  try {
+    const r = await fetch(`./data/klines/${code}.json?t=${Math.floor(Date.now()/60000)}`);
+    if (!r.ok) return;
+    const d = await r.json();
+    _pKlineData = d.klines || [];
+    if (!_pKlineData.length) return;
+
+    // 检查是否有比预测文件更新的K线数据
+    const latestKline = _pKlineData[_pKlineData.length - 1];
+    const latestDate  = latestKline.date;
+
+    if (latestDate > predictDate) {
+      // 有更新的K线（今天），用K线数据更新顶部显示
+      const prevClose = _pKlineData.length >= 2 ? _pKlineData[_pKlineData.length - 2].close : predictClose;
+      const chg = ((latestKline.close - prevClose) / prevClose * 100);
+      const chgStr = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+      const chgColor = chg >= 0 ? 'var(--red)' : 'var(--green)';
+
+      // 更新顶部价格和日期
+      document.getElementById('pStockPrice').textContent = `¥${latestKline.close}`;
+      document.getElementById('pStockDate').textContent = `数据日期：${latestDate} ✅今日最新`;
+
+      // 显示今日行情条
+      const todayItems = [
+        { label: '今日收盘', val: `¥${latestKline.close}`, color: chgColor },
+        { label: '今日涨跌', val: chgStr, color: chgColor },
+        { label: '今日开盘', val: `¥${latestKline.open}`, color: 'var(--text)' },
+        { label: '今日最高', val: `¥${latestKline.high}`, color: 'var(--red)' },
+        { label: '今日最低', val: `¥${latestKline.low}`, color: 'var(--green)' },
+        { label: '成交量', val: latestKline.volume >= 10000 ? (latestKline.volume/10000).toFixed(1)+'万手' : latestKline.volume+'手', color: 'var(--text2)' },
+      ];
+      document.getElementById('pTodayBar').innerHTML = todayItems.map(it =>
+        `<div class="predict-today-item">
+          <div class="predict-today-label">${it.label}</div>
+          <div class="predict-today-val" style="color:${it.color}">${it.val}</div>
+        </div>`
+      ).join('');
+      document.getElementById('pTodayBar').style.display = 'flex';
+    }
+
+    _pKlineRange = 30;
+    document.querySelectorAll('.predict-kline-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+    renderPKlineCharts();
+  } catch(e) {
+    console.warn('预测K线加载失败', e);
+  }
+}
+
+function switchPKlineRange(n, el) {
+  _pKlineRange = n;
+  document.querySelectorAll('.predict-kline-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderPKlineCharts();
+}
+
+function renderPKlineCharts() {
+  const slice = _pKlineData.slice(-_pKlineRange);
+  if (!slice.length) return;
+
+  const labels = slice.map(k => k.date.slice(5));
+  const closes = slice.map(k => k.close);
+  const vols   = slice.map(k => k.volume);
+  const barColors = slice.map(k => k.close >= k.open ? 'rgba(248,81,73,.85)' : 'rgba(63,185,80,.85)');
+
+  // MA5 / MA10
+  const ma = (arr, n) => arr.map((_, i) => {
+    if (i < n - 1) return null;
+    return +(arr.slice(i-n+1,i+1).reduce((a,b)=>a+b,0)/n).toFixed(3);
+  });
+  const ma5  = ma(closes, 5);
+  const ma10 = ma(closes, 10);
+
+  if (_pKlineChart) _pKlineChart.destroy();
+  _pKlineChart = new Chart(document.getElementById('pKlineChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label:'价格区间', data: slice.map(k=>[Math.min(k.open,k.close),Math.max(k.open,k.close)]),
+          backgroundColor:barColors, borderColor:barColors, borderWidth:1, borderRadius:1, barPercentage:.6, categoryPercentage:.8 },
+        { label:'MA5', type:'line', data:ma5, borderColor:'#ffa657', borderWidth:1.5, pointRadius:0, tension:.3, spanGaps:true },
+        { label:'MA10', type:'line', data:ma10, borderColor:'#bc8cff', borderWidth:1.5, pointRadius:0, tension:.3, spanGaps:true },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{
+        callbacks:{ label: ctx => {
+          if (ctx.datasetIndex===0) {
+            const k = slice[ctx.dataIndex];
+            return [`开:${k.open}  收:${k.close}`, `高:${k.high}  低:${k.low}`];
+          }
+          return `${ctx.dataset.label}: ${ctx.parsed.y}`;
+        }}
+      }},
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:10},maxTicksLimit:8} },
+        y:{ position:'right', grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:10}} }
+      }
+    }
+  });
+
+  if (_pKlineVolChart) _pKlineVolChart.destroy();
+  _pKlineVolChart = new Chart(document.getElementById('pKlineVolChart'), {
+    type:'bar',
+    data:{ labels, datasets:[{ data:vols, backgroundColor:barColors, borderWidth:0, barPercentage:.8, categoryPercentage:.9 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `量: ${ctx.parsed.y}` } } },
+      scales:{
+        x:{ display:false },
+        y:{ position:'right', grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:9},maxTicksLimit:3} }
+      }
+    }
+  });
+}
+
 // 初始化历史
 renderPredictHistory();
-</script>
-
-<!-- ══════════════════ 涨停预测 页面 ══════════════════ -->
-<div class="page" id="page-zt">
-<style>
-.zt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
-.zt-stat-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.zt-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;flex:1;min-width:120px;text-align:center}
-.zt-stat-label{font-size:11px;color:var(--text2);margin-bottom:4px}
-.zt-stat-value{font-size:22px;font-weight:700}
-.zt-filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.zt-filter-btn{padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:.2s}
-.zt-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.zt-table{width:100%;border-collapse:collapse;font-size:13px}
-.zt-table th{padding:10px 12px;text-align:left;color:var(--text2);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
-.zt-table th:hover{color:var(--text)}
-.zt-table td{padding:10px 12px;border-bottom:1px solid rgba(48,54,61,.5);vertical-align:middle}
-.zt-table tr:hover td{background:var(--surface2)}
-.zt-score-bar{display:flex;align-items:center;gap:8px}
-.zt-score-num{font-weight:700;width:32px;text-align:right}
-.zt-bar{height:6px;border-radius:3px;flex:1;background:var(--surface2);overflow:hidden}
-.zt-bar-fill{height:100%;border-radius:3px;transition:.3s}
-.zt-level{font-size:11px;padding:2px 8px;border-radius:4px;white-space:nowrap}
-.zt-level-fire{background:rgba(248,81,73,.15);color:#f85149}
-.zt-level-star{background:rgba(255,166,87,.15);color:#ffa657}
-.zt-level-up{background:rgba(63,185,80,.15);color:#3fb950}
-.zt-level-eye{background:rgba(139,148,158,.15);color:#8b949e}
-.zt-chg-up{color:#f85149;font-weight:600}
-.zt-chg-dn{color:#3fb950;font-weight:600}
-.zt-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:4px;background:rgba(88,166,255,.15);color:#58a6ff}
-.zt-empty{text-align:center;padding:60px;color:var(--text2)}
-.zt-tip{font-size:12px;color:var(--text2);margin-bottom:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--accent)}
-</style>
-
-<div class="zt-header">
-  <div>
-    <div style="font-size:18px;font-weight:700;margin-bottom:4px">🚀 次日涨停候选</div>
-    <div style="font-size:12px;color:var(--text2)" id="ztUpdateTime">加载中...</div>
-  </div>
-  <button onclick="loadZtData(true)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">🔄 刷新</button>
-</div>
-
-<div class="zt-tip">
-  ⚡ 基于量价特征+技术指标预测次日涨停概率，得分越高信号越强。<strong>注意：涨停预测难度极高，仅供参考，请结合基本面判断。</strong>
-</div>
-
-<div class="zt-stat-row" id="ztStatRow"></div>
-
-<div class="zt-filter-row">
-  <span style="font-size:12px;color:var(--text2)">筛选：</span>
-  <div class="zt-filter-btn active" onclick="ztFilter('all',this)">全部</div>
-  <div class="zt-filter-btn" onclick="ztFilter('fire',this)">🔥 强烈关注 ≥80</div>
-  <div class="zt-filter-btn" onclick="ztFilter('star',this)">⭐ 高概率 70-79</div>
-  <div class="zt-filter-btn" onclick="ztFilter('up',this)">📈 关注 60-69</div>
-  <div class="zt-filter-btn" onclick="ztFilter('zt_only',this)">仅今日涨停</div>
-</div>
-
-<div id="ztTableWrap">
-  <div class="zt-empty">数据加载中...</div>
-</div>
-</div>
-
-<script>
-let ztData = null;
-let ztFilterMode = 'all';
-
-async function loadZtData(force=false) {
-  if (ztData && !force) return;
-  try {
-    const r = await fetch('./data/api/zt_predict.json?t=' + Date.now());
-    ztData = await r.json();
-    renderZtPredict();
-  } catch(e) {
-    document.getElementById('ztTableWrap').innerHTML = '<div class="zt-empty">⚠️ 暂无数据，请先运行 zt_predictor.py</div>';
-  }
-}
-
-function renderZtPredict() {
-  if (!ztData) { loadZtData(); return; }
-
-  // 更新时间
-  const ut = ztData.update_time ? ztData.update_time.slice(0,16).replace('T',' ') : '--';
-  document.getElementById('ztUpdateTime').textContent = `更新时间：${ut}  |  扫描 ${ztData.total_scanned||0} 只`;
-
-  // 统计卡片
-  const top50 = ztData.top50 || [];
-  const fireCount = top50.filter(r=>r.score>=80).length;
-  const starCount = top50.filter(r=>r.score>=70&&r.score<80).length;
-  const ztTodayCount = ztData.today_zt_count || top50.filter(r=>r.features?.near_zt).length;
-  const avgBtPrec = top50.filter(r=>r.backtest?.precision>0).reduce((s,r)=>s+r.backtest.precision,0) /
-                    (top50.filter(r=>r.backtest?.precision>0).length||1);
-
-  document.getElementById('ztStatRow').innerHTML = `
-    <div class="zt-stat-card"><div class="zt-stat-label">候选总数</div><div class="zt-stat-value" style="color:var(--accent)">${ztData.candidate_count||top50.length}</div></div>
-    <div class="zt-stat-card"><div class="zt-stat-label">🔥强烈关注</div><div class="zt-stat-value" style="color:#f85149">${fireCount}</div></div>
-    <div class="zt-stat-card"><div class="zt-stat-label">⭐高概率</div><div class="zt-stat-value" style="color:#ffa657">${starCount}</div></div>
-    <div class="zt-stat-card"><div class="zt-stat-label">今日涨停数</div><div class="zt-stat-value" style="color:#3fb950">${ztTodayCount}</div></div>
-    <div class="zt-stat-card"><div class="zt-stat-label">回测平均精准率</div><div class="zt-stat-value" style="color:var(--purple)">${avgBtPrec.toFixed(0)}%</div></div>
-  `;
-
-  renderZtTable();
-}
-
-function ztFilter(mode, el) {
-  ztFilterMode = mode;
-  document.querySelectorAll('.zt-filter-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  renderZtTable();
-}
-
-function renderZtTable() {
-  if (!ztData) return;
-  let rows = ztData.top50 || [];
-
-  // 筛选
-  if (ztFilterMode === 'fire') rows = rows.filter(r=>r.score>=80);
-  else if (ztFilterMode === 'star') rows = rows.filter(r=>r.score>=70&&r.score<80);
-  else if (ztFilterMode === 'up') rows = rows.filter(r=>r.score>=60&&r.score<70);
-  else if (ztFilterMode === 'zt_only') rows = rows.filter(r=>r.features?.near_zt||r.chg_pct>=9);
-
-  if (!rows.length) {
-    document.getElementById('ztTableWrap').innerHTML = '<div class="zt-empty">该筛选条件下暂无候选股</div>';
-    return;
-  }
-
-  const levelClass = (score) => {
-    if (score>=80) return 'zt-level-fire';
-    if (score>=70) return 'zt-level-star';
-    if (score>=60) return 'zt-level-up';
-    return 'zt-level-eye';
-  };
-  const barColor = (score) => {
-    if (score>=80) return '#f85149';
-    if (score>=70) return '#ffa657';
-    if (score>=60) return '#3fb950';
-    return '#8b949e';
-  };
-
-  const html = `
-  <table class="zt-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>股票</th>
-        <th>得分</th>
-        <th>级别</th>
-        <th>今日涨幅</th>
-        <th>量比</th>
-        <th>收盘强度</th>
-        <th>RSI</th>
-        <th>连板</th>
-        <th>回测精准率</th>
-        <th>信号</th>
-      </tr>
-    </thead>
-    <tbody>
-    ${rows.map((r,i) => {
-      const f = r.features || {};
-      const bt = r.backtest || {};
-      const chgClass = r.chg_pct >= 0 ? 'zt-chg-up' : 'zt-chg-dn';
-      const chgSign = r.chg_pct >= 0 ? '+' : '';
-      const signals = [];
-      if (f.near_zt || r.chg_pct >= 9) signals.push('涨停');
-      if (f.consecutive_zt > 0) signals.push(`${f.consecutive_zt}连板`);
-      if (f.break_high_20d) signals.push('突破高点');
-      if (f.vol_ratio >= 3) signals.push(`量比${f.vol_ratio}x`);
-      if (f.macd_positive) signals.push('MACD金叉');
-      if (f.above_ma5 && f.above_ma10 && f.above_ma20) signals.push('均线多头');
-
-      return `<tr onclick="openKlineByCode('${r.code}','${r.name}')" style="cursor:pointer">
-        <td style="color:var(--text2)">${i+1}</td>
-        <td>
-          <div style="font-weight:600">${r.name}</div>
-          <div style="font-size:11px;color:var(--text2)">${r.code}</div>
-        </td>
-        <td>
-          <div class="zt-score-bar">
-            <span class="zt-score-num" style="color:${barColor(r.score)}">${r.score}</span>
-            <div class="zt-bar"><div class="zt-bar-fill" style="width:${r.score}%;background:${barColor(r.score)}"></div></div>
-          </div>
-        </td>
-        <td><span class="zt-level ${levelClass(r.score)}">${r.level||''}</span></td>
-        <td class="${chgClass}">${chgSign}${r.chg_pct}%</td>
-        <td style="color:${f.vol_ratio>=3?'#ffa657':f.vol_ratio>=2?'#58a6ff':'var(--text)'}">${f.vol_ratio||'--'}x</td>
-        <td>
-          <div style="display:flex;align-items:center;gap:6px">
-            <div style="width:40px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden">
-              <div style="width:${f.close_strength||0}%;height:100%;background:#58a6ff;border-radius:3px"></div>
-            </div>
-            <span style="font-size:11px;color:var(--text2)">${f.close_strength||0}%</span>
-          </div>
-        </td>
-        <td style="color:${f.rsi>70?'#f85149':f.rsi<30?'#3fb950':'var(--text)'}">${f.rsi||'--'}</td>
-        <td style="color:${f.consecutive_zt>0?'#ffa657':'var(--text2)'}">${f.consecutive_zt>0?f.consecutive_zt+'板':'--'}</td>
-        <td style="color:${bt.precision>=50?'#3fb950':bt.precision>=30?'#ffa657':'var(--text2)'}">
-          ${bt.precision!=null ? bt.precision+'%' : '--'}
-          ${bt.zt_count!=null ? `<span style="font-size:10px;color:var(--text2)">(${bt.tp||0}/${bt.zt_count})</span>` : ''}
-        </td>
-        <td>${signals.map(s=>`<span class="zt-tag">${s}</span>`).join('')}</td>
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table>`;
-
-  document.getElementById('ztTableWrap').innerHTML = html;
-}
-
-// 按股票代码打开K线
-async function openKlineByCode(code, name) {
-  const stock = { code, name, klines: [] };
-  await openKlineModal(stock);
-}
 </script>
 </body>
 </html>
