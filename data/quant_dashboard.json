@@ -1,6 +1,6 @@
 {
   "date": "2026-03-26",
-  "update_time": "2026-03-26T17:31:27.987254",
+  "update_time": "2026-03-26T17:51:42.060845",
   "stock_count": 5030,
   "strategy_count": 29,
   "weights": {
@@ -48,22 +48,8 @@
         "signal_stocks": 4731,
         "sharpe": -0.76
       },
-      "backtest_1y": {
-        "win_rate": 59.1,
-        "avg_return": 1.41,
-        "total_return": 1496.4,
-        "total_trades": 70288,
-        "signal_stocks": 4981,
-        "sharpe": 1.49
-      },
-      "backtest_all": {
-        "win_rate": 53.1,
-        "avg_return": 1.1,
-        "total_return": 296.53,
-        "total_trades": 231172,
-        "signal_stocks": 5021,
-        "sharpe": 0.93
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "lowVolatility",
@@ -78,22 +64,8 @@
         "signal_stocks": 10,
         "sharpe": 5.98
       },
-      "backtest_1y": {
-        "win_rate": 56.4,
-        "avg_return": 1.21,
-        "total_return": -61.13,
-        "total_trades": 480383,
-        "signal_stocks": 5007,
-        "sharpe": 1.47
-      },
-      "backtest_all": {
-        "win_rate": 48.0,
-        "avg_return": 0.29,
-        "total_return": -3.44,
-        "total_trades": 1579534,
-        "signal_stocks": 5016,
-        "sharpe": 0.34
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "bollingerMeanReversion",
@@ -109,21 +81,15 @@
         "sharpe": 6.94
       },
       "backtest_1y": {
-        "win_rate": 66.8,
-        "avg_return": 1.91,
-        "total_return": 419.99,
-        "total_trades": 39597,
-        "signal_stocks": 4946,
-        "sharpe": 2.81
+        "win_rate": 47.6,
+        "avg_return": 0.88,
+        "total_return": 185.3,
+        "total_trades": 210,
+        "signal_stocks": 210,
+        "sharpe": 0.59,
+        "max_drawdown": 84.4
       },
-      "backtest_all": {
-        "win_rate": 56.9,
-        "avg_return": 1.46,
-        "total_return": -82.86,
-        "total_trades": 186222,
-        "signal_stocks": 5013,
-        "sharpe": 1.36
-      }
+      "backtest_all": {}
     },
     {
       "id": "bottomFishing76",
@@ -138,22 +104,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 71.5,
-        "avg_return": 1.51,
-        "total_return": 1520.79,
-        "total_trades": 7261,
-        "signal_stocks": 3216,
-        "sharpe": 2.5
-      },
-      "backtest_all": {
-        "win_rate": 56.0,
-        "avg_return": 1.24,
-        "total_return": 4372.76,
-        "total_trades": 49716,
-        "signal_stocks": 4967,
-        "sharpe": 1.12
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "ahPremiumArb",
@@ -168,22 +120,8 @@
         "signal_stocks": 3427,
         "sharpe": 6.43
       },
-      "backtest_1y": {
-        "win_rate": 55.8,
-        "avg_return": 1.01,
-        "total_return": -22.51,
-        "total_trades": 110702,
-        "signal_stocks": 4938,
-        "sharpe": 1.23
-      },
-      "backtest_all": {
-        "win_rate": 52.2,
-        "avg_return": 0.7,
-        "total_return": -65.01,
-        "total_trades": 579026,
-        "signal_stocks": 5015,
-        "sharpe": 0.62
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "rsiOversold",
@@ -199,21 +137,15 @@
         "sharpe": 1.02
       },
       "backtest_1y": {
-        "win_rate": 68.7,
-        "avg_return": 1.45,
-        "total_return": 316.75,
-        "total_trades": 7985,
-        "signal_stocks": 3725,
-        "sharpe": 2.43
+        "win_rate": 42.1,
+        "avg_return": 0.08,
+        "total_return": 13.8,
+        "total_trades": 183,
+        "signal_stocks": 183,
+        "sharpe": 0.06,
+        "max_drawdown": 87.9
       },
-      "backtest_all": {
-        "win_rate": 60.4,
-        "avg_return": 1.74,
-        "total_return": 614.99,
-        "total_trades": 42328,
-        "signal_stocks": 4997,
-        "sharpe": 1.56
-      }
+      "backtest_all": {}
     },
     {
       "id": "permanentPortfolio",
@@ -228,22 +160,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 66.0,
-        "avg_return": 1.54,
-        "total_return": 648.43,
-        "total_trades": 19849,
-        "signal_stocks": 4995,
-        "sharpe": 1.96
-      },
-      "backtest_all": {
-        "win_rate": 49.4,
-        "avg_return": 0.51,
-        "total_return": 10.2,
-        "total_trades": 58456,
-        "signal_stocks": 5005,
-        "sharpe": 0.56
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "coldStock",
@@ -258,22 +176,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 54.0,
-        "avg_return": 0.62,
-        "total_return": -78.56,
-        "total_trades": 207931,
-        "signal_stocks": 4877,
-        "sharpe": 0.92
-      },
-      "backtest_all": {
-        "win_rate": 49.8,
-        "avg_return": 0.54,
-        "total_return": -9.68,
-        "total_trades": 899080,
-        "signal_stocks": 5002,
-        "sharpe": 0.55
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "oversoldBounce",
@@ -289,21 +193,15 @@
         "sharpe": -0.6
       },
       "backtest_1y": {
-        "win_rate": 53.7,
-        "avg_return": 0.77,
-        "total_return": 119.26,
-        "total_trades": 34979,
-        "signal_stocks": 4776,
-        "sharpe": 0.83
+        "win_rate": 42.9,
+        "avg_return": 0.24,
+        "total_return": 131.5,
+        "total_trades": 541,
+        "signal_stocks": 541,
+        "sharpe": 0.16,
+        "max_drawdown": 96.1
       },
-      "backtest_all": {
-        "win_rate": 53.9,
-        "avg_return": 1.33,
-        "total_return": 202.53,
-        "total_trades": 135004,
-        "signal_stocks": 5013,
-        "sharpe": 1.07
-      }
+      "backtest_all": {}
     },
     {
       "id": "mainForceDivergence",
@@ -318,22 +216,8 @@
         "signal_stocks": 21,
         "sharpe": 4.55
       },
-      "backtest_1y": {
-        "win_rate": 59.0,
-        "avg_return": 0.84,
-        "total_return": 538.22,
-        "total_trades": 40754,
-        "signal_stocks": 3125,
-        "sharpe": 1.57
-      },
-      "backtest_all": {
-        "win_rate": 50.2,
-        "avg_return": 0.25,
-        "total_return": 8.53,
-        "total_trades": 95259,
-        "signal_stocks": 4124,
-        "sharpe": 0.46
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "highDividendRotation",
@@ -348,22 +232,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 53.5,
-        "avg_return": 0.58,
-        "total_return": -38.95,
-        "total_trades": 149572,
-        "signal_stocks": 4923,
-        "sharpe": 0.84
-      },
-      "backtest_all": {
-        "win_rate": 51.5,
-        "avg_return": 0.67,
-        "total_return": -74.17,
-        "total_trades": 805017,
-        "signal_stocks": 4999,
-        "sharpe": 0.66
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "kdjGoldenCross",
@@ -379,21 +249,15 @@
         "sharpe": -2.22
       },
       "backtest_1y": {
-        "win_rate": 54.0,
-        "avg_return": 0.89,
-        "total_return": 30.04,
-        "total_trades": 39376,
-        "signal_stocks": 5011,
-        "sharpe": 1.05
+        "win_rate": 56.2,
+        "avg_return": 2.94,
+        "total_return": 235.6,
+        "total_trades": 80,
+        "signal_stocks": 80,
+        "sharpe": 1.89,
+        "max_drawdown": 39.9
       },
-      "backtest_all": {
-        "win_rate": 50.6,
-        "avg_return": 0.78,
-        "total_return": 10.03,
-        "total_trades": 148938,
-        "signal_stocks": 5022,
-        "sharpe": 0.72
-      }
+      "backtest_all": {}
     },
     {
       "id": "maGoldenCross",
@@ -409,21 +273,15 @@
         "sharpe": 2.64
       },
       "backtest_1y": {
-        "win_rate": 50.8,
-        "avg_return": 0.79,
-        "total_return": 94.98,
-        "total_trades": 34766,
-        "signal_stocks": 5007,
-        "sharpe": 0.82
+        "win_rate": 41.4,
+        "avg_return": 0.09,
+        "total_return": 61.9,
+        "total_trades": 681,
+        "signal_stocks": 681,
+        "sharpe": 0.06,
+        "max_drawdown": 98.7
       },
-      "backtest_all": {
-        "win_rate": 47.8,
-        "avg_return": 0.56,
-        "total_return": -80.54,
-        "total_trades": 106860,
-        "signal_stocks": 5017,
-        "sharpe": 0.53
-      }
+      "backtest_all": {}
     },
     {
       "id": "volumeBreakout",
@@ -439,21 +297,15 @@
         "sharpe": 2.34
       },
       "backtest_1y": {
-        "win_rate": 44.2,
-        "avg_return": 0.44,
-        "total_return": -65.67,
-        "total_trades": 42385,
-        "signal_stocks": 4989,
-        "sharpe": 0.32
+        "win_rate": 37.9,
+        "avg_return": -0.74,
+        "total_return": -353.0,
+        "total_trades": 480,
+        "signal_stocks": 480,
+        "sharpe": -0.51,
+        "max_drawdown": 99.9
       },
-      "backtest_all": {
-        "win_rate": 40.5,
-        "avg_return": -0.39,
-        "total_return": 3.89,
-        "total_trades": 114832,
-        "signal_stocks": 5011,
-        "sharpe": -0.26
-      }
+      "backtest_all": {}
     },
     {
       "id": "supermarket",
@@ -469,21 +321,15 @@
         "sharpe": 2.45
       },
       "backtest_1y": {
-        "win_rate": 52.1,
-        "avg_return": 0.72,
-        "total_return": -71.08,
-        "total_trades": 96563,
-        "signal_stocks": 4511,
-        "sharpe": 0.88
+        "win_rate": 80.0,
+        "avg_return": 3.4,
+        "total_return": 51.0,
+        "total_trades": 15,
+        "signal_stocks": 15,
+        "sharpe": 6.7,
+        "max_drawdown": 4.3
       },
-      "backtest_all": {
-        "win_rate": 48.9,
-        "avg_return": 0.74,
-        "total_return": -67.11,
-        "total_trades": 302356,
-        "signal_stocks": 4770,
-        "sharpe": 0.73
-      }
+      "backtest_all": {}
     },
     {
       "id": "equalWeight",
@@ -498,22 +344,8 @@
         "signal_stocks": 829,
         "sharpe": 3.98
       },
-      "backtest_1y": {
-        "win_rate": 50.3,
-        "avg_return": 0.82,
-        "total_return": -25.84,
-        "total_trades": 31543,
-        "signal_stocks": 5001,
-        "sharpe": 0.82
-      },
-      "backtest_all": {
-        "win_rate": 47.6,
-        "avg_return": 0.15,
-        "total_return": 116.83,
-        "total_trades": 84543,
-        "signal_stocks": 5010,
-        "sharpe": 0.15
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "mainForceDivRate",
@@ -528,22 +360,8 @@
         "signal_stocks": 2,
         "sharpe": -8.38
       },
-      "backtest_1y": {
-        "win_rate": 48.2,
-        "avg_return": 0.41,
-        "total_return": 1138.67,
-        "total_trades": 24512,
-        "signal_stocks": 4981,
-        "sharpe": 0.51
-      },
-      "backtest_all": {
-        "win_rate": 48.9,
-        "avg_return": 0.57,
-        "total_return": -24.3,
-        "total_trades": 63052,
-        "signal_stocks": 5014,
-        "sharpe": 0.64
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "consecutiveYangLine",
@@ -558,22 +376,8 @@
         "signal_stocks": 3391,
         "sharpe": -2.03
       },
-      "backtest_1y": {
-        "win_rate": 48.7,
-        "avg_return": 0.49,
-        "total_return": -10.5,
-        "total_trades": 134650,
-        "signal_stocks": 5014,
-        "sharpe": 0.46
-      },
-      "backtest_all": {
-        "win_rate": 46.6,
-        "avg_return": 0.3,
-        "total_return": 171.26,
-        "total_trades": 388530,
-        "signal_stocks": 5024,
-        "sharpe": 0.27
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "volumeNewHigh",
@@ -588,22 +392,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 43.5,
-        "avg_return": 0.3,
-        "total_return": -93.37,
-        "total_trades": 19738,
-        "signal_stocks": 4789,
-        "sharpe": 0.2
-      },
-      "backtest_all": {
-        "win_rate": 38.6,
-        "avg_return": -0.89,
-        "total_return": -63.36,
-        "total_trades": 72141,
-        "signal_stocks": 4973,
-        "sharpe": -0.56
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "smallCapMomentum",
@@ -618,22 +408,8 @@
         "signal_stocks": 96,
         "sharpe": 4.71
       },
-      "backtest_1y": {
-        "win_rate": 49.3,
-        "avg_return": 0.79,
-        "total_return": -30.47,
-        "total_trades": 56529,
-        "signal_stocks": 4927,
-        "sharpe": 0.71
-      },
-      "backtest_all": {
-        "win_rate": 47.5,
-        "avg_return": 0.47,
-        "total_return": 107.09,
-        "total_trades": 147908,
-        "signal_stocks": 4999,
-        "sharpe": 0.43
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "macdDivergence",
@@ -648,22 +424,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 47.9,
-        "avg_return": 0.16,
-        "total_return": -40.04,
-        "total_trades": 66920,
-        "signal_stocks": 4952,
-        "sharpe": 0.22
-      },
-      "backtest_all": {
-        "win_rate": 47.0,
-        "avg_return": -0.05,
-        "total_return": -36.74,
-        "total_trades": 258322,
-        "signal_stocks": 5004,
-        "sharpe": -0.05
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "industryRotation",
@@ -678,22 +440,8 @@
         "signal_stocks": 1196,
         "sharpe": -4.07
       },
-      "backtest_1y": {
-        "win_rate": 52.1,
-        "avg_return": 0.93,
-        "total_return": 11.69,
-        "total_trades": 37953,
-        "signal_stocks": 5003,
-        "sharpe": 0.94
-      },
-      "backtest_all": {
-        "win_rate": 48.4,
-        "avg_return": 0.88,
-        "total_return": -31.3,
-        "total_trades": 118018,
-        "signal_stocks": 5017,
-        "sharpe": 0.71
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "priceMomentum",
@@ -708,22 +456,8 @@
         "signal_stocks": 304,
         "sharpe": 2.44
       },
-      "backtest_1y": {
-        "win_rate": 45.5,
-        "avg_return": 0.53,
-        "total_return": 245.36,
-        "total_trades": 202532,
-        "signal_stocks": 4895,
-        "sharpe": 0.4
-      },
-      "backtest_all": {
-        "win_rate": 44.4,
-        "avg_return": 0.11,
-        "total_return": 441.7,
-        "total_trades": 567699,
-        "signal_stocks": 5009,
-        "sharpe": 0.08
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "soeValueSelect",
@@ -738,22 +472,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 51.0,
-        "avg_return": 0.7,
-        "total_return": 1019.72,
-        "total_trades": 219953,
-        "signal_stocks": 4971,
-        "sharpe": 0.75
-      },
-      "backtest_all": {
-        "win_rate": 47.5,
-        "avg_return": 0.35,
-        "total_return": -38.82,
-        "total_trades": 559190,
-        "signal_stocks": 4993,
-        "sharpe": 0.36
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "earningsAcceleration",
@@ -768,22 +488,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 45.8,
-        "avg_return": 0.47,
-        "total_return": 51.89,
-        "total_trades": 151773,
-        "signal_stocks": 4991,
-        "sharpe": 0.37
-      },
-      "backtest_all": {
-        "win_rate": 43.8,
-        "avg_return": 0.03,
-        "total_return": 1040.11,
-        "total_trades": 388914,
-        "signal_stocks": 5009,
-        "sharpe": 0.02
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "insiderBuying",
@@ -798,22 +504,8 @@
         "signal_stocks": 112,
         "sharpe": 1.98
       },
-      "backtest_1y": {
-        "win_rate": 43.0,
-        "avg_return": 0.21,
-        "total_return": -76.42,
-        "total_trades": 46699,
-        "signal_stocks": 4967,
-        "sharpe": 0.15
-      },
-      "backtest_all": {
-        "win_rate": 39.7,
-        "avg_return": -0.54,
-        "total_return": -80.63,
-        "total_trades": 141094,
-        "signal_stocks": 5012,
-        "sharpe": -0.36
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "idiosyncraticMomentum",
@@ -828,22 +520,8 @@
         "signal_stocks": 0,
         "sharpe": 0
       },
-      "backtest_1y": {
-        "win_rate": 47.5,
-        "avg_return": 0.61,
-        "total_return": 34.75,
-        "total_trades": 205511,
-        "signal_stocks": 4976,
-        "sharpe": 0.49
-      },
-      "backtest_all": {
-        "win_rate": 47.0,
-        "avg_return": 0.47,
-        "total_return": 44.15,
-        "total_trades": 891988,
-        "signal_stocks": 4992,
-        "sharpe": 0.39
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "turnoverSpike",
@@ -858,22 +536,8 @@
         "signal_stocks": 116,
         "sharpe": -6.29
       },
-      "backtest_1y": {
-        "win_rate": 45.2,
-        "avg_return": 0.4,
-        "total_return": -32.97,
-        "total_trades": 86516,
-        "signal_stocks": 5005,
-        "sharpe": 0.31
-      },
-      "backtest_all": {
-        "win_rate": 44.3,
-        "avg_return": 0.39,
-        "total_return": -30.48,
-        "total_trades": 272987,
-        "signal_stocks": 5016,
-        "sharpe": 0.27
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     },
     {
       "id": "volumePriceDivergence",
@@ -888,22 +552,8 @@
         "signal_stocks": 17,
         "sharpe": -8.27
       },
-      "backtest_1y": {
-        "win_rate": 49.6,
-        "avg_return": 0.62,
-        "total_return": 110.21,
-        "total_trades": 54996,
-        "signal_stocks": 4987,
-        "sharpe": 0.59
-      },
-      "backtest_all": {
-        "win_rate": 48.9,
-        "avg_return": 0.57,
-        "total_return": 91.12,
-        "total_trades": 137583,
-        "signal_stocks": 5013,
-        "sharpe": 0.52
-      }
+      "backtest_1y": {},
+      "backtest_all": {}
     }
   ],
   "recommendations": [
@@ -64462,19 +64112,19 @@
     },
     {
       "date": "2026-02-27",
-      "equity": 99.98
+      "equity": 99.94
     },
     {
       "date": "2026-03-02",
-      "equity": 99.97
+      "equity": 99.9
     },
     {
       "date": "2026-03-03",
-      "equity": 99.96
+      "equity": 99.85
     },
     {
       "date": "2026-03-04",
-      "equity": 99.98
+      "equity": 99.94
     },
     {
       "date": "2026-03-05",
@@ -64482,63 +64132,63 @@
     },
     {
       "date": "2026-03-06",
-      "equity": 99.99
+      "equity": 99.97
     },
     {
       "date": "2026-03-09",
-      "equity": 99.98
+      "equity": 99.95
     },
     {
       "date": "2026-03-10",
-      "equity": 99.94
+      "equity": 99.8
     },
     {
       "date": "2026-03-11",
-      "equity": 99.92
+      "equity": 99.72
     },
     {
       "date": "2026-03-12",
-      "equity": 99.88
+      "equity": 99.58
     },
     {
       "date": "2026-03-13",
-      "equity": 99.82
+      "equity": 99.39
     },
     {
       "date": "2026-03-16",
-      "equity": 99.71
+      "equity": 99.02
     },
     {
       "date": "2026-03-17",
-      "equity": 99.66
+      "equity": 98.83
     },
     {
       "date": "2026-03-18",
-      "equity": 99.61
+      "equity": 98.66
     },
     {
       "date": "2026-03-19",
-      "equity": 99.6
+      "equity": 98.61
     },
     {
       "date": "2026-03-20",
-      "equity": 99.62
+      "equity": 98.68
     },
     {
       "date": "2026-03-23",
-      "equity": 99.63
+      "equity": 98.75
     },
     {
       "date": "2026-03-24",
-      "equity": 99.68
+      "equity": 98.81
     },
     {
       "date": "2026-03-25",
-      "equity": 99.66
+      "equity": 98.74
     },
     {
       "date": "2026-03-26",
-      "equity": 99.66
+      "equity": 98.74
     }
   ],
   "equity_1y": [
@@ -64556,963 +64206,963 @@
     },
     {
       "date": "2025-03-31",
-      "equity": 99.88
+      "equity": 99.6
     },
     {
       "date": "2025-04-01",
-      "equity": 99.78
+      "equity": 99.24
     },
     {
       "date": "2025-04-02",
-      "equity": 99.7
+      "equity": 98.97
     },
     {
       "date": "2025-04-03",
-      "equity": 99.65
+      "equity": 98.79
     },
     {
       "date": "2025-04-07",
-      "equity": 99.72
+      "equity": 99.05
     },
     {
       "date": "2025-04-08",
-      "equity": 99.8
+      "equity": 99.31
     },
     {
       "date": "2025-04-09",
-      "equity": 99.84
+      "equity": 99.46
     },
     {
       "date": "2025-04-10",
-      "equity": 99.87
+      "equity": 99.53
     },
     {
       "date": "2025-04-11",
-      "equity": 99.87
+      "equity": 99.56
     },
     {
       "date": "2025-04-14",
-      "equity": 99.89
+      "equity": 99.61
     },
     {
       "date": "2025-04-15",
-      "equity": 99.9
+      "equity": 99.65
     },
     {
       "date": "2025-04-16",
-      "equity": 99.91
+      "equity": 99.68
     },
     {
       "date": "2025-04-17",
-      "equity": 99.92
+      "equity": 99.73
     },
     {
       "date": "2025-04-18",
-      "equity": 99.94
+      "equity": 99.8
     },
     {
       "date": "2025-04-21",
-      "equity": 99.94
+      "equity": 99.79
     },
     {
       "date": "2025-04-22",
-      "equity": 99.93
+      "equity": 99.77
     },
     {
       "date": "2025-04-23",
-      "equity": 99.94
+      "equity": 99.79
     },
     {
       "date": "2025-04-24",
-      "equity": 99.97
+      "equity": 99.88
     },
     {
       "date": "2025-04-25",
-      "equity": 100.01
+      "equity": 100.0
     },
     {
       "date": "2025-04-28",
-      "equity": 100.09
+      "equity": 100.2
     },
     {
       "date": "2025-04-29",
-      "equity": 100.16
+      "equity": 100.36
     },
     {
       "date": "2025-04-30",
-      "equity": 100.22
+      "equity": 100.54
     },
     {
       "date": "2025-05-06",
-      "equity": 100.24
+      "equity": 100.61
     },
     {
       "date": "2025-05-07",
-      "equity": 100.26
+      "equity": 100.65
     },
     {
       "date": "2025-05-08",
-      "equity": 100.25
+      "equity": 100.62
     },
     {
       "date": "2025-05-09",
-      "equity": 100.26
+      "equity": 100.66
     },
     {
       "date": "2025-05-12",
-      "equity": 100.26
+      "equity": 100.67
     },
     {
       "date": "2025-05-13",
-      "equity": 100.28
+      "equity": 100.72
     },
     {
       "date": "2025-05-14",
-      "equity": 100.29
+      "equity": 100.75
     },
     {
       "date": "2025-05-15",
-      "equity": 100.29
+      "equity": 100.78
     },
     {
       "date": "2025-05-16",
-      "equity": 100.28
+      "equity": 100.76
     },
     {
       "date": "2025-05-19",
-      "equity": 100.28
+      "equity": 100.74
     },
     {
       "date": "2025-05-20",
-      "equity": 100.26
+      "equity": 100.7
     },
     {
       "date": "2025-05-21",
-      "equity": 100.24
+      "equity": 100.66
     },
     {
       "date": "2025-05-22",
-      "equity": 100.26
+      "equity": 100.71
     },
     {
       "date": "2025-05-23",
-      "equity": 100.29
+      "equity": 100.75
     },
     {
       "date": "2025-05-26",
-      "equity": 100.31
+      "equity": 100.79
     },
     {
       "date": "2025-05-27",
-      "equity": 100.34
+      "equity": 100.86
     },
     {
       "date": "2025-05-28",
-      "equity": 100.39
+      "equity": 100.95
     },
     {
       "date": "2025-05-29",
-      "equity": 100.4
+      "equity": 100.98
     },
     {
       "date": "2025-05-30",
-      "equity": 100.48
+      "equity": 101.12
     },
     {
       "date": "2025-06-03",
-      "equity": 100.51
-    },
-    {
-      "date": "2025-06-04",
-      "equity": 100.53
-    },
-    {
-      "date": "2025-06-05",
-      "equity": 100.54
-    },
-    {
-      "date": "2025-06-06",
-      "equity": 100.54
-    },
-    {
-      "date": "2025-06-09",
-      "equity": 100.53
-    },
-    {
-      "date": "2025-06-10",
-      "equity": 100.53
-    },
-    {
-      "date": "2025-06-11",
-      "equity": 100.52
-    },
-    {
-      "date": "2025-06-12",
-      "equity": 100.49
-    },
-    {
-      "date": "2025-06-13",
-      "equity": 100.45
-    },
-    {
-      "date": "2025-06-16",
-      "equity": 100.43
-    },
-    {
-      "date": "2025-06-17",
-      "equity": 100.45
-    },
-    {
-      "date": "2025-06-18",
-      "equity": 100.5
-    },
-    {
-      "date": "2025-06-19",
-      "equity": 100.8
-    },
-    {
-      "date": "2025-06-20",
       "equity": 101.19
     },
     {
-      "date": "2025-06-23",
-      "equity": 101.26
+      "date": "2025-06-04",
+      "equity": 101.25
     },
     {
-      "date": "2025-06-24",
+      "date": "2025-06-05",
       "equity": 101.29
     },
     {
+      "date": "2025-06-06",
+      "equity": 101.28
+    },
+    {
+      "date": "2025-06-09",
+      "equity": 101.26
+    },
+    {
+      "date": "2025-06-10",
+      "equity": 101.24
+    },
+    {
+      "date": "2025-06-11",
+      "equity": 101.21
+    },
+    {
+      "date": "2025-06-12",
+      "equity": 101.11
+    },
+    {
+      "date": "2025-06-13",
+      "equity": 101.06
+    },
+    {
+      "date": "2025-06-16",
+      "equity": 101.02
+    },
+    {
+      "date": "2025-06-17",
+      "equity": 101.06
+    },
+    {
+      "date": "2025-06-18",
+      "equity": 101.14
+    },
+    {
+      "date": "2025-06-19",
+      "equity": 101.27
+    },
+    {
+      "date": "2025-06-20",
+      "equity": 101.43
+    },
+    {
+      "date": "2025-06-23",
+      "equity": 101.6
+    },
+    {
+      "date": "2025-06-24",
+      "equity": 101.7
+    },
+    {
       "date": "2025-06-25",
-      "equity": 101.31
-    },
-    {
-      "date": "2025-06-26",
-      "equity": 101.33
-    },
-    {
-      "date": "2025-06-27",
-      "equity": 101.34
-    },
-    {
-      "date": "2025-06-30",
-      "equity": 101.34
-    },
-    {
-      "date": "2025-07-01",
-      "equity": 101.35
-    },
-    {
-      "date": "2025-07-02",
-      "equity": 101.37
-    },
-    {
-      "date": "2025-07-03",
-      "equity": 101.38
-    },
-    {
-      "date": "2025-07-04",
-      "equity": 101.41
-    },
-    {
-      "date": "2025-07-07",
-      "equity": 101.44
-    },
-    {
-      "date": "2025-07-08",
-      "equity": 101.44
-    },
-    {
-      "date": "2025-07-09",
-      "equity": 101.45
-    },
-    {
-      "date": "2025-07-10",
-      "equity": 101.47
-    },
-    {
-      "date": "2025-07-11",
-      "equity": 101.49
-    },
-    {
-      "date": "2025-07-14",
-      "equity": 101.51
-    },
-    {
-      "date": "2025-07-15",
-      "equity": 101.56
-    },
-    {
-      "date": "2025-07-16",
-      "equity": 101.59
-    },
-    {
-      "date": "2025-07-17",
-      "equity": 101.62
-    },
-    {
-      "date": "2025-07-18",
-      "equity": 101.65
-    },
-    {
-      "date": "2025-07-21",
-      "equity": 101.67
-    },
-    {
-      "date": "2025-07-22",
-      "equity": 101.68
-    },
-    {
-      "date": "2025-07-23",
-      "equity": 101.7
-    },
-    {
-      "date": "2025-07-24",
-      "equity": 101.69
-    },
-    {
-      "date": "2025-07-25",
-      "equity": 101.69
-    },
-    {
-      "date": "2025-07-28",
-      "equity": 101.7
-    },
-    {
-      "date": "2025-07-29",
-      "equity": 101.72
-    },
-    {
-      "date": "2025-07-30",
       "equity": 101.75
     },
     {
-      "date": "2025-07-31",
-      "equity": 101.83
+      "date": "2025-06-26",
+      "equity": 101.82
     },
     {
-      "date": "2025-08-01",
-      "equity": 101.88
+      "date": "2025-06-27",
+      "equity": 101.85
     },
     {
-      "date": "2025-08-04",
-      "equity": 101.91
+      "date": "2025-06-30",
+      "equity": 101.86
     },
     {
-      "date": "2025-08-05",
-      "equity": 101.94
+      "date": "2025-07-01",
+      "equity": 101.9
     },
     {
-      "date": "2025-08-06",
+      "date": "2025-07-02",
       "equity": 101.96
     },
     {
-      "date": "2025-08-07",
-      "equity": 101.97
+      "date": "2025-07-03",
+      "equity": 102.01
     },
     {
-      "date": "2025-08-08",
-      "equity": 101.99
-    },
-    {
-      "date": "2025-08-11",
-      "equity": 102.02
-    },
-    {
-      "date": "2025-08-12",
-      "equity": 102.06
-    },
-    {
-      "date": "2025-08-13",
-      "equity": 102.09
-    },
-    {
-      "date": "2025-08-14",
-      "equity": 102.17
-    },
-    {
-      "date": "2025-08-15",
-      "equity": 102.21
-    },
-    {
-      "date": "2025-08-18",
-      "equity": 102.24
-    },
-    {
-      "date": "2025-08-19",
-      "equity": 102.27
-    },
-    {
-      "date": "2025-08-20",
-      "equity": 102.26
-    },
-    {
-      "date": "2025-08-21",
-      "equity": 102.27
-    },
-    {
-      "date": "2025-08-22",
-      "equity": 102.27
-    },
-    {
-      "date": "2025-08-25",
-      "equity": 102.26
-    },
-    {
-      "date": "2025-08-26",
-      "equity": 102.24
-    },
-    {
-      "date": "2025-08-27",
-      "equity": 102.18
-    },
-    {
-      "date": "2025-08-28",
-      "equity": 102.11
-    },
-    {
-      "date": "2025-08-29",
+      "date": "2025-07-04",
       "equity": 102.1
     },
     {
-      "date": "2025-09-01",
-      "equity": 102.09
+      "date": "2025-07-07",
+      "equity": 102.18
     },
     {
-      "date": "2025-09-02",
-      "equity": 102.08
+      "date": "2025-07-08",
+      "equity": 102.19
     },
     {
-      "date": "2025-09-03",
-      "equity": 102.25
+      "date": "2025-07-09",
+      "equity": 102.22
     },
     {
-      "date": "2025-09-04",
-      "equity": 102.48
+      "date": "2025-07-10",
+      "equity": 102.26
     },
     {
-      "date": "2025-09-05",
-      "equity": 102.51
+      "date": "2025-07-11",
+      "equity": 102.32
     },
     {
-      "date": "2025-09-08",
-      "equity": 102.52
+      "date": "2025-07-14",
+      "equity": 102.41
     },
     {
-      "date": "2025-09-09",
-      "equity": 102.56
+      "date": "2025-07-15",
+      "equity": 102.53
     },
     {
-      "date": "2025-09-10",
-      "equity": 102.59
-    },
-    {
-      "date": "2025-09-11",
-      "equity": 102.59
-    },
-    {
-      "date": "2025-09-12",
-      "equity": 102.59
-    },
-    {
-      "date": "2025-09-15",
-      "equity": 102.58
-    },
-    {
-      "date": "2025-09-16",
-      "equity": 102.55
-    },
-    {
-      "date": "2025-09-17",
-      "equity": 102.54
-    },
-    {
-      "date": "2025-09-18",
-      "equity": 102.52
-    },
-    {
-      "date": "2025-09-19",
-      "equity": 102.5
-    },
-    {
-      "date": "2025-09-22",
-      "equity": 102.5
-    },
-    {
-      "date": "2025-09-23",
-      "equity": 102.58
-    },
-    {
-      "date": "2025-09-24",
-      "equity": 102.59
-    },
-    {
-      "date": "2025-09-25",
-      "equity": 102.63
-    },
-    {
-      "date": "2025-09-26",
-      "equity": 102.65
-    },
-    {
-      "date": "2025-09-29",
-      "equity": 102.65
-    },
-    {
-      "date": "2025-09-30",
-      "equity": 102.66
-    },
-    {
-      "date": "2025-10-09",
-      "equity": 102.65
-    },
-    {
-      "date": "2025-10-10",
-      "equity": 102.6
-    },
-    {
-      "date": "2025-10-13",
-      "equity": 102.57
-    },
-    {
-      "date": "2025-10-14",
-      "equity": 102.6
-    },
-    {
-      "date": "2025-10-15",
-      "equity": 102.6
-    },
-    {
-      "date": "2025-10-16",
+      "date": "2025-07-16",
       "equity": 102.61
     },
     {
-      "date": "2025-10-17",
-      "equity": 102.84
+      "date": "2025-07-17",
+      "equity": 102.7
     },
     {
-      "date": "2025-10-20",
-      "equity": 102.9
+      "date": "2025-07-18",
+      "equity": 102.8
     },
     {
-      "date": "2025-10-21",
-      "equity": 102.92
+      "date": "2025-07-21",
+      "equity": 102.87
     },
     {
-      "date": "2025-10-22",
-      "equity": 102.94
+      "date": "2025-07-22",
+      "equity": 102.91
     },
     {
-      "date": "2025-10-23",
-      "equity": 102.95
+      "date": "2025-07-23",
+      "equity": 102.98
     },
     {
-      "date": "2025-10-24",
+      "date": "2025-07-24",
       "equity": 102.96
     },
     {
-      "date": "2025-10-27",
-      "equity": 102.97
-    },
-    {
-      "date": "2025-10-28",
-      "equity": 102.97
-    },
-    {
-      "date": "2025-10-29",
-      "equity": 102.99
-    },
-    {
-      "date": "2025-10-30",
-      "equity": 103.04
-    },
-    {
-      "date": "2025-10-31",
-      "equity": 103.05
-    },
-    {
-      "date": "2025-11-03",
-      "equity": 103.07
-    },
-    {
-      "date": "2025-11-04",
-      "equity": 103.1
-    },
-    {
-      "date": "2025-11-05",
-      "equity": 103.11
-    },
-    {
-      "date": "2025-11-06",
-      "equity": 103.13
-    },
-    {
-      "date": "2025-11-07",
-      "equity": 103.14
-    },
-    {
-      "date": "2025-11-10",
-      "equity": 103.15
-    },
-    {
-      "date": "2025-11-11",
-      "equity": 103.14
-    },
-    {
-      "date": "2025-11-12",
-      "equity": 103.13
-    },
-    {
-      "date": "2025-11-13",
-      "equity": 103.1
-    },
-    {
-      "date": "2025-11-14",
-      "equity": 103.01
-    },
-    {
-      "date": "2025-11-17",
+      "date": "2025-07-25",
       "equity": 102.95
     },
     {
-      "date": "2025-11-18",
-      "equity": 102.9
+      "date": "2025-07-28",
+      "equity": 102.98
     },
     {
-      "date": "2025-11-19",
-      "equity": 102.84
+      "date": "2025-07-29",
+      "equity": 103.02
     },
     {
-      "date": "2025-11-20",
-      "equity": 102.81
+      "date": "2025-07-30",
+      "equity": 103.1
     },
     {
-      "date": "2025-11-21",
-      "equity": 103.17
-    },
-    {
-      "date": "2025-11-24",
-      "equity": 103.28
-    },
-    {
-      "date": "2025-11-25",
-      "equity": 103.29
-    },
-    {
-      "date": "2025-11-26",
-      "equity": 103.3
-    },
-    {
-      "date": "2025-11-27",
-      "equity": 103.3
-    },
-    {
-      "date": "2025-11-28",
-      "equity": 103.3
-    },
-    {
-      "date": "2025-12-01",
-      "equity": 103.3
-    },
-    {
-      "date": "2025-12-02",
-      "equity": 103.3
-    },
-    {
-      "date": "2025-12-03",
-      "equity": 103.32
-    },
-    {
-      "date": "2025-12-04",
-      "equity": 103.32
-    },
-    {
-      "date": "2025-12-05",
-      "equity": 103.31
-    },
-    {
-      "date": "2025-12-08",
-      "equity": 103.29
-    },
-    {
-      "date": "2025-12-09",
-      "equity": 103.26
-    },
-    {
-      "date": "2025-12-10",
-      "equity": 103.23
-    },
-    {
-      "date": "2025-12-11",
+      "date": "2025-07-31",
       "equity": 103.22
     },
     {
-      "date": "2025-12-12",
-      "equity": 103.28
-    },
-    {
-      "date": "2025-12-15",
+      "date": "2025-08-01",
       "equity": 103.32
     },
     {
-      "date": "2025-12-16",
-      "equity": 103.45
+      "date": "2025-08-04",
+      "equity": 103.44
     },
     {
-      "date": "2025-12-17",
+      "date": "2025-08-05",
       "equity": 103.54
     },
     {
-      "date": "2025-12-18",
-      "equity": 103.6
-    },
-    {
-      "date": "2025-12-19",
+      "date": "2025-08-06",
       "equity": 103.62
     },
     {
-      "date": "2025-12-22",
+      "date": "2025-08-07",
       "equity": 103.64
     },
     {
-      "date": "2025-12-23",
-      "equity": 103.67
-    },
-    {
-      "date": "2025-12-24",
-      "equity": 103.67
-    },
-    {
-      "date": "2025-12-25",
-      "equity": 103.69
-    },
-    {
-      "date": "2025-12-26",
+      "date": "2025-08-08",
       "equity": 103.72
     },
     {
-      "date": "2025-12-29",
-      "equity": 103.76
+      "date": "2025-08-11",
+      "equity": 103.81
     },
     {
-      "date": "2025-12-30",
-      "equity": 103.82
+      "date": "2025-08-12",
+      "equity": 103.92
     },
     {
-      "date": "2025-12-31",
-      "equity": 103.91
+      "date": "2025-08-13",
+      "equity": 104.04
     },
     {
-      "date": "2026-01-05",
-      "equity": 103.98
+      "date": "2025-08-14",
+      "equity": 104.19
     },
     {
-      "date": "2026-01-06",
-      "equity": 104.03
+      "date": "2025-08-15",
+      "equity": 104.31
     },
     {
-      "date": "2026-01-07",
-      "equity": 104.07
+      "date": "2025-08-18",
+      "equity": 104.41
     },
     {
-      "date": "2026-01-08",
-      "equity": 104.1
+      "date": "2025-08-19",
+      "equity": 104.5
     },
     {
-      "date": "2026-01-09",
-      "equity": 104.11
+      "date": "2025-08-20",
+      "equity": 104.48
     },
     {
-      "date": "2026-01-12",
-      "equity": 104.1
+      "date": "2025-08-21",
+      "equity": 104.5
     },
     {
-      "date": "2026-01-13",
-      "equity": 104.11
+      "date": "2025-08-22",
+      "equity": 104.5
     },
     {
-      "date": "2026-01-14",
-      "equity": 104.11
+      "date": "2025-08-25",
+      "equity": 104.49
     },
     {
-      "date": "2026-01-15",
+      "date": "2025-08-26",
+      "equity": 104.39
+    },
+    {
+      "date": "2025-08-27",
+      "equity": 104.32
+    },
+    {
+      "date": "2025-08-28",
+      "equity": 104.16
+    },
+    {
+      "date": "2025-08-29",
       "equity": 104.13
     },
     {
-      "date": "2026-01-16",
-      "equity": 104.18
+      "date": "2025-09-01",
+      "equity": 104.11
     },
     {
-      "date": "2026-01-19",
-      "equity": 104.2
-    },
-    {
-      "date": "2026-01-20",
-      "equity": 104.22
-    },
-    {
-      "date": "2026-01-21",
-      "equity": 104.23
-    },
-    {
-      "date": "2026-01-22",
-      "equity": 104.23
-    },
-    {
-      "date": "2026-01-23",
-      "equity": 104.2
-    },
-    {
-      "date": "2026-01-26",
-      "equity": 104.15
-    },
-    {
-      "date": "2026-01-27",
-      "equity": 104.13
-    },
-    {
-      "date": "2026-01-28",
+      "date": "2025-09-02",
       "equity": 104.12
     },
     {
-      "date": "2026-01-29",
-      "equity": 104.11
+      "date": "2025-09-03",
+      "equity": 104.2
     },
     {
-      "date": "2026-01-30",
-      "equity": 104.11
-    },
-    {
-      "date": "2026-02-02",
-      "equity": 104.31
-    },
-    {
-      "date": "2026-02-03",
+      "date": "2025-09-04",
       "equity": 104.35
     },
     {
-      "date": "2026-02-04",
-      "equity": 104.36
-    },
-    {
-      "date": "2026-02-05",
-      "equity": 104.41
-    },
-    {
-      "date": "2026-02-06",
+      "date": "2025-09-05",
       "equity": 104.43
     },
     {
-      "date": "2026-02-09",
-      "equity": 104.43
-    },
-    {
-      "date": "2026-02-10",
+      "date": "2025-09-08",
       "equity": 104.44
     },
     {
-      "date": "2026-02-11",
-      "equity": 104.47
-    },
-    {
-      "date": "2026-02-12",
-      "equity": 104.5
-    },
-    {
-      "date": "2026-02-13",
-      "equity": 104.53
-    },
-    {
-      "date": "2026-02-24",
-      "equity": 104.5
-    },
-    {
-      "date": "2026-02-25",
-      "equity": 104.45
-    },
-    {
-      "date": "2026-02-26",
-      "equity": 104.41
-    },
-    {
-      "date": "2026-02-27",
-      "equity": 104.38
-    },
-    {
-      "date": "2026-03-02",
-      "equity": 104.31
-    },
-    {
-      "date": "2026-03-03",
-      "equity": 104.63
-    },
-    {
-      "date": "2026-03-04",
-      "equity": 105.0
-    },
-    {
-      "date": "2026-03-05",
-      "equity": 105.06
-    },
-    {
-      "date": "2026-03-06",
-      "equity": 105.05
-    },
-    {
-      "date": "2026-03-09",
-      "equity": 105.06
-    },
-    {
-      "date": "2026-03-10",
-      "equity": 105.02
-    },
-    {
-      "date": "2026-03-11",
-      "equity": 104.99
-    },
-    {
-      "date": "2026-03-12",
-      "equity": 104.94
-    },
-    {
-      "date": "2026-03-13",
-      "equity": 104.85
-    },
-    {
-      "date": "2026-03-16",
-      "equity": 104.69
-    },
-    {
-      "date": "2026-03-17",
+      "date": "2025-09-09",
       "equity": 104.54
     },
     {
-      "date": "2026-03-18",
+      "date": "2025-09-10",
+      "equity": 104.64
+    },
+    {
+      "date": "2025-09-11",
+      "equity": 104.65
+    },
+    {
+      "date": "2025-09-12",
+      "equity": 104.64
+    },
+    {
+      "date": "2025-09-15",
+      "equity": 104.62
+    },
+    {
+      "date": "2025-09-16",
+      "equity": 104.53
+    },
+    {
+      "date": "2025-09-17",
+      "equity": 104.49
+    },
+    {
+      "date": "2025-09-18",
       "equity": 104.47
     },
     {
-      "date": "2026-03-19",
-      "equity": 104.38
+      "date": "2025-09-19",
+      "equity": 104.44
     },
     {
-      "date": "2026-03-20",
-      "equity": 104.37
+      "date": "2025-09-22",
+      "equity": 104.44
     },
     {
-      "date": "2026-03-23",
-      "equity": 105.01
+      "date": "2025-09-23",
+      "equity": 104.49
     },
     {
-      "date": "2026-03-24",
+      "date": "2025-09-24",
+      "equity": 104.53
+    },
+    {
+      "date": "2025-09-25",
+      "equity": 104.58
+    },
+    {
+      "date": "2025-09-26",
+      "equity": 104.64
+    },
+    {
+      "date": "2025-09-29",
+      "equity": 104.64
+    },
+    {
+      "date": "2025-09-30",
+      "equity": 104.66
+    },
+    {
+      "date": "2025-10-09",
+      "equity": 104.63
+    },
+    {
+      "date": "2025-10-10",
+      "equity": 104.54
+    },
+    {
+      "date": "2025-10-13",
+      "equity": 104.48
+    },
+    {
+      "date": "2025-10-14",
+      "equity": 104.52
+    },
+    {
+      "date": "2025-10-15",
+      "equity": 104.5
+    },
+    {
+      "date": "2025-10-16",
+      "equity": 104.52
+    },
+    {
+      "date": "2025-10-17",
+      "equity": 104.65
+    },
+    {
+      "date": "2025-10-20",
+      "equity": 104.77
+    },
+    {
+      "date": "2025-10-21",
+      "equity": 104.83
+    },
+    {
+      "date": "2025-10-22",
+      "equity": 104.88
+    },
+    {
+      "date": "2025-10-23",
+      "equity": 104.9
+    },
+    {
+      "date": "2025-10-24",
+      "equity": 104.93
+    },
+    {
+      "date": "2025-10-27",
+      "equity": 104.97
+    },
+    {
+      "date": "2025-10-28",
+      "equity": 104.98
+    },
+    {
+      "date": "2025-10-29",
+      "equity": 105.02
+    },
+    {
+      "date": "2025-10-30",
+      "equity": 105.1
+    },
+    {
+      "date": "2025-10-31",
+      "equity": 105.15
+    },
+    {
+      "date": "2025-11-03",
+      "equity": 105.2
+    },
+    {
+      "date": "2025-11-04",
+      "equity": 105.28
+    },
+    {
+      "date": "2025-11-05",
+      "equity": 105.32
+    },
+    {
+      "date": "2025-11-06",
+      "equity": 105.38
+    },
+    {
+      "date": "2025-11-07",
+      "equity": 105.43
+    },
+    {
+      "date": "2025-11-10",
+      "equity": 105.47
+    },
+    {
+      "date": "2025-11-11",
+      "equity": 105.45
+    },
+    {
+      "date": "2025-11-12",
+      "equity": 105.41
+    },
+    {
+      "date": "2025-11-13",
+      "equity": 105.3
+    },
+    {
+      "date": "2025-11-14",
       "equity": 105.06
     },
     {
-      "date": "2026-03-25",
+      "date": "2025-11-17",
+      "equity": 104.89
+    },
+    {
+      "date": "2025-11-18",
+      "equity": 104.8
+    },
+    {
+      "date": "2025-11-19",
+      "equity": 104.74
+    },
+    {
+      "date": "2025-11-20",
+      "equity": 104.71
+    },
+    {
+      "date": "2025-11-21",
+      "equity": 104.86
+    },
+    {
+      "date": "2025-11-24",
+      "equity": 104.97
+    },
+    {
+      "date": "2025-11-25",
+      "equity": 105.02
+    },
+    {
+      "date": "2025-11-26",
+      "equity": 105.04
+    },
+    {
+      "date": "2025-11-27",
       "equity": 105.03
     },
     {
+      "date": "2025-11-28",
+      "equity": 105.04
+    },
+    {
+      "date": "2025-12-01",
+      "equity": 105.06
+    },
+    {
+      "date": "2025-12-02",
+      "equity": 105.07
+    },
+    {
+      "date": "2025-12-03",
+      "equity": 105.12
+    },
+    {
+      "date": "2025-12-04",
+      "equity": 105.13
+    },
+    {
+      "date": "2025-12-05",
+      "equity": 105.12
+    },
+    {
+      "date": "2025-12-08",
+      "equity": 105.05
+    },
+    {
+      "date": "2025-12-09",
+      "equity": 104.95
+    },
+    {
+      "date": "2025-12-10",
+      "equity": 104.86
+    },
+    {
+      "date": "2025-12-11",
+      "equity": 104.85
+    },
+    {
+      "date": "2025-12-12",
+      "equity": 104.87
+    },
+    {
+      "date": "2025-12-15",
+      "equity": 104.93
+    },
+    {
+      "date": "2025-12-16",
+      "equity": 105.02
+    },
+    {
+      "date": "2025-12-17",
+      "equity": 105.14
+    },
+    {
+      "date": "2025-12-18",
+      "equity": 105.27
+    },
+    {
+      "date": "2025-12-19",
+      "equity": 105.35
+    },
+    {
+      "date": "2025-12-22",
+      "equity": 105.42
+    },
+    {
+      "date": "2025-12-23",
+      "equity": 105.49
+    },
+    {
+      "date": "2025-12-24",
+      "equity": 105.52
+    },
+    {
+      "date": "2025-12-25",
+      "equity": 105.58
+    },
+    {
+      "date": "2025-12-26",
+      "equity": 105.69
+    },
+    {
+      "date": "2025-12-29",
+      "equity": 105.82
+    },
+    {
+      "date": "2025-12-30",
+      "equity": 105.98
+    },
+    {
+      "date": "2025-12-31",
+      "equity": 106.21
+    },
+    {
+      "date": "2026-01-05",
+      "equity": 106.47
+    },
+    {
+      "date": "2026-01-06",
+      "equity": 106.61
+    },
+    {
+      "date": "2026-01-07",
+      "equity": 106.76
+    },
+    {
+      "date": "2026-01-08",
+      "equity": 106.86
+    },
+    {
+      "date": "2026-01-09",
+      "equity": 106.91
+    },
+    {
+      "date": "2026-01-12",
+      "equity": 106.88
+    },
+    {
+      "date": "2026-01-13",
+      "equity": 106.89
+    },
+    {
+      "date": "2026-01-14",
+      "equity": 106.89
+    },
+    {
+      "date": "2026-01-15",
+      "equity": 106.97
+    },
+    {
+      "date": "2026-01-16",
+      "equity": 107.1
+    },
+    {
+      "date": "2026-01-19",
+      "equity": 107.16
+    },
+    {
+      "date": "2026-01-20",
+      "equity": 107.23
+    },
+    {
+      "date": "2026-01-21",
+      "equity": 107.26
+    },
+    {
+      "date": "2026-01-22",
+      "equity": 107.23
+    },
+    {
+      "date": "2026-01-23",
+      "equity": 107.13
+    },
+    {
+      "date": "2026-01-26",
+      "equity": 106.98
+    },
+    {
+      "date": "2026-01-27",
+      "equity": 106.92
+    },
+    {
+      "date": "2026-01-28",
+      "equity": 106.89
+    },
+    {
+      "date": "2026-01-29",
+      "equity": 106.84
+    },
+    {
+      "date": "2026-01-30",
+      "equity": 106.83
+    },
+    {
+      "date": "2026-02-02",
+      "equity": 106.97
+    },
+    {
+      "date": "2026-02-03",
+      "equity": 107.04
+    },
+    {
+      "date": "2026-02-04",
+      "equity": 107.07
+    },
+    {
+      "date": "2026-02-05",
+      "equity": 107.11
+    },
+    {
+      "date": "2026-02-06",
+      "equity": 107.14
+    },
+    {
+      "date": "2026-02-09",
+      "equity": 107.16
+    },
+    {
+      "date": "2026-02-10",
+      "equity": 107.2
+    },
+    {
+      "date": "2026-02-11",
+      "equity": 107.28
+    },
+    {
+      "date": "2026-02-12",
+      "equity": 107.4
+    },
+    {
+      "date": "2026-02-13",
+      "equity": 107.44
+    },
+    {
+      "date": "2026-02-24",
+      "equity": 107.37
+    },
+    {
+      "date": "2026-02-25",
+      "equity": 107.22
+    },
+    {
+      "date": "2026-02-26",
+      "equity": 107.1
+    },
+    {
+      "date": "2026-02-27",
+      "equity": 107.01
+    },
+    {
+      "date": "2026-03-02",
+      "equity": 106.94
+    },
+    {
+      "date": "2026-03-03",
+      "equity": 107.05
+    },
+    {
+      "date": "2026-03-04",
+      "equity": 107.19
+    },
+    {
+      "date": "2026-03-05",
+      "equity": 107.27
+    },
+    {
+      "date": "2026-03-06",
+      "equity": 107.25
+    },
+    {
+      "date": "2026-03-09",
+      "equity": 107.25
+    },
+    {
+      "date": "2026-03-10",
+      "equity": 107.12
+    },
+    {
+      "date": "2026-03-11",
+      "equity": 107.04
+    },
+    {
+      "date": "2026-03-12",
+      "equity": 106.9
+    },
+    {
+      "date": "2026-03-13",
+      "equity": 106.71
+    },
+    {
+      "date": "2026-03-16",
+      "equity": 106.34
+    },
+    {
+      "date": "2026-03-17",
+      "equity": 106.14
+    },
+    {
+      "date": "2026-03-18",
+      "equity": 105.97
+    },
+    {
+      "date": "2026-03-19",
+      "equity": 105.89
+    },
+    {
+      "date": "2026-03-20",
+      "equity": 105.88
+    },
+    {
+      "date": "2026-03-23",
+      "equity": 106.08
+    },
+    {
+      "date": "2026-03-24",
+      "equity": 106.15
+    },
+    {
+      "date": "2026-03-25",
+      "equity": 106.08
+    },
+    {
       "date": "2026-03-26",
-      "equity": 105.03
+      "equity": 106.08
     }
   ],
   "backtest_30d": {
@@ -65751,472 +65401,70 @@
   },
   "backtest_1y": {
     "maGoldenCross": {
-      "win_rate": 50.8,
-      "avg_return": 0.79,
-      "total_return": 94.98,
-      "total_trades": 34766,
-      "signal_stocks": 5007,
-      "sharpe": 0.82
+      "win_rate": 41.4,
+      "avg_return": 0.09,
+      "total_return": 61.9,
+      "total_trades": 681,
+      "signal_stocks": 681,
+      "sharpe": 0.06,
+      "max_drawdown": 98.7
     },
     "volumeBreakout": {
-      "win_rate": 44.2,
-      "avg_return": 0.44,
-      "total_return": -65.67,
-      "total_trades": 42385,
-      "signal_stocks": 4989,
-      "sharpe": 0.32
+      "win_rate": 37.9,
+      "avg_return": -0.74,
+      "total_return": -353.0,
+      "total_trades": 480,
+      "signal_stocks": 480,
+      "sharpe": -0.51,
+      "max_drawdown": 99.9
     },
     "rsiOversold": {
-      "win_rate": 68.7,
-      "avg_return": 1.45,
-      "total_return": 316.75,
-      "total_trades": 7985,
-      "signal_stocks": 3725,
-      "sharpe": 2.43
+      "win_rate": 42.1,
+      "avg_return": 0.08,
+      "total_return": 13.8,
+      "total_trades": 183,
+      "signal_stocks": 183,
+      "sharpe": 0.06,
+      "max_drawdown": 87.9
     },
     "oversoldBounce": {
-      "win_rate": 53.7,
-      "avg_return": 0.77,
-      "total_return": 119.26,
-      "total_trades": 34979,
-      "signal_stocks": 4776,
-      "sharpe": 0.83
+      "win_rate": 42.9,
+      "avg_return": 0.24,
+      "total_return": 131.5,
+      "total_trades": 541,
+      "signal_stocks": 541,
+      "sharpe": 0.16,
+      "max_drawdown": 96.1
     },
     "bollingerMeanReversion": {
-      "win_rate": 66.8,
-      "avg_return": 1.91,
-      "total_return": 419.99,
-      "total_trades": 39597,
-      "signal_stocks": 4946,
-      "sharpe": 2.81
-    },
-    "kdjGoldenCross": {
-      "win_rate": 54.0,
-      "avg_return": 0.89,
-      "total_return": 30.04,
-      "total_trades": 39376,
-      "signal_stocks": 5011,
-      "sharpe": 1.05
-    },
-    "supermarket": {
-      "win_rate": 52.1,
-      "avg_return": 0.72,
-      "total_return": -71.08,
-      "total_trades": 96563,
-      "signal_stocks": 4511,
-      "sharpe": 0.88
-    },
-    "coldStock": {
-      "win_rate": 54.0,
-      "avg_return": 0.62,
-      "total_return": -78.56,
-      "total_trades": 207931,
-      "signal_stocks": 4877,
-      "sharpe": 0.92
-    },
-    "bottomFishing76": {
-      "win_rate": 71.5,
-      "avg_return": 1.51,
-      "total_return": 1520.79,
-      "total_trades": 7261,
-      "signal_stocks": 3216,
-      "sharpe": 2.5
-    },
-    "equalWeight": {
-      "win_rate": 50.3,
-      "avg_return": 0.82,
-      "total_return": -25.84,
-      "total_trades": 31543,
-      "signal_stocks": 5001,
-      "sharpe": 0.82
-    },
-    "permanentPortfolio": {
-      "win_rate": 66.0,
-      "avg_return": 1.54,
-      "total_return": 648.43,
-      "total_trades": 19849,
-      "signal_stocks": 4995,
-      "sharpe": 1.96
-    },
-    "mainForceDivergence": {
-      "win_rate": 59.0,
-      "avg_return": 0.84,
-      "total_return": 538.22,
-      "total_trades": 40754,
-      "signal_stocks": 3125,
-      "sharpe": 1.57
-    },
-    "mainForceDivRate": {
-      "win_rate": 48.2,
-      "avg_return": 0.41,
-      "total_return": 1138.67,
-      "total_trades": 24512,
-      "signal_stocks": 4981,
-      "sharpe": 0.51
-    },
-    "consecutiveYangLine": {
-      "win_rate": 48.7,
-      "avg_return": 0.49,
-      "total_return": -10.5,
-      "total_trades": 134650,
-      "signal_stocks": 5014,
-      "sharpe": 0.46
-    },
-    "volumeNewHigh": {
-      "win_rate": 43.5,
-      "avg_return": 0.3,
-      "total_return": -93.37,
-      "total_trades": 19738,
-      "signal_stocks": 4789,
-      "sharpe": 0.2
-    },
-    "smallCapMomentum": {
-      "win_rate": 49.3,
-      "avg_return": 0.79,
-      "total_return": -30.47,
-      "total_trades": 56529,
-      "signal_stocks": 4927,
-      "sharpe": 0.71
-    },
-    "ahPremiumArb": {
-      "win_rate": 55.8,
-      "avg_return": 1.01,
-      "total_return": -22.51,
-      "total_trades": 110702,
-      "signal_stocks": 4938,
-      "sharpe": 1.23
-    },
-    "highDividendRotation": {
-      "win_rate": 53.5,
-      "avg_return": 0.58,
-      "total_return": -38.95,
-      "total_trades": 149572,
-      "signal_stocks": 4923,
-      "sharpe": 0.84
-    },
-    "macdDivergence": {
-      "win_rate": 47.9,
-      "avg_return": 0.16,
-      "total_return": -40.04,
-      "total_trades": 66920,
-      "signal_stocks": 4952,
-      "sharpe": 0.22
-    },
-    "industryRotation": {
-      "win_rate": 52.1,
-      "avg_return": 0.93,
-      "total_return": 11.69,
-      "total_trades": 37953,
-      "signal_stocks": 5003,
-      "sharpe": 0.94
-    },
-    "lowVolatility": {
-      "win_rate": 56.4,
-      "avg_return": 1.21,
-      "total_return": -61.13,
-      "total_trades": 480383,
-      "signal_stocks": 5007,
-      "sharpe": 1.47
-    },
-    "priceMomentum": {
-      "win_rate": 45.5,
-      "avg_return": 0.53,
-      "total_return": 245.36,
-      "total_trades": 202532,
-      "signal_stocks": 4895,
-      "sharpe": 0.4
-    },
-    "soeValueSelect": {
-      "win_rate": 51.0,
-      "avg_return": 0.7,
-      "total_return": 1019.72,
-      "total_trades": 219953,
-      "signal_stocks": 4971,
-      "sharpe": 0.75
-    },
-    "earningsAcceleration": {
-      "win_rate": 45.8,
-      "avg_return": 0.47,
-      "total_return": 51.89,
-      "total_trades": 151773,
-      "signal_stocks": 4991,
-      "sharpe": 0.37
-    },
-    "insiderBuying": {
-      "win_rate": 43.0,
-      "avg_return": 0.21,
-      "total_return": -76.42,
-      "total_trades": 46699,
-      "signal_stocks": 4967,
-      "sharpe": 0.15
-    },
-    "idiosyncraticMomentum": {
-      "win_rate": 47.5,
-      "avg_return": 0.61,
-      "total_return": 34.75,
-      "total_trades": 205511,
-      "signal_stocks": 4976,
-      "sharpe": 0.49
-    },
-    "turnoverSpike": {
-      "win_rate": 45.2,
-      "avg_return": 0.4,
-      "total_return": -32.97,
-      "total_trades": 86516,
-      "signal_stocks": 5005,
-      "sharpe": 0.31
-    },
-    "shortTermReversal": {
-      "win_rate": 59.1,
-      "avg_return": 1.41,
-      "total_return": 1496.4,
-      "total_trades": 70288,
-      "signal_stocks": 4981,
-      "sharpe": 1.49
-    },
-    "volumePriceDivergence": {
-      "win_rate": 49.6,
-      "avg_return": 0.62,
-      "total_return": 110.21,
-      "total_trades": 54996,
-      "signal_stocks": 4987,
-      "sharpe": 0.59
-    }
-  },
-  "backtest_all": {
-    "maGoldenCross": {
-      "win_rate": 47.8,
-      "avg_return": 0.56,
-      "total_return": -80.54,
-      "total_trades": 106860,
-      "signal_stocks": 5017,
-      "sharpe": 0.53
-    },
-    "volumeBreakout": {
-      "win_rate": 40.5,
-      "avg_return": -0.39,
-      "total_return": 3.89,
-      "total_trades": 114832,
-      "signal_stocks": 5011,
-      "sharpe": -0.26
-    },
-    "rsiOversold": {
-      "win_rate": 60.4,
-      "avg_return": 1.74,
-      "total_return": 614.99,
-      "total_trades": 42328,
-      "signal_stocks": 4997,
-      "sharpe": 1.56
-    },
-    "oversoldBounce": {
-      "win_rate": 53.9,
-      "avg_return": 1.33,
-      "total_return": 202.53,
-      "total_trades": 135004,
-      "signal_stocks": 5013,
-      "sharpe": 1.07
-    },
-    "bollingerMeanReversion": {
-      "win_rate": 56.9,
-      "avg_return": 1.46,
-      "total_return": -82.86,
-      "total_trades": 186222,
-      "signal_stocks": 5013,
-      "sharpe": 1.36
-    },
-    "kdjGoldenCross": {
-      "win_rate": 50.6,
-      "avg_return": 0.78,
-      "total_return": 10.03,
-      "total_trades": 148938,
-      "signal_stocks": 5022,
-      "sharpe": 0.72
-    },
-    "supermarket": {
-      "win_rate": 48.9,
-      "avg_return": 0.74,
-      "total_return": -67.11,
-      "total_trades": 302356,
-      "signal_stocks": 4770,
-      "sharpe": 0.73
-    },
-    "coldStock": {
-      "win_rate": 49.8,
-      "avg_return": 0.54,
-      "total_return": -9.68,
-      "total_trades": 899080,
-      "signal_stocks": 5002,
-      "sharpe": 0.55
-    },
-    "bottomFishing76": {
-      "win_rate": 56.0,
-      "avg_return": 1.24,
-      "total_return": 4372.76,
-      "total_trades": 49716,
-      "signal_stocks": 4967,
-      "sharpe": 1.12
-    },
-    "equalWeight": {
       "win_rate": 47.6,
-      "avg_return": 0.15,
-      "total_return": 116.83,
-      "total_trades": 84543,
-      "signal_stocks": 5010,
-      "sharpe": 0.15
-    },
-    "permanentPortfolio": {
-      "win_rate": 49.4,
-      "avg_return": 0.51,
-      "total_return": 10.2,
-      "total_trades": 58456,
-      "signal_stocks": 5005,
-      "sharpe": 0.56
-    },
-    "mainForceDivergence": {
-      "win_rate": 50.2,
-      "avg_return": 0.25,
-      "total_return": 8.53,
-      "total_trades": 95259,
-      "signal_stocks": 4124,
-      "sharpe": 0.46
-    },
-    "mainForceDivRate": {
-      "win_rate": 48.9,
-      "avg_return": 0.57,
-      "total_return": -24.3,
-      "total_trades": 63052,
-      "signal_stocks": 5014,
-      "sharpe": 0.64
-    },
-    "consecutiveYangLine": {
-      "win_rate": 46.6,
-      "avg_return": 0.3,
-      "total_return": 171.26,
-      "total_trades": 388530,
-      "signal_stocks": 5024,
-      "sharpe": 0.27
-    },
-    "volumeNewHigh": {
-      "win_rate": 38.6,
-      "avg_return": -0.89,
-      "total_return": -63.36,
-      "total_trades": 72141,
-      "signal_stocks": 4973,
-      "sharpe": -0.56
-    },
-    "smallCapMomentum": {
-      "win_rate": 47.5,
-      "avg_return": 0.47,
-      "total_return": 107.09,
-      "total_trades": 147908,
-      "signal_stocks": 4999,
-      "sharpe": 0.43
-    },
-    "ahPremiumArb": {
-      "win_rate": 52.2,
-      "avg_return": 0.7,
-      "total_return": -65.01,
-      "total_trades": 579026,
-      "signal_stocks": 5015,
-      "sharpe": 0.62
-    },
-    "highDividendRotation": {
-      "win_rate": 51.5,
-      "avg_return": 0.67,
-      "total_return": -74.17,
-      "total_trades": 805017,
-      "signal_stocks": 4999,
-      "sharpe": 0.66
-    },
-    "macdDivergence": {
-      "win_rate": 47.0,
-      "avg_return": -0.05,
-      "total_return": -36.74,
-      "total_trades": 258322,
-      "signal_stocks": 5004,
-      "sharpe": -0.05
-    },
-    "industryRotation": {
-      "win_rate": 48.4,
       "avg_return": 0.88,
-      "total_return": -31.3,
-      "total_trades": 118018,
-      "signal_stocks": 5017,
-      "sharpe": 0.71
+      "total_return": 185.3,
+      "total_trades": 210,
+      "signal_stocks": 210,
+      "sharpe": 0.59,
+      "max_drawdown": 84.4
     },
-    "lowVolatility": {
-      "win_rate": 48.0,
-      "avg_return": 0.29,
-      "total_return": -3.44,
-      "total_trades": 1579534,
-      "signal_stocks": 5016,
-      "sharpe": 0.34
+    "kdjGoldenCross": {
+      "win_rate": 56.2,
+      "avg_return": 2.94,
+      "total_return": 235.6,
+      "total_trades": 80,
+      "signal_stocks": 80,
+      "sharpe": 1.89,
+      "max_drawdown": 39.9
     },
-    "priceMomentum": {
-      "win_rate": 44.4,
-      "avg_return": 0.11,
-      "total_return": 441.7,
-      "total_trades": 567699,
-      "signal_stocks": 5009,
-      "sharpe": 0.08
-    },
-    "soeValueSelect": {
-      "win_rate": 47.5,
-      "avg_return": 0.35,
-      "total_return": -38.82,
-      "total_trades": 559190,
-      "signal_stocks": 4993,
-      "sharpe": 0.36
-    },
-    "earningsAcceleration": {
-      "win_rate": 43.8,
-      "avg_return": 0.03,
-      "total_return": 1040.11,
-      "total_trades": 388914,
-      "signal_stocks": 5009,
-      "sharpe": 0.02
-    },
-    "insiderBuying": {
-      "win_rate": 39.7,
-      "avg_return": -0.54,
-      "total_return": -80.63,
-      "total_trades": 141094,
-      "signal_stocks": 5012,
-      "sharpe": -0.36
-    },
-    "idiosyncraticMomentum": {
-      "win_rate": 47.0,
-      "avg_return": 0.47,
-      "total_return": 44.15,
-      "total_trades": 891988,
-      "signal_stocks": 4992,
-      "sharpe": 0.39
-    },
-    "turnoverSpike": {
-      "win_rate": 44.3,
-      "avg_return": 0.39,
-      "total_return": -30.48,
-      "total_trades": 272987,
-      "signal_stocks": 5016,
-      "sharpe": 0.27
-    },
-    "shortTermReversal": {
-      "win_rate": 53.1,
-      "avg_return": 1.1,
-      "total_return": 296.53,
-      "total_trades": 231172,
-      "signal_stocks": 5021,
-      "sharpe": 0.93
-    },
-    "volumePriceDivergence": {
-      "win_rate": 48.9,
-      "avg_return": 0.57,
-      "total_return": 91.12,
-      "total_trades": 137583,
-      "signal_stocks": 5013,
-      "sharpe": 0.52
+    "supermarket": {
+      "win_rate": 80.0,
+      "avg_return": 3.4,
+      "total_return": 51.0,
+      "total_trades": 15,
+      "signal_stocks": 15,
+      "sharpe": 6.7,
+      "max_drawdown": 4.3
     }
   },
+  "backtest_all": {},
   "backtest_1d": {
     "maGoldenCross": {
       "win_rate": 47.9,
