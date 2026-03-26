@@ -69658,5 +69658,38 @@
       "type": "alpha"
     }
   ],
-  "alpha_enabled": true
+  "alpha_enabled": true,
+  "ic_cache_date": "2026-03-26",
+  "top5_snapshot": [
+    {
+      "code": "688981",
+      "name": "中芯国际",
+      "score": 83.04,
+      "hit_count": 13
+    },
+    {
+      "code": "300406",
+      "name": "九强生物",
+      "score": 82.92,
+      "hit_count": 14
+    },
+    {
+      "code": "688276",
+      "name": "百克生物",
+      "score": 82.86,
+      "hit_count": 13
+    },
+    {
+      "code": "603877",
+      "name": "太平鸟",
+      "score": 82.79,
+      "hit_count": 14
+    },
+    {
+      "code": "603326",
+      "name": "我乐家居",
+      "score": 82.69,
+      "hit_count": 16
+    }
+  ]
 }
