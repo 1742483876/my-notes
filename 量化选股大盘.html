@@ -1593,7 +1593,7 @@ function renderKlineCharts() {
         // 标注买入/卖出线（用 annotation plugin 替代方案：手动 afterDraw）
       },
       scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20, includeBounds: true }, grid: { color: '#21262d' } },
         y: {
           ticks: { color: '#8b949e', font: { size: 10 } },
           grid: { color: '#21262d' },
@@ -1656,7 +1656,7 @@ function renderKlineCharts() {
         }
       }},
       scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20, includeBounds: true }, grid: { color: '#21262d' } },
         y: { ticks: { color: '#8b949e', font: { size: 9 }, callback: v => (v/10000).toFixed(0)+'万' }, grid: { color: '#21262d' }, position: 'right' }
       }
     }
