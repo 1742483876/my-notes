@@ -1594,7 +1594,13 @@ function renderKlineCharts() {
       },
       scales: {
         x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' }, position: 'right' }
+        y: {
+          ticks: { color: '#8b949e', font: { size: 10 } },
+          grid: { color: '#21262d' },
+          position: 'right',
+          min: +(Math.min(...lows) * 0.995).toFixed(2),
+          max: +(Math.max(...highs) * 1.005).toFixed(2),
+        }
       }
     },
     plugins: [{
