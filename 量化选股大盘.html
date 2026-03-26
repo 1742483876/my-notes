@@ -904,6 +904,9 @@ function renderDailyPicks() {
   let totalTrades = 0;
   let maxDrawdown = 0;
   let equityCurve = [];
+  let skippedBear = 0;
+  let skippedThreshold = 0;
+  let holdDays = 5;
   
   // 兼容新旧两种数据格式
   if (Array.isArray(dp)) {
@@ -919,6 +922,9 @@ function renderDailyPicks() {
     totalTrades = ds.total_trades || 0;
     maxDrawdown = ds.max_drawdown || 0;
     equityCurve = ds.equity_curve || [];
+    skippedBear = ds.skipped_bear || 0;
+    skippedThreshold = ds.skipped_threshold || 0;
+    holdDays = ds.hold_days || 5;
   } else {
     // 新格式：daily_picks 是对象
     dailyData = dp.daily_data || [];
@@ -930,21 +936,27 @@ function renderDailyPicks() {
     totalTrades = dp.total_trades || 0;
     maxDrawdown = dp.max_drawdown || 0;
     equityCurve = dp.equity_curve || [];
+    skippedBear = dp.skipped_bear || 0;
+    skippedThreshold = dp.skipped_threshold || 0;
+    holdDays = dp.hold_days || 5;
   }
 
   // 隐藏loading，显示内容
   document.getElementById('loadingDaily').style.display = 'none';
   document.getElementById('contentDaily').style.display = 'block';
 
-  // 汇总卡片 - 添加最大回撤
+  // 汇总卡片
+  const holdLabel = holdDays === 1 ? '次日收益' : `持有${holdDays}天`;
+  const vacantDays = skippedBear + skippedThreshold;
   document.getElementById('dailySummaryGrid').innerHTML = [
-    { label: '走查天数', value: tradingDays, unit: '个交易日', color: 'var(--accent)' },
+    { label: '走查天数', value: tradingDays, unit: `${vacantDays > 0 ? '空仓' + vacantDays + '天' : '个交易日'}`, color: 'var(--accent)' },
     { label: '日胜率', value: overallWinRate + '%', unit: '盈利天数占比', color: overallWinRate >= 50 ? 'var(--red)' : 'var(--green)' },
     { label: '单笔胜率', value: tradeWinRate + '%', unit: '所有推荐', color: tradeWinRate >= 50 ? 'var(--red)' : 'var(--green)' },
-    { label: '平均日收益', value: (avgDailyReturn >= 0 ? '+' : '') + avgDailyReturn + '%', unit: '持有5天', color: avgDailyReturn >= 0 ? 'var(--red)' : 'var(--green)' },
+    { label: '平均日收益', value: (avgDailyReturn >= 0 ? '+' : '') + avgDailyReturn + '%', unit: holdLabel, color: avgDailyReturn >= 0 ? 'var(--red)' : 'var(--green)' },
     { label: '模拟净值', value: finalEquity, unit: '初始100', color: finalEquity >= 100 ? 'var(--red)' : 'var(--green)' },
     { label: '最大回撤', value: maxDrawdown + '%', unit: '峰值到谷底', color: maxDrawdown <= 10 ? 'var(--green)' : maxDrawdown <= 20 ? 'var(--yellow)' : 'var(--red)' },
     { label: '总交易笔数', value: totalTrades.toLocaleString(), unit: '笔', color: 'var(--text)' },
+    ...(skippedBear > 0 ? [{ label: '熊市空仓', value: skippedBear + '天', unit: 'MA5<MA20跳过', color: 'var(--yellow)' }] : []),
   ].map(c => `<div class="stat-card"><div class="stat-value" style="color:${c.color}">${c.value}</div><div class="stat-label">${c.label}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">${c.unit}</div></div>`).join('');
 
   // 净值曲线
