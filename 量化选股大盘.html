@@ -163,12 +163,13 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 <div id="globalLoadingTip" style="display:none;text-align:center;padding:10px;font-size:12px;color:var(--text2);background:var(--surface);border-bottom:1px solid var(--border)"></div>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('backtest')">📊 策略回测</div>
+  <div class="tab active" onclick="switchTab('today')">🎯 今日推荐</div>
+  <div class="tab" onclick="switchTab('daily')">🔬 每日选股</div>
+  <div class="tab" onclick="switchTab('predict')">🔮 个股预测</div>
+  <div class="tab" onclick="switchTab('zt')">🚀 涨停预测</div>
+  <div class="tab" onclick="switchTab('backtest')">📊 策略回测</div>
   <div class="tab" onclick="switchTab('equity')">📈 权益曲线</div>
   <div class="tab" onclick="switchTab('weights')">⚖️ 权重分析</div>
-  <div class="tab" onclick="switchTab('daily')">🔬 每日选股</div>
-  <div class="tab" onclick="switchTab('today')">🎯 今日推荐</div>
-  <div class="tab" onclick="switchTab('predict')">🔮 个股预测</div>
 </div>
 
 <!-- 每日选股走查 -->
@@ -215,7 +216,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 </div>
 
 <!-- 今日推荐 -->
-<div class="page" id="page-today">
+<div class="page active" id="page-today">
   <div id="loadingToday" class="loading">
     <div class="spinner"></div>
     <span id="loadingText">正在连接数据...</span>
@@ -231,7 +232,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 </div>
 
 <!-- 策略回测 -->
-<div class="page active" id="page-backtest">
+<div class="page" id="page-backtest">
   <div id="loadingBacktest" style="display:flex;align-items:center;justify-content:center;padding:80px;flex-direction:column;gap:12px;color:var(--text2)">
     <div class="spinner"></div>
     <span>数据加载中，请稍候...</span>
@@ -428,6 +429,18 @@ async function loadData() {
     await new Promise(r => setTimeout(r, 30));
 
     G = data;
+
+    // 异步加载涨停预测数据
+    try {
+      const ztR = await fetch('./data/api/zt_predict.json?t=' + Date.now());
+      if (ztR.ok) {
+        const ztData = await ztR.json();
+        G.zt_predict = ztData;
+        console.log('[zt_predict] 已加载', ztData.candidate_count, '只候选');
+      }
+    } catch(e) {
+      console.warn('[zt_predict] 加载失败', e.message);
+    }
 
     // 异步加载推荐股票实时行情（rec_spot.json）
     try {
@@ -1348,7 +1361,7 @@ function destroyChart(id) {
 
 // ===== Tab 切换 =====
 function switchTab(name) {
-  const tabs = ['backtest','equity','weights','daily','today','predict'];
+  const tabs = ['today','daily','predict','zt','backtest','equity','weights'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', tabs[i] === name);
   });
@@ -1361,6 +1374,7 @@ function switchTab(name) {
       if (name === 'equity')   renderEquityCharts();
       if (name === 'weights')  renderWeightCharts();
       if (name === 'daily')    renderDailyPicks();
+      if (name === 'zt')       renderZtPredict();
     }, 50);
   }
 }
@@ -2273,6 +2287,157 @@ function renderPKlineCharts() {
 
 // 初始化历史
 renderPredictHistory();
+</script>
+
+<!-- ══════════════════ 涨停预测 页面 ══════════════════ -->
+<div class="page" id="page-zt">
+<style>
+  .zt-wrap{max-width:960px;margin:0 auto;padding:24px 0}
+  .zt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  .zt-meta{font-size:12px;color:var(--text2)}
+  .zt-stats{display:flex;gap:12px;flex-wrap:wrap}
+  .zt-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:100px}
+  .zt-stat-card .val{font-size:22px;font-weight:700;color:var(--accent)}
+  .zt-stat-card .lbl{font-size:11px;color:var(--text2);margin-top:2px}
+  .zt-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .zt-filter-btn{padding:5px 14px;border-radius:16px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;transition:.2s}
+  .zt-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .zt-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .zt-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:.2s}
+  .zt-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .zt-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+  .zt-name{font-size:15px;font-weight:600;color:var(--text)}
+  .zt-code{font-size:11px;color:var(--text2);margin-top:2px}
+  .zt-score{font-size:22px;font-weight:700;color:var(--accent)}
+  .zt-score-lbl{font-size:10px;color:var(--text2);text-align:right}
+  .zt-level{font-size:12px;margin-top:4px}
+  .zt-price-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .zt-price{font-size:16px;font-weight:600}
+  .zt-chg{font-size:13px;padding:2px 8px;border-radius:4px;font-weight:600}
+  .zt-chg.up{background:rgba(255,95,87,.15);color:#ff5f57}
+  .zt-chg.down{background:rgba(88,166,255,.12);color:var(--accent)}
+  .zt-features{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .zt-feat-tag{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+  .zt-feat-tag.hit{background:rgba(63,185,80,.12);color:var(--green);border-color:var(--green)}
+  .zt-backtest{font-size:11px;color:var(--text2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+  .zt-empty{text-align:center;padding:60px 0;color:var(--text2)}
+</style>
+<div class="zt-wrap">
+  <div class="zt-header">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:var(--text)">🚀 涨停预测</div>
+      <div class="zt-meta" id="ztMeta">数据加载中...</div>
+    </div>
+    <div class="zt-stats" id="ztStats"></div>
+  </div>
+  <div class="zt-filter" id="ztFilter">
+    <div class="zt-filter-btn active" onclick="filterZt('all')">全部</div>
+    <div class="zt-filter-btn" onclick="filterZt('fire')">🔥 强烈关注</div>
+    <div class="zt-filter-btn" onclick="filterZt('star')">⭐ 高概率</div>
+    <div class="zt-filter-btn" onclick="filterZt('up')">📈 关注</div>
+  </div>
+  <div class="zt-list" id="ztList">
+    <div class="zt-empty">数据加载中...</div>
+  </div>
+</div>
+</div>
+
+<script>
+// ===== 涨停预测渲染 =====
+let _ztFilter = 'all';
+
+function filterZt(type) {
+  _ztFilter = type;
+  document.querySelectorAll('.zt-filter-btn').forEach((b,i) => {
+    const types = ['all','fire','star','up'];
+    b.classList.toggle('active', types[i] === type);
+  });
+  renderZtList();
+}
+
+function renderZtPredict() {
+  const zt = G && G.zt_predict;
+  if (!zt) {
+    document.getElementById('ztList').innerHTML = '<div class="zt-empty">⚠️ 暂无涨停预测数据，请等待每日17:00更新</div>';
+    return;
+  }
+
+  // 元信息
+  document.getElementById('ztMeta').textContent =
+    `更新时间：${zt.update_time || '--'} · 扫描 ${zt.total_scanned || 0} 只股票`;
+
+  // 统计卡片
+  const top50 = zt.top50 || [];
+  const fireCount = top50.filter(s => s.score >= 80).length;
+  const starCount = top50.filter(s => s.score >= 70 && s.score < 80).length;
+  document.getElementById('ztStats').innerHTML = `
+    <div class="zt-stat-card"><div class="val">${zt.candidate_count || top50.length}</div><div class="lbl">候选股</div></div>
+    <div class="zt-stat-card"><div class="val" style="color:#ff5f57">${fireCount}</div><div class="lbl">🔥强烈关注</div></div>
+    <div class="zt-stat-card"><div class="val" style="color:#f0b429">${starCount}</div><div class="lbl">⭐高概率</div></div>
+    <div class="zt-stat-card"><div class="val" style="color:var(--green)">${zt.today_zt_count || 0}</div><div class="lbl">今日已涨停</div></div>
+  `;
+
+  renderZtList();
+}
+
+function renderZtList() {
+  const zt = G && G.zt_predict;
+  if (!zt) return;
+  const top50 = zt.top50 || [];
+
+  let filtered = top50;
+  if (_ztFilter === 'fire') filtered = top50.filter(s => s.score >= 80);
+  else if (_ztFilter === 'star') filtered = top50.filter(s => s.score >= 70 && s.score < 80);
+  else if (_ztFilter === 'up') filtered = top50.filter(s => s.score >= 60 && s.score < 70);
+
+  if (!filtered.length) {
+    document.getElementById('ztList').innerHTML = '<div class="zt-empty">该分类暂无数据</div>';
+    return;
+  }
+
+  const html = filtered.map(s => {
+    const chgClass = s.chg_pct > 0 ? 'up' : s.chg_pct < 0 ? 'down' : '';
+    const chgSign  = s.chg_pct > 0 ? '+' : '';
+    const ft = s.features || {};
+    const tags = [];
+    if (ft.consecutive_zt > 0) tags.push({label:`连板${ft.consecutive_zt}天`, hit:true});
+    if (ft.near_zt)             tags.push({label:'近期涨停', hit:true});
+    if (ft.break_high_20d)      tags.push({label:'突破20日高', hit:true});
+    if (ft.macd_positive)       tags.push({label:'MACD金叉', hit:true});
+    if (ft.above_ma5)           tags.push({label:'站上MA5', hit:false});
+    if (ft.vol_ratio > 2)       tags.push({label:`量比${ft.vol_ratio?.toFixed(1)}`, hit:true});
+    if (ft.close_strength > 80) tags.push({label:`强势${ft.close_strength?.toFixed(0)}%`, hit:true});
+    if (ft.chg_5d > 20)         tags.push({label:`5日+${ft.chg_5d?.toFixed(1)}%`, hit:true});
+
+    const bt = s.backtest || {};
+    const scoreColor = s.score >= 80 ? '#ff5f57' : s.score >= 70 ? '#f0b429' : 'var(--accent)';
+
+    return `
+    <div class="zt-card">
+      <div class="zt-card-top">
+        <div>
+          <div class="zt-name">${s.name}</div>
+          <div class="zt-code">${s.code} · ${s.date || '--'}</div>
+          <div class="zt-level">${s.level || ''}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="zt-score" style="color:${scoreColor}">${s.score}</div>
+          <div class="zt-score-lbl">预测分</div>
+        </div>
+      </div>
+      <div class="zt-price-row">
+        <span class="zt-price">¥${s.price?.toFixed(2) || '--'}</span>
+        <span class="zt-chg ${chgClass}">${chgSign}${s.chg_pct?.toFixed(2) || 0}%</span>
+      </div>
+      <div class="zt-features">
+        ${tags.map(t => `<span class="zt-feat-tag ${t.hit?'hit':''}">${t.label}</span>`).join('')}
+      </div>
+      ${bt.precision ? `<div class="zt-backtest">历史精度 ${bt.precision?.toFixed(1)}% · 样本 ${bt.sample_count} 只 · F1 ${bt.f1?.toFixed(1)}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('ztList').innerHTML = html;
+}
 </script>
 </body>
 </html>
