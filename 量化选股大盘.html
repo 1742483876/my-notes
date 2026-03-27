@@ -429,7 +429,39 @@ async function loadData() {
 
     G = data;
 
-    // Step 3: 渲染所有数据
+    // 异步加载推荐股票实时行情（rec_spot.json）
+    try {
+      const spotR = await fetch('./data/api/rec_spot.json?t=' + Date.now());
+      if (spotR.ok) {
+        const spotData = await spotR.json();
+        const spotMap = spotData.data || {};
+        // 用最新K线数据覆盖推荐股票的价格/涨跌/日期
+        if (G.today_recommendations) {
+          G.today_recommendations = G.today_recommendations.map(r => {
+            const s = spotMap[r.code];
+            if (!s) return r;
+            return {
+              ...r,
+              close:     s.price,
+              chg_1d:    s.chg,
+              last_date: s.date,
+              // 同步更新klines最后一条（用于K线图）
+              klines: (() => {
+                const kls = r.klines || [];
+                if (!kls.length) return kls;
+                const last = kls[kls.length - 1];
+                if (last.date === s.date) return kls; // 已是最新
+                return [...kls, { date: s.date, open: s.open, close: s.price, high: s.high, low: s.low, volume: s.vol }];
+              })(),
+            };
+          });
+        }
+        G._recSpotTime = spotData.time || '';
+        console.log('[rec_spot] 已更新实时行情', Object.keys(spotMap).length, '只');
+      }
+    } catch(e) {
+      console.warn('[rec_spot] 加载失败，使用历史数据', e.message);
+    }
     setProgress(75, '渲染图表数据...', `📊 处理 ${data.today_recommendations?.length || 0} 只推荐股票`);
     await new Promise(r => setTimeout(r, 30));
 
@@ -608,11 +640,19 @@ function renderRecommend() {
     const chgClass = r.chg_1d > 0 ? 'up' : r.chg_1d < 0 ? 'down' : 'flat';
     const chgSign = r.chg_1d > 0 ? '+' : '';
     const scoreW = Math.min(r.score, 100);
+    // 日期标注：判断是否是最新数据
+    const today = new Date().toISOString().slice(0,10);
+    const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+    const dataDate = r.last_date || '--';
+    const isLatest = dataDate >= yesterday;
+    const dateBadge = isLatest
+      ? `<span style="color:var(--green);font-size:10px">✅ ${dataDate}</span>`
+      : `<span style="color:var(--text2);font-size:10px">📅 ${dataDate}</span>`;
     return `
     <div class="stock-card" onclick="openKlineByIndex('rec',${i})">
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
       <div class="stock-name">${r.name}</div>
-      <div class="stock-code">${r.code} · ${r.last_date || '--'}</div>
+      <div class="stock-code">${r.code} · ${dateBadge}</div>
       <div class="stock-meta">
         <div>
           <div class="stock-score-num">${r.score.toFixed(1)}<span style="font-size:13px;color:var(--text2);font-weight:400"> 分</span></div>
@@ -1569,7 +1609,13 @@ function renderKlineCharts() {
       },
       scales: {
         x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' }, position: 'right' }
+        y: (() => {
+          const allPrices = slice.flatMap(k => [k.open, k.close, k.high, k.low]).filter(v => v > 0);
+          const minP = Math.min(...allPrices), maxP = Math.max(...allPrices);
+          const pad = (maxP - minP) * 0.05 || maxP * 0.02;
+          return { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' }, position: 'right',
+            min: +(minP - pad).toFixed(2), max: +(maxP + pad).toFixed(2) };
+        })()
       }
     },
     plugins: [{
@@ -2199,7 +2245,13 @@ function renderPKlineCharts() {
       }},
       scales:{
         x:{ grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:10},maxTicksLimit:8} },
-        y:{ position:'right', grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:10}} }
+        y:(() => {
+          const allP = slice.flatMap(k=>[k.open,k.close,k.high,k.low]).filter(v=>v>0);
+          const minP = Math.min(...allP), maxP = Math.max(...allP);
+          const pad = (maxP - minP) * 0.05 || maxP * 0.02;
+          return { position:'right', grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:10}},
+            min: +(minP-pad).toFixed(2), max: +(maxP+pad).toFixed(2) };
+        })()
       }
     }
   });
