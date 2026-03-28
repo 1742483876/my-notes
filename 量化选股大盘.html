@@ -228,6 +228,26 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
     <div class="top-banner" id="topBanner"></div>
     <div class="section-title">🏆 今日推荐股票 <span class="badge" id="recBadge">0</span></div>
     <div class="recommend-grid" id="recommendGrid"></div>
+
+    <!-- 历史验证区域 -->
+    <div class="section-title" style="margin-top:32px">
+      📅 历史验证
+      <span style="font-size:12px;font-weight:400;color:var(--text2);margin-left:8px">选择历史日期，查看当天推荐结果及实际涨幅</span>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label style="color:var(--text2);font-size:13px">选择日期：</label>
+        <select id="historyDateSelect" onchange="renderHistoryVerify()" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer;min-width:160px">
+          <option value="">-- 请选择历史日期 --</option>
+        </select>
+        <div id="historyStatBar" style="display:none;gap:16px;flex-wrap:wrap" style="display:flex">
+          <span id="histStatWinRate" style="font-size:13px"></span>
+          <span id="histStatAvgReturn" style="font-size:13px"></span>
+          <span id="histStatTotal" style="font-size:13px"></span>
+        </div>
+      </div>
+    </div>
+    <div id="historyVerifyGrid" class="recommend-grid" style="display:none"></div>
   </div>
 </div>
 
@@ -587,7 +607,7 @@ async function renderAll() {
   await tick(); renderStats(); renderTopBanner();
 
   setProgress(83, '渲染推荐列表...', `🏆 展示 ${(G.today_recommendations||[]).length} 只股票`);
-  await tick(); renderRecommend();
+  await tick(); renderRecommend(); initHistoryDateSelect();
 
   setProgress(88, '渲染策略回测图...', '📈 绘制胜率/收益图表');
   await tick(); renderBacktestCharts(); renderStrategyTable();
@@ -679,6 +699,99 @@ function renderRecommend() {
       <div class="stock-score-bar"><div class="stock-score-fill" style="width:${scoreW}%"></div></div>
       <div class="strategy-tags">${(r.strategies||[]).map(s=>`<span class="stag">${s}</span>`).join('')}</div>
       <div style="margin-top:10px;font-size:11px;color:var(--text2);opacity:.6">点击查看K线图 📈</div>
+    </div>`;
+  }).join('');
+}
+
+// ===== 历史验证 =====
+function initHistoryDateSelect() {
+  const daily = (G.daily_picks && G.daily_picks.daily_data) || [];
+  const sel = document.getElementById('historyDateSelect');
+  if (!sel || !daily.length) return;
+  // 按日期降序排列（最近的在前）
+  const sorted = [...daily].filter(d => d.pred_date && d.picks && d.picks.length > 0)
+    .sort((a, b) => b.pred_date.localeCompare(a.pred_date));
+  sorted.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.pred_date;
+    const wr = d.win_rate != null ? `  胜率${d.win_rate.toFixed(0)}%` : '';
+    const avgR = d.avg_return != null ? `  均收益${d.avg_return > 0 ? '+' : ''}${d.avg_return.toFixed(1)}%` : '';
+    opt.textContent = `${d.pred_date}${wr}${avgR}`;
+    sel.appendChild(opt);
+  });
+}
+
+function renderHistoryVerify() {
+  const sel = document.getElementById('historyDateSelect');
+  const date = sel ? sel.value : '';
+  const grid = document.getElementById('historyVerifyGrid');
+  const statBar = document.getElementById('historyStatBar');
+  if (!date || !grid) { if(grid) grid.style.display='none'; if(statBar) statBar.style.display='none'; return; }
+
+  const daily = (G.daily_picks && G.daily_picks.daily_data) || [];
+  const dayData = daily.find(d => d.pred_date === date);
+  if (!dayData) { grid.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>该日期无数据</div></div>'; grid.style.display='block'; return; }
+
+  const picks = dayData.picks || [];
+  const wr = dayData.win_rate;
+  const avgR = dayData.avg_return;
+
+  // 更新统计栏
+  if (statBar) {
+    statBar.style.display = 'flex';
+    const wrColor = wr >= 50 ? 'var(--green)' : wr >= 40 ? 'var(--yellow,#e3b341)' : 'var(--red)';
+    const retColor = avgR > 0 ? 'var(--green)' : 'var(--red)';
+    document.getElementById('histStatWinRate').innerHTML = `胜率：<strong style="color:${wrColor}">${wr != null ? wr.toFixed(1)+'%' : '--'}</strong>`;
+    document.getElementById('histStatAvgReturn').innerHTML = `平均收益：<strong style="color:${retColor}">${avgR != null ? (avgR>0?'+':'')+avgR.toFixed(2)+'%' : '--'}</strong>`;
+    document.getElementById('histStatTotal').innerHTML = `推荐数量：<strong style="color:var(--text)">${picks.length} 只</strong>`;
+  }
+
+  // 渲染卡片
+  grid.style.display = 'grid';
+  grid.innerHTML = picks.map((p, i) => {
+    const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+    const scoreW = Math.min(p.score || 0, 100);
+
+    // 各周期涨幅
+    const r1d  = p.return_1d;
+    const r5d  = p.return_5d;
+    const r20d = p.return_20d;
+    const rNow = p.return_now;
+
+    function retBadge(val, label) {
+      if (val == null) return `<span style="color:var(--text2)">${label}:--</span>`;
+      const c = val > 0 ? 'var(--green)' : val < 0 ? 'var(--red)' : 'var(--text2)';
+      const s = val > 0 ? '+' : '';
+      return `<span style="color:${c}">${label}:<strong>${s}${val.toFixed(1)}%</strong></span>`;
+    }
+
+    const winIcon = p.win ? '✅' : '❌';
+    const entryPrice = p.entry_price != null ? `¥${p.entry_price.toFixed(2)}` : '--';
+
+    return `
+    <div class="stock-card" style="cursor:default">
+      <div class="stock-card-rank ${rankClass}">${i+1}</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="stock-name">${p.name}</div>
+          <div class="stock-code">${p.code} · 入场 ${entryPrice}</div>
+        </div>
+        <div style="font-size:18px">${winIcon}</div>
+      </div>
+      <div class="stock-meta" style="margin-top:8px">
+        <div>
+          <div class="stock-score-num">${(p.score||0).toFixed(1)}<span style="font-size:13px;color:var(--text2);font-weight:400"> 分</span></div>
+          <div class="hit-count">命中 ${(p.strategies||[]).length} 个策略</div>
+        </div>
+        <div style="text-align:right;font-size:12px;line-height:1.8;color:var(--text2)">
+          ${retBadge(r1d,'次日')}
+          ${retBadge(r5d,'5日')}
+          ${retBadge(r20d,'20日')}
+          ${retBadge(rNow,'至今')}
+        </div>
+      </div>
+      <div class="stock-score-bar" style="margin-top:8px"><div class="stock-score-fill" style="width:${scoreW}%"></div></div>
+      <div class="strategy-tags">${(p.strategies||[]).map(s=>`<span class="stag">${s}</span>`).join('')}</div>
     </div>`;
   }).join('');
 }
