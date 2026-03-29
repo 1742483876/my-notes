@@ -495,6 +495,18 @@ async function loadData() {
     } catch(e) {
       console.warn('[rec_spot] 加载失败，使用历史数据', e.message);
     }
+
+    // 异步加载LLM分析数据（llm_analysis.json）
+    try {
+      const llmR = await fetch('./data/api/llm_analysis.json?t=' + Date.now());
+      if (llmR.ok) {
+        G.llm_analysis = await llmR.json();
+        console.log('[llm_analysis] 已加载', G.llm_analysis?.stocks?.length, '只分析');
+      }
+    } catch(e) {
+      console.warn('[llm_analysis] 暂无LLM分析数据', e.message);
+    }
+
     setProgress(75, '渲染图表数据...', `📊 处理 ${data.today_recommendations?.length || 0} 只推荐股票`);
     await new Promise(r => setTimeout(r, 30));
 
@@ -661,6 +673,51 @@ function renderTopBanner() {
     </div>`;
 }
 
+// ===== 交易纪律计算工具函数 =====
+function calcTradeDiscipline(r) {
+  const klines = r.klines || [];
+  if (klines.length < 20) return null;
+  const closes = klines.map(k => k.close);
+  const n = closes.length;
+
+  // 计算均线
+  const ma = (arr, period) => {
+    if (arr.length < period) return null;
+    return arr.slice(-period).reduce((a, b) => a + b, 0) / period;
+  };
+  const ma5  = ma(closes, 5);
+  const ma10 = ma(closes, 10);
+  const ma20 = ma(closes, 20);
+  const close = closes[n - 1];
+
+  // MA多头排列：MA5 > MA10 > MA20
+  const maAligned = ma5 && ma10 && ma20 && ma5 > ma10 && ma10 > ma20;
+  const maPartial = ma5 && ma10 && ma20 && (ma5 > ma10 || ma10 > ma20) && !maAligned;
+
+  // 乖离率（当前价 vs MA20）
+  const bias = ma20 ? ((close - ma20) / ma20 * 100) : null;
+  const biasOk = bias !== null && Math.abs(bias) < 8;  // 乖离率<8%不追高
+
+  // 建议买入价（MA5 附近，取 min(close, ma5)*0.995）
+  const buyPrice = ma5 ? Math.min(close, ma5) * 0.998 : close;
+
+  // 止损价（MA20 × 0.95，或近20日低点 × 0.97，取较高值）
+  const recentLow = Math.min(...closes.slice(-20));
+  const stopLoss = Math.max(ma20 ? ma20 * 0.95 : 0, recentLow * 0.97);
+
+  // 目标价（近60日高点 × 1.03，或 close × 1.08，取较小值避免过于激进）
+  const recentHigh = Math.max(...closes.slice(-Math.min(60, n)));
+  const target = Math.min(recentHigh * 1.03, close * 1.10);
+
+  // 成交量趋势（近5日均量 vs 近20日均量）
+  const vols = klines.map(k => k.volume);
+  const vol5  = vols.slice(-5).reduce((a,b)=>a+b,0)/5;
+  const vol20 = vols.slice(-20).reduce((a,b)=>a+b,0)/20;
+  const volOk = vol5 > vol20 * 0.8; // 量能不萎缩
+
+  return { maAligned, maPartial, bias, biasOk, buyPrice, stopLoss, target, volOk, ma5, ma10, ma20 };
+}
+
 function renderRecommend() {
   const recs = G.today_recommendations || [];
   document.getElementById('recBadge').textContent = recs.length;
@@ -668,19 +725,75 @@ function renderRecommend() {
     document.getElementById('recommendGrid').innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div>暂无推荐数据</div></div>';
     return;
   }
+
+  // 读取LLM分析数据（如果有）
+  const llmMap = {};
+  if (G.llm_analysis && G.llm_analysis.stocks) {
+    G.llm_analysis.stocks.forEach(s => { llmMap[s.code] = s; });
+  }
+
   document.getElementById('recommendGrid').innerHTML = recs.map((r, i) => {
     const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
     const chgClass = r.chg_1d > 0 ? 'up' : r.chg_1d < 0 ? 'down' : 'flat';
     const chgSign = r.chg_1d > 0 ? '+' : '';
     const scoreW = Math.min(r.score, 100);
-    // 日期标注：判断是否是最新数据
-    const today = new Date().toISOString().slice(0,10);
+    // 日期标注
     const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
     const dataDate = r.last_date || '--';
     const isLatest = dataDate >= yesterday;
     const dateBadge = isLatest
       ? `<span style="color:var(--green);font-size:10px">✅ ${dataDate}</span>`
       : `<span style="color:var(--text2);font-size:10px">📅 ${dataDate}</span>`;
+
+    // 交易纪律
+    const td = calcTradeDiscipline(r);
+    let disciplineHtml = '';
+    let priceGuideHtml = '';
+    if (td) {
+      const maIcon = td.maAligned ? '✅' : td.maPartial ? '⚠️' : '❌';
+      const maText = td.maAligned ? 'MA多头排列' : td.maPartial ? 'MA部分排列' : 'MA空头排列';
+      const maColor = td.maAligned ? 'var(--green)' : td.maPartial ? 'var(--yellow,#e3b341)' : 'var(--red)';
+
+      const biasIcon = td.biasOk ? '✅' : '⚠️';
+      const biasText = td.bias !== null ? `乖离率 ${td.bias > 0 ? '+' : ''}${td.bias.toFixed(1)}%${td.biasOk ? '' : ' 偏高'}` : '乖离率 --';
+      const biasColor = td.biasOk ? 'var(--green)' : 'var(--yellow,#e3b341)';
+
+      const volIcon = td.volOk ? '✅' : '⚠️';
+      const volText = td.volOk ? '量能正常' : '量能萎缩';
+      const volColor = td.volOk ? 'var(--green)' : 'var(--yellow,#e3b341)';
+
+      disciplineHtml = `
+      <div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text2);margin-bottom:5px;font-weight:600;letter-spacing:.5px">📋 交易纪律</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;color:${maColor}">${maIcon} ${maText}</span>
+          <span style="font-size:11px;color:${biasColor}">${biasIcon} ${biasText}</span>
+          <span style="font-size:11px;color:${volColor}">${volIcon} ${volText}</span>
+        </div>
+      </div>`;
+
+      priceGuideHtml = `
+      <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font-size:11px;background:rgba(88,166,255,.1);color:var(--accent);padding:2px 7px;border-radius:4px;border:1px solid rgba(88,166,255,.2)">📌 买入 ¥${td.buyPrice.toFixed(2)}</span>
+        <span style="font-size:11px;background:rgba(248,81,73,.1);color:var(--red);padding:2px 7px;border-radius:4px;border:1px solid rgba(248,81,73,.2)">🛡️ 止损 ¥${td.stopLoss.toFixed(2)}</span>
+        <span style="font-size:11px;background:rgba(63,185,80,.1);color:var(--green);padding:2px 7px;border-radius:4px;border:1px solid rgba(63,185,80,.2)">🎯 目标 ¥${td.target.toFixed(2)}</span>
+      </div>`;
+    }
+
+    // LLM分析
+    const llm = llmMap[r.code];
+    let llmHtml = '';
+    if (llm) {
+      const sentColor = llm.sentiment === 'bullish' ? 'var(--green)' : llm.sentiment === 'bearish' ? 'var(--red)' : 'var(--yellow,#e3b341)';
+      const sentIcon = llm.sentiment === 'bullish' ? '📈' : llm.sentiment === 'bearish' ? '📉' : '↔️';
+      llmHtml = `
+      <div style="margin-top:8px;padding:8px 10px;background:linear-gradient(135deg,rgba(88,166,255,.06),rgba(188,140,255,.06));border-radius:8px;border:1px solid rgba(88,166,255,.15)">
+        <div style="font-size:10px;color:var(--accent);margin-bottom:4px;font-weight:600">🤖 AI 分析</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.5">${sentIcon} ${llm.analysis || ''}</div>
+        ${llm.news && llm.news.length ? `<div style="margin-top:5px;font-size:11px;color:var(--text2)">📰 ${llm.news[0]}</div>` : ''}
+      </div>`;
+    }
+
     return `
     <div class="stock-card" onclick="openKlineByIndex('rec',${i})">
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
@@ -698,7 +811,10 @@ function renderRecommend() {
       </div>
       <div class="stock-score-bar"><div class="stock-score-fill" style="width:${scoreW}%"></div></div>
       <div class="strategy-tags">${(r.strategies||[]).map(s=>`<span class="stag">${s}</span>`).join('')}</div>
-      <div style="margin-top:10px;font-size:11px;color:var(--text2);opacity:.6">点击查看K线图 📈</div>
+      ${disciplineHtml}
+      ${priceGuideHtml}
+      ${llmHtml}
+      <div style="margin-top:8px;font-size:11px;color:var(--text2);opacity:.6">点击查看K线图 📈</div>
     </div>`;
   }).join('');
 }
