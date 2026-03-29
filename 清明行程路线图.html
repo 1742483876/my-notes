@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清明节行程路线图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #2d3748;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #718096;
+    font-size: 15px;
+    margin-bottom: 36px;
+  }
+  
+  /* 路线时间轴 */
+  .timeline {
+    position: relative;
+    padding-left: 0;
+  }
+  
+  /* 每一天 */
+  .day-section {
+    margin-bottom: 36px;
+  }
+  .day-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .day-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+  .day1 .day-badge { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .day2 .day-badge { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .day3 .day-badge { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .day4 .day-badge { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .day-date {
+    font-size: 14px;
+    color: #a0aec0;
+  }
+  
+  /* 路线卡片 */
+  .route-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 20px;
+    border-left: 3px dashed #e2e8f0;
+    margin-left: 14px;
+  }
+  
+  .stop {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0 12px 24px;
+  }
+  .stop::before {
+    content: '';
+    position: absolute;
+    left: -11px;
+    top: 16px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid #667eea;
+    background: #fff;
+    z-index: 1;
+  }
+  .stop.start::before { background: #48bb78; border-color: #48bb78; }
+  .stop.end::before { background: #f56565; border-color: #f56565; }
+  .stop.poi::before { background: #ecc94b; border-color: #ecc94b; }
+  
+  .stop-content {
+    flex: 1;
+  }
+  .stop-time {
+    font-size: 13px;
+    color: #a0aec0;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .stop-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 3px;
+  }
+  .stop-desc {
+    font-size: 13px;
+    color: #718096;
+    line-height: 1.5;
+  }
+  
+  /* 交通连接 */
+  .transport {
+    display: flex;
+    align-items: center;
+    padding: 6px 0 6px 24px;
+    position: relative;
+  }
+  .transport-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .transport-tag.train { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .transport-tag.car { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .transport-tag.walk { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #2d3748; }
+  .transport-info {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #a0aec0;
+  }
+  
+  /* 汇总 */
+  .summary {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f6f8fc, #eef2ff);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+  }
+  .summary h3 {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 12px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4a5568;
+  }
+  .summary-item .icon { font-size: 18px; }
+  .summary-item .label { color: #a0aec0; font-size: 12px; }
+  .summary-item .value { font-weight: 700; }
+  
+  /* 底部提醒 */
+  .tips {
+    margin-top: 24px;
+    padding: 16px;
+    background: #fffbeb;
+    border-radius: 12px;
+    border: 1px solid #fbd38d;
+  }
+  .tips h4 {
+    font-size: 14px;
+    color: #975a16;
+    margin-bottom: 8px;
+  }
+  .tips ul {
+    list-style: none;
+    padding: 0;
+  }
+  .tips ul li {
+    font-size: 13px;
+    color: #975a16;
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .tips ul li::before {
+    content: '⚡';
+    position: absolute;
+    left: 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+    margin: 8px 0 8px 24px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🗺️ 清明节行程路线图</h1>
+  <p class="subtitle">2026年4月3日（周五）— 4月6日（周一）· 不用请假</p>
+  
+  <!-- Day 1 -->
+  <div class="day-section day1">
+    <div class="day-header">
+      <span class="day-badge">DAY 1</span>
+      <span class="day-date">4月3日 周五晚 · 出发</span>
+    </div>
+    <div class="route-flow">
+      <div class="stop start">
+        <div class="stop-content">
+          <div class="stop-time">18:53 出发</div>
+          <div class="stop-name">📍 深圳北站</div>
+          <div class="stop-desc">下班后直奔车站</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag train">🚄 G6184</span>
+        <span class="transport-info">约 2小时19分 · 二等座 ¥314.5</span>
+      </div>
+      <div class="stop end">
+        <div class="stop-content">
+          <div class="stop-time">21:12 到达</div>
+          <div class="stop-name">📍 耒阳西站</div>
+          <div class="stop-desc">到家休息，准备明天祭祖</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Day 2 -->
+  <div class="day-section day2">
+    <div class="day-header">
+      <span class="day-badge">DAY 2</span>
+      <span class="day-date">4月4日 周六 · 清明祭祖</span>
+    </div>
+    <div class="route-flow">
+      <div class="stop start">
+        <div class="stop-content">
+          <div class="stop-time">07:00 出发</div>
+          <div class="stop-name">📍 耒阳市区</div>
+          <div class="stop-desc">准备祭祖物品出发</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag car">🚗 自驾/包车</span>
+        <span class="transport-info">前往乡下</span>
+      </div>
+      <div class="stop poi">
+        <div class="stop-content">
+          <div class="stop-time">全天</div>
+          <div class="stop-name">🪦 下乡祭祖</div>
+          <div class="stop-desc">清明扫墓、祭拜先祖</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag car">🚗 返回市区</span>
+        <span class="transport-info">傍晚返回</span>
+      </div>
+      <div class="stop end">
+        <div class="stop-content">
+          <div class="stop-time">~17:00 返回</div>
+          <div class="stop-name">📍 耒阳市区</div>
+          <div class="stop-desc">晚上休息，准备明天出发郴州</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Day 3 -->
+  <div class="day-section day3">
+    <div class="day-header">
+      <span class="day-badge">DAY 3</span>
+      <span class="day-date">4月5日 周日 · 郴州Day1</span>
+    </div>
+    <div class="route-flow">
+      <div class="stop start">
+        <div class="stop-content">
+          <div class="stop-time">09:00 出发</div>
+          <div class="stop-name">📍 耒阳西站</div>
+          <div class="stop-desc">班次多，随到随走</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag train">🚄 高铁</span>
+        <span class="transport-info">约 20分钟 · 二等座 ¥50</span>
+      </div>
+      <div class="stop">
+        <div class="stop-content">
+          <div class="stop-time">~09:20 到达</div>
+          <div class="stop-name">📍 郴州西站</div>
+          <div class="stop-desc">打车前往高椅岭</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag car">🚕 打车</span>
+        <span class="transport-info">约 30分钟</span>
+      </div>
+      <div class="stop poi">
+        <div class="stop-content">
+          <div class="stop-time">10:00 - 16:00</div>
+          <div class="stop-name">🏔️ 高椅岭旅游区</div>
+          <div class="stop-desc">丹霞地貌 · 龙脊背 · 巨蜥湖 · 玻璃栈道 · 悬崖秋千<br>🎫 门票 ¥68</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag car">🚕 打车</span>
+        <span class="transport-info">返回市区 约30分钟</span>
+      </div>
+      <div class="stop poi">
+        <div class="stop-content">
+          <div class="stop-time">17:00 - 19:00</div>
+          <div class="stop-name">🍜 裕后街（逛吃）</div>
+          <div class="stop-desc">棲鳳渡鱼粉 · 油粑子 · 血鸭 · 烧鸡公</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag car">🚕 打车</span>
+        <span class="transport-info">前往东江湖 约1小时</span>
+      </div>
+      <div class="stop end">
+        <div class="stop-content">
+          <div class="stop-time">~20:00 入住</div>
+          <div class="stop-name">🏨 东江湖附近民宿</div>
+          <div class="stop-desc">早点休息！明天5:30要早起看晨雾</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Day 4 -->
+  <div class="day-section day4">
+    <div class="day-header">
+      <span class="day-badge">DAY 4</span>
+      <span class="day-date">4月6日 周一 · 郴州Day2 + 返深</span>
+    </div>
+    <div class="route-flow">
+      <div class="stop start">
+        <div class="stop-content">
+          <div class="stop-time">05:30 早起</div>
+          <div class="stop-name">🌅 雾漫小东江</div>
+          <div class="stop-desc">2号站台观雾栈道 · 渔夫撒网（6:00-9:00最佳）<br>🎫 门票 ¥80</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag walk">🚶 景区内</span>
+        <span class="transport-info">步行前往</span>
+      </div>
+      <div class="stop poi">
+        <div class="stop-content">
+          <div class="stop-time">09:00 - 11:00</div>
+          <div class="stop-name">🏞️ 龙景峡谷</div>
+          <div class="stop-desc">看瀑布、走水上浮桥</div>
+        </div>
+      </div>
+      <div class="stop poi">
+        <div class="stop-content">
+          <div class="stop-time">11:30 - 13:00</div>
+          <div class="stop-name">🐟 午餐：东江湖烤鱼</div>
+          <div class="stop-desc">当地特色，便宜又好吃</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag car">🚕 打车</span>
+        <span class="transport-info">前往郴州西站 约1小时</span>
+      </div>
+      <div class="stop">
+        <div class="stop-content">
+          <div class="stop-time">~15:00 到达</div>
+          <div class="stop-name">📍 郴州西站</div>
+          <div class="stop-desc">候车返深</div>
+        </div>
+      </div>
+      <div class="transport">
+        <span class="transport-tag train">🚄 G1095 / G903</span>
+        <span class="transport-info">约 2小时 · 二等座 ¥264.5</span>
+      </div>
+      <div class="stop end">
+        <div class="stop-content">
+          <div class="stop-time">17:08→19:17 或 19:45→21:38</div>
+          <div class="stop-name">📍 深圳北站</div>
+          <div class="stop-desc">到家！周二正常上班 💪</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 汇总 -->
+  <div class="summary">
+    <h3>📊 行程汇总</h3>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="icon">📅</span>
+        <div><div class="label">总天数</div><div class="value">4天3晚</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">🚄</span>
+        <div><div class="label">高铁段数</div><div class="value">3段</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">💰</span>
+        <div><div class="label">高铁总费用</div><div class="value">¥629</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">🎫</span>
+        <div><div class="label">景点门票</div><div class="value">¥148</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">🏨</span>
+        <div><div class="label">住宿</div><div class="value">约¥300-500</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">🍽️</span>
+        <div><div class="label">餐饮+交通</div><div class="value">约¥300-500</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">📋</span>
+        <div><div class="label">是否请假</div><div class="value" style="color:#48bb78">不用请假 ✅</div></div>
+      </div>
+      <div class="summary-item">
+        <span class="icon">💵</span>
+        <div><div class="label">预估总花费</div><div class="value" style="color:#e53e3e">¥1400-1700</div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 提醒 -->
+  <div class="tips">
+    <h4>⚠️ 温馨提示</h4>
+    <ul>
+      <li>清明节高铁票紧张，务必提前抢票！</li>
+      <li>4月4日-6日高速免费通行</li>
+      <li>东江湖晨雾4月正当季，一定要5:30起床！</li>
+      <li>高椅岭穿防滑鞋，做好防晒</li>
+      <li>郴州美食必吃：棲鳳渡鱼粉、东江湖烤鱼</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
