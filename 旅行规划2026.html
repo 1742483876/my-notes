@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>2026 旅行规划 · 五一 & 十一</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+    background: linear-gradient(135deg, #0a0a2e, #1a1a4e, #0d0d3a);
+    min-height: 100vh;
+    padding: 16px 12px;
+    color: #333;
+  }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  /* 顶部封面 */
+  .hero {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    height: 240px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .hero img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 24px;
+  }
+  .hero-overlay h1 { color: #fff; font-size: 28px; font-weight: 900; text-shadow: 0 2px 12px rgba(0,0,0,0.6); }
+  .hero-overlay p { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 6px; }
+
+  /* Tab 切换 */
+  .tab-bar {
+    display: flex; gap: 10px; margin-bottom: 20px;
+  }
+  .tab-btn {
+    flex: 1; padding: 14px 10px; border-radius: 16px; border: none; cursor: pointer;
+    font-size: 15px; font-weight: 800; text-align: center; transition: all 0.3s;
+    background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08);
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* 方案选择 */
+  .plan-selector {
+    display: flex; gap: 8px; margin-bottom: 16px;
+  }
+  .plan-btn {
+    flex: 1; padding: 10px 8px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6);
+    font-size: 13px; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.3s;
+  }
+  .plan-btn.active-a { border-color: #48bb78; color: #48bb78; background: rgba(72,187,120,0.1); }
+  .plan-btn.active-b { border-color: #f6ad55; color: #f6ad55; background: rgba(246,173,85,0.1); }
+  .plan-detail { display: none; }
+  .plan-detail.active { display: block; }
+
+  /* 方案概览卡 */
+  .plan-overview {
+    background: rgba(255,255,255,0.08); backdrop-filter: blur(10px);
+    border-radius: 18px; padding: 18px; margin-bottom: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .plan-overview h3 { color: #fff; font-size: 18px; margin-bottom: 4px; }
+  .plan-overview .subtitle { color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 12px; }
+  .plan-overview .meta-row {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px;
+  }
+  .plan-overview .meta-item { color: rgba(255,255,255,0.7); font-size: 12px; }
+  .plan-overview .meta-item strong { color: #fff; }
+
+  /* 优势标签 */
+  .pros-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .pro-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 10px;
+    font-weight: 600;
+  }
+  .pro-tag.green { background: rgba(72,187,120,0.15); color: #68d391; }
+  .pro-tag.blue { background: rgba(66,153,225,0.15); color: #63b3ed; }
+  .pro-tag.yellow { background: rgba(236,201,75,0.15); color: #ecc94b; }
+  .pro-tag.pink { background: rgba(237,100,166,0.15); color: #ed64a6; }
+
+  /* 每日卡片 */
+  .day-card {
+    background: #fff; border-radius: 20px; overflow: hidden;
+    margin-bottom: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+  .day-banner { position: relative; height: 170px; overflow: hidden; }
+  .day-banner img { width: 100%; height: 100%; object-fit: cover; }
+  .day-banner-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 16px;
+  }
+  .day-badge {
+    display: inline-flex; padding: 4px 12px; border-radius: 16px;
+    color: #fff; font-weight: 700; font-size: 12px; width: fit-content; margin-bottom: 4px;
+  }
+  .badge-green { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .badge-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .badge-pink { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .badge-orange { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .badge-purple { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+  .badge-teal { background: linear-gradient(135deg, #0ba360, #3cba92); }
+  .badge-red { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+  .day-banner-title { color: #fff; font-size: 19px; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .day-banner-sub { color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 2px; }
+
+  .day-body { padding: 18px 16px; }
+
+  /* 时间轴 */
+  .timeline { position: relative; padding-left: 22px; border-left: 2px dashed #e2e8f0; margin-left: 8px; }
+  .tl-item { position: relative; padding-bottom: 18px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -29px; top: 2px;
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 3px solid #667eea; background: #fff;
+  }
+  .tl-dot.green { background: #48bb78; border-color: #48bb78; }
+  .tl-dot.red { background: #f56565; border-color: #f56565; }
+  .tl-dot.yellow { background: #ecc94b; border-color: #ecc94b; }
+  .tl-dot.blue { background: #4299e1; border-color: #4299e1; }
+  .tl-dot.purple { background: #9f7aea; border-color: #9f7aea; }
+  .tl-time { font-size: 11px; color: #a0aec0; font-weight: 600; }
+  .tl-title { font-size: 15px; font-weight: 700; color: #2d3748; margin: 2px 0; }
+  .tl-desc { font-size: 12px; color: #718096; line-height: 1.6; }
+
+  .transport-bar { display: flex; align-items: center; gap: 8px; padding: 6px 0; margin: 2px 0; }
+  .transport-tag {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 600; color: #fff;
+  }
+  .transport-tag.plane { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .transport-tag.boat { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .transport-tag.car { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .transport-tag.walk { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #2d3748; }
+  .transport-tag.train { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .transport-info { font-size: 11px; color: #a0aec0; }
+
+  /* 景点卡 */
+  .spot-card {
+    background: linear-gradient(135deg, #f7fafc, #edf2f7);
+    border-radius: 14px; padding: 14px; margin: 10px 0;
+    border: 1px solid #e2e8f0;
+  }
+  .spot-card h4 { font-size: 14px; color: #2d3748; margin-bottom: 5px; }
+  .spot-card p { font-size: 12px; color: #718096; line-height: 1.7; }
+  .spot-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .spot-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 8px;
+    background: rgba(102,126,234,0.1); color: #667eea; font-weight: 600;
+  }
+
+  /* 费用 */
+  .cost-card {
+    background: rgba(255,255,255,0.08); backdrop-filter: blur(10px);
+    border-radius: 18px; padding: 18px; margin-bottom: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .cost-card h3 { color: #fff; font-size: 17px; margin-bottom: 14px; text-align: center; }
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cost-item {
+    background: rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; text-align: center;
+  }
+  .cost-item .icon { font-size: 22px; display: block; margin-bottom: 3px; }
+  .cost-item .label { color: rgba(255,255,255,0.5); font-size: 11px; }
+  .cost-item .value { color: #fff; font-weight: 700; font-size: 14px; margin-top: 2px; }
+  .cost-total {
+    text-align: center; margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .cost-total .label { color: rgba(255,255,255,0.5); font-size: 12px; }
+  .cost-total .value { color: #fbd38d; font-size: 26px; font-weight: 800; margin-top: 4px; }
+
+  /* 提醒 */
+  .tips-card {
+    background: linear-gradient(135deg, rgba(255,251,235,0.95), rgba(254,243,199,0.95));
+    border-radius: 18px; padding: 18px; margin-bottom: 18px; border: 1px solid #fbd38d;
+  }
+  .tips-card h4 { font-size: 15px; color: #975a16; margin-bottom: 8px; }
+  .tips-card ul { list-style: none; padding: 0; }
+  .tips-card li {
+    font-size: 12px; color: #744210; padding: 4px 0 4px 20px;
+    position: relative; line-height: 1.6;
+  }
+  .tips-card li::before { content: '⚡'; position: absolute; left: 0; }
+
+  /* 美食 */
+  .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+  .food-item {
+    background: linear-gradient(135deg, #fff5f5, #fffaf0);
+    border-radius: 12px; padding: 10px; border: 1px solid #fed7d7; text-align: center;
+  }
+  .food-emoji { font-size: 26px; margin-bottom: 3px; }
+  .food-name { font-size: 13px; font-weight: 700; color: #c53030; }
+  .food-desc { font-size: 11px; color: #9b8a7c; margin-top: 2px; }
+
+  /* 签证信息 */
+  .visa-card {
+    background: linear-gradient(135deg, #ebf8ff, #e6fffa);
+    border-radius: 14px; padding: 14px; margin: 10px 0;
+    border: 1px solid #bee3f8;
+  }
+  .visa-card h4 { font-size: 14px; color: #2b6cb0; margin-bottom: 6px; }
+  .visa-card p { font-size: 12px; color: #4a5568; line-height: 1.7; }
+
+  /* 潜水信息 */
+  .dive-info {
+    background: linear-gradient(135deg, #e6fffa, #ebf8ff);
+    border-radius: 14px; padding: 14px; margin: 10px 0;
+    border: 1px solid #81e6d9;
+  }
+  .dive-info h4 { font-size: 14px; color: #285e61; margin-bottom: 6px; }
+  .dive-info p { font-size: 12px; color: #4a5568; line-height: 1.7; }
+  .dive-info table { width: 100%; margin-top: 8px; font-size: 11px; border-collapse: collapse; }
+  .dive-info th, .dive-info td { padding: 5px 6px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+  .dive-info th { color: #285e61; font-weight: 700; }
+  .dive-info td { color: #4a5568; }
+
+  .section-divider { height: 1px; background: linear-gradient(to right, transparent, #e2e8f0, transparent); margin: 14px 0; }
+
+  .footer { text-align: center; color: rgba(255,255,255,0.3); font-size: 11px; padding: 20px 0; }
+
+  .ticket-info {
+    display: flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-radius: 10px; padding: 8px 12px; margin: 8px 0;
+  }
+  .ticket-info .t-icon { font-size: 16px; }
+  .ticket-info .t-text { font-size: 12px; color: #92400e; font-weight: 600; }
+
+  /* 天气卡 */
+  .weather-card {
+    background: linear-gradient(135deg, rgba(99,179,237,0.15), rgba(129,230,217,0.15));
+    border-radius: 14px; padding: 14px; margin: 10px 0;
+    border: 1px solid rgba(99,179,237,0.3);
+  }
+  .weather-card h4 { color: #fff; font-size: 14px; margin-bottom: 6px; }
+  .weather-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .weather-item { flex: 1; min-width: 80px; text-align: center; }
+  .weather-item .w-icon { font-size: 22px; }
+  .weather-item .w-label { font-size: 10px; color: rgba(255,255,255,0.5); }
+  .weather-item .w-value { font-size: 13px; color: #fff; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 封面 -->
+  <div class="hero">
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=500&fit=crop&q=80" alt="热带海岛" loading="lazy">
+    <div class="hero-overlay">
+      <h1>🌏 2026 旅行规划</h1>
+      <p>五一 · 东南亚潜水/清迈躺平 &nbsp;|&nbsp; 十一 · 日本赏枫/巴厘岛</p>
+    </div>
+  </div>
+
+  <!-- Tab 切换 -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('wuyi')">🏝️ 五一假期<br><small>5.1-5.5 · 5天</small></button>
+    <button class="tab-btn" onclick="switchTab('shiyi')">🍁 十一假期<br><small>10.1-10.7 · 7天</small></button>
+  </div>
+
+  <!-- ===================== 五一 ===================== -->
+  <div id="tab-wuyi" class="tab-content active">
+
+    <!-- 方案选择 -->
+    <div class="plan-selector">
+      <div class="plan-btn active-a" onclick="switchPlan('wuyi','a')">🤿 方案A<br>涛岛考潜水证</div>
+      <div class="plan-btn" onclick="switchPlan('wuyi','b')">☕ 方案B<br>清迈躺平慢游</div>
+    </div>
+
+    <!-- ========== 方案A: 涛岛潜水 ========== -->
+    <div id="wuyi-plan-a" class="plan-detail active">
+
+      <div class="plan-overview">
+        <h3>🤿 涛岛考OW潜水证</h3>
+        <div class="subtitle">世界潜水员工厂 · 全球性价比最高的考证地</div>
+        <div class="pros-row">
+          <span class="pro-tag green">✅ 5月旱季天气好</span>
+          <span class="pro-tag blue">✅ 海面平静适合新手</span>
+          <span class="pro-tag yellow">✅ 考证仅¥2000</span>
+          <span class="pro-tag pink">✅ 含住宿超划算</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-item">📅 <strong>5天4晚</strong></span>
+          <span class="meta-item">✈️ <strong>深圳→曼谷→涛岛</strong></span>
+          <span class="meta-item">💰 <strong>¥5,000-7,000</strong></span>
+        </div>
+      </div>
+
+      <!-- 天气 -->
+      <div class="weather-card">
+        <h4>🌤️ 涛岛5月天气</h4>
+        <div class="weather-row">
+          <div class="weather-item"><div class="w-icon">🌡️</div><div class="w-label">气温</div><div class="w-value">28-32°C</div></div>
+          <div class="weather-item"><div class="w-icon">🌊</div><div class="w-label">水温</div><div class="w-value">29°C</div></div>
+          <div class="weather-item"><div class="w-icon">👁️</div><div class="w-label">能见度</div><div class="w-value">15-25m</div></div>
+          <div class="weather-item"><div class="w-icon">🌧️</div><div class="w-label">降雨</div><div class="w-value">偶尔阵雨</div></div>
+        </div>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=800&h=400&fit=crop&q=80" alt="曼谷" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 1</span>
+            <div class="day-banner-title">深圳 → 曼谷</div>
+            <div class="day-banner-sub">5月1日 · 飞往泰国</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">✈️ 深圳宝安 → 曼谷素万那普</div>
+              <div class="tl-desc">直飞约3.5小时，五一机票提前1个月买！亚航/春秋经常有特价</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🏙️ 曼谷半日游（可选）</div>
+              <div class="tl-desc">如果时间充裕，可以逛逛考山路、吃个冬阴功、做个泰式按摩</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">21:00</div>
+              <div class="tl-title">🚌 曼谷 → 涛岛（夜大巴+船）</div>
+              <div class="tl-desc">Lomprayah VIP大巴，考山路出发，次日9:00到涛岛。建议选VIP座，舒适很多！</div>
+            </div>
+          </div>
+          <div class="spot-card">
+            <h4>💡 交通小贴士</h4>
+            <p>曼谷到涛岛有两种方式：① 夜班VIP大巴+船（约¥200，12小时，省一晚住宿）② 飞苏梅岛再转船（快但贵，约¥800+）。推荐夜大巴，性价比高，醒来就到岛上了～</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=400&fit=crop&q=80" alt="涛岛" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-blue">DAY 2</span>
+            <div class="day-banner-title">抵达涛岛 · 开始OW课程</div>
+            <div class="day-banner-sub">5月2日 · 理论学习日</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">09:00 抵达</div>
+              <div class="tl-title">🏝️ 涛岛码头</div>
+              <div class="tl-desc">潜校接驳车接你到店，办理入住，放下行李</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">📖 OW理论课</div>
+              <div class="tl-desc">看PADI教学视频、学习潜水理论知识（约2-3小时），有中文教练全程讲解</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🌅 赛丽海滩日落</div>
+              <div class="tl-desc">涛岛最美的海滩，看日落、吃海鲜、喝椰子水，享受海岛慢生活</div>
+            </div>
+          </div>
+
+          <div class="dive-info">
+            <h4>🤿 OW课程是什么？</h4>
+            <p>OW = Open Water Diver，PADI开放水域潜水员证，全球通用的潜水"驾照"。拿到后可以在全世界任何地方下潜至18米深度！</p>
+            <table>
+              <tr><th>项目</th><th>详情</th></tr>
+              <tr><td>课程时长</td><td>3-4天</td></tr>
+              <tr><td>费用</td><td>9800泰铢（约¥2000）</td></tr>
+              <tr><td>包含</td><td>教学+装备+出海+4晚住宿</td></tr>
+              <tr><td>语言</td><td>中文教练（BAN'S等大校都有）</td></tr>
+              <tr><td>年龄</td><td>10岁以上即可</td></tr>
+              <tr><td>会游泳？</td><td>不会也能学，但建议会基本水性</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&h=400&fit=crop&q=80" alt="潜水" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-green">DAY 3</span>
+            <div class="day-banner-title">泳池训练 + 首次下海</div>
+            <div class="day-banner-sub">5月3日 · 征服海洋的第一步</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🏊 泳池技巧训练</div>
+              <div class="tl-desc">学习装备拆装、BCD充气/泄气、面镜排水、调节器寻回、手势信号等24项水下技巧</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot blue"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🌊 开放水域第1-2潜</div>
+              <div class="tl-desc">出海到芒果湾！第一次在真正的海底呼吸，看到五彩珊瑚和热带鱼的那一刻，你会爱上潜水的 🐠</div>
+            </div>
+          </div>
+          <div class="spot-card">
+            <h4>🐠 涛岛新手潜点</h4>
+            <p><strong>芒果湾 Mango Bay</strong>：涛岛最适合新手的潜点，海湾内水流平缓，深度5-14米，沙地平整。这里是你人生第一次在海底呼吸的地方！<br><br><strong>日本花园 Japanese Garden</strong>：浅水区珊瑚花园，色彩斑斓，各种小丑鱼在海葵中穿梭，超治愈～</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 4 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&h=400&fit=crop&q=80" alt="海底世界" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-orange">DAY 4</span>
+            <div class="day-banner-title">开放水域考核 · 拿证！</div>
+            <div class="day-banner-sub">5月4日 · 正式成为潜水员 🎉</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🌊 开放水域第3-4潜</div>
+              <div class="tl-desc">去更深的潜点！灯塔湾(Lighthouse)、双子岩(Twins)，看海龟、梭鱼群</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">📝 笔试 + 拿证！</div>
+              <div class="tl-desc">理论笔试（75%及格，中文题目不难），通过后提交照片，4-7天收到电子证书！你正式成为PADI认证潜水员啦！🎊</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🎉 庆祝晚餐 + 涛岛夜生活</div>
+              <div class="tl-desc">在海边酒吧喝一杯，看火舞表演，和来自世界各地的潜水员交朋友！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 5 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=800&h=400&fit=crop&q=80" alt="返程" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-purple">DAY 5</span>
+            <div class="day-banner-title">涛岛 → 曼谷 → 深圳</div>
+            <div class="day-banner-sub">5月5日 · 带着潜水证回家</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">10:10</div>
+              <div class="tl-title">🚢 涛岛 → 春蓬码头</div>
+              <div class="tl-desc">Lomprayah快船，约2小时到达春蓬</div>
+            </div>
+            <div class="transport-bar">
+              <span class="transport-tag boat">🚢 快船</span>
+              <span class="transport-info">2小时 → 春蓬码头</span>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">12:30-20:30</div>
+              <div class="tl-title">🚌 VIP大巴回曼谷</div>
+              <div class="tl-desc">或者选14:45船+00:30到曼谷（红眼方案）</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上/次日</div>
+              <div class="tl-title">✈️ 曼谷 → 深圳</div>
+              <div class="tl-desc">⚠️ 潜水后18小时内不能坐飞机！安排好时间差</div>
+            </div>
+          </div>
+          <div class="tips-card">
+            <h4>⚠️ 重要提醒</h4>
+            <ul>
+              <li>潜水后至少18小时才能坐飞机（减压病风险）</li>
+              <li>建议Day4下午最后一潜结束后，第二天晚上再飞</li>
+              <li>如果时间紧，可以在曼谷多待半天逛逛免税店</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 费用 -->
+      <div class="cost-card">
+        <h3>💰 方案A 费用预估</h3>
+        <div class="cost-grid">
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">机票（往返）</div><div class="value">¥1,500-2,500</div></div>
+          <div class="cost-item"><span class="icon">🤿</span><div class="label">OW课程（含住）</div><div class="value">¥2,000</div></div>
+          <div class="cost-item"><span class="icon">🚌</span><div class="label">曼谷⇄涛岛交通</div><div class="value">¥400-600</div></div>
+          <div class="cost-item"><span class="icon">🍽️</span><div class="label">餐饮+杂费</div><div class="value">¥800-1,200</div></div>
+        </div>
+        <div class="cost-total">
+          <div class="label">预估总花费</div>
+          <div class="value">¥5,000 ~ 7,000</div>
+        </div>
+      </div>
+
+      <div class="visa-card">
+        <h4>🛂 签证信息</h4>
+        <p>🇹🇭 泰国对中国公民实行<strong>免签政策</strong>（2024年起），持护照即可入境停留30天，无需提前办理签证！只需准备好护照（有效期6个月以上）和往返机票行程单即可。</p>
+      </div>
+
+    </div>
+
+    <!-- ========== 方案B: 清迈躺平 ========== -->
+    <div id="wuyi-plan-b" class="plan-detail">
+
+      <div class="plan-overview">
+        <h3>☕ 清迈躺平慢游</h3>
+        <div class="subtitle">泰北玫瑰 · 咖啡寺庙夜市 · 佛系度假</div>
+        <div class="pros-row">
+          <span class="pro-tag green">✅ 淡季住宿超便宜</span>
+          <span class="pro-tag blue">✅ 游客少体验好</span>
+          <span class="pro-tag yellow">✅ 咖啡天堂</span>
+          <span class="pro-tag pink">✅ 节奏慢不赶路</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-item">📅 <strong>5天4晚</strong></span>
+          <span class="meta-item">✈️ <strong>深圳→清迈</strong></span>
+          <span class="meta-item">💰 <strong>¥3,500-5,000</strong></span>
+        </div>
+      </div>
+
+      <div class="weather-card">
+        <h4>🌤️ 清迈5月天气</h4>
+        <div class="weather-row">
+          <div class="weather-item"><div class="w-icon">🌡️</div><div class="w-label">气温</div><div class="w-value">24-35°C</div></div>
+          <div class="weather-item"><div class="w-icon">🌧️</div><div class="w-label">雨天</div><div class="w-value">11-15天</div></div>
+          <div class="weather-item"><div class="w-icon">☀️</div><div class="w-label">日照</div><div class="w-value">13h/天</div></div>
+          <div class="weather-item"><div class="w-icon">💰</div><div class="w-label">淡季</div><div class="w-value">超便宜</div></div>
+        </div>
+      </div>
+
+      <div class="spot-card">
+        <h4>🌧️ 关于5月清迈的雨</h4>
+        <p>5月是清迈雨季开端，但别怕！降雨通常集中在午后2-4点，来得快去得也快，早上基本晴朗。而且雨后空气超清新，绿意盎然，游客又少——这才是最真实的清迈生活！</p>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&h=400&fit=crop&q=80" alt="清迈古城" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 1</span>
+            <div class="day-banner-title">深圳 → 清迈</div>
+            <div class="day-banner-sub">5月1日 · 抵达泰北玫瑰</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午/下午</div>
+              <div class="tl-title">✈️ 深圳 → 清迈</div>
+              <div class="tl-desc">直飞约3小时，亚航经常有特价¥500-800往返！</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🏨 入住古城民宿</div>
+              <div class="tl-desc">推荐住古城内或宁曼路附近，淡季精品民宿只要¥100-200/晚！</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">🌙 周末夜市 / 长康路夜市</div>
+              <div class="tl-desc">芒果糯米饭、泰北香肠、烤猪颈肉、鲜榨果汁...边走边吃！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1569949237615-e3fbd1cb3af5?w=800&h=400&fit=crop&q=80" alt="寺庙" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-blue">DAY 2</span>
+            <div class="day-banner-title">古城寺庙 + 咖啡巡礼</div>
+            <div class="day-banner-sub">5月2日 · 佛系慢生活</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">10:00</div>
+              <div class="tl-title">🛕 契迪龙寺 + 帕辛寺</div>
+              <div class="tl-desc">清迈最著名的两座寺庙，古城内步行可达，金碧辉煌，气氛宁静祥和</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">12:00</div>
+              <div class="tl-title">☕ 咖啡店巡礼</div>
+              <div class="tl-desc">清迈是东南亚咖啡天堂！推荐 Ristr8to（拉花冠军）、Graph Coffee、Akha Ama（支持原住民咖啡农）</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">💆 泰式按摩</div>
+              <div class="tl-desc">清迈的按摩性价比超高！2小时全身泰式按摩只要¥80-120，舒服到飞起～</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&h=400&fit=crop&q=80" alt="素贴山" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-green">DAY 3</span>
+            <div class="day-banner-title">素贴山 + 泰餐烹饪课</div>
+            <div class="day-banner-sub">5月3日 · 登高望远 + 学做泰餐</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">⛰️ 素贴山 + 双龙寺</div>
+              <div class="tl-desc">清迈最高点，可以俯瞰整个城市！双龙寺金光闪闪，是清迈的标志</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🍳 泰餐烹饪课</div>
+              <div class="tl-desc">清迈超受欢迎的体验！先去菜市场采购食材，然后学做冬阴功、绿咖喱、芒果糯米饭，¥150-200/人</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 4 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=800&h=400&fit=crop&q=80" alt="大象" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-orange">DAY 4</span>
+            <div class="day-banner-title">大象保护区 / 瀑布徒步</div>
+            <div class="day-banner-sub">5月4日 · 亲近自然</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">全天</div>
+              <div class="tl-title">🐘 大象自然保护区（半日游）</div>
+              <div class="tl-desc">选择正规的保护区（不骑大象！），给大象喂食、洗澡、在丛林中散步，超治愈！推荐 Elephant Nature Park</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🌿 Baan Kang Wat 艺术家村</div>
+              <div class="tl-desc">隐藏在素贴山脚下的小众艺术社区，手工艺品、独立咖啡馆、文艺氛围拉满</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 5 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=800&h=400&fit=crop&q=80" alt="清迈" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-purple">DAY 5</span>
+            <div class="day-banner-title">最后半天 + 返深</div>
+            <div class="day-banner-sub">5月5日 · 依依不舍</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🛍️ 宁曼路最后一逛</div>
+              <div class="tl-desc">买伴手礼、最后一杯咖啡、最后一碗船面...</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">✈️ 清迈 → 深圳</div>
+              <div class="tl-desc">带着满满的回忆和泰餐手艺回家～</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 费用 -->
+      <div class="cost-card">
+        <h3>💰 方案B 费用预估</h3>
+        <div class="cost-grid">
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">机票（往返）</div><div class="value">¥800-1,500</div></div>
+          <div class="cost-item"><span class="icon">🏨</span><div class="label">住宿（4晚）</div><div class="value">¥400-800</div></div>
+          <div class="cost-item"><span class="icon">🍽️</span><div class="label">餐饮</div><div class="value">¥500-800</div></div>
+          <div class="cost-item"><span class="icon">🎫</span><div class="label">体验/门票</div><div class="value">¥500-800</div></div>
+        </div>
+        <div class="cost-total">
+          <div class="label">预估总花费</div>
+          <div class="value">¥3,500 ~ 5,000</div>
+        </div>
+      </div>
+
+      <div class="visa-card">
+        <h4>🛂 签证信息</h4>
+        <p>🇹🇭 同方案A，泰国<strong>免签</strong>，护照直接飞！</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== 十一 ===================== -->
+  <div id="tab-shiyi" class="tab-content">
+
+    <div class="plan-selector">
+      <div class="plan-btn active-a" onclick="switchPlan('shiyi','a')">🍁 方案A<br>日本赏枫</div>
+      <div class="plan-btn" onclick="switchPlan('shiyi','b')">🏝️ 方案B<br>巴厘岛度假</div>
+    </div>
+
+    <!-- ========== 十一方案A: 日本赏枫 ========== -->
+    <div id="shiyi-plan-a" class="plan-detail active">
+
+      <div class="plan-overview">
+        <h3>🍁 日本关西赏枫之旅</h3>
+        <div class="subtitle">京都 · 大阪 · 奈良 · 红叶季的最美日本</div>
+        <div class="pros-row">
+          <span class="pro-tag green">✅ 10月红叶季</span>
+          <span class="pro-tag blue">✅ 气温15-22°C完美</span>
+          <span class="pro-tag yellow">✅ 美食天堂</span>
+          <span class="pro-tag pink">✅ 文化体验丰富</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-item">📅 <strong>7天6晚</strong></span>
+          <span class="meta-item">✈️ <strong>深圳→大阪</strong></span>
+          <span class="meta-item">💰 <strong>¥8,000-12,000</strong></span>
+        </div>
+      </div>
+
+      <div class="weather-card">
+        <h4>🌤️ 关西10月天气</h4>
+        <div class="weather-row">
+          <div class="weather-item"><div class="w-icon">🌡️</div><div class="w-label">气温</div><div class="w-value">14-23°C</div></div>
+          <div class="weather-item"><div class="w-icon">🍂</div><div class="w-label">红叶</div><div class="w-value">开始变色</div></div>
+          <div class="weather-item"><div class="w-icon">🌧️</div><div class="w-label">降雨</div><div class="w-value">8天/月</div></div>
+          <div class="weather-item"><div class="w-icon">👔</div><div class="w-label">穿搭</div><div class="w-value">薄外套</div></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&h=400&fit=crop&q=80" alt="大阪" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 1-2</span>
+            <div class="day-banner-title">大阪 · 吃到扶墙</div>
+            <div class="day-banner-sub">10月1-2日 · 天下の台所</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">DAY 1</div>
+              <div class="tl-title">✈️ 深圳 → 关西机场 → 大阪</div>
+              <div class="tl-desc">抵达后直奔道顿堀！章鱼烧、大阪烧、串炸、拉面...开启美食暴走</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">DAY 2</div>
+              <div class="tl-title">🏯 大阪城 + 心斋桥 + 黑门市场</div>
+              <div class="tl-desc">大阪城天守阁看红叶初现 → 心斋桥买买买 → 黑门市场吃海鲜</div>
+            </div>
+          </div>
+          <div class="food-grid">
+            <div class="food-item"><div class="food-emoji">🐙</div><div class="food-name">章鱼烧</div><div class="food-desc">道顿堀必吃</div></div>
+            <div class="food-item"><div class="food-emoji">🍜</div><div class="food-name">一兰拉面</div><div class="food-desc">浓郁豚骨汤</div></div>
+            <div class="food-item"><div class="food-emoji">🍢</div><div class="food-name">串炸</div><div class="food-desc">新世界本通</div></div>
+            <div class="food-item"><div class="food-emoji">🦀</div><div class="food-name">蟹道乐</div><div class="food-desc">螃蟹全席</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=400&fit=crop&q=80" alt="京都" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-red">DAY 3-5</span>
+            <div class="day-banner-title">京都 · 千年古都赏枫</div>
+            <div class="day-banner-sub">10月3-5日 · 红叶与古寺的交响曲</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">DAY 3</div>
+              <div class="tl-title">⛩️ 岚山 + 竹林之道 + 渡月桥</div>
+              <div class="tl-desc">京都赏枫No.1！岚山的红叶层层叠叠，渡月桥上看山色如画。竹林小径清幽静谧</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">DAY 4</div>
+              <div class="tl-title">🏛️ 清水寺 + 二年坂 + 祇园</div>
+              <div class="tl-desc">清水舞台俯瞰红叶谷，穿和服走在二年坂石板路上，傍晚去祇园偶遇艺伎</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">DAY 5</div>
+              <div class="tl-title">🦊 伏见稻荷大社 + 金阁寺</div>
+              <div class="tl-desc">千本鸟居的震撼！金阁寺在红叶中金光闪闪，绝美倒影</div>
+            </div>
+          </div>
+          <div class="spot-card">
+            <h4>🍁 京都赏枫最佳地点</h4>
+            <p>10月初是京都红叶的「色づき始め」（开始变色期），虽然还不是满红，但渐变的色彩反而更美！推荐：<strong>岚山</strong>（最经典）、<strong>永観堂</strong>（红叶之王）、<strong>東福寺</strong>（通天桥红叶隧道）、<strong>清水寺</strong>（夜间点灯超梦幻）</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&h=400&fit=crop&q=80" alt="奈良" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-green">DAY 6</span>
+            <div class="day-banner-title">奈良 · 小鹿与红叶</div>
+            <div class="day-banner-sub">10月6日 · 治愈系一日游</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">全天</div>
+              <div class="tl-title">🦌 奈良公园 + 东大寺 + 春日大社</div>
+              <div class="tl-desc">1200多只小鹿在红叶中漫步，买鹿仙贝喂鹿，东大寺的大佛殿震撼人心。春日大社的石灯笼在树影中若隐若现</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&h=400&fit=crop&q=80" alt="返程" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-purple">DAY 7</span>
+            <div class="day-banner-title">大阪 → 深圳</div>
+            <div class="day-banner-sub">10月7日 · 满载而归</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🛍️ 心斋桥最后扫货</div>
+              <div class="tl-desc">药妆店、电器店、中古店...最后的买买买时间！</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">✈️ 关西机场 → 深圳</div>
+              <div class="tl-desc">回家！整理照片，回味这趟红叶之旅～</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cost-card">
+        <h3>💰 方案A 费用预估</h3>
+        <div class="cost-grid">
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">机票（往返）</div><div class="value">¥2,000-3,500</div></div>
+          <div class="cost-item"><span class="icon">🏨</span><div class="label">住宿（6晚）</div><div class="value">¥2,400-3,600</div></div>
+          <div class="cost-item"><span class="icon">🚃</span><div class="label">JR Pass交通</div><div class="value">¥800-1,200</div></div>
+          <div class="cost-item"><span class="icon">🍽️</span><div class="label">餐饮+门票</div><div class="value">¥2,000-3,000</div></div>
+        </div>
+        <div class="cost-total">
+          <div class="label">预估总花费</div>
+          <div class="value">¥8,000 ~ 12,000</div>
+        </div>
+      </div>
+
+      <div class="visa-card">
+        <h4>🛂 签证信息</h4>
+        <p>🇯🇵 日本需要提前办理签证。单次旅游签证约¥300-500，需要在职证明+银行流水。建议提前1个月办理，十一是旺季，领馆排队较久！</p>
+      </div>
+    </div>
+
+    <!-- ========== 十一方案B: 巴厘岛 ========== -->
+    <div id="shiyi-plan-b" class="plan-detail">
+
+      <div class="plan-overview">
+        <h3>🏝️ 巴厘岛度假</h3>
+        <div class="subtitle">乌布梯田 · 情人崖 · 蓝梦岛 · 火山日出</div>
+        <div class="pros-row">
+          <span class="pro-tag green">✅ 10月旱季天气完美</span>
+          <span class="pro-tag blue">✅ 免签直飞</span>
+          <span class="pro-tag yellow">✅ 消费低性价比高</span>
+          <span class="pro-tag pink">✅ 景色绝美出片</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-item">📅 <strong>7天6晚</strong></span>
+          <span class="meta-item">✈️ <strong>深圳→巴厘岛</strong></span>
+          <span class="meta-item">💰 <strong>¥5,000-8,000</strong></span>
+        </div>
+      </div>
+
+      <div class="weather-card">
+        <h4>🌤️ 巴厘岛10月天气</h4>
+        <div class="weather-row">
+          <div class="weather-item"><div class="w-icon">🌡️</div><div class="w-label">气温</div><div class="w-value">25-30°C</div></div>
+          <div class="weather-item"><div class="w-icon">☀️</div><div class="w-label">天气</div><div class="w-value">旱季晴天</div></div>
+          <div class="weather-item"><div class="w-icon">🌊</div><div class="w-label">海况</div><div class="w-value">平静清澈</div></div>
+          <div class="weather-item"><div class="w-icon">💧</div><div class="w-label">湿度</div><div class="w-value">适中舒适</div></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&h=400&fit=crop&q=80" alt="巴厘岛" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 1-2</span>
+            <div class="day-banner-title">抵达 + 乌布田园</div>
+            <div class="day-banner-sub">10月1-2日 · 梯田瑜伽咖啡</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">DAY 1</div>
+              <div class="tl-title">✈️ 深圳 → 巴厘岛</div>
+              <div class="tl-desc">直飞约5小时，入住乌布丛林villa，推荐带无边泳池的那种！</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">DAY 2</div>
+              <div class="tl-title">🌾 德格拉朗梯田 + 圣泉寺</div>
+              <div class="tl-desc">层层叠叠的绿色梯田，在秋千上飞跃丛林！圣泉寺净化身心，体验巴厘岛印度教文化</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1573790387438-4da905039392?w=800&h=400&fit=crop&q=80" alt="蓝梦岛" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-blue">DAY 3-4</span>
+            <div class="day-banner-title">蓝梦岛 + 努沙佩尼达</div>
+            <div class="day-banner-sub">10月3-4日 · 碧海蓝天</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">DAY 3</div>
+              <div class="tl-title">🏝️ 蓝梦岛浮潜</div>
+              <div class="tl-desc">快艇30分钟到达，水清沙白，浮潜看海龟和珊瑚！如果你五一考了OW，这里可以深潜哦～</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">DAY 4</div>
+              <div class="tl-title">📸 努沙佩尼达岛</div>
+              <div class="tl-desc">网红打卡圣地！精灵海岸线、天使浴池、霸王龙海滩，每一帧都是壁纸</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&h=400&fit=crop&q=80" alt="火山" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-orange">DAY 5-6</span>
+            <div class="day-banner-title">火山日出 + 海神庙</div>
+            <div class="day-banner-sub">10月5-6日 · 震撼体验</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">DAY 5 凌晨2:00</div>
+              <div class="tl-title">🌋 巴图尔火山日出徒步</div>
+              <div class="tl-desc">凌晨出发，2小时登顶，在活火山口看日出！云海翻涌，金光万丈，人生必体验之一</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">DAY 6</div>
+              <div class="tl-title">⛩️ 海神庙 + 情人崖 + 金巴兰日落</div>
+              <div class="tl-desc">海神庙矗立在海中巨岩上，潮起潮落间如仙境。情人崖悬崖绝壁。傍晚在金巴兰海滩吃烤海鲜看日落，完美收官！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=800&h=400&fit=crop&q=80" alt="返程" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-purple">DAY 7</span>
+            <div class="day-banner-title">巴厘岛 → 深圳</div>
+            <div class="day-banner-sub">10月7日 · 满载而归</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🛍️ 乌布市场 / 库塔免税店</div>
+              <div class="tl-desc">最后的购物时间！巴厘岛的手工艺品、精油、咖啡豆都是好伴手礼</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">✈️ 巴厘岛 → 深圳</div>
+              <div class="tl-desc">回家！带着晒黑的皮肤和满满的快乐回来～</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cost-card">
+        <h3>💰 方案B 费用预估</h3>
+        <div class="cost-grid">
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">机票（往返）</div><div class="value">¥1,500-3,000</div></div>
+          <div class="cost-item"><span class="icon">🏨</span><div class="label">住宿（6晚）</div><div class="value">¥1,200-3,000</div></div>
+          <div class="cost-item"><span class="icon">🎫</span><div class="label">活动/门票</div><div class="value">¥800-1,500</div></div>
+          <div class="cost-item"><span class="icon">🍽️</span><div class="label">餐饮+交通</div><div class="value">¥1,000-1,500</div></div>
+        </div>
+        <div class="cost-total">
+          <div class="label">预估总花费</div>
+          <div class="value">¥5,000 ~ 8,000</div>
+        </div>
+      </div>
+
+      <div class="visa-card">
+        <h4>🛂 签证信息</h4>
+        <p>🇮🇩 印度尼西亚对中国公民实行<strong>免签</strong>（2024年起），持护照可停留30天。巴厘岛有直飞航班，非常方便！</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    Made with ❤️ by Kira · 2026年旅行快乐～<br>
+    <small>图片来源：Unsplash（免费可商用）</small>
+  </div>
+
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.closest('.tab-btn').classList.add('active');
+  // 如果点击的不是按钮本身而是子元素
+  if (!event.target.classList.contains('tab-btn')) {
+    event.target.closest('.tab-btn').classList.add('active');
+  }
+}
+
+function switchPlan(holiday, plan) {
+  const container = document.getElementById('tab-' + holiday);
+  container.querySelectorAll('.plan-detail').forEach(el => el.classList.remove('active'));
+  container.querySelectorAll('.plan-btn').forEach(el => {
+    el.classList.remove('active-a', 'active-b');
+  });
+  document.getElementById(holiday + '-plan-' + plan).classList.add('active');
+  const btns = container.querySelectorAll('.plan-btn');
+  if (plan === 'a') btns[0].classList.add('active-a');
+  else btns[1].classList.add('active-b');
+}
+</script>
+</body>
+</html>

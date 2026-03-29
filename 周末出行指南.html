@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌴 深圳宝安·周末出行指南</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif; background: #0f0f1a; color: #e0e0e0; }
+  
+  /* 封面 */
+  .hero {
+    min-height: 60vh; display: flex; align-items: center; justify-content: center; flex-direction: column;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 30%, #2d4a3e 60%, #1a3a2a 100%);
+    position: relative; overflow: hidden; text-align: center; padding: 40px 20px;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(34,197,94,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(59,130,246,0.06) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-2%,2%)} }
+  .hero h1 { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; background: linear-gradient(135deg,#22c55e,#3b82f6,#a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 1; }
+  .hero .subtitle { font-size: 1.1rem; color: #94a3b8; margin-top: 12px; position: relative; z-index: 1; }
+  .hero .location { display: inline-block; margin-top: 16px; padding: 6px 18px; border-radius: 20px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #22c55e; font-size: 0.9rem; position: relative; z-index: 1; }
+
+  /* 导航 */
+  .nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 20px; background: #161625; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #2a2a40; }
+  .nav a { padding: 6px 16px; border-radius: 20px; background: #1e1e30; color: #94a3b8; text-decoration: none; font-size: 0.85rem; transition: all 0.3s; border: 1px solid transparent; }
+  .nav a:hover, .nav a.active { background: rgba(34,197,94,0.15); color: #22c55e; border-color: rgba(34,197,94,0.3); }
+
+  /* 季节区块 */
+  .season { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+  .season-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; padding-bottom: 16px; border-bottom: 2px solid #2a2a40; }
+  .season-icon { font-size: 2.5rem; }
+  .season-title { font-size: 1.8rem; font-weight: 700; }
+  .season-desc { font-size: 0.95rem; color: #94a3b8; margin-top: 4px; }
+  .spring .season-title { color: #22c55e; }
+  .summer .season-title { color: #f59e0b; }
+  .autumn .season-title { color: #f97316; }
+  .winter .season-title { color: #3b82f6; }
+
+  /* 月份 */
+  .month { margin-bottom: 36px; }
+  .month-tag { display: inline-block; padding: 4px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; margin-bottom: 16px; }
+  .spring .month-tag { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .summer .month-tag { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .autumn .month-tag { background: rgba(249,115,22,0.15); color: #f97316; }
+  .winter .month-tag { background: rgba(59,130,246,0.15); color: #3b82f6; }
+
+  .weather-info { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .weather-chip { padding: 4px 12px; border-radius: 8px; background: #1e1e30; font-size: 0.8rem; color: #94a3b8; }
+
+  /* 推荐卡片 */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .card {
+    background: #1a1a2e; border-radius: 16px; padding: 20px; border: 1px solid #2a2a40;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .card:hover { border-color: rgba(34,197,94,0.4); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .card-type { display: inline-block; padding: 3px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px; }
+  .type-park { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .type-beach { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .type-hotspring { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .type-fishing { background: rgba(168,85,247,0.15); color: #a855f7; }
+  .type-drive { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .type-indoor { background: rgba(236,72,153,0.15); color: #ec4899; }
+  .type-hiking { background: rgba(20,184,166,0.15); color: #14b8a6; }
+  .type-island { background: rgba(6,182,212,0.15); color: #06b6d4; }
+
+  .card h3 { font-size: 1.1rem; font-weight: 700; color: #f0f0f0; margin-bottom: 6px; }
+  .card .card-loc { font-size: 0.8rem; color: #64748b; margin-bottom: 8px; }
+  .card .card-desc { font-size: 0.88rem; color: #94a3b8; line-height: 1.6; margin-bottom: 10px; }
+  .card .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .card .tag { padding: 2px 8px; border-radius: 6px; background: #252540; font-size: 0.75rem; color: #94a3b8; }
+  .card .card-tip { margin-top: 10px; padding: 8px 12px; border-radius: 8px; background: rgba(245,158,11,0.08); border-left: 3px solid #f59e0b; font-size: 0.8rem; color: #f59e0b; }
+
+  /* 年度总览 */
+  .overview { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .overview h2 { font-size: 1.6rem; font-weight: 700; color: #f0f0f0; margin-bottom: 20px; text-align: center; }
+  .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .overview-item { background: #1a1a2e; border-radius: 12px; padding: 16px; border: 1px solid #2a2a40; }
+  .overview-item .ov-month { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+  .overview-item .ov-temp { font-size: 0.85rem; color: #64748b; margin-bottom: 8px; }
+  .overview-item .ov-rec { font-size: 0.85rem; color: #94a3b8; line-height: 1.5; }
+
+  /* 贴士区 */
+  .tips-section { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .tips-section h2 { font-size: 1.6rem; font-weight: 700; color: #f0f0f0; margin-bottom: 20px; text-align: center; }
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .tip-card { background: #1a1a2e; border-radius: 16px; padding: 20px; border: 1px solid #2a2a40; }
+  .tip-card h3 { font-size: 1rem; font-weight: 700; color: #22c55e; margin-bottom: 10px; }
+  .tip-card p { font-size: 0.88rem; color: #94a3b8; line-height: 1.7; }
+
+  footer { text-align: center; padding: 40px 20px; color: #4a4a6a; font-size: 0.8rem; }
+
+  @media (max-width: 600px) {
+    .cards { grid-template-columns: 1fr; }
+    .overview-grid { grid-template-columns: 1fr 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="hero">
+  <h1>🌴 深圳宝安·周末出行指南</h1>
+  <div class="subtitle">跟着天气走，每个周末都精彩 · 全年12个月活动推荐</div>
+  <div class="location">📍 深圳市宝安区 · 你的大本营</div>
+</div>
+
+<!-- 导航 -->
+<div class="nav">
+  <a href="#overview">📅 年度总览</a>
+  <a href="#spring">🌸 春季</a>
+  <a href="#summer">☀️ 夏季</a>
+  <a href="#autumn">🍂 秋季</a>
+  <a href="#winter">❄️ 冬季</a>
+  <a href="#tips">💡 出行贴士</a>
+</div>
+
+<!-- ==================== 年度总览 ==================== -->
+<div class="overview" id="overview">
+  <h2>📅 全年月度速览 · 深圳气候 & 推荐活动</h2>
+  <div class="overview-grid">
+    <div class="overview-item"><div class="ov-month">🌸 1月</div><div class="ov-temp">13~20°C · 干燥少雨</div><div class="ov-rec">✅ 泡温泉 · 逛古镇 · 室内展览<br>🚗 珠海/中山/肇庆自驾</div></div>
+    <div class="overview-item"><div class="ov-month">🌸 2月</div><div class="ov-temp">14~21°C · 回南天潮湿</div><div class="ov-rec">✅ 赏花踏青 · 泡温泉<br>🚗 从化/英西峰林自驾</div></div>
+    <div class="overview-item"><div class="ov-month">🌿 3月</div><div class="ov-temp">17~24°C · 春暖花开</div><div class="ov-rec">✅ 登山徒步 · 骑行绿道 · 赏花<br>🌺 梧桐山杜鹃花会</div></div>
+    <div class="overview-item"><div class="ov-month">🌿 4月</div><div class="ov-temp">21~27°C · 雨量增多</div><div class="ov-rec">✅ 露营野餐 · 钓鱼 · 海边<br>🏖️ 大鹏半岛/巽寮湾</div></div>
+    <div class="overview-item"><div class="ov-month">🌿 5月</div><div class="ov-temp">24~30°C · 进入雨季</div><div class="ov-rec">✅ 海岛游 · 漂流 · 室内水上乐园<br>⚠️ 注意防晒+带伞</div></div>
+    <div class="overview-item"><div class="ov-month">☀️ 6月</div><div class="ov-temp">26~32°C · 高温多雨</div><div class="ov-rec">✅ 室内活动 · 水上乐园 · 傍晚看海<br>❌ 避免白天户外暴晒</div></div>
+    <div class="overview-item"><div class="ov-month">☀️ 7月</div><div class="ov-temp">26~33°C · 最热+台风</div><div class="ov-rec">✅ 商场/博物馆/电影 · 夜钓<br>❌ 不推荐户外长时间活动</div></div>
+    <div class="overview-item"><div class="ov-month">☀️ 8月</div><div class="ov-temp">26~33°C · 盛夏台风季</div><div class="ov-rec">✅ 避暑山区 · 溯溪 · 室内<br>🏔️ 南昆山/莽山避暑</div></div>
+    <div class="overview-item"><div class="ov-month">🍂 9月</div><div class="ov-temp">25~31°C · 暑气渐退</div><div class="ov-rec">✅ 海钓 · 骑行 · 傍晚登山<br>🎣 盐田海景公园海钓</div></div>
+    <div class="overview-item"><div class="ov-month">🍂 10月</div><div class="ov-temp">23~29°C · 秋高气爽</div><div class="ov-rec">✅ 最佳户外月！登山/露营/自驾<br>🏕️ 全年最舒服的月份</div></div>
+    <div class="overview-item"><div class="ov-month">🍂 11月</div><div class="ov-temp">19~26°C · 凉爽干燥</div><div class="ov-rec">✅ 长距离徒步 · 环湖骑行 · 钓鱼<br>🚴 石岩湖30km环湖绿道</div></div>
+    <div class="overview-item"><div class="ov-month">❄️ 12月</div><div class="ov-temp">15~22°C · 干燥微冷</div><div class="ov-rec">✅ 泡温泉 · 看日落 · 周边古镇<br>♨️ 温泉季开始啦</div></div>
+  </div>
+</div>
+
+<!-- ==================== 春季 3-5月 ==================== -->
+<div class="season spring" id="spring">
+  <div class="season-header">
+    <div class="season-icon">🌸</div>
+    <div><div class="season-title">春季 · 3~5月</div><div class="season-desc">气温17~30°C · 万物复苏，踏青赏花的最佳时节</div></div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">🌿 3月 · 17~24°C · 春暖花开</div>
+    <div class="weather-info">
+      <span class="weather-chip">☀️ 偶有小雨</span>
+      <span class="weather-chip">💧 湿度适中</span>
+      <span class="weather-chip">👕 长袖+薄外套</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-park">🌺 赏花</span>
+        <h3>凤凰山人才林·油菜花海</h3>
+        <div class="card-loc">📍 宝安区凤凰山森林公园 · 地铁可达</div>
+        <div class="card-desc">6000㎡油菜花海，3月正是最佳观赏期！人少景美，拍照超出片。从凤凰山脚下步行即到。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁11号线福永站</span><span class="tag">1小时游</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-hiking">🥾 登山</span>
+        <h3>梧桐山·毛棉杜鹃花会</h3>
+        <div class="card-loc">📍 盐田区梧桐山 · 深圳第一高峰</div>
+        <div class="card-desc">每年3月下旬举办杜鹃花会，漫山遍野的毛棉杜鹃如霞似锦。登顶可俯瞰整个深圳，气温凉爽正适合爬山。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">半天~一天</span><span class="tag">难度中等</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-park">🚴 骑行</span>
+        <h3>环石岩湖绿道</h3>
+        <div class="card-loc">📍 宝安区石岩街道 · 深圳最长环湖绿道</div>
+        <div class="card-desc">全长30.8公里，串联4大主题公园（湿地公园、陌上花、青草排、俯仰之间），春天骑行超舒服！沿途可以看到油菜花和粉黛乱子草。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁6号线官田站</span><span class="tag">骑行3~4小时</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">🌿 4月 · 21~27°C · 温暖宜人</div>
+    <div class="weather-info">
+      <span class="weather-chip">🌧️ 雨量增多</span>
+      <span class="weather-chip">💧 湿度较高</span>
+      <span class="weather-chip">👕 短袖+防水外套</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-park">🏕️ 露营</span>
+        <h3>罗田森林公园·月亮湖露营</h3>
+        <div class="card-loc">📍 宝安区燕罗街道 · 深圳唯一省级森林公园</div>
+        <div class="card-desc">576公顷，森林覆盖率90%！月亮湖旁大草坪是天然露营地，自带帐篷野餐，还有6公里环线徒步道。远离城市喧嚣的天然氧吧。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁11号线松岗站E口</span><span class="tag">半天~一天</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-fishing">🎣 钓鱼</span>
+        <h3>宝安钓鱼好去处合集</h3>
+        <div class="card-loc">📍 宝安区多个钓场</div>
+        <div class="card-desc">4月鱼儿进入产卵期，食欲旺盛，是垂钓黄金季节！推荐：<br>• 冷水坑水库（免费，不收杆）<br>• 茅洲河（免费，鲤鱼/鲈鱼/翘嘴）<br>• 菜博士钓鱼场（松岗，21亩山水钓场，80元/天）<br>• 兄弟农庄（公明，15亩，80元/天）</div>
+        <div class="card-tags"><span class="tag">免费~120元</span><span class="tag">全天</span><span class="tag">带蚯蚓效果最佳</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-beach">🏖️ 海边</span>
+        <h3>大鹏半岛·较场尾</h3>
+        <div class="card-loc">📍 大鹏新区 · 自驾1.5小时</div>
+        <div class="card-desc">深圳的"鼓浪屿"，4月水温刚好，可以踩沙玩水但不至于暴晒。400+家民宿，文艺小店林立，旁边还有大鹏所城可以逛。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">自驾1.5h</span><span class="tag">可住一晚</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">🌿 5月 · 24~30°C · 初夏来临</div>
+    <div class="weather-info">
+      <span class="weather-chip">🌧️ 暴雨增多</span>
+      <span class="weather-chip">💧 湿度很高</span>
+      <span class="weather-chip">👕 短袖+防晒+雨伞必备</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-drive">🚗 周边游</span>
+        <h3>惠州巽寮湾·出海捕鱼</h3>
+        <div class="card-loc">📍 惠州惠东县 · 自驾2小时</div>
+        <div class="card-desc">深圳最近的优质海湾之一，沙子细腻洁白。可以出海捕鱼、浮潜、水上摩托。5月还不算太热，是去海边的好时机。</div>
+        <div class="card-tags"><span class="tag">自驾2h</span><span class="tag">两日游</span><span class="tag">海鲜大餐</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-park">🌿 徒步</span>
+        <h3>凤凰山森林公园</h3>
+        <div class="card-loc">📍 宝安区福永街道 · 宝安第一山</div>
+        <div class="card-desc">海拔376米，从山脚到凤岩古庙约30分钟。5条盘山公路+15条登山道，还有9.6公里远足径。飞云顶是深圳郊野径的0公里起点！</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁11号线福永站</span><span class="tag">2~3小时</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-indoor">🎭 室内</span>
+        <h3>前海华发冰雪世界</h3>
+        <div class="card-loc">📍 宝安区前海 · 室内滑雪</div>
+        <div class="card-desc">天热了就去滑雪！室内冰雪乐园，滑雪、冰雕、雪圈一站式体验。空调全开，外面30度里面零下，超爽。</div>
+        <div class="card-tags"><span class="tag">门票约200元</span><span class="tag">半天</span><span class="tag">夏天避暑神器</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 夏季 6-8月 ==================== -->
+<div class="season summer" id="summer">
+  <div class="season-header">
+    <div class="season-icon">☀️</div>
+    <div><div class="season-title">夏季 · 6~8月</div><div class="season-desc">气温26~33°C · 高温多雨台风季，避免白天户外暴晒！</div></div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">☀️ 6月 · 26~32°C · 雨季+闷热</div>
+    <div class="weather-info">
+      <span class="weather-chip">🌧️ 暴雨频繁</span>
+      <span class="weather-chip">💧 湿度70~90%</span>
+      <span class="weather-chip">⚠️ 避免户外暴晒</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-indoor">🏊 水上乐园</span>
+        <h3>欢乐谷玛雅水公园</h3>
+        <div class="card-loc">📍 南山区 · 地铁直达</div>
+        <div class="card-desc">夏天的正确打开方式！大型水上乐园，超级大喇叭、太空梭、漂流河…玩水消暑一整天。建议下午3点后去，避开正午暴晒。</div>
+        <div class="card-tags"><span class="tag">门票约200元</span><span class="tag">地铁1号线侨城东站</span><span class="tag">半天~一天</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-indoor">🎨 展览</span>
+        <h3>深圳博物馆 / 南山博物馆</h3>
+        <div class="card-loc">📍 福田区/南山区 · 地铁直达</div>
+        <div class="card-desc">免费吹空调+涨知识！南山博物馆目前有"深海绮珍：宝石珊瑚的艺术与文化"特展（至2026.05），深圳博物馆常设展也很棒。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">2~3小时</span><span class="tag">空调续命</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-beach">🌅 傍晚看海</span>
+        <h3>西湾红树林·看日落</h3>
+        <div class="card-loc">📍 宝安区金湾大道旁 · 地铁可达</div>
+        <div class="card-desc">深圳看日落的绝佳地点！海天一线，人少景美。建议傍晚6点后去，太阳不晒了，吹着海风看日落，超治愈。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁1号线固戍站F口</span><span class="tag">1~2小时</span></div>
+        <div class="card-tip">💡 白天太晒千万别去！傍晚6点后出发刚好</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">☀️ 7~8月 · 26~33°C · 一年最热+台风</div>
+    <div class="weather-info">
+      <span class="weather-chip">🔥 极端可达35°C+</span>
+      <span class="weather-chip">🌀 台风高发</span>
+      <span class="weather-chip">❌ 不推荐户外长时间活动</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-drive">🏔️ 避暑</span>
+        <h3>惠州南昆山·森林避暑</h3>
+        <div class="card-loc">📍 惠州龙门县 · 自驾2.5小时</div>
+        <div class="card-desc">北回归线上的天然氧吧！山上比深圳低5~8°C，有观音潭、天堂顶、石河奇观、川龙瀑布等景点。住一晚山间民宿，吃客家豆腐+三黄胡须鸡。还可以顺便泡云顶温泉。</div>
+        <div class="card-tags"><span class="tag">自驾2.5h</span><span class="tag">两日游</span><span class="tag">山上凉爽</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-fishing">🎣 夜钓</span>
+        <h3>宝安夜钓好去处</h3>
+        <div class="card-loc">📍 宝安区多个钓场</div>
+        <div class="card-desc">7~8月白天太热，但鳙、鲢鱼不怕炎热！推荐夜钓：<br>• 天鹅湖钓鱼场（晚7点后60元/杆）<br>• 雁田水库（免费，钓友都选夜钓）<br>• 海上田园（咸淡水钓场，乌头/鲈鱼）</div>
+        <div class="card-tags"><span class="tag">晚7点后出发</span><span class="tag">带驱蚊水</span><span class="tag">用酸臭饵</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🌊 溯溪</span>
+        <h3>从化·溪头村溯溪</h3>
+        <div class="card-loc">📍 广州从化区 · 自驾2小时</div>
+        <div class="card-desc">广东版"小九寨沟"！沿着溪流逆流而上，踩水、打水仗、抓螃蟹。水温凉爽，是夏天最佳消暑方式。从化还有碧水灣温泉可以顺路泡。</div>
+        <div class="card-tags"><span class="tag">自驾2h</span><span class="tag">一日游</span><span class="tag">带溯溪鞋</span></div>
+        <div class="card-tip">⚠️ 暴雨后24小时内禁止溯溪！注意安全</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 秋季 9-11月 ==================== -->
+<div class="season autumn" id="autumn">
+  <div class="season-header">
+    <div class="season-icon">🍂</div>
+    <div><div class="season-title">秋季 · 9~11月</div><div class="season-desc">气温19~31°C · 全年最舒服的季节，户外活动黄金期！</div></div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">🍂 9月 · 25~31°C · 暑气渐退</div>
+    <div class="weather-info">
+      <span class="weather-chip">☀️ 降雨减少</span>
+      <span class="weather-chip">💨 偶有台风</span>
+      <span class="weather-chip">👕 短袖+薄外套</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-beach">🎣 海钓</span>
+        <h3>盐田海景公园·海钓</h3>
+        <div class="card-loc">📍 盐田区 · 地铁2号线海山站</div>
+        <div class="card-desc">网红灯塔图书馆旁边就是天然免费海钓场！9月海鱼活跃，用虾米、螺丝肉效果好。钓完还能去大梅沙吹海风。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁直达</span><span class="tag">带好防晒</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-island">🏝️ 海岛</span>
+        <h3>惠州双月湾·两日游</h3>
+        <div class="card-loc">📍 惠州惠东 · 自驾2小时</div>
+        <div class="card-desc">广东芭提雅！9月游客比暑假少很多，海水清澈。可以去大星山顶看双月湾全景，逛平海古城，吃海鲜大餐。</div>
+        <div class="card-tags"><span class="tag">自驾2h</span><span class="tag">两日游</span><span class="tag">人少体验好</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">🍂 10月 · 23~29°C · ⭐全年最佳户外月</div>
+    <div class="weather-info">
+      <span class="weather-chip">☀️ 秋高气爽</span>
+      <span class="weather-chip">💧 降雨极少</span>
+      <span class="weather-chip">🎉 怎么玩都舒服</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-hiking">🥾 徒步</span>
+        <h3>阳台山森林公园</h3>
+        <div class="card-loc">📍 宝安/龙华/南山交界 · 深圳西部最高峰</div>
+        <div class="card-desc">海拔587米，"羊台叠翠"是深圳八景之一！9公里缓步道+37公里郊野径，新建的鹿鸣广场、承露台、聚贤亭风景绝美。10月登顶可以看云海！</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁6号线阳台山东站</span><span class="tag">半天</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🚗 自驾</span>
+        <h3>清远英西峰林·广东小桂林</h3>
+        <div class="card-loc">📍 清远英德市 · 自驾3小时</div>
+        <div class="card-desc">数万座喀斯特山峰，田园风光如画！可以徒步、骑行穿越峰林，超适合拍照。吃清远鸡+九龙豆腐。10月天气完美，不冷不热。</div>
+        <div class="card-tags"><span class="tag">自驾3h</span><span class="tag">两日游</span><span class="tag">门票60元</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-park">🏕️ 露营</span>
+        <h3>五指耙公园·露营+骑行</h3>
+        <div class="card-loc">📍 宝安区松岗街道 · 天然氧吧</div>
+        <div class="card-desc">5.2公里绿道+14条登山栈道，网红玻璃桥、岭南庭院都在这里。10月的傍晚在湖边露营，看夕阳，吹晚风，绝了。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">半天~一天</span><span class="tag">可骑行可徒步</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🏯 古镇</span>
+        <h3>江门开平碉楼</h3>
+        <div class="card-loc">📍 江门开平市 · 自驾2.5小时</div>
+        <div class="card-desc">世界文化遗产！中西合璧的碉楼群散布在稻田和竹林间，秋天稻田金黄，配上碉楼超有feel。自力村+立园一天逛完，吃黄鳝饭。</div>
+        <div class="card-tags"><span class="tag">自驾2.5h</span><span class="tag">门票80元</span><span class="tag">一日游</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">🍂 11月 · 19~26°C · 凉爽干燥</div>
+    <div class="weather-info">
+      <span class="weather-chip">☀️ 天空湛蓝</span>
+      <span class="weather-chip">💨 微风舒适</span>
+      <span class="weather-chip">👕 长袖+薄外套</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-park">🚴 骑行</span>
+        <h3>凤凰山绿道·9.1公里</h3>
+        <div class="card-loc">📍 宝安区 · 深圳西部最棒绿道</div>
+        <div class="card-desc">被骑行爱好者称为"深圳西部最棒绿道"！沿途草木葱郁，溪水相伴。11月凉爽干燥，骑行体验满分。还可以顺路去凤凰古村看看。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁11号线福永站</span><span class="tag">2~3小时</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-fishing">🎣 钓鱼</span>
+        <h3>秋季钓鱼·黄金期</h3>
+        <div class="card-loc">📍 宝安区/龙岗区</div>
+        <div class="card-desc">11月鲫鱼鲤鱼仍然活跃！用蚯蚓、虾肉效果最佳。推荐：<br>• 冷水坑水库（免费，安全系数高）<br>• 观澜河（免费，鲤鱼/草鱼/罗非）<br>• 海竿远投可钓大鲤鱼大草鱼</div>
+        <div class="card-tags"><span class="tag">免费~80元</span><span class="tag">全天</span><span class="tag">串钩挂荤饵</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🌄 自驾</span>
+        <h3>韶关丹霞山</h3>
+        <div class="card-loc">📍 韶关市 · 自驾4小时</div>
+        <div class="card-desc">世界自然遗产！600多座红色石峰，鬼斧神工。11月秋色正浓，红岩配蓝天绝美。可以坐锦江游船看两岸丹霞地貌。建议住一晚看日出。</div>
+        <div class="card-tags"><span class="tag">自驾4h</span><span class="tag">两日游</span><span class="tag">门票约120元</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 冬季 12-2月 ==================== -->
+<div class="season winter" id="winter">
+  <div class="season-header">
+    <div class="season-icon">❄️</div>
+    <div><div class="season-title">冬季 · 12~2月</div><div class="season-desc">气温13~22°C · 温泉季！干燥少雨，适合泡汤和逛古镇</div></div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">❄️ 12月 · 15~22°C · 温泉季开始</div>
+    <div class="weather-info">
+      <span class="weather-chip">☀️ 干燥少雨</span>
+      <span class="weather-chip">🧥 需要外套</span>
+      <span class="weather-chip">♨️ 泡温泉最佳</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-hotspring">♨️ 温泉</span>
+        <h3>石岩湖温泉度假村</h3>
+        <div class="card-loc">📍 宝安区石岩 · 最近的温泉！</div>
+        <div class="card-desc">深圳老牌温泉，近千年历史的天然玉律温泉！泉水属苏打碳酸型，含10多种微量元素，水温常年63~68°C。西班牙风格别墅群超有feel。离宝安最近，不用出远门！</div>
+        <div class="card-tags"><span class="tag">门票约98元</span><span class="tag">宝安区内</span><span class="tag">半天~一天</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-hotspring">♨️ 温泉</span>
+        <h3>观澜山水田园温泉</h3>
+        <div class="card-loc">📍 龙华区观澜 · 4A景区</div>
+        <div class="card-desc">岭南客家水鄉风情！30+室内外泡池（中药池、红酒池、花草池、溶洞温泉），还有干蒸房和地热炕。128元/人，玩一天都不嫌累。</div>
+        <div class="card-tags"><span class="tag">128元/人</span><span class="tag">地铁4号线牛湖站</span><span class="tag">一天</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🚗 周边温泉</span>
+        <h3>惠州南昆山云顶温泉</h3>
+        <div class="card-loc">📍 惠州龙门县 · 自驾2.5小时</div>
+        <div class="card-desc">国家首批认证的"真温泉"！72°C纯天然硅酸氟温泉，被称为"美人汤"。4A景区，室内外都有公共和私人温泉池。泡完温泉在山间散步，冬天的标配。</div>
+        <div class="card-tags"><span class="tag">自驾2.5h</span><span class="tag">住宿约300元起</span><span class="tag">两日游</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">❄️ 1月 · 13~20°C · 一年最冷</div>
+    <div class="weather-info">
+      <span class="weather-chip">☀️ 干燥</span>
+      <span class="weather-chip">🧥 毛衣+外套</span>
+      <span class="weather-chip">🌡️ 偶有寒潮10°C以下</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-hotspring">♨️ 温泉</span>
+        <h3>东莞塘厦三正半山温泉</h3>
+        <div class="card-loc">📍 东莞塘厦 · 自驾40分钟</div>
+        <div class="card-desc">离深圳超近！8大温泉区+30个特色池，欧洲皇家园林设计，结合世界6大温泉胜地主题。广东"真温泉"认证。自驾40分钟就到，当天来回无压力。</div>
+        <div class="card-tags"><span class="tag">自驾40min</span><span class="tag">住宿约334元起</span><span class="tag">真温泉认证</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🏯 古镇</span>
+        <h3>广州番禺沙湾古镇</h3>
+        <div class="card-loc">📍 广州番禺区 · 自驾1.5小时</div>
+        <div class="card-desc">800年历史的岭南文化古镇！中国民间艺术之乡，逛留耕堂、看广东音乐博物馆。必吃沁芳园的姜撞奶和沙湾薄饼，冬天喝一碗暖胃又暖心。</div>
+        <div class="card-tags"><span class="tag">自驾1.5h</span><span class="tag">一日游</span><span class="tag">姜撞奶必吃</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🌅 看海</span>
+        <h3>珠海情侣路·冬日漫步</h3>
+        <div class="card-loc">📍 珠海市 · 自驾2小时</div>
+        <div class="card-desc">冬天的珠海没有夏天的闷热，海风凉爽。沿情侣路漫步看海，远眺澳门夜景。还可以去珠海御温泉泡个日式温泉，数十特色池任选。</div>
+        <div class="card-tags"><span class="tag">自驾2h</span><span class="tag">两日游</span><span class="tag">顺路泡温泉</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month">
+    <div class="month-tag">❄️ 2月 · 14~21°C · 回南天来了</div>
+    <div class="weather-info">
+      <span class="weather-chip">💧 回南天潮湿</span>
+      <span class="weather-chip">🌫️ 偶有大雾</span>
+      <span class="weather-chip">🌸 早樱开始绽放</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-type type-park">🌸 赏花</span>
+        <h3>深圳湾公园·观候鸟</h3>
+        <div class="card-loc">📍 南山区 · 地铁直达</div>
+        <div class="card-desc">2月是候鸟季的尾巴！几十种鸟类、成千上万只候鸟在深圳湾过冬。带个望远镜去拍鸟，顺便在海边散步，春天的气息已经来了。</div>
+        <div class="card-tags"><span class="tag">免费</span><span class="tag">地铁9号线深圳湾公园站</span><span class="tag">2~3小时</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-hotspring">♨️ 温泉</span>
+        <h3>湯悦温泉汗蒸</h3>
+        <div class="card-loc">📍 福田区车公庙 · 24小时营业</div>
+        <div class="card-desc">回南天潮湿又冷，最适合去汗蒸！日式温泉+汗蒸+足疗+餐饮一站式，24小时营业。离宝安也不远，地铁2号线/11号线车公庙站直达。</div>
+        <div class="card-tags"><span class="tag">约170元/人</span><span class="tag">地铁直达</span><span class="tag">24小时</span></div>
+      </div>
+      <div class="card">
+        <span class="card-type type-drive">🏞️ 自驾</span>
+        <h3>肇庆七星岩+鼎湖山</h3>
+        <div class="card-loc">📍 肇庆市 · 自驾2.5小时</div>
+        <div class="card-desc">"岭南第一奇观"！五湖六岗七岩八洞，湖中有山，山中有洞。鼎湖山是天然氧吧，庆云寺祈福。2月天气不冷不热，正好出游。</div>
+        <div class="card-tags"><span class="tag">自驾2.5h</span><span class="tag">两日游</span><span class="tag">七星岩78元+鼎湖山60元</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 出行贴士 ==================== -->
+<div class="tips-section" id="tips">
+  <h2>💡 出行实用贴士</h2>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <h3>🚗 自驾时间参考（从宝安出发）</h3>
+      <p>
+        • 大鹏半岛：1.5小时<br>
+        • 东莞塘厦温泉：40分钟<br>
+        • 惠州巽寮湾/双月湾：2小时<br>
+        • 惠州南昆山：2.5小时<br>
+        • 珠海/中山：2小时<br>
+        • 广州从化/番禺：1.5~2小时<br>
+        • 清远英西峰林：3小时<br>
+        • 江门开平碉楼：2.5小时<br>
+        • 韶关丹霞山：4小时<br>
+        • 阳江海陵岛：4.5小时
+      </p>
+    </div>
+    <div class="tip-card">
+      <h3>⚠️ 深圳天气避坑指南</h3>
+      <p>
+        • <b>6~9月</b>：别安排长时间户外！33°C+暴晒真的会中暑<br>
+        • <b>7~9月</b>：台风高发季，出行前一定看天气预报<br>
+        • <b>4~6月</b>：前汛期暴雨多，登山/溯溪注意安全<br>
+        • <b>2~3月</b>：回南天潮湿，室内活动更舒适<br>
+        • <b>10~11月</b>：全年最佳！秋高气爽，随便浪<br>
+        • <b>12~1月</b>：偶有寒潮降到10°C以下，备好厚外套
+      </p>
+    </div>
+    <div class="tip-card">
+      <h3>🎣 钓鱼月历（深圳适用）</h3>
+      <p>
+        • <b>3~4月</b>：鱼类苏醒+产卵期，食欲旺盛，黄金季节<br>
+        • <b>5月</b>：一年中食欲最旺盛期，上钩频频<br>
+        • <b>6月</b>：梅雨季水中含氧增加，鲫鱼最佳<br>
+        • <b>7~8月</b>：白天太热，建议夜钓；鳙鲢鱼用酸臭饵<br>
+        • <b>9~10月</b>：第二个黄金季节，海竿远投钓大鱼<br>
+        • <b>11~12月</b>：鲫鱼鲤鱼晴天还能钓，用蚯蚓虾肉
+      </p>
+    </div>
+    <div class="tip-card">
+      <h3>♨️ 温泉性价比排行</h3>
+      <p>
+        • 🥇 <b>石岩湖温泉</b>：98元/人，宝安区内最近<br>
+        • 🥈 <b>观澜山水田园</b>：128元/人，4A景区30+泡池<br>
+        • 🥉 <b>湯悦温泉汗蒸</b>：170元/人，24h营业市区最方便<br>
+        • 🏅 <b>东莞三正半山</b>：自驾40min，真温泉认证<br>
+        • 🏅 <b>南昆山云顶</b>：自驾2.5h，美人汤，4A景区<br>
+        • 🏅 <b>珠海御温泉</b>：自驾2h+，日式主题，数十特色池
+      </p>
+    </div>
+    <div class="tip-card">
+      <h3>📱 必备APP/小程序</h3>
+      <p>
+        • <b>深圳本地宝</b>：活动汇总、门票优惠<br>
+        • <b>墨迹天气</b>：实时天气+未来15天预报<br>
+        • <b>高德地图</b>：自驾导航+实时路况<br>
+        • <b>大众点评</b>：餐厅/景点评价<br>
+        • <b>携程/去哪儿</b>：酒店+门票预订<br>
+        • <b>共享单车</b>：绿道骑行必备
+      </p>
+    </div>
+    <div class="tip-card">
+      <h3>🎒 老板的专属提醒</h3>
+      <p>
+        • 你皮肤容易晒黑 → 6~9月户外一定涂防晒霜+戴帽子<br>
+        • 你9点才起床 → 别选需要早起的行程，下午出发最好<br>
+        • 你在减脂期 → 登山/骑行/徒步都是好选择<br>
+        • 你有黑眼圈 → 周末别熬夜玩手机了，出去走走更好<br>
+        • 你想提升精气神 → 户外阳光+运动是最好的方案！
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>🌴 深圳宝安·周末出行指南 · 由 Kira 为老板精心整理</p>
+  <p style="margin-top:8px;">数据来源：深圳市气象局、深圳本地宝、Trip.com · 2026年3月更新</p>
+</footer>
+
+</body>
+</html>
