@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健身饮食指南 🥗</title>
+  <style>
+    :root {
+      --pink: #ff6b9d;
+      --pink-light: #ffe0ed;
+      --purple: #a855f7;
+      --purple-light: #f3e8ff;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --yellow: #eab308;
+      --yellow-light: #fef9c3;
+      --gray: #6b7280;
+      --gray-light: #f3f4f6;
+      --bg: #fdf4ff;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(168,85,247,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #22c55e 0%, #3b82f6 50%, #a855f7 100%);
+      color: white;
+      padding: 40px 24px 32px;
+      text-align: center;
+    }
+    .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .header p { font-size: 14px; opacity: 0.9; }
+    .header .stats {
+      display: flex; justify-content: center; gap: 16px; margin-top: 20px; flex-wrap: wrap;
+    }
+    .stat-item {
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px; padding: 10px 16px; text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .stat-item .val { font-size: 20px; font-weight: 700; }
+    .stat-item .lbl { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+
+    .tabs {
+      display: flex; gap: 0; overflow-x: auto;
+      background: white; border-bottom: 2px solid #f3e8ff;
+      padding: 0 12px; position: sticky; top: 0; z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 14px 14px; font-size: 13px; font-weight: 600;
+      color: var(--text-light); cursor: pointer; white-space: nowrap;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .tab:hover { color: var(--green); }
+
+    .content { padding: 20px 16px; max-width: 800px; margin: 0 auto; }
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 16px; font-weight: 700; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title .icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .badge-green { background: var(--green-light); color: #16a34a; }
+    .badge-red { background: var(--red-light); color: #dc2626; }
+    .badge-orange { background: var(--orange-light); color: #ea580c; }
+    .badge-blue { background: var(--blue-light); color: #2563eb; }
+    .badge-purple { background: var(--purple-light); color: #7c3aed; }
+    .badge-yellow { background: var(--yellow-light); color: #a16207; }
+    .badge-gray { background: var(--gray-light); color: #4b5563; }
+
+    .tip {
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .tip-content .tip-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .tip-content .tip-text { font-size: 12px; line-height: 1.6; color: var(--text-light); }
+    .tip-good { background: var(--green-light); }
+    .tip-good .tip-title { color: #15803d; }
+    .tip-warn { background: var(--yellow-light); }
+    .tip-warn .tip-title { color: #a16207; }
+    .tip-bad { background: var(--red-light); }
+    .tip-bad .tip-title { color: #b91c1c; }
+    .tip-info { background: var(--blue-light); }
+    .tip-info .tip-title { color: #1d4ed8; }
+    .tip-purple { background: var(--purple-light); }
+    .tip-purple .tip-title { color: #6d28d9; }
+
+    /* Food card grid */
+    .food-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 480px) {
+      .food-grid { grid-template-columns: 1fr; }
+    }
+    .food-card {
+      border-radius: 14px; padding: 16px; position: relative; overflow: hidden;
+    }
+    .food-card .emoji { font-size: 36px; margin-bottom: 8px; }
+    .food-card .fname { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .food-card .fdesc { font-size: 12px; line-height: 1.5; opacity: 0.8; }
+    .food-card .fmeta {
+      margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .food-card .fmeta span {
+      font-size: 11px; padding: 3px 8px; border-radius: 20px;
+      font-weight: 600;
+    }
+    .food-good { background: linear-gradient(135deg, #dcfce7, #d1fae5); color: #15803d; }
+    .food-good .fmeta span { background: rgba(255,255,255,0.7); color: #15803d; }
+    .food-bad { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #991b1b; }
+    .food-bad .fmeta span { background: rgba(255,255,255,0.7); color: #991b1b; }
+    .food-ok { background: linear-gradient(135deg, #fef9c3, #fef08a); color: #854d0e; }
+    .food-ok .fmeta span { background: rgba(255,255,255,0.7); color: #854d0e; }
+    .food-super { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; }
+    .food-super .fmeta span { background: rgba(255,255,255,0.7); color: #1e40af; }
+
+    /* Timeline meal */
+    .meal-timeline { position: relative; padding-left: 28px; }
+    .meal-timeline::before {
+      content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, #22c55e, #3b82f6, #a855f7, #f97316);
+      border-radius: 2px;
+    }
+    .meal-item { position: relative; margin-bottom: 20px; }
+    .meal-dot {
+      position: absolute; left: -22px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid white;
+    }
+    .meal-time {
+      font-size: 11px; font-weight: 700; margin-bottom: 2px;
+    }
+    .meal-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .meal-desc { font-size: 12px; color: var(--text-light); line-height: 1.6; }
+    .meal-foods {
+      margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .meal-foods .food-tag {
+      font-size: 12px; padding: 4px 10px; border-radius: 20px;
+      font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .ftag-protein { background: #ede9fe; color: #6d28d9; }
+    .ftag-carb { background: #fff7ed; color: #c2410c; }
+    .ftag-fat { background: #fef3c7; color: #92400e; }
+    .ftag-fiber { background: #dcfce7; color: #15803d; }
+    .ftag-fruit { background: #fce7f3; color: #be185d; }
+
+    /* Macro bar */
+    .macro-bar {
+      display: flex; height: 24px; border-radius: 12px; overflow: hidden;
+      margin: 8px 0;
+    }
+    .macro-seg { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+
+    /* Food list */
+    .food-list-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid #f3f4f6;
+    }
+    .food-list-item:last-child { border-bottom: none; }
+    .fli-left { display: flex; align-items: center; gap: 12px; }
+    .fli-emoji { font-size: 28px; }
+    .fli-name { font-size: 14px; font-weight: 600; }
+    .fli-note { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .fli-right { text-align: right; }
+    .fli-cal { font-size: 13px; font-weight: 700; }
+    .fli-per { font-size: 11px; color: var(--text-light); }
+
+    /* Category filter */
+    .filter-bar {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 20px; font-size: 12px;
+      font-weight: 600; border: 2px solid #e5e7eb; background: white;
+      color: var(--text-light); cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn.active { border-color: var(--green); color: var(--green); background: var(--green-light); }
+    .filter-btn:hover { border-color: var(--green); }
+
+    /* Verdict tag */
+    .verdict {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    }
+    .verdict-eat { background: #dcfce7; color: #15803d; }
+    .verdict-limit { background: #fef9c3; color: #a16207; }
+    .verdict-avoid { background: #fee2e2; color: #dc2626; }
+    .verdict-super { background: #dbeafe; color: #1e40af; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .header .stats { gap: 8px; }
+      .stat-item { padding: 8px 10px; }
+      .stat-item .val { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🥗 健身饮食指南</h1>
+  <p>减脂塑形阶段 · 168cm / 132斤 · 每周训练5天</p>
+  <div class="stats">
+    <div class="stat-item">
+      <div class="val">~2200</div>
+      <div class="lbl">每日消耗 kcal</div>
+    </div>
+    <div class="stat-item">
+      <div class="val">1800</div>
+      <div class="lbl">目标摄入 kcal</div>
+    </div>
+    <div class="stat-item">
+      <div class="val">120g</div>
+      <div class="lbl">蛋白质目标</div>
+    </div>
+    <div class="stat-item">
+      <div class="val">-400</div>
+      <div class="lbl">热量缺口 kcal</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('timeline')">⏰ 什么时候吃</div>
+  <div class="tab" onclick="switchTab('good')">✅ 推荐食物</div>
+  <div class="tab" onclick="switchTab('bad')">🚫 避免食物</div>
+  <div class="tab" onclick="switchTab('lookup')">🔍 食物速查</div>
+  <div class="tab" onclick="switchTab('tips')">💡 饮食原则</div>
+</div>
+
+<div class="content">
+
+  <!-- ===== 什么时候吃 Tab ===== -->
+  <div class="section active" id="tab-timeline">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">📊</div>
+        每日宏量营养素分配
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;font-weight:600;">
+        <span style="color:#7c3aed;">蛋白质 30%</span>
+        <span style="color:#c2410c;">碳水 40%</span>
+        <span style="color:#92400e;">脂肪 30%</span>
+      </div>
+      <div class="macro-bar">
+        <div class="macro-seg" style="width:30%;background:#7c3aed;">120g</div>
+        <div class="macro-seg" style="width:40%;background:#f97316;">160g</div>
+        <div class="macro-seg" style="width:30%;background:#eab308;">60g</div>
+      </div>
+      <div class="tip tip-info" style="margin-top:12px;">
+        <div class="tip-icon">💡</div>
+        <div class="tip-content">
+          <div class="tip-title">减脂期黄金比例</div>
+          <div class="tip-text">蛋白质每公斤体重 1.8g（保肌肉），碳水适度（供能），脂肪不低于总热量25%（维持激素水平）。你体重66kg，蛋白质目标约120g/天。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#ffe0ed;">🕐</div>
+        一天6餐时间轴
+      </div>
+      <div class="meal-timeline">
+
+        <div class="meal-item">
+          <div class="meal-dot" style="box-shadow:0 0 0 2px #22c55e;background:#22c55e;"></div>
+          <div class="meal-time" style="color:#22c55e;">09:00 · 起床后</div>
+          <div class="meal-name">🥛 起床水 + 小食</div>
+          <div class="meal-desc">空腹喝200ml温水，唤醒肠胃。如果赶班车来不及吃东西，可以带一根香蕉在车上吃。</div>
+          <div class="meal-foods">
+            <span class="food-tag ftag-carb">🍌 香蕉 1根</span>
+            <span class="food-tag ftag-fiber">💧 温水 200ml</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#22c55e;font-weight:600;">≈ 90 kcal</div>
+        </div>
+
+        <div class="meal-item">
+          <div class="meal-dot" style="box-shadow:0 0 0 2px #f97316;background:#f97316;"></div>
+          <div class="meal-time" style="color:#f97316;">10:30 · 到公司</div>
+          <div class="meal-name">🍳 正式早餐（训练前大餐）</div>
+          <div class="meal-desc">训练前1.5小时，需要充足碳水+蛋白质储能。这是你一天中碳水摄入最多的一餐。</div>
+          <div class="meal-foods">
+            <span class="food-tag ftag-protein">🥚 鸡蛋 2个</span>
+            <span class="food-tag ftag-protein">🥛 纯牛奶 250ml</span>
+            <span class="food-tag ftag-carb">🌽 玉米 1根</span>
+            <span class="food-tag ftag-carb">🫓 全麦包/肉包 1个</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#f97316;font-weight:600;">≈ 550 kcal · 蛋白质 28g</div>
+        </div>
+
+        <div class="meal-item">
+          <div class="meal-dot" style="box-shadow:0 0 0 2px #a855f7;background:#a855f7;"></div>
+          <div class="meal-time" style="color:#a855f7;">13:00 · 训练后30分钟内 ⚡</div>
+          <div class="meal-name">💪 训练后黄金补餐</div>
+          <div class="meal-desc"><strong>最关键的一餐！</strong>训练后30分钟内是蛋白质吸收窗口期，肌肉修复效率最高。碳水+蛋白质比例约 2:1。</div>
+          <div class="meal-foods">
+            <span class="food-tag ftag-protein">🥚 鸡蛋 2个（含蛋黄）</span>
+            <span class="food-tag ftag-protein">🍗 鸡胸肉/牛肉 100g</span>
+            <span class="food-tag ftag-carb">🍚 杂粮饭半碗</span>
+            <span class="food-tag ftag-fiber">🥦 西兰花/菠菜</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#a855f7;font-weight:600;">≈ 450 kcal · 蛋白质 40g</div>
+          <div class="tip tip-purple" style="margin-top:10px;">
+            <div class="tip-icon">⚡</div>
+            <div class="tip-content">
+              <div class="tip-title">为什么训练后要赶紧吃？</div>
+              <div class="tip-text">训练后肌肉像海绵一样吸收营养，30分钟内补充蛋白质，肌肉合成效率比平时高 50%！错过这个窗口就亏了～</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-item">
+          <div class="meal-dot" style="box-shadow:0 0 0 2px #3b82f6;background:#3b82f6;"></div>
+          <div class="meal-time" style="color:#3b82f6;">15:00 ~ 16:00 · 下午加餐</div>
+          <div class="meal-name">🍎 水果 + 坚果</div>
+          <div class="meal-desc">下午容易犯困，来点低GI水果+少量坚果，稳定血糖，避免晚餐暴食。</div>
+          <div class="meal-foods">
+            <span class="food-tag ftag-fruit">🫐 蓝莓 一小盒</span>
+            <span class="food-tag ftag-fruit">🍅 小番茄 5-6颗</span>
+            <span class="food-tag ftag-fat">🥜 坚果 10g（5-6颗）</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#3b82f6;font-weight:600;">≈ 120 kcal</div>
+        </div>
+
+        <div class="meal-item">
+          <div class="meal-dot" style="box-shadow:0 0 0 2px #22c55e;background:#22c55e;"></div>
+          <div class="meal-time" style="color:#22c55e;">17:50 ~ 18:30 · 晚餐</div>
+          <div class="meal-name">🥩 正式晚餐（高蛋白低碳水）</div>
+          <div class="meal-desc">晚餐减少碳水，增加蛋白质和蔬菜。睡前代谢降低，多余碳水更容易转化为脂肪。</div>
+          <div class="meal-foods">
+            <span class="food-tag ftag-protein">🥩 牛肉/鱼肉 150g</span>
+            <span class="food-tag ftag-fiber">🥬 蔬菜 2种以上</span>
+            <span class="food-tag ftag-carb">🍚 杂粮饭小半碗（或不吃）</span>
+            <span class="food-tag ftag-fiber">🍲 清汤（非浓汤）</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#22c55e;font-weight:600;">≈ 500 kcal · 蛋白质 38g</div>
+          <div class="tip tip-warn" style="margin-top:10px;">
+            <div class="tip-icon">⚠️</div>
+            <div class="tip-content">
+              <div class="tip-title">晚餐避坑</div>
+              <div class="tip-text">食堂的小炒肉、红烧肉虽然好吃，但油脂含量高。优先选：白切鸡、清蒸鱼、热拌牛肉、水煮菜。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-item">
+          <div class="meal-dot" style="box-shadow:0 0 0 2px #6b7280;background:#6b7280;"></div>
+          <div class="meal-time" style="color:#6b7280;">21:30 · 到家后（可选）</div>
+          <div class="meal-name">🥛 睡前小食（饿了才吃）</div>
+          <div class="meal-desc">如果不饿就不吃。饿了选酪蛋白类（消化慢，夜间持续供能），避免碳水。</div>
+          <div class="meal-foods">
+            <span class="food-tag ftag-protein">🥛 脱脂牛奶 200ml</span>
+            <span class="food-tag ftag-fruit">🍅 小番茄几颗</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#6b7280;font-weight:600;">≈ 90 kcal</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fef9c3;">📋</div>
+        每日热量汇总
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f0fdf4;border-radius:10px;">
+          <span style="font-size:13px;">🌅 起床水+香蕉</span>
+          <span style="font-size:13px;font-weight:700;color:#22c55e;">90 kcal</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#fff7ed;border-radius:10px;">
+          <span style="font-size:13px;">🍳 早餐</span>
+          <span style="font-size:13px;font-weight:700;color:#f97316;">550 kcal</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f3e8ff;border-radius:10px;">
+          <span style="font-size:13px;">💪 训练后补餐</span>
+          <span style="font-size:13px;font-weight:700;color:#a855f7;">450 kcal</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#eff6ff;border-radius:10px;">
+          <span style="font-size:13px;">🍎 下午加餐</span>
+          <span style="font-size:13px;font-weight:700;color:#3b82f6;">120 kcal</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f0fdf4;border-radius:10px;">
+          <span style="font-size:13px;">🥩 晚餐</span>
+          <span style="font-size:13px;font-weight:700;color:#22c55e;">500 kcal</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:10px;">
+          <span style="font-size:13px;">🥛 睡前（可选）</span>
+          <span style="font-size:13px;font-weight:700;color:#6b7280;">90 kcal</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:12px;background:linear-gradient(135deg,#dcfce7,#dbeafe);border-radius:12px;margin-top:4px;">
+          <span style="font-size:15px;font-weight:800;">📊 全天合计</span>
+          <span style="font-size:15px;font-weight:800;color:#22c55e;">≈ 1800 kcal</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+        蛋白质 ≈ 120g ｜ 碳水 ≈ 160g ｜ 脂肪 ≈ 55g ｜ 热量缺口 ≈ 400 kcal ✅
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 推荐食物 Tab ===== -->
+  <div class="section" id="tab-good">
+
+    <div class="tip tip-good" style="margin-bottom:16px;">
+      <div class="tip-icon">💪</div>
+      <div class="tip-content">
+        <div class="tip-title">减脂增肌期，这些食物放心吃！</div>
+        <div class="tip-text">高蛋白、低GI碳水、好脂肪、高纤维蔬菜是你的四大好朋友～</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#ede9fe;">🥩</div>
+        优质蛋白质（每餐必备）
+      </div>
+      <div class="food-grid">
+        <div class="food-card food-super">
+          <div class="emoji">🍗</div>
+          <div class="fname">鸡胸肉</div>
+          <div class="fdesc">减脂之王！高蛋白低脂肪，每100g含蛋白质24g、脂肪仅1.9g</div>
+          <div class="fmeta">
+            <span>🏆 首选</span>
+            <span>110 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🥚</div>
+          <div class="fname">鸡蛋</div>
+          <div class="fdesc">完美蛋白来源，蛋黄含卵磷脂促进脂肪代谢。每天2-3个全蛋没问题</div>
+          <div class="fmeta">
+            <span>⭐ 必吃</span>
+            <span>144 kcal/个</span>
+          </div>
+        </div>
+        <div class="food-card food-super">
+          <div class="emoji">🥩</div>
+          <div class="fname">牛肉（瘦）</div>
+          <div class="fdesc">富含肌酸和铁，促进肌肉生长。选牛腱/牛里脊，避免肥牛卷</div>
+          <div class="fmeta">
+            <span>🏆 力荐</span>
+            <span>125 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🐟</div>
+          <div class="fname">鱼肉（各种）</div>
+          <div class="fdesc">三文鱼、鲈鱼、鳕鱼都好。富含Omega-3，抗炎+促进脂肪燃烧</div>
+          <div class="fmeta">
+            <span>⭐ 优选</span>
+            <span>100-180 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🦐</div>
+          <div class="fname">虾仁</div>
+          <div class="fdesc">超低脂高蛋白，每100g蛋白质18g、脂肪仅0.7g，减脂神器</div>
+          <div class="fmeta">
+            <span>⭐ 推荐</span>
+            <span>84 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🥛</div>
+          <div class="fname">纯牛奶/脱脂奶</div>
+          <div class="fdesc">钙+蛋白质双补。睡前喝脱脂奶，酪蛋白缓释，夜间持续供能</div>
+          <div class="fmeta">
+            <span>⭐ 每天喝</span>
+            <span>54 kcal/100ml</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fff7ed;">🌾</div>
+        优质碳水（训练日多吃，休息日少吃）
+      </div>
+      <div class="food-grid">
+        <div class="food-card food-good">
+          <div class="emoji">🌽</div>
+          <div class="fname">玉米</div>
+          <div class="fdesc">你的老朋友了！低GI粗粮，饱腹感强，富含膳食纤维</div>
+          <div class="fmeta">
+            <span>⭐ 继续吃</span>
+            <span>112 kcal/根</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🍠</div>
+          <div class="fname">红薯/紫薯</div>
+          <div class="fdesc">GI值比米饭低很多，饱腹感超强。蒸着吃最好，别烤（烤会升高GI）</div>
+          <div class="fmeta">
+            <span>⭐ 替代米饭</span>
+            <span>86 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🥣</div>
+          <div class="fname">燕麦（纯燕麦片）</div>
+          <div class="fdesc">低GI、高纤维、饱腹感持久。注意选纯燕麦，不是加糖的即食麦片</div>
+          <div class="fmeta">
+            <span>⭐ 早餐可选</span>
+            <span>367 kcal/100g(干)</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🍚</div>
+          <div class="fname">杂粮饭/糙米</div>
+          <div class="fdesc">比白米饭GI低，膳食纤维多2-3倍。吃小半碗就够了</div>
+          <div class="fmeta">
+            <span>✅ 控量吃</span>
+            <span>150 kcal/半碗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">🥬</div>
+        蔬菜（随便吃，多多益善！）
+      </div>
+      <div class="food-grid">
+        <div class="food-card food-super">
+          <div class="emoji">🥦</div>
+          <div class="fname">西兰花</div>
+          <div class="fdesc">健身圈第一蔬菜！高纤维、富含维C、含吲哚-3-甲醇（抗雌激素）</div>
+          <div class="fmeta">
+            <span>🏆 必吃</span>
+            <span>34 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🥬</div>
+          <div class="fname">菠菜</div>
+          <div class="fdesc">铁+叶酸+镁，促进肌肉收缩和恢复。水煮/清炒都好</div>
+          <div class="fmeta">
+            <span>⭐ 推荐</span>
+            <span>23 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🥒</div>
+          <div class="fname">黄瓜</div>
+          <div class="fdesc">95%是水分，热量极低，嘴馋当零食吃完全没负担</div>
+          <div class="fmeta">
+            <span>✅ 随便吃</span>
+            <span>15 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🍄</div>
+          <div class="fname">菌菇类</div>
+          <div class="fdesc">金针菇、香菇、杏鲍菇。低卡高纤维，增加饱腹感</div>
+          <div class="fmeta">
+            <span>✅ 推荐</span>
+            <span>20-30 kcal/100g</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fce7f3;">🍎</div>
+        水果（选对时间、选对种类）
+      </div>
+      <div class="food-grid">
+        <div class="food-card food-super">
+          <div class="emoji">🫐</div>
+          <div class="fname">蓝莓</div>
+          <div class="fdesc">你已经在吃了！抗氧化之王，低糖低卡，训练后恢复利器</div>
+          <div class="fmeta">
+            <span>🏆 继续吃</span>
+            <span>57 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🍅</div>
+          <div class="fname">小番茄</div>
+          <div class="fdesc">你也在吃！低卡高维C，当零食完美。晚上吃也没问题</div>
+          <div class="fmeta">
+            <span>⭐ 继续吃</span>
+            <span>22 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🍏</div>
+          <div class="fname">苹果（青苹果更好）</div>
+          <div class="fdesc">低GI，果胶饱腹感强。下午加餐首选</div>
+          <div class="fmeta">
+            <span>✅ 下午吃</span>
+            <span>52 kcal/100g</span>
+          </div>
+        </div>
+        <div class="food-card food-ok">
+          <div class="emoji">🍇</div>
+          <div class="fname">提子/葡萄</div>
+          <div class="fdesc">糖分偏高（GI 56），少量可以，别当饭吃。训练后吃比晚上吃好</div>
+          <div class="fmeta">
+            <span>⚠️ 控量</span>
+            <span>67 kcal/100g</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fef3c7;">🥜</div>
+        健康脂肪（少量但必须有）
+      </div>
+      <div class="food-grid">
+        <div class="food-card food-good">
+          <div class="emoji">🥑</div>
+          <div class="fname">牛油果</div>
+          <div class="fdesc">单不饱和脂肪酸，促进睾酮分泌（增肌关键激素）。每次吃半个</div>
+          <div class="fmeta">
+            <span>⭐ 推荐</span>
+            <span>160 kcal/半个</span>
+          </div>
+        </div>
+        <div class="food-card food-good">
+          <div class="emoji">🥜</div>
+          <div class="fname">坚果（混合）</div>
+          <div class="fdesc">杏仁、核桃、腰果。每天一小把（10g），好脂肪+维E</div>
+          <div class="fmeta">
+            <span>✅ 每天10g</span>
+            <span>60 kcal/10g</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 避免食物 Tab ===== -->
+  <div class="section" id="tab-bad">
+
+    <div class="tip tip-bad" style="margin-bottom:16px;">
+      <div class="tip-icon">🚫</div>
+      <div class="tip-content">
+        <div class="tip-title">减脂期这些食物是你的敌人！</div>
+        <div class="tip-text">高糖、高油、精制碳水会让你的训练白费。忍一忍，腹肌会感谢你的～</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fee2e2;">🧋</div>
+        ❌ 绝对避免（减脂杀手）
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🧋</div>
+          <div>
+            <div class="fli-name">奶茶（全糖/半糖）</div>
+            <div class="fli-note">一杯 = 你训练1小时的消耗全没了。含糖50-70g，胰岛素飙升→促进脂肪合成</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#ef4444;">400-600 kcal</div>
+          <div><span class="verdict verdict-avoid">❌ 戒掉</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍟</div>
+          <div>
+            <div class="fli-name">炸鸡/薯条/油炸食品</div>
+            <div class="fli-note">反式脂肪+超高热量，100g炸鸡翅 = 300 kcal，脂肪含量超过50%</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#ef4444;">300+ kcal/份</div>
+          <div><span class="verdict verdict-avoid">❌ 避免</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍰</div>
+          <div>
+            <div class="fli-name">蛋糕/甜点/奶油</div>
+            <div class="fli-note">精制糖+反式脂肪，双重暴击。一块蛋糕热量顶一顿正餐</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#ef4444;">350-500 kcal/块</div>
+          <div><span class="verdict verdict-avoid">❌ 避免</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🥤</div>
+          <div>
+            <div class="fli-name">含糖饮料（可乐/果汁）</div>
+            <div class="fli-note">液体糖分吸收极快，胰岛素飙升。果汁≠水果，纤维全没了只剩糖</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#ef4444;">140-200 kcal/瓶</div>
+          <div><span class="verdict verdict-avoid">❌ 换无糖</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍜</div>
+          <div>
+            <div class="fli-name">泡面/方便食品</div>
+            <div class="fli-note">高钠高油高碳水，营养密度极低。一包泡面 = 500 kcal + 2000mg钠</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#ef4444;">450-550 kcal/包</div>
+          <div><span class="verdict verdict-avoid">❌ 避免</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍺</div>
+          <div>
+            <div class="fli-name">啤酒/酒精饮品</div>
+            <div class="fli-note">酒精抑制脂肪燃烧、降低睾酮、影响肌肉恢复。啤酒肚不是开玩笑的</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#ef4444;">150-300 kcal/罐</div>
+          <div><span class="verdict verdict-avoid">❌ 少碰</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fef9c3;">⚠️</div>
+        ⚠️ 限量食用（偶尔可以，别常吃）
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍚</div>
+          <div>
+            <div class="fli-name">白米饭（大碗）</div>
+            <div class="fli-note">GI值 83（高），升糖快。小半碗可以，大碗不行。用杂粮饭替代更好</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#a16207;">230 kcal/碗</div>
+          <div><span class="verdict verdict-limit">⚠️ 控量</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍞</div>
+          <div>
+            <div class="fli-name">白面包/馒头</div>
+            <div class="fli-note">精制碳水，GI 75+。偶尔吃没事，别当主食天天吃</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#a16207;">265 kcal/100g</div>
+          <div><span class="verdict verdict-limit">⚠️ 少吃</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🥓</div>
+          <div>
+            <div class="fli-name">红烧肉/五花肉/肥牛</div>
+            <div class="fli-note">脂肪含量高达30-40%。偶尔解馋可以，别当蛋白质来源</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#a16207;">395 kcal/100g</div>
+          <div><span class="verdict verdict-limit">⚠️ 偶尔</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍝</div>
+          <div>
+            <div class="fli-name">面条/粿条</div>
+            <div class="fli-note">精制碳水，GI较高。牛肉粿条可以偶尔吃，注意汤底油脂</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#a16207;">350-450 kcal/碗</div>
+          <div><span class="verdict verdict-limit">⚠️ 控频</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🍌</div>
+          <div>
+            <div class="fli-name">香蕉（多根）</div>
+            <div class="fli-note">训练前1根很好（快速供能），但糖分不低。别一次吃2-3根</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#a16207;">90 kcal/根</div>
+          <div><span class="verdict verdict-limit">⚠️ 限1根/天</span></div>
+        </div>
+      </div>
+
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">🥜</div>
+          <div>
+            <div class="fli-name">坚果（大量）</div>
+            <div class="fli-note">好脂肪但热量密度极高！10g = 60 kcal，一不小心就吃了300 kcal</div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:#a16207;">600 kcal/100g</div>
+          <div><span class="verdict verdict-limit">⚠️ 限10g/天</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">✅</div>
+        聪明替换方案
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🧋 全糖奶茶</span>
+          <span style="font-size:16px;color:var(--gray);">→</span>
+          <span style="background:#dcfce7;color:#15803d;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">☕ 无糖拿铁/黑咖啡</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🍚 大碗白米饭</span>
+          <span style="font-size:16px;color:var(--gray);">→</span>
+          <span style="background:#dcfce7;color:#15803d;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🍠 红薯/杂粮饭半碗</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🥤 可乐/果汁</span>
+          <span style="font-size:16px;color:var(--gray);">→</span>
+          <span style="background:#dcfce7;color:#15803d;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">💧 气泡水/柠檬水</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🥓 红烧肉</span>
+          <span style="font-size:16px;color:var(--gray);">→</span>
+          <span style="background:#dcfce7;color:#15803d;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🥩 热拌牛肉/白切鸡</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🍟 薯片零食</span>
+          <span style="font-size:16px;color:var(--gray);">→</span>
+          <span style="background:#dcfce7;color:#15803d;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🫐 蓝莓/小番茄</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🍰 蛋糕甜点</span>
+          <span style="font-size:16px;color:var(--gray);">→</span>
+          <span style="background:#dcfce7;color:#15803d;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;">🥛 希腊酸奶+蓝莓</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 食物速查 Tab ===== -->
+  <div class="section" id="tab-lookup">
+
+    <div style="margin-bottom:16px;">
+      <input type="text" id="foodSearch" placeholder="🔍 搜索食物名称..." oninput="filterFoods()" style="
+        width:100%; padding:14px 18px; border:2px solid #e5e7eb; border-radius:14px;
+        font-size:14px; outline:none; transition:border-color 0.2s;
+        background:white; box-shadow:0 2px 8px rgba(0,0,0,0.04);
+      " onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <div class="filter-btn active" onclick="setFilter('all')">全部</div>
+      <div class="filter-btn" onclick="setFilter('protein')">🥩 蛋白质</div>
+      <div class="filter-btn" onclick="setFilter('carb')">🌾 碳水</div>
+      <div class="filter-btn" onclick="setFilter('veggie')">🥬 蔬菜</div>
+      <div class="filter-btn" onclick="setFilter('fruit')">🍎 水果</div>
+      <div class="filter-btn" onclick="setFilter('fat')">🥜 脂肪</div>
+      <div class="filter-btn" onclick="setFilter('drink')">🥤 饮品</div>
+      <div class="filter-btn" onclick="setFilter('snack')">🍿 零食</div>
+    </div>
+
+    <div class="card" id="foodListCard">
+      <div id="foodListContainer"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== 饮食原则 Tab ===== -->
+  <div class="section" id="tab-tips">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#dcfce7;">🏆</div>
+        减脂饮食 7 大黄金法则
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">每餐必有蛋白质</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">蛋白质饱腹感最强（是碳水的2倍），还能维持肌肉量。每餐至少一个拳头大小的蛋白质来源。</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">碳水集中在训练前后</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">训练前碳水 = 供能燃料，训练后碳水 = 肌肉恢复。晚餐尽量减少碳水，睡前代谢低，多余碳水容易变脂肪。</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">训练后30分钟 = 黄金窗口</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">训练后肌肉对营养的吸收效率最高，30分钟内补充蛋白质+碳水，肌肉合成效率提升50%。你现在训练后就吃，非常好！</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">蔬菜占每餐盘子的一半</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">蔬菜热量极低但体积大，能帮你吃饱而不吃多。膳食纤维还能减缓碳水吸收，降低血糖波动。</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">喝够水（2500ml/天）</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">脂肪代谢需要水参与！脱水1%就会降低运动表现。训练日至少2500ml，办公桌放个800ml大杯子，下午喝完2杯。</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">不要完全戒脂肪</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">脂肪摄入过低会导致睾酮下降（影响增肌）、皮肤干燥、情绪低落。每天保证50-60g健康脂肪（坚果、鱼油、牛油果）。</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#3b82f6);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">7</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">允许每周1次放纵餐</div>
+            <div style="font-size:12px;color:var(--text-light);line-height:1.6;">100%严格执行不现实也没必要。每周选一餐吃想吃的（奶茶、火锅都行），既满足心理需求，又能提升瘦素水平，反而有利于长期减脂。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#fee2e2;">⚡</div>
+        食堂点餐速查口诀
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-icon">✅</div>
+        <div class="tip-content">
+          <div class="tip-title">优先选</div>
+          <div class="tip-text">白切鸡、清蒸鱼、热拌牛肉、水煮虾、白灼菜心、蒜蓉西兰花、番茄蛋汤</div>
+        </div>
+      </div>
+      <div class="tip tip-warn">
+        <div class="tip-icon">⚠️</div>
+        <div class="tip-content">
+          <div class="tip-title">偶尔可以</div>
+          <div class="tip-text">小炒肉（去肥肉）、牛肉粿条（少喝汤）、蛋炒饭（小份）、烤鸡腿（去皮）</div>
+        </div>
+      </div>
+      <div class="tip tip-bad">
+        <div class="tip-icon">❌</div>
+        <div class="tip-content">
+          <div class="tip-title">尽量别选</div>
+          <div class="tip-text">红烧肉、糖醋排骨、水煮鱼（油多）、炸鸡排、干锅/麻辣香锅（油爆炒）、浓汤类</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:#f3e8ff;">🧠</div>
+        常见误区纠正
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:14px;background:#fef2f2;border-radius:12px;">
+          <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:4px;">❌ "不吃晚饭减肥更快"</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.6;">不吃晚饭→基础代谢下降→肌肉分解→反弹更胖。正确做法是晚餐少碳水、多蛋白质蔬菜，而不是不吃。</div>
+        </div>
+        <div style="padding:14px;background:#fef2f2;border-radius:12px;">
+          <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:4px;">❌ "水果随便吃不会胖"</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.6;">水果含果糖，过量同样会转化为脂肪。特别是荔枝、芒果、榴莲等高糖水果。每天水果总量控制在200-300g。</div>
+        </div>
+        <div style="padding:14px;background:#fef2f2;border-radius:12px;">
+          <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:4px;">❌ "蛋黄胆固醇高不能吃"</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.6;">已被推翻的过时观念！蛋黄含卵磷脂、维D、B族维生素，反而有助于脂肪代谢。每天2-3个全蛋完全没问题。</div>
+        </div>
+        <div style="padding:14px;background:#fef2f2;border-radius:12px;">
+          <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:4px;">❌ "无糖饮料可以随便喝"</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.6;">无糖饮料比含糖好，但人工甜味剂可能刺激食欲、影响肠道菌群。偶尔喝没事，别当水喝。最好还是白水/茶。</div>
+        </div>
+        <div style="padding:14px;background:#fef2f2;border-radius:12px;">
+          <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:4px;">❌ "吃脂肪就会长脂肪"</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.6;">让你长胖的是热量盈余，不是脂肪本身。适量健康脂肪（坚果、鱼油、橄榄油）反而帮助燃脂、维持激素水平。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// Tab switching
+function switchTab(name) {
+  const names = ['timeline','good','bad','lookup','tips'];
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.toggle('active', s.id === 'tab-' + name);
+  });
+}
+
+// Food database
+const foods = [
+  // Protein
+  { name: '鸡胸肉', emoji: '🍗', cat: 'protein', cal: 110, per: '100g', protein: 24, verdict: 'eat', time: '午餐/晚餐', note: '减脂之王，蒸/煮/煎都行' },
+  { name: '鸡蛋（全蛋）', emoji: '🥚', cat: 'protein', cal: 144, per: '2个', protein: 12, verdict: 'eat', time: '早餐/训练后', note: '蛋黄别扔，营养精华都在里面' },
+  { name: '牛肉（瘦）', emoji: '🥩', cat: 'protein', cal: 125, per: '100g', protein: 21, verdict: 'eat', time: '午餐/晚餐', note: '选牛腱/里脊，避免肥牛' },
+  { name: '三文鱼', emoji: '🐟', cat: 'protein', cal: 180, per: '100g', protein: 20, verdict: 'eat', time: '午餐/晚餐', note: 'Omega-3丰富，抗炎+促燃脂' },
+  { name: '虾仁', emoji: '🦐', cat: 'protein', cal: 84, per: '100g', protein: 18, verdict: 'eat', time: '午餐/晚餐', note: '超低脂高蛋白，白灼最佳' },
+  { name: '鳕鱼', emoji: '🐟', cat: 'protein', cal: 82, per: '100g', protein: 18, verdict: 'eat', time: '午餐/晚餐', note: '低脂白肉鱼，清蒸最好' },
+  { name: '纯牛奶', emoji: '🥛', cat: 'protein', cal: 135, per: '250ml', protein: 8, verdict: 'eat', time: '早餐/睡前', note: '钙+蛋白质双补' },
+  { name: '希腊酸奶（无糖）', emoji: '🥛', cat: 'protein', cal: 100, per: '150g', protein: 15, verdict: 'eat', time: '加餐/睡前', note: '蛋白质是普通酸奶2倍' },
+  { name: '豆腐', emoji: '🧈', cat: 'protein', cal: 76, per: '100g', protein: 8, verdict: 'eat', time: '午餐/晚餐', note: '植物蛋白，嫩豆腐/老豆腐都行' },
+  { name: '鸡腿（去皮）', emoji: '🍗', cat: 'protein', cal: 150, per: '100g', protein: 19, verdict: 'eat', time: '午餐/晚餐', note: '比鸡胸肉好吃，去皮就行' },
+  { name: '肥牛/五花肉', emoji: '🥓', cat: 'protein', cal: 395, per: '100g', protein: 14, verdict: 'limit', time: '偶尔', note: '脂肪含量30-40%，偶尔解馋' },
+
+  // Carbs
+  { name: '玉米', emoji: '🌽', cat: 'carb', cal: 112, per: '1根', protein: 4, verdict: 'eat', time: '早餐/训练后', note: '低GI粗粮，饱腹感强' },
+  { name: '红薯/紫薯', emoji: '🍠', cat: 'carb', cal: 86, per: '100g', protein: 1.6, verdict: 'eat', time: '早餐/训练后', note: '蒸着吃，别烤（烤会升高GI）' },
+  { name: '燕麦（纯）', emoji: '🥣', cat: 'carb', cal: 367, per: '100g干', protein: 13, verdict: 'eat', time: '早餐', note: '选纯燕麦片，非即食加糖款' },
+  { name: '杂粮饭/糙米', emoji: '🍚', cat: 'carb', cal: 150, per: '半碗', protein: 3, verdict: 'eat', time: '午餐', note: '比白米饭GI低，纤维多' },
+  { name: '全麦面包', emoji: '🍞', cat: 'carb', cal: 247, per: '100g', protein: 9, verdict: 'eat', time: '早餐', note: '看配料表，全麦粉须排第一' },
+  { name: '白米饭（大碗）', emoji: '🍚', cat: 'carb', cal: 230, per: '1碗', protein: 4, verdict: 'limit', time: '午餐少量', note: 'GI 83，升糖快，控量小半碗' },
+  { name: '面条/粿条', emoji: '🍝', cat: 'carb', cal: 400, per: '1碗', protein: 10, verdict: 'limit', time: '偶尔', note: '精制碳水，注意汤底油脂' },
+  { name: '白面包/馒头', emoji: '🍞', cat: 'carb', cal: 265, per: '100g', protein: 8, verdict: 'limit', time: '偶尔', note: 'GI 75+，偶尔吃' },
+
+  // Veggies
+  { name: '西兰花', emoji: '🥦', cat: 'veggie', cal: 34, per: '100g', protein: 3, verdict: 'super', time: '午餐/晚餐', note: '健身第一蔬菜！随便吃' },
+  { name: '菠菜', emoji: '🥬', cat: 'veggie', cal: 23, per: '100g', protein: 3, verdict: 'eat', time: '午餐/晚餐', note: '铁+叶酸+镁，促进肌肉恢复' },
+  { name: '黄瓜', emoji: '🥒', cat: 'veggie', cal: 15, per: '100g', protein: 0.7, verdict: 'eat', time: '随时', note: '95%水分，当零食吃无负担' },
+  { name: '菌菇类', emoji: '🍄', cat: 'veggie', cal: 25, per: '100g', protein: 3, verdict: 'eat', time: '午餐/晚餐', note: '低卡高纤维，增加饱腹感' },
+  { name: '番茄', emoji: '🍅', cat: 'veggie', cal: 18, per: '100g', protein: 0.9, verdict: 'eat', time: '随时', note: '维C丰富，生吃熟吃都好' },
+  { name: '生菜/油麦菜', emoji: '🥬', cat: 'veggie', cal: 15, per: '100g', protein: 1.3, verdict: 'eat', time: '午餐/晚餐', note: '白灼/清炒，热量极低' },
+  { name: '芹菜', emoji: '🥬', cat: 'veggie', cal: 16, per: '100g', protein: 0.7, verdict: 'eat', time: '午餐/晚餐', note: '高纤维，有助消化' },
+  { name: '冬瓜', emoji: '🥒', cat: 'veggie', cal: 12, per: '100g', protein: 0.4, verdict: 'eat', time: '午餐/晚餐', note: '利尿消水肿，热量最低蔬菜之一' },
+
+  // Fruits
+  { name: '蓝莓', emoji: '🫐', cat: 'fruit', cal: 57, per: '100g', protein: 0.7, verdict: 'super', time: '下午加餐', note: '抗氧化之王，低糖低卡' },
+  { name: '小番茄', emoji: '🍅', cat: 'fruit', cal: 22, per: '100g', protein: 1, verdict: 'eat', time: '下午/晚上', note: '低卡高维C，当零食完美' },
+  { name: '苹果', emoji: '🍏', cat: 'fruit', cal: 52, per: '100g', protein: 0.3, verdict: 'eat', time: '下午加餐', note: '低GI，果胶饱腹感强' },
+  { name: '草莓', emoji: '🍓', cat: 'fruit', cal: 32, per: '100g', protein: 0.7, verdict: 'eat', time: '下午加餐', note: '低糖水果，维C丰富' },
+  { name: '猕猴桃', emoji: '🥝', cat: 'fruit', cal: 61, per: '100g', protein: 1.1, verdict: 'eat', time: '下午加餐', note: '维C之王，助消化' },
+  { name: '香蕉', emoji: '🍌', cat: 'fruit', cal: 90, per: '1根', protein: 1.1, verdict: 'limit', time: '训练前', note: '训练前1根供能好，别多吃' },
+  { name: '提子/葡萄', emoji: '🍇', cat: 'fruit', cal: 67, per: '100g', protein: 0.6, verdict: 'limit', time: '训练后', note: '糖分偏高，少量可以' },
+  { name: '芒果', emoji: '🥭', cat: 'fruit', cal: 60, per: '100g', protein: 0.8, verdict: 'limit', time: '偶尔', note: '糖分高GI高，控量' },
+  { name: '荔枝', emoji: '🍒', cat: 'fruit', cal: 71, per: '100g', protein: 0.8, verdict: 'avoid', time: '尽量避免', note: '含糖17%，GI极高，减脂期少碰' },
+  { name: '榴莲', emoji: '🥑', cat: 'fruit', cal: 147, per: '100g', protein: 1.5, verdict: 'avoid', time: '尽量避免', note: '热量炸弹，一块=一碗饭' },
+
+  // Fats
+  { name: '牛油果', emoji: '🥑', cat: 'fat', cal: 160, per: '半个', protein: 2, verdict: 'eat', time: '早餐/加餐', note: '好脂肪，促进睾酮分泌' },
+  { name: '坚果（混合）', emoji: '🥜', cat: 'fat', cal: 60, per: '10g', protein: 2, verdict: 'limit', time: '下午加餐', note: '每天限10g！热量密度极高' },
+  { name: '橄榄油', emoji: '🫒', cat: 'fat', cal: 90, per: '10ml', protein: 0, verdict: 'eat', time: '烹饪用', note: '单不饱和脂肪酸，凉拌/轻炒' },
+
+  // Drinks
+  { name: '白水/矿泉水', emoji: '💧', cat: 'drink', cal: 0, per: '随意', protein: 0, verdict: 'super', time: '全天', note: '每天2500ml+，训练日更多' },
+  { name: '黑咖啡（无糖）', emoji: '☕', cat: 'drink', cal: 5, per: '1杯', protein: 0, verdict: 'eat', time: '训练前30分钟', note: '咖啡因促进脂肪燃烧+提升运动表现' },
+  { name: '绿茶/乌龙茶', emoji: '🍵', cat: 'drink', cal: 2, per: '1杯', protein: 0, verdict: 'eat', time: '下午', note: '儿茶素促进脂肪氧化' },
+  { name: '无糖气泡水', emoji: '🥤', cat: 'drink', cal: 0, per: '1瓶', protein: 0, verdict: 'eat', time: '随时', note: '代替可乐的好选择' },
+  { name: '无糖拿铁', emoji: '☕', cat: 'drink', cal: 80, per: '1杯', protein: 5, verdict: 'eat', time: '上午/下午', note: '代替奶茶，还能补蛋白质' },
+  { name: '奶茶（全糖）', emoji: '🧋', cat: 'drink', cal: 500, per: '1杯', protein: 2, verdict: 'avoid', time: '❌ 戒掉', note: '含糖50-70g，一杯毁一天训练' },
+  { name: '可乐/雪碧', emoji: '🥤', cat: 'drink', cal: 180, per: '1罐', protein: 0, verdict: 'avoid', time: '❌ 避免', note: '纯糖水，零营养' },
+  { name: '果汁饮料', emoji: '🧃', cat: 'drink', cal: 200, per: '1瓶', protein: 0, verdict: 'avoid', time: '❌ 避免', note: '纤维全没了只剩糖' },
+  { name: '啤酒', emoji: '🍺', cat: 'drink', cal: 150, per: '1罐', protein: 0, verdict: 'avoid', time: '❌ 少碰', note: '抑制脂肪燃烧+降低睾酮' },
+
+  // Snacks
+  { name: '蛋白棒', emoji: '🍫', cat: 'snack', cal: 200, per: '1根', protein: 20, verdict: 'eat', time: '加餐/应急', note: '选低糖款，应急补蛋白用' },
+  { name: '牛肉干（低脂）', emoji: '🥩', cat: 'snack', cal: 120, per: '30g', protein: 15, verdict: 'eat', time: '加餐', note: '选无添加款，高蛋白零食' },
+  { name: '薯片', emoji: '🍟', cat: 'snack', cal: 536, per: '100g', protein: 5, verdict: 'avoid', time: '❌ 避免', note: '油炸+高碳+高钠，三重暴击' },
+  { name: '饼干/曲奇', emoji: '🍪', cat: 'snack', cal: 500, per: '100g', protein: 5, verdict: 'avoid', time: '❌ 避免', note: '反式脂肪+精制糖' },
+  { name: '蛋糕/甜点', emoji: '🍰', cat: 'snack', cal: 400, per: '1块', protein: 4, verdict: 'avoid', time: '❌ 避免', note: '奶油+糖，一块顶一顿饭' },
+  { name: '巧克力（黑85%+）', emoji: '🍫', cat: 'snack', cal: 50, per: '10g', protein: 1, verdict: 'limit', time: '偶尔', note: '选85%以上黑巧，少量抗氧化' },
+  { name: '泡面', emoji: '🍜', cat: 'snack', cal: 500, per: '1包', protein: 8, verdict: 'avoid', time: '❌ 避免', note: '高钠高油高碳，零营养' },
+];
+
+let currentFilter = 'all';
+
+function setFilter(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(
+      cat === 'all' ? '全部' :
+      cat === 'protein' ? '蛋白质' :
+      cat === 'carb' ? '碳水' :
+      cat === 'veggie' ? '蔬菜' :
+      cat === 'fruit' ? '水果' :
+      cat === 'fat' ? '脂肪' :
+      cat === 'drink' ? '饮品' : '零食'
+    ));
+  });
+  renderFoods();
+}
+
+function filterFoods() {
+  renderFoods();
+}
+
+function renderFoods() {
+  const query = document.getElementById('foodSearch').value.toLowerCase();
+  const container = document.getElementById('foodListContainer');
+
+  let filtered = foods;
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(f => f.cat === currentFilter);
+  }
+  if (query) {
+    filtered = filtered.filter(f => f.name.toLowerCase().includes(query) || f.note.toLowerCase().includes(query));
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-light);font-size:14px;">没有找到匹配的食物 🤔</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(f => {
+    const verdictClass = f.verdict === 'eat' ? 'verdict-eat' : f.verdict === 'super' ? 'verdict-super' : f.verdict === 'limit' ? 'verdict-limit' : 'verdict-avoid';
+    const verdictText = f.verdict === 'eat' ? '✅ 推荐' : f.verdict === 'super' ? '🏆 强推' : f.verdict === 'limit' ? '⚠️ 限量' : '❌ 避免';
+    return `
+      <div class="food-list-item">
+        <div class="fli-left">
+          <div class="fli-emoji">${f.emoji}</div>
+          <div>
+            <div class="fli-name">${f.name}</div>
+            <div class="fli-note">${f.note}</div>
+            <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
+              <span class="verdict ${verdictClass}">${verdictText}</span>
+              <span class="badge badge-gray" style="font-size:11px;">⏰ ${f.time}</span>
+              ${f.protein > 0 ? `<span class="badge badge-purple" style="font-size:11px;">蛋白质 ${f.protein}g</span>` : ''}
+            </div>
+          </div>
+        </div>
+        <div class="fli-right">
+          <div class="fli-cal" style="color:${f.verdict === 'avoid' ? '#ef4444' : f.verdict === 'limit' ? '#a16207' : '#22c55e'};">${f.cal} kcal</div>
+          <div class="fli-per">/ ${f.per}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Init
+renderFoods();
+</script>
+
+</body>
+</html>
