@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>颜值提升计划</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 60%, #0a0a1a 100%);
+    min-height: 100vh;
+    padding: 20px 12px;
+    color: #e2e8f0;
+  }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  /* 顶部封面 */
+  .hero {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    height: 260px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,26,0.95) 0%, rgba(10,10,26,0.3) 40%, transparent 70%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 24px;
+  }
+  .hero-overlay h1 {
+    color: #fff; font-size: 28px; font-weight: 900;
+    background: linear-gradient(135deg, #f093fb, #f5576c, #ffd700);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-overlay p { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 6px; line-height: 1.6; }
+
+  /* 目标概览 */
+  .goals-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    margin-bottom: 24px;
+  }
+  .goal-item {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 14px 8px; text-align: center;
+    transition: all 0.3s;
+  }
+  .goal-item:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+  .goal-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+  .goal-label { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+  /* 模块标题 */
+  .module-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px; margin-top: 8px;
+  }
+  .module-number {
+    width: 36px; height: 36px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 16px; color: #fff; flex-shrink: 0;
+  }
+  .module-header h2 { font-size: 20px; font-weight: 800; color: #fff; }
+  .module-header .subtitle { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* 内容卡片 */
+  .card {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px; padding: 20px; margin-bottom: 16px;
+    transition: all 0.3s;
+  }
+  .card:hover { background: rgba(255,255,255,0.07); }
+  .card h3 {
+    font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card p { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.8; }
+
+  /* 产品推荐卡 */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .product-item {
+    background: rgba(255,255,255,0.06); border-radius: 14px; padding: 14px;
+    border: 1px solid rgba(255,255,255,0.08); text-align: center;
+  }
+  .product-emoji { font-size: 32px; display: block; margin-bottom: 6px; }
+  .product-name { font-size: 13px; font-weight: 700; color: #fff; }
+  .product-brand { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .product-price { font-size: 12px; color: #fbd38d; font-weight: 600; margin-top: 4px; }
+  .product-desc { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; line-height: 1.5; }
+
+  /* 时间线 */
+  .routine-timeline {
+    position: relative; padding-left: 24px;
+    border-left: 2px dashed rgba(255,255,255,0.15); margin-left: 8px;
+  }
+  .rt-item { position: relative; padding-bottom: 18px; }
+  .rt-item:last-child { padding-bottom: 0; }
+  .rt-dot {
+    position: absolute; left: -31px; top: 2px;
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 3px solid; background: #1a1a2e;
+  }
+  .rt-dot.morning { border-color: #fbd38d; }
+  .rt-dot.noon { border-color: #fc8181; }
+  .rt-dot.night { border-color: #9f7aea; }
+  .rt-dot.green { border-color: #68d391; }
+  .rt-time { font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 600; }
+  .rt-title { font-size: 15px; font-weight: 700; color: #fff; margin: 2px 0; }
+  .rt-desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* 标签 */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 10px;
+    font-weight: 600;
+  }
+  .tag.pink { background: rgba(245,87,108,0.15); color: #f56c8d; }
+  .tag.blue { background: rgba(66,153,225,0.15); color: #63b3ed; }
+  .tag.green { background: rgba(72,187,120,0.15); color: #68d391; }
+  .tag.yellow { background: rgba(236,201,75,0.15); color: #ecc94b; }
+  .tag.purple { background: rgba(159,122,234,0.15); color: #b794f4; }
+
+  /* 进度条 */
+  .progress-bar {
+    width: 100%; height: 6px; background: rgba(255,255,255,0.08);
+    border-radius: 3px; margin-top: 8px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+
+  /* 饮食卡片 */
+  .meal-card {
+    background: rgba(255,255,255,0.04); border-radius: 14px;
+    padding: 14px; margin-top: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .meal-title { font-size: 13px; font-weight: 700; color: #fbd38d; margin-bottom: 6px; }
+  .meal-items { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.8; }
+
+  /* 运动计划表 */
+  .workout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .workout-item {
+    background: rgba(255,255,255,0.04); border-radius: 12px;
+    padding: 12px; border: 1px solid rgba(255,255,255,0.06);
+  }
+  .workout-day { font-size: 11px; color: rgba(255,255,255,0.4); }
+  .workout-name { font-size: 14px; font-weight: 700; color: #fff; margin: 3px 0; }
+  .workout-detail { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  /* 对比卡 */
+  .compare-card {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;
+  }
+  .compare-side {
+    border-radius: 14px; padding: 14px; text-align: center;
+  }
+  .compare-bad {
+    background: rgba(245,87,108,0.08); border: 1px solid rgba(245,87,108,0.2);
+  }
+  .compare-good {
+    background: rgba(72,187,120,0.08); border: 1px solid rgba(72,187,120,0.2);
+  }
+  .compare-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .compare-bad .compare-title { color: #fc8181; }
+  .compare-good .compare-title { color: #68d391; }
+  .compare-list { list-style: none; padding: 0; }
+  .compare-list li { font-size: 12px; color: rgba(255,255,255,0.6); padding: 3px 0; }
+
+  /* 汇总 */
+  .summary {
+    background: linear-gradient(135deg, rgba(245,87,108,0.1), rgba(159,122,234,0.1));
+    border: 1px solid rgba(245,87,108,0.2);
+    border-radius: 20px; padding: 24px; margin: 24px 0; text-align: center;
+  }
+  .summary h3 { color: #fff; font-size: 18px; margin-bottom: 16px; }
+  .summary-timeline { display: flex; justify-content: space-around; margin-top: 16px; }
+  .summary-phase { text-align: center; }
+  .summary-phase .week { font-size: 20px; font-weight: 900; color: #fbd38d; }
+  .summary-phase .desc { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* 提醒卡 */
+  .reminder-card {
+    background: rgba(251,211,141,0.08);
+    border: 1px solid rgba(251,211,141,0.2);
+    border-radius: 16px; padding: 16px; margin-bottom: 16px;
+  }
+  .reminder-card h4 { font-size: 14px; color: #fbd38d; margin-bottom: 8px; }
+  .reminder-card p { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+
+  /* 底部 */
+  .footer {
+    text-align: center; color: rgba(255,255,255,0.2);
+    font-size: 11px; padding: 30px 0 20px;
+  }
+
+  /* 分隔 */
+  .section-gap { height: 32px; }
+  .divider {
+    height: 1px; margin: 16px 0;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  /* 色块 */
+  .bg-skin { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .bg-eye { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .bg-body { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .bg-spirit { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+  /* 知识卡 */
+  .knowledge-card {
+    background: rgba(102,126,234,0.08);
+    border: 1px solid rgba(102,126,234,0.2);
+    border-radius: 14px; padding: 14px; margin-top: 12px;
+  }
+  .knowledge-card h4 { font-size: 13px; color: #63b3ed; margin-bottom: 6px; }
+  .knowledge-card p { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* 每日流程 */
+  .daily-flow {
+    display: flex; align-items: center; gap: 4px;
+    flex-wrap: wrap; margin-top: 12px;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.06); border-radius: 8px;
+    padding: 4px 10px; font-size: 11px; color: rgba(255,255,255,0.7);
+  }
+  .flow-arrow { color: rgba(255,255,255,0.2); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 封面 -->
+  <div class="hero">
+    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=500&fit=crop&q=80" alt="颜值提升" loading="lazy">
+    <div class="hero-overlay">
+      <h1>✨ 颜值提升计划</h1>
+      <p>从皮肤、眼圈、身材、精气神四个维度<br>系统性地让自己变得更好</p>
+    </div>
+  </div>
+
+  <!-- 四大目标 -->
+  <div class="goals-bar">
+    <div class="goal-item">
+      <span class="goal-icon">🧴</span>
+      <span class="goal-label">美白提亮</span>
+    </div>
+    <div class="goal-item">
+      <span class="goal-icon">👁️</span>
+      <span class="goal-label">淡化黑眼圈</span>
+    </div>
+    <div class="goal-item">
+      <span class="goal-icon">💪</span>
+      <span class="goal-label">降低体脂</span>
+    </div>
+    <div class="goal-item">
+      <span class="goal-icon">⚡</span>
+      <span class="goal-label">精气神UP</span>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 模块一：美白护肤 -->
+  <!-- ============================== -->
+  <div class="module-header">
+    <div class="module-number bg-skin">1</div>
+    <div>
+      <h2>美白护肤</h2>
+      <div class="subtitle">天生偏黑不怕，后天防晒+提亮才是王道</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 先搞清楚原理</h3>
+    <p>你说天生偏黑，这是基因决定的<strong>基础肤色</strong>，改不了太多。但你说"更容易黑"，这是<strong>紫外线导致的黑色素沉淀</strong>，完全可以改善！</p>
+    <p style="margin-top:8px;">核心策略：<strong>防晒（70%）</strong> + <strong>美白精华（20%）</strong> + <strong>内调（10%）</strong></p>
+    <div class="progress-bar"><div class="progress-fill" style="width:70%;background:linear-gradient(90deg,#f093fb,#f5576c);"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-size:10px;color:rgba(255,255,255,0.4);">防晒 70%</span>
+      <span style="font-size:10px;color:rgba(255,255,255,0.4);">精华 20%</span>
+      <span style="font-size:10px;color:rgba(255,255,255,0.4);">内调 10%</span>
+    </div>
+
+    <div class="knowledge-card">
+      <h4>💡 为什么防晒是第一位？</h4>
+      <p>不防晒就美白 = 一边倒水一边漏水。紫外线中的UVA会穿透云层和玻璃，即使阴天室内也在让你变黑。每天涂防晒比买再贵的精华都有用。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>☀️ 防晒方案（最重要！）</h3>
+    <div class="routine-timeline">
+      <div class="rt-item">
+        <div class="rt-dot morning"></div>
+        <div class="rt-time">每天早上出门前15分钟</div>
+        <div class="rt-title">涂防晒霜</div>
+        <div class="rt-desc">SPF50+ PA++++ 的防晒霜，一元硬币大小的量涂满全脸和脖子。<strong>一年四季都要涂！阴天也要涂！</strong></div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot noon"></div>
+        <div class="rt-time">中午 12:00-14:00</div>
+        <div class="rt-title">补涂防晒</div>
+        <div class="rt-desc">出汗或者过了3-4小时就要补涂。嫌麻烦可以用防晒喷雾快速补。</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot green"></div>
+        <div class="rt-time">日常出行</div>
+        <div class="rt-title">物理防晒</div>
+        <div class="rt-desc">遮阳帽 + 墨镜 + 防晒冰袖。物理遮挡永远是最有效的防晒方式。</div>
+      </div>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-item">
+        <div class="product-emoji">🧴</div>
+        <div class="product-name">安热沙小金瓶</div>
+        <div class="product-brand">ANESSA</div>
+        <div class="product-price">¥198/60ml</div>
+        <div class="product-desc">防水防汗王者<br>户外运动首选</div>
+      </div>
+      <div class="product-item">
+        <div class="product-emoji">🧪</div>
+        <div class="product-name">理肤泉大哥大</div>
+        <div class="product-brand">La Roche-Posay</div>
+        <div class="product-price">¥189/50ml</div>
+        <div class="product-desc">清爽不油腻<br>日常通勤首选</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✨ 美白精华方案</h3>
+    <p>选对成分很重要！男生护肤越简单越好，不用搞一堆瓶瓶罐罐。</p>
+
+    <div class="product-grid">
+      <div class="product-item">
+        <div class="product-emoji">💧</div>
+        <div class="product-name">烟酰胺精华</div>
+        <div class="product-brand">The Ordinary 10%</div>
+        <div class="product-price">¥69/30ml</div>
+        <div class="product-desc">美白界扛把子<br>抑制黑色素转运</div>
+      </div>
+      <div class="product-item">
+        <div class="product-emoji">🍊</div>
+        <div class="product-name">VC精华</div>
+        <div class="product-brand">修丽可CE</div>
+        <div class="product-price">¥398/30ml（平替¥89）</div>
+        <div class="product-desc">抗氧化+提亮<br>早上用效果最好</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="margin-top:12px;">🌙 每日护肤流程（极简版）</h3>
+    <p style="margin-bottom:8px;">男生不用太复杂，4步搞定：</p>
+    <div class="daily-flow">
+      <span class="flow-step">🧼 洗面奶</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">💧 美白精华</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">🧴 面霜</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">☀️ 防晒</span>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:rgba(255,255,255,0.4);">晚上不用涂防晒，可以加一步：爽肤水 → 烟酰胺精华 → 面霜</p>
+  </div>
+
+  <div class="card">
+    <h3>🥗 内调美白</h3>
+    <p>吃对东西也能辅助提亮肤色：</p>
+    <div class="compare-card">
+      <div class="compare-side compare-good">
+        <div class="compare-title">✅ 多吃</div>
+        <ul class="compare-list">
+          <li>🍅 番茄（番茄红素）</li>
+          <li>🥝 猕猴桃（VC之王）</li>
+          <li>🍋 柠檬水</li>
+          <li>🫐 蓝莓（花青素）</li>
+          <li>🥦 西兰花</li>
+        </ul>
+      </div>
+      <div class="compare-side compare-bad">
+        <div class="compare-title">❌ 少吃</div>
+        <ul class="compare-list">
+          <li>🥕 大量胡萝卜素</li>
+          <li>🍊 大量芒果/橙子</li>
+          <li>☕ 浓咖啡</li>
+          <li>🍺 酒精</li>
+          <li>🍟 高糖高油食物</li>
+        </ul>
+      </div>
+    </div>
+    <div class="knowledge-card">
+      <h4>⚠️ 注意</h4>
+      <p>柠檬水不要白天大量喝完就晒太阳！柠檬中的呋喃香豆素可能增加光敏感性。晚上喝最安全。</p>
+    </div>
+  </div>
+
+  <div class="section-gap"></div>
+
+  <!-- ============================== -->
+  <!-- 模块二：黑眼圈修复 -->
+  <!-- ============================== -->
+  <div class="module-header">
+    <div class="module-number bg-eye">2</div>
+    <div>
+      <h2>黑眼圈修复</h2>
+      <div class="subtitle">熬夜是元凶，但不止靠早睡就能解决</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 黑眼圈类型自测</h3>
+    <p>用手指轻轻拉平下眼皮，观察颜色变化：</p>
+    <div class="product-grid" style="margin-top:12px;">
+      <div class="product-item" style="border-color:rgba(102,126,234,0.3);">
+        <div class="product-emoji">🔵</div>
+        <div class="product-name">血管型（青色）</div>
+        <div class="product-desc">拉平后变淡<br><strong>你最可能是这种</strong><br>熬夜→血液循环差</div>
+      </div>
+      <div class="product-item" style="border-color:rgba(159,122,234,0.3);">
+        <div class="product-emoji">🟤</div>
+        <div class="product-name">色素型（棕色）</div>
+        <div class="product-desc">拉平后不变<br>色素沉淀导致<br>需要美白淡化</div>
+      </div>
+    </div>
+    <div class="knowledge-card">
+      <h4>💡 你的情况分析</h4>
+      <p>你长期熬夜到凌晨2点，大概率是<strong>血管型黑眼圈</strong>为主，可能混合一点色素型。好消息是：血管型通过改善作息+促进循环是可以明显改善的！</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛌 核心方案：改善睡眠</h3>
+    <p>你已经有了<strong>「1点入睡计划」</strong>，这就是治黑眼圈的最强武器！</p>
+    <div class="reminder-card" style="margin-top:12px;">
+      <h4>🔗 联动你的入睡计划</h4>
+      <p>23:30 开始收尾 → 23:50 放下手机洗漱 → 00:15 上床 → 00:30 必须闭眼<br><br>
+      <strong>目标：每天睡满 7-8 小时</strong>（1:00入睡 → 9:00起床 = 8小时）<br>
+      坚持2-3周，黑眼圈会有明显改善！</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👁️ 眼部护理方案</h3>
+    <div class="routine-timeline">
+      <div class="rt-item">
+        <div class="rt-dot morning"></div>
+        <div class="rt-time">早上起床后</div>
+        <div class="rt-title">冷敷 + 眼霜</div>
+        <div class="rt-desc">用冰勺子/冰眼贴敷5分钟（收缩血管消肿），然后涂含咖啡因的眼霜</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot night"></div>
+        <div class="rt-time">晚上睡前</div>
+        <div class="rt-title">热敷 + 按摩 + 眼霜</div>
+        <div class="rt-desc">蒸汽眼罩热敷15分钟（促进血液循环），然后用无名指轻轻点按眼周，涂视黄醇眼霜</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot green"></div>
+        <div class="rt-time">每周2-3次</div>
+        <div class="rt-title">眼膜急救</div>
+        <div class="rt-desc">贴含烟酰胺/维C的眼膜，15-20分钟，淡化色素沉淀</div>
+      </div>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-item">
+        <div class="product-emoji">☕</div>
+        <div class="product-name">咖啡因眼霜</div>
+        <div class="product-brand">The Ordinary</div>
+        <div class="product-price">¥59</div>
+        <div class="product-desc">消肿去青紫<br>早上用</div>
+      </div>
+      <div class="product-item">
+        <div class="product-emoji">😴</div>
+        <div class="product-name">蒸汽眼罩</div>
+        <div class="product-brand">花王</div>
+        <div class="product-price">¥49/12片</div>
+        <div class="product-desc">热敷促循环<br>睡前用超舒服</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-gap"></div>
+
+  <!-- ============================== -->
+  <!-- 模块三：降低体脂 -->
+  <!-- ============================== -->
+  <div class="module-header">
+    <div class="module-number bg-body" style="color:#1a1a2e;">3</div>
+    <div>
+      <h2>减脂塑形</h2>
+      <div class="subtitle">有肌肉基础 → 只需要降体脂就能脱胎换骨</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 你的优势分析</h3>
+    <p>你说有肌肉基础但觉得偏胖，这说明你的肌肉量不错，只是被一层脂肪盖住了。这其实是<strong>最好的起点</strong>！</p>
+    <p style="margin-top:8px;">减脂不减肌的核心公式：</p>
+    <div style="background:rgba(72,187,120,0.1);border-radius:12px;padding:14px;margin-top:10px;text-align:center;border:1px solid rgba(72,187,120,0.2);">
+      <div style="font-size:18px;font-weight:900;color:#68d391;">热量缺口 300-500 kcal/天</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;">= 每周减脂 0.3-0.5kg · 8周见效</div>
+    </div>
+
+    <div class="knowledge-card">
+      <h4>💡 为什么不建议节食？</h4>
+      <p>极端节食会让身体进入"饥荒模式"，代谢下降+肌肉流失，反弹更厉害。每天少吃300-500大卡就够了，相当于少喝一杯奶茶+少吃一包薯片。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🍽️ 减脂饮食方案</h3>
+    <p>你有肌肉基础，蛋白质一定要吃够！每公斤体重 1.6-2g 蛋白质。</p>
+
+    <div class="meal-card">
+      <div class="meal-title">🌅 早餐（~400kcal）</div>
+      <div class="meal-items">
+        2个鸡蛋（水煮/煎）+ 1片全麦面包 + 1杯无糖豆浆/牛奶<br>
+        或：燕麦粥 + 1个苹果 + 1勺蛋白粉
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-title">☀️ 午餐（~600kcal）</div>
+      <div class="meal-items">
+        一拳大小的米饭 + 一掌大小的鸡胸肉/鱼/牛肉 + 一大盘蔬菜<br>
+        食堂点菜：少油少盐，肉菜1:2比例
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-title">🌙 晚餐（~400kcal）</div>
+      <div class="meal-items">
+        半拳米饭/红薯 + 鸡胸肉/虾 + 蔬菜沙拉<br>
+        或：一碗鸡蛋蔬菜面（少油）
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-title">💪 加餐（训练后）</div>
+      <div class="meal-items">
+        1勺乳清蛋白粉 + 1根香蕉<br>
+        或：一盒脱脂酸奶 + 一小把坚果
+      </div>
+    </div>
+
+    <div class="compare-card">
+      <div class="compare-side compare-good">
+        <div class="compare-title">✅ 可以吃</div>
+        <ul class="compare-list">
+          <li>🥩 鸡胸肉/牛肉/鱼虾</li>
+          <li>🥚 鸡蛋（全蛋）</li>
+          <li>🥦 各种蔬菜</li>
+          <li>🍠 红薯/糙米/燕麦</li>
+          <li>🥑 适量好脂肪</li>
+        </ul>
+      </div>
+      <div class="compare-side compare-bad">
+        <div class="compare-title">❌ 戒掉/少吃</div>
+        <ul class="compare-list">
+          <li>🧋 奶茶（一杯=跑5km）</li>
+          <li>🍟 炸鸡/薯条</li>
+          <li>🍰 蛋糕/甜品</li>
+          <li>🥤 含糖饮料</li>
+          <li>🍺 啤酒（啤酒肚）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏋️ 运动方案（一周计划）</h3>
+    <p>你有肌肉基础，建议：<strong>力量训练为主 + 适量有氧</strong>，保住肌肉的同时燃脂。</p>
+
+    <div class="workout-grid">
+      <div class="workout-item">
+        <div class="workout-day">周一</div>
+        <div class="workout-name">🏋️ 胸 + 三头</div>
+        <div class="workout-detail">卧推4组×12<br>飞鸟3组×15<br>绳索下压3组×15</div>
+      </div>
+      <div class="workout-item">
+        <div class="workout-day">周二</div>
+        <div class="workout-name">🏃 有氧日</div>
+        <div class="workout-detail">HIIT 20分钟<br>或慢跑30分钟<br>心率130-150</div>
+      </div>
+      <div class="workout-item">
+        <div class="workout-day">周三</div>
+        <div class="workout-name">🏋️ 背 + 二头</div>
+        <div class="workout-detail">引体向上4组×8<br>划船3组×12<br>弯举3组×15</div>
+      </div>
+      <div class="workout-item">
+        <div class="workout-day">周四</div>
+        <div class="workout-name">😴 休息</div>
+        <div class="workout-detail">肌肉修复日<br>可以散步30分钟<br>拉伸放松</div>
+      </div>
+      <div class="workout-item">
+        <div class="workout-day">周五</div>
+        <div class="workout-name">🏋️ 腿 + 肩</div>
+        <div class="workout-detail">深蹲4组×10<br>腿举3组×12<br>肩推3组×12</div>
+      </div>
+      <div class="workout-item">
+        <div class="workout-day">周六</div>
+        <div class="workout-name">🏃 有氧日</div>
+        <div class="workout-detail">游泳/跳绳/骑车<br>40-60分钟<br>中低强度</div>
+      </div>
+      <div class="workout-item" style="grid-column:1/3;">
+        <div class="workout-day">周日</div>
+        <div class="workout-name">😴 完全休息</div>
+        <div class="workout-detail">好好休息，吃顿好的补充一下（但别暴饮暴食哦）</div>
+      </div>
+    </div>
+
+    <div class="reminder-card" style="margin-top:12px;">
+      <h4>🔥 HIIT推荐动作（20分钟搞定）</h4>
+      <p>开合跳30秒 → 休息15秒 → 波比跳30秒 → 休息15秒 → 高抬腿30秒 → 休息15秒 → 登山跑30秒 → 休息15秒<br><br>循环4轮 = 20分钟 ≈ 消耗300kcal（比慢跑1小时还多！）</p>
+    </div>
+  </div>
+
+  <div class="section-gap"></div>
+
+  <!-- ============================== -->
+  <!-- 模块四：精气神提升 -->
+  <!-- ============================== -->
+  <div class="module-header">
+    <div class="module-number bg-spirit" style="color:#1a1a2e;">4</div>
+    <div>
+      <h2>精气神提升</h2>
+      <div class="subtitle">眼神有神 · 气质拉满 · 由内而外的改变</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👀 让眼睛更有神</h3>
+    <p>眼神无神 = 熬夜 + 长期看屏幕 + 缺乏运动。改善方案：</p>
+    <div class="routine-timeline" style="margin-top:12px;">
+      <div class="rt-item">
+        <div class="rt-dot morning"></div>
+        <div class="rt-time">每天</div>
+        <div class="rt-title">20-20-20 护眼法则</div>
+        <div class="rt-desc">每看屏幕20分钟 → 看20英尺（6米）远的地方 → 持续20秒。减少眼疲劳，让眼睛更清澈有神。</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot green"></div>
+        <div class="rt-time">每天5分钟</div>
+        <div class="rt-title">眼球操</div>
+        <div class="rt-desc">上下左右转动眼球各10次 → 顺时针逆时针各转10圈 → 远近交替对焦10次。锻炼眼部肌肉，眼神更灵活有力。</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot night"></div>
+        <div class="rt-time">每天</div>
+        <div class="rt-title">减少屏幕时间</div>
+        <div class="rt-desc">手机屏幕使用时间争取控制在4小时以内。蓝光会让眼睛干涩无神，尤其是睡前！</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 精神状态调整</h3>
+    <div class="routine-timeline">
+      <div class="rt-item">
+        <div class="rt-dot morning"></div>
+        <div class="rt-time">每天早上</div>
+        <div class="rt-title">☀️ 晒10分钟太阳</div>
+        <div class="rt-desc">起床后去阳台/窗边晒10分钟自然光。阳光会激活血清素分泌，让你一整天精神饱满、心情好。这是提升精气神最简单有效的方法！</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot green"></div>
+        <div class="rt-time">每天</div>
+        <div class="rt-title">💧 喝够2L水</div>
+        <div class="rt-desc">缺水会导致疲劳、皮肤暗沉、注意力下降。买个大水壶放桌上，随时喝。</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot night"></div>
+        <div class="rt-time">每周3次</div>
+        <div class="rt-title">🧘 冥想5分钟</div>
+        <div class="rt-desc">闭眼深呼吸，专注呼吸本身。减少焦虑，让眼神更沉稳有力。推荐App：潮汐、小睡眠。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🪞 体态矫正</h3>
+    <p>好的体态能让你看起来<strong>瞬间高5cm、瘦5斤</strong>。很多人不是长得不好看，是体态拉垮了气质。</p>
+    <div class="compare-card">
+      <div class="compare-side compare-bad">
+        <div class="compare-title">❌ 坏体态</div>
+        <ul class="compare-list">
+          <li>🦴 含胸驼背</li>
+          <li>🦴 头前伸（乌龟脖）</li>
+          <li>🦴 骨盆前倾</li>
+          <li>🦴 高低肩</li>
+        </ul>
+      </div>
+      <div class="compare-side compare-good">
+        <div class="compare-title">✅ 矫正方法</div>
+        <ul class="compare-list">
+          <li>🏋️ 靠墙站5分钟/天</li>
+          <li>🏋️ 面壁天使3组×15</li>
+          <li>🏋️ 猫牛式拉伸</li>
+          <li>🏋️ 死虫子动作</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-gap"></div>
+
+  <!-- ============================== -->
+  <!-- 汇总时间线 -->
+  <!-- ============================== -->
+  <div class="summary">
+    <h3>📅 预期效果时间线</h3>
+    <p style="font-size:12px;color:rgba(255,255,255,0.5);">坚持执行，你会在以下时间节点看到变化</p>
+    <div class="summary-timeline">
+      <div class="summary-phase">
+        <div class="week">1周</div>
+        <div class="desc">精神变好<br>眼神有光</div>
+      </div>
+      <div class="summary-phase">
+        <div class="week">4周</div>
+        <div class="desc">黑眼圈变淡<br>体重↓2kg</div>
+      </div>
+      <div class="summary-phase">
+        <div class="week">8周</div>
+        <div class="desc">肤色提亮<br>线条明显</div>
+      </div>
+      <div class="summary-phase">
+        <div class="week">12周</div>
+        <div class="desc">脱胎换骨<br>判若两人</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 每日执行清单 -->
+  <div class="card">
+    <h3>📋 每日执行清单</h3>
+    <p style="margin-bottom:12px;">把这些变成习惯，每天打卡：</p>
+    <div class="routine-timeline">
+      <div class="rt-item">
+        <div class="rt-dot morning"></div>
+        <div class="rt-time">🌅 起床后</div>
+        <div class="rt-title">晨间流程（15分钟）</div>
+        <div class="rt-desc">① 晒太阳10分钟 ② 冷水洗脸 ③ 涂美白精华+面霜+防晒 ④ 冰敷眼周+涂咖啡因眼霜 ⑤ 喝一大杯温水</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot noon"></div>
+        <div class="rt-time">☀️ 白天</div>
+        <div class="rt-title">日间习惯</div>
+        <div class="rt-desc">① 补涂防晒 ② 20-20-20护眼 ③ 喝够2L水 ④ 健康饮食（高蛋白低糖） ⑤ 注意体态</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot green"></div>
+        <div class="rt-time">💪 下班后</div>
+        <div class="rt-title">运动时间（45-60分钟）</div>
+        <div class="rt-desc">按周计划执行力量训练/有氧运动，训练后补充蛋白质</div>
+      </div>
+      <div class="rt-item">
+        <div class="rt-dot night"></div>
+        <div class="rt-time">🌙 睡前</div>
+        <div class="rt-title">夜间流程（20分钟）</div>
+        <div class="rt-desc">① 23:30收尾手机 ② 洗脸+涂烟酰胺精华+面霜 ③ 蒸汽眼罩热敷+涂眼霜 ④ 00:30前必须闭眼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 投入成本 -->
+  <div class="card">
+    <h3>💰 初始投入清单</h3>
+    <p>不用一次买齐，先买最重要的防晒和洗面奶就行：</p>
+    <div class="product-grid" style="grid-template-columns:1fr;">
+      <div class="product-item" style="display:flex;justify-content:space-between;align-items:center;text-align:left;">
+        <div>
+          <div class="product-name">☀️ 防晒霜（必买）</div>
+          <div class="product-desc">安热沙/理肤泉</div>
+        </div>
+        <div class="product-price">¥189-198</div>
+      </div>
+      <div class="product-item" style="display:flex;justify-content:space-between;align-items:center;text-align:left;">
+        <div>
+          <div class="product-name">🧼 氨基酸洗面奶</div>
+          <div class="product-desc">芙丽芳丝/珂润</div>
+        </div>
+        <div class="product-price">¥99-128</div>
+      </div>
+      <div class="product-item" style="display:flex;justify-content:space-between;align-items:center;text-align:left;">
+        <div>
+          <div class="product-name">💧 烟酰胺精华</div>
+          <div class="product-desc">The Ordinary 10%</div>
+        </div>
+        <div class="product-price">¥69</div>
+      </div>
+      <div class="product-item" style="display:flex;justify-content:space-between;align-items:center;text-align:left;">
+        <div>
+          <div class="product-name">☕ 咖啡因眼霜</div>
+          <div class="product-desc">The Ordinary</div>
+        </div>
+        <div class="product-price">¥59</div>
+      </div>
+      <div class="product-item" style="display:flex;justify-content:space-between;align-items:center;text-align:left;">
+        <div>
+          <div class="product-name">😴 蒸汽眼罩</div>
+          <div class="product-desc">花王 12片装</div>
+        </div>
+        <div class="product-price">¥49</div>
+      </div>
+      <div class="product-item" style="display:flex;justify-content:space-between;align-items:center;text-align:left;">
+        <div>
+          <div class="product-name">🧴 保湿面霜</div>
+          <div class="product-desc">珂润/CeraVe</div>
+        </div>
+        <div class="product-price">¥89-128</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+      <div style="color:rgba(255,255,255,0.4);font-size:12px;">首月总投入</div>
+      <div style="color:#fbd38d;font-size:24px;font-weight:800;margin-top:4px;">约 ¥550-630</div>
+      <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-top:4px;">之后每月只需补防晒+眼罩 ≈ ¥200</div>
+    </div>
+  </div>
+
+  <div class="reminder-card">
+    <h4>⚡ 老板，最后说句大实话</h4>
+    <p>这四个模块里，<strong>改善睡眠</strong>是所有效果的基础。你现在凌晨2点还在跟我聊天这件事本身，就是你黑眼圈重+眼神无神+皮肤暗沉的最大原因 😂<br><br>
+    所以！执行优先级：<br>
+    <strong>① 早睡 > ② 防晒 > ③ 运动 > ④ 护肤品</strong><br><br>
+    先把作息调好，其他的慢慢加上去，不要一次全上，容易放弃。第一周只做「早睡+涂防晒」就够了！</p>
+  </div>
+
+  <div class="footer">
+    Made with ❤️ by Kira · 变帅是一场持久战，加油老板～
+  </div>
+
+</div>
+</body>
+</html>
