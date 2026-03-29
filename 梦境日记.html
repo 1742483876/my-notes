@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🌙 梦境日记</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: #070b1a;
+    min-height: 100vh;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+
+  /* 星空背景 */
+  .stars {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  }
+  .stars span {
+    position: absolute; display: block;
+    width: 2px; height: 2px; background: #fff;
+    border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite;
+    opacity: 0;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: var(--op); }
+  }
+
+  /* 流星 */
+  .meteor {
+    position: fixed; width: 2px; height: 80px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+    transform: rotate(-45deg); animation: meteorFall 4s linear infinite;
+    opacity: 0; z-index: 0;
+  }
+  @keyframes meteorFall {
+    0% { transform: translate(0, -100px) rotate(-45deg); opacity: 0; }
+    5% { opacity: 1; }
+    30% { opacity: 0; }
+    100% { transform: translate(-500px, 500px) rotate(-45deg); opacity: 0; }
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 480px; margin: 0 auto; padding: 20px 16px;
+  }
+
+  /* 月亮 */
+  .moon-wrap {
+    text-align: center; padding: 40px 0 20px;
+  }
+  .moon {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fef9c3, #fde68a, #f59e0b);
+    box-shadow: 0 0 40px rgba(251,191,36,0.3), 0 0 80px rgba(251,191,36,0.15), 0 0 120px rgba(251,191,36,0.08);
+    display: inline-block; position: relative;
+    animation: moonGlow 4s ease-in-out infinite;
+  }
+  .moon::after {
+    content: ''; position: absolute;
+    top: 15px; left: 25px; width: 20px; height: 20px;
+    border-radius: 50%; background: rgba(0,0,0,0.05);
+  }
+  @keyframes moonGlow {
+    0%, 100% { box-shadow: 0 0 40px rgba(251,191,36,0.3), 0 0 80px rgba(251,191,36,0.15); }
+    50% { box-shadow: 0 0 60px rgba(251,191,36,0.4), 0 0 100px rgba(251,191,36,0.2); }
+  }
+
+  .page-title {
+    text-align: center; margin-bottom: 8px;
+    font-size: 32px; font-weight: 900;
+    background: linear-gradient(135deg, #c4b5fd, #818cf8, #6366f1);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-subtitle {
+    text-align: center; font-size: 13px;
+    color: rgba(255,255,255,0.35); margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* 统计条 */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    margin-bottom: 28px;
+  }
+  .stat-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 14px 10px; text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .stat-num {
+    font-size: 24px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  /* 梦境卡片 */
+  .dream-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 24px; padding: 0; margin-bottom: 20px;
+    overflow: hidden; transition: all 0.3s;
+    backdrop-filter: blur(10px);
+  }
+  .dream-card:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+
+  /* 梦境视频/图片区域 */
+  .dream-visual {
+    width: 100%; height: 200px; position: relative;
+    overflow: hidden; background: linear-gradient(135deg, #1e1b4b, #312e81, #4338ca);
+  }
+  .dream-visual img, .dream-visual video {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .dream-visual .placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--grad1, #1e1b4b), var(--grad2, #312e81));
+  }
+  .placeholder-icon { font-size: 48px; margin-bottom: 8px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); }
+  .placeholder-text { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+  .dream-body { padding: 20px; }
+
+  .dream-date-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .dream-date {
+    font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .dream-mood {
+    font-size: 20px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .dream-title {
+    font-size: 20px; font-weight: 800; color: #fff;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+
+  .dream-content {
+    font-size: 14px; color: rgba(255,255,255,0.6);
+    line-height: 1.9; margin-bottom: 14px;
+    position: relative;
+  }
+  .dream-content::first-letter {
+    font-size: 28px; font-weight: 800;
+    color: #a78bfa; float: left;
+    line-height: 1; margin-right: 4px; margin-top: 4px;
+  }
+
+  /* 标签 */
+  .dream-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .dream-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 10px;
+    font-weight: 600;
+  }
+  .tag-fantasy { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .tag-adventure { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .tag-nightmare { background: rgba(239,68,68,0.15); color: #f87171; }
+  .tag-lucid { background: rgba(16,185,129,0.15); color: #34d399; }
+  .tag-romantic { background: rgba(236,72,153,0.15); color: #f472b6; }
+  .tag-peaceful { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .tag-weird { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .tag-flying { background: rgba(56,189,248,0.15); color: #38bdf8; }
+  .tag-work { background: rgba(148,163,184,0.15); color: #94a3b8; }
+
+  /* AI 解梦 */
+  .dream-analysis {
+    background: rgba(139,92,246,0.06);
+    border: 1px solid rgba(139,92,246,0.15);
+    border-radius: 14px; padding: 14px;
+  }
+  .dream-analysis h4 {
+    font-size: 13px; color: #a78bfa; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .dream-analysis p {
+    font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.8;
+  }
+
+  /* 视频标签 */
+  .video-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+    border-radius: 8px; padding: 4px 10px;
+    font-size: 11px; color: rgba(255,255,255,0.8);
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* 清醒度条 */
+  .clarity-bar {
+    display: flex; align-items: center; gap: 8px; margin-top: 12px;
+  }
+  .clarity-label { font-size: 11px; color: rgba(255,255,255,0.35); white-space: nowrap; }
+  .clarity-track {
+    flex: 1; height: 4px; background: rgba(255,255,255,0.06);
+    border-radius: 2px; overflow: hidden;
+  }
+  .clarity-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, #6366f1, #a78bfa);
+    transition: width 1s ease;
+  }
+  .clarity-value { font-size: 11px; color: #a78bfa; font-weight: 600; }
+
+  /* 空状态 */
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    color: rgba(255,255,255,0.25);
+  }
+  .empty-state .icon { font-size: 64px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 18px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .empty-state p { font-size: 13px; line-height: 1.8; }
+
+  /* 使用指南 */
+  .guide-card {
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.15);
+    border-radius: 20px; padding: 20px; margin-bottom: 20px;
+  }
+  .guide-card h3 { font-size: 16px; color: #fbbf24; margin-bottom: 12px; }
+  .guide-steps { list-style: none; padding: 0; }
+  .guide-steps li {
+    font-size: 13px; color: rgba(255,255,255,0.55);
+    padding: 8px 0; line-height: 1.7;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; gap: 10px;
+  }
+  .guide-steps li:last-child { border-bottom: none; }
+  .step-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(251,191,36,0.15); color: #fbbf24;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* 底部 */
+  .footer {
+    text-align: center; color: rgba(255,255,255,0.15);
+    font-size: 11px; padding: 40px 0 20px;
+  }
+
+  /* 分隔线 */
+  .month-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 28px 0 20px;
+  }
+  .month-divider::before, .month-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+  }
+  .month-divider span {
+    font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 600;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- 星空背景 -->
+<div class="stars" id="stars"></div>
+<div class="meteor" style="top:10%;left:70%;animation-delay:0s;"></div>
+<div class="meteor" style="top:5%;left:40%;animation-delay:2.5s;"></div>
+<div class="meteor" style="top:15%;left:85%;animation-delay:5s;"></div>
+
+<div class="container">
+
+  <!-- 月亮 -->
+  <div class="moon-wrap">
+    <div class="moon"></div>
+  </div>
+
+  <h1 class="page-title">梦境日记</h1>
+  <p class="page-subtitle">每个梦都值得被记住<br>在这里收集你夜晚的故事 ✨</p>
+
+  <!-- 统计 -->
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num" id="total-dreams">0</div>
+      <div class="stat-label">记录的梦</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="total-videos">0</div>
+      <div class="stat-label">梦境视频</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="streak-days">0</div>
+      <div class="stat-label">连续记录</div>
+    </div>
+  </div>
+
+  <!-- 使用指南 -->
+  <div class="guide-card">
+    <h3>💫 怎么用？</h3>
+    <ul class="guide-steps">
+      <li>
+        <span class="step-num">1</span>
+        <span>每天早上醒来<strong>10分钟内</strong>，把梦的内容告诉 Kira</span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span>Kira 会帮你整理记录、AI 解梦、生成标签</span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span>还会用 AI 把你的梦境生成一段梦幻视频 🎬</span>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <span>所有梦境都会展示在这个页面上，随时回看～</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 梦境列表 -->
+  <div id="dream-list"></div>
+
+</div>
+
+<script>
+// 生成星星
+(function() {
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('span');
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
+    star.style.setProperty('--op', (0.3 + Math.random() * 0.7));
+    star.style.animationDelay = Math.random() * 4 + 's';
+    if (Math.random() > 0.7) {
+      star.style.width = '3px';
+      star.style.height = '3px';
+    }
+    container.appendChild(star);
+  }
+})();
+
+// 梦境数据（由 Kira 维护更新）
+const DREAMS = [
+  {
+    id: 1,
+    date: "2026-03-30",
+    weekday: "周一",
+    title: "等待你的第一个梦… 🌙",
+    content: "这里还没有梦境记录哦～ 明天早上醒来的时候，在10分钟内把你的梦告诉 Kira，我会帮你记在这里！每一个梦都是独一无二的故事，值得被珍藏。",
+    mood: "🌟",
+    tags: ["开始"],
+    tagClasses: ["tag-peaceful"],
+    clarity: 0,
+    analysis: "你的梦境日记从今天开始！研究表明，记录梦境可以提高梦境回忆能力，甚至有助于实现清醒梦（lucid dream）。坚持记录，你会发现越来越多有趣的梦境模式～",
+    visual: {
+      type: "placeholder",
+      icon: "🌌",
+      text: "你的第一个梦境视频将出现在这里",
+      grad1: "#1e1b4b",
+      grad2: "#312e81"
+    }
+  }
+];
+
+// 梦境渲染
+function renderDreams() {
+  const list = document.getElementById('dream-list');
+  const totalDreams = document.getElementById('total-dreams');
+  const totalVideos = document.getElementById('total-videos');
+  const streakDays = document.getElementById('streak-days');
+
+  // 统计
+  const realDreams = DREAMS.filter(d => d.id !== 1 || DREAMS.length === 1);
+  const videoCount = DREAMS.filter(d => d.visual && d.visual.type === 'video').length;
+  totalDreams.textContent = DREAMS.length === 1 && DREAMS[0].tags[0] === '开始' ? 0 : DREAMS.length;
+  totalVideos.textContent = videoCount;
+
+  // 连续天数计算
+  let streak = 0;
+  if (DREAMS.length > 1 || (DREAMS.length === 1 && DREAMS[0].tags[0] !== '开始')) {
+    const dates = DREAMS.map(d => d.date).sort().reverse();
+    const today = new Date().toISOString().split('T')[0];
+    let checkDate = today;
+    for (const date of dates) {
+      if (date === checkDate) {
+        streak++;
+        const d = new Date(checkDate);
+        d.setDate(d.getDate() - 1);
+        checkDate = d.toISOString().split('T')[0];
+      }
+    }
+  }
+  streakDays.textContent = streak;
+
+  // 渲染卡片
+  let html = '';
+  let lastMonth = '';
+
+  const sortedDreams = [...DREAMS].sort((a, b) => b.date.localeCompare(a.date));
+
+  for (const dream of sortedDreams) {
+    const month = dream.date.substring(0, 7);
+    if (month !== lastMonth) {
+      const [y, m] = month.split('-');
+      html += `<div class="month-divider"><span>🌙 ${y}年${parseInt(m)}月</span></div>`;
+      lastMonth = month;
+    }
+
+    // 视觉区域
+    let visualHTML = '';
+    if (dream.visual) {
+      if (dream.visual.type === 'video') {
+        visualHTML = `
+          <div class="dream-visual">
+            <video src="${dream.visual.url}" poster="${dream.visual.poster || ''}" controls playsinline preload="metadata"></video>
+            <div class="video-badge">🎬 AI梦境视频</div>
+          </div>`;
+      } else if (dream.visual.type === 'image') {
+        visualHTML = `
+          <div class="dream-visual">
+            <img src="${dream.visual.url}" alt="梦境配图" loading="lazy">
+          </div>`;
+      } else {
+        visualHTML = `
+          <div class="dream-visual">
+            <div class="placeholder" style="--grad1:${dream.visual.grad1};--grad2:${dream.visual.grad2};">
+              <span class="placeholder-icon">${dream.visual.icon}</span>
+              <span class="placeholder-text">${dream.visual.text}</span>
+            </div>
+          </div>`;
+      }
+    }
+
+    // 标签
+    const tagsHTML = dream.tags.map((tag, i) =>
+      `<span class="dream-tag ${dream.tagClasses[i] || 'tag-fantasy'}">#${tag}</span>`
+    ).join('');
+
+    html += `
+      <div class="dream-card">
+        ${visualHTML}
+        <div class="dream-body">
+          <div class="dream-date-row">
+            <span class="dream-date">📅 ${dream.date} ${dream.weekday}</span>
+            <span class="dream-mood">${dream.mood}</span>
+          </div>
+          <div class="dream-title">${dream.title}</div>
+          <div class="dream-content">${dream.content}</div>
+          <div class="dream-tags">${tagsHTML}</div>
+          ${dream.analysis ? `
+          <div class="dream-analysis">
+            <h4>🔮 Kira 解梦</h4>
+            <p>${dream.analysis}</p>
+          </div>` : ''}
+          ${dream.clarity > 0 ? `
+          <div class="clarity-bar">
+            <span class="clarity-label">清醒度</span>
+            <div class="clarity-track">
+              <div class="clarity-fill" style="width:${dream.clarity}%"></div>
+            </div>
+            <span class="clarity-value">${dream.clarity}%</span>
+          </div>` : ''}
+        </div>
+      </div>`;
+  }
+
+  list.innerHTML = html;
+}
+
+renderDreams();
+</script>
+
+<div class="footer" style="position:relative;z-index:1;">
+  Made with 🌙 by Kira · 你的梦境守护者
+</div>
+
+</body>
+</html>
