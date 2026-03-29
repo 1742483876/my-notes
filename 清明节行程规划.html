@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 2026清明节行程规划 · 耒阳祭祖 + 郴州之旅</title>
+<style>
+  :root {
+    --green-dark: #2d5a27;
+    --green-main: #4a8c3f;
+    --green-light: #7bc96f;
+    --green-bg: #f0f7ee;
+    --orange: #e8913a;
+    --red: #e25555;
+    --blue: #4a90d9;
+    --gray-dark: #333;
+    --gray: #666;
+    --gray-light: #999;
+    --white: #fff;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --radius: 16px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: var(--green-bg);
+    color: var(--gray-dark);
+    line-height: 1.6;
+    padding-bottom: 60px;
+  }
+
+  /* Hero Banner */
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 50%, var(--green-light) 100%);
+    color: var(--white);
+    padding: 50px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '🌿';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.08;
+    top: -40px;
+    right: -30px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .hero .subtitle {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 20px;
+  }
+  .hero .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  /* Tab Navigation */
+  .tab-nav {
+    display: flex;
+    background: var(--white);
+    border-bottom: 2px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-nav button {
+    flex: 1;
+    min-width: 80px;
+    padding: 14px 10px;
+    border: none;
+    background: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-light);
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+  .tab-nav button.active {
+    color: var(--green-main);
+  }
+  .tab-nav button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 20%;
+    width: 60%;
+    height: 3px;
+    background: var(--green-main);
+    border-radius: 3px;
+  }
+
+  /* Tab Content */
+  .tab-content { display: none; padding: 16px; max-width: 800px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* Overview Timeline */
+  .overview-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .overview-card h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--green-main), var(--blue), var(--orange));
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 4px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green-main);
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 2px var(--green-main);
+  }
+  .timeline-item .date {
+    font-size: 12px;
+    color: var(--green-main);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .timeline-item .title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 2px 0;
+  }
+  .timeline-item .desc {
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  /* Day Detail Card */
+  .day-header {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+    padding: 20px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .day-header .day-label {
+    font-size: 12px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .day-header h2 {
+    font-size: 22px;
+    margin: 4px 0;
+  }
+  .day-header .day-desc {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+
+  .step-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--green-main);
+  }
+  .step-card.transport { border-left-color: var(--blue); }
+  .step-card.food { border-left-color: var(--orange); }
+  .step-card.hotel { border-left-color: #9b59b6; }
+  .step-card.scenic { border-left-color: var(--green-main); }
+
+  .step-card .step-time {
+    font-size: 12px;
+    color: var(--gray-light);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .step-card .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .step-card .step-desc {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .step-card .step-tip {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #fff8e1;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #f57f17;
+  }
+  .step-card .step-price {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 10px;
+    background: #e8f5e9;
+    color: var(--green-dark);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Map Section */
+  .map-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .map-section h3 {
+    padding: 16px 16px 8px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .map-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    background: #e8e8e8;
+  }
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Route Markers on custom map */
+  .route-visual {
+    padding: 16px;
+  }
+  .route-stop {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .route-stop .dot-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 24px;
+  }
+  .route-stop .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .route-stop .dot.start { background: var(--blue); }
+  .route-stop .dot.scenic { background: var(--green-main); }
+  .route-stop .dot.food { background: var(--orange); }
+  .route-stop .dot.hotel { background: #9b59b6; }
+  .route-stop .dot.end { background: var(--red); }
+  .route-stop .line {
+    width: 2px;
+    height: 30px;
+    background: #ddd;
+    margin: 2px 0;
+  }
+  .route-stop .line.dashed {
+    background: repeating-linear-gradient(to bottom, #ccc 0, #ccc 4px, transparent 4px, transparent 8px);
+  }
+  .route-stop .info h4 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .route-stop .info p {
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .route-stop .info .transport-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .transport-tag.train { background: #e3f2fd; color: #1565c0; }
+  .transport-tag.car { background: #fce4ec; color: #c62828; }
+  .transport-tag.walk { background: #e8f5e9; color: #2e7d32; }
+
+  /* Budget Table */
+  .budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  .budget-table th, .budget-table td {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .budget-table th {
+    background: var(--green-bg);
+    font-weight: 600;
+    color: var(--green-dark);
+  }
+  .budget-table tr:last-child td {
+    font-weight: 700;
+    color: var(--green-dark);
+    border-top: 2px solid var(--green-main);
+  }
+  .budget-table .price { text-align: right; font-weight: 600; }
+
+  /* Tips */
+  .tips-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tips-card h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tips-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .tips-card li {
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f5f5f5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .tips-card li:last-child { border-bottom: none; }
+  .tips-card li .icon { font-size: 16px; flex-shrink: 0; }
+
+  /* Photo spots */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .photo-spot {
+    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo-spot .emoji { font-size: 36px; margin-bottom: 6px; }
+  .photo-spot .name { font-size: 13px; font-weight: 600; }
+  .photo-spot .tag {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 22px; }
+    .tab-nav button { font-size: 12px; padding: 12px 6px; }
+    .map-container { height: 300px; }
+    .photo-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Floating back button */
+  .back-home {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--green-main);
+    color: white;
+    border: none;
+    font-size: 20px;
+    box-shadow: 0 4px 15px rgba(74,140,63,0.4);
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .back-home:active { transform: scale(0.9); }
+
+  /* Scenic highlight */
+  .scenic-highlight {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .scenic-highlight h4 {
+    font-size: 15px;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+  .scenic-highlight p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .scenic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .scenic-tags span {
+    padding: 3px 10px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    font-size: 11px;
+    color: var(--green-dark);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🌿 2026 清明节行程</h1>
+  <div class="subtitle">深圳 → 耒阳祭祖 → 郴州两日游 → 返深</div>
+  <div class="date-badge">📅 4月3日（周五）— 4月6日（周一）共4天</div>
+</div>
+
+<!-- Tab Nav -->
+<div class="tab-nav">
+  <button class="active" onclick="switchTab('overview')">📋 总览</button>
+  <button onclick="switchTab('day1')">🚄 Day1</button>
+  <button onclick="switchTab('day2')">🪦 Day2</button>
+  <button onclick="switchTab('day3')">🏔️ Day3</button>
+  <button onclick="switchTab('day4')">🌊 Day4</button>
+  <button onclick="switchTab('map')">🗺️ 地图</button>
+</div>
+
+<!-- ========== 总览 ========== -->
+<div id="overview" class="tab-content active">
+  <div class="overview-card">
+    <h3>📋 行程总览</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="date">4月3日 周五晚</div>
+        <div class="title">🚄 深圳北 → 耒阳西</div>
+        <div class="desc">G6184 18:53发车，21:12到达 | 二等座 ¥314.5</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">4月4日 周六（清明节）</div>
+        <div class="title">🪦 下乡祭祖</div>
+        <div class="desc">清明节当天回乡祭祖，晚上返回耒阳市区</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">4月5日 周日</div>
+        <div class="title">🏔️ 耒阳 → 郴州 · 高椅岭</div>
+        <div class="desc">高铁20min到郴州 → 高椅岭丹霞 → 裕后街美食 → 住东江湖</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">4月6日 周一</div>
+        <div class="title">🌊 东江湖晨雾 → 返回深圳</div>
+        <div class="desc">早起看雾漫小东江 → 龙景峡谷 → 高铁回深圳北</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Budget -->
+  <div class="overview-card">
+    <h3>💰 预算估算</h3>
+    <table class="budget-table">
+      <tr><th>项目</th><th class="price">费用</th></tr>
+      <tr><td>🚄 深圳北→耒阳西 高铁</td><td class="price">¥315</td></tr>
+      <tr><td>🚄 耒阳西→郴州西 高铁</td><td class="price">¥50</td></tr>
+      <tr><td>🚄 郴州西→深圳北 高铁</td><td class="price">¥265</td></tr>
+      <tr><td>🎫 高椅岭门票</td><td class="price">¥68</td></tr>
+      <tr><td>🎫 东江湖门票（含龙景峡谷）</td><td class="price">¥80</td></tr>
+      <tr><td>🏨 住宿2晚（耒阳+东江湖民宿）</td><td class="price">¥300~500</td></tr>
+      <tr><td>🍜 餐饮+市内交通</td><td class="price">¥300~500</td></tr>
+      <tr><td><strong>合计</strong></td><td class="price"><strong>¥1,400~1,700</strong></td></tr>
+    </table>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-card">
+    <h3>💡 出行提醒</h3>
+    <ul>
+      <li><span class="icon">🎫</span>清明节高铁票紧张，建议<strong>立即抢票</strong>！备选车次：G6026 18:23→20:38</li>
+      <li><span class="icon">🆓</span>4月4日0时至6日24时<strong>高速免费</strong>通行</li>
+      <li><span class="icon">🌅</span>东江湖晨雾4月正当季，6:00-9:00最佳，一定要早起！</li>
+      <li><span class="icon">👟</span>高椅岭龙脊背路段较陡，务必穿<strong>防滑鞋</strong></li>
+      <li><span class="icon">☀️</span>郴州4月气温18-26°C，带薄外套+防晒霜</li>
+      <li><span class="icon">📱</span>提前下载高德/百度地图离线包，山区信号弱</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========== Day1: 周五晚出发 ========== -->
+<div id="day1" class="tab-content">
+  <div class="day-header">
+    <div class="day-label">Day 1 · 4月3日 周五</div>
+    <h2>🚄 深圳北 → 耒阳西</h2>
+    <div class="day-desc">下班后直奔车站，高铁回家</div>
+  </div>
+
+  <div class="step-card transport">
+    <div class="step-time">18:00</div>
+    <div class="step-title">🏃 下班出发去深圳北站</div>
+    <div class="step-desc">建议提前30分钟到站，清明节客流量大，安检排队可能较长。可以在站内买个晚餐带上车吃。</div>
+  </div>
+
+  <div class="step-card transport">
+    <div class="step-time">18:53 - 21:12</div>
+    <div class="step-title">🚄 G6184 深圳北 → 耒阳西</div>
+    <div class="step-desc">
+      全程约2小时19分钟<br>
+      途经：深圳北 → 虎门 → 广州南 → 韶关 → 耒阳西
+    </div>
+    <div class="step-price">💺 二等座 ¥314.5</div>
+    <div class="step-tip">⚠️ 备选车次：G6026 18:23→20:38（更早一班）</div>
+  </div>
+
+  <div class="step-card hotel">
+    <div class="step-time">21:12</div>
+    <div class="step-title">🏠 到达耒阳西站，回家</div>
+    <div class="step-desc">到站后回家休息，准备明天祭祖的物品。早点睡，明天要早起下乡～</div>
+  </div>
+</div>
+
+<!-- ========== Day2: 清明祭祖 ========== -->
+<div id="day2" class="tab-content">
+  <div class="day-header" style="background: linear-gradient(135deg, #5d4037, #795548);">
+    <div class="day-label">Day 2 · 4月4日 周六 · 清明节</div>
+    <h2>🪦 下乡祭祖</h2>
+    <div class="day-desc">慎终追远，缅怀先人</div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-time">07:00</div>
+    <div class="step-title">🌅 早起准备</div>
+    <div class="step-desc">准备好祭祖用品（香烛、纸钱、鲜花、供品等），吃好早餐后出发下乡。</div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-time">08:00 - 12:00</div>
+    <div class="step-title">🪦 下乡祭祖</div>
+    <div class="step-desc">前往乡下老家扫墓祭祖。清明时节雨纷纷，记得带伞。山路可能泥泞，穿好走路的鞋子。</div>
+    <div class="step-tip">🔥 注意野外用火安全，文明祭扫</div>
+  </div>
+
+  <div class="step-card food">
+    <div class="step-time">12:00 - 13:00</div>
+    <div class="step-title">🍚 乡下午饭</div>
+    <div class="step-desc">在老家吃顿地道的家乡菜，跟亲戚们聊聊天。</div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-time">下午</div>
+    <div class="step-title">👨‍👩‍👧 陪伴家人</div>
+    <div class="step-desc">下午在家陪陪家人，或者在耒阳市区逛逛。晚上早点休息，明天出发去郴州～</div>
+  </div>
+
+  <div class="step-card hotel">
+    <div class="step-time">晚上</div>
+    <div class="step-title">🏠 回耒阳市区休息</div>
+    <div class="step-desc">准备好明天去郴州的行李，轻装出行。带好身份证、充电宝、防晒霜。</div>
+  </div>
+</div>
+
+<!-- ========== Day3: 郴州Day1 ========== -->
+<div id="day3" class="tab-content">
+  <div class="day-header" style="background: linear-gradient(135deg, #e65100, #ff8f00);">
+    <div class="day-label">Day 3 · 4月5日 周日</div>
+    <h2>🏔️ 耒阳 → 郴州 · 高椅岭</h2>
+    <div class="day-desc">丹霞奇观 + 裕后街美食</div>
+  </div>
+
+  <div class="step-card transport">
+    <div class="step-time">09:00</div>
+    <div class="step-title">🚄 耒阳西 → 郴州西</div>
+    <div class="step-desc">
+      高铁仅需约20分钟，班次很多，基本随到随走。<br>
+      到达郴州西站后，打车/网约车前往高椅岭（约30分钟车程）。
+    </div>
+    <div class="step-price">💺 二等座 ≈¥50</div>
+  </div>
+
+  <!-- Map for Chenzhou Day1 -->
+  <div class="map-section">
+    <h3>🗺️ 郴州Day1 路线地图</h3>
+    <div class="map-container">
+      <iframe src="https://uri.amap.com/marker?markers=113.016,25.799,郴州西站|113.023,25.695,高椅岭旅游区|113.015,25.770,裕后街|113.386,25.955,东江湖民宿&src=travel&callnative=0" allowfullscreen></iframe>
+    </div>
+    <div class="route-visual">
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot start"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 郴州西站</h4>
+          <p>高铁到达，出站打车</p>
+          <span class="transport-tag car">🚗 打车30min → 高椅岭</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot scenic"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 高椅岭旅游区</h4>
+          <p>游玩4-5小时 | 门票¥68</p>
+          <span class="transport-tag car">🚗 打车40min → 裕后街</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot food"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 裕后街（郴州老街）</h4>
+          <p>晚餐逛吃 | 1-2小时</p>
+          <span class="transport-tag car">🚗 打车1h → 东江湖</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot hotel"></div></div>
+        <div class="info">
+          <h4>📍 东江湖附近民宿</h4>
+          <p>入住休息，明早看晨雾</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenic-highlight">
+    <h4>🔴 高椅岭 · 必打卡景点</h4>
+    <p>郴州丹霞地貌的精华所在，裸露的红色岩体与碧绿水洼相互映衬，被称为"被上帝遗忘的地方"。</p>
+    <div class="scenic-tags">
+      <span>🦎 巨蜥湖</span>
+      <span>🐉 龙脊背</span>
+      <span>🪟 玻璃栈道</span>
+      <span>🎢 悬崖秋千</span>
+      <span>🏔️ 万寿山栈道</span>
+      <span>🧗 登天云梯</span>
+    </div>
+  </div>
+
+  <div class="step-card scenic">
+    <div class="step-time">10:00 - 16:00</div>
+    <div class="step-title">🏔️ 高椅岭旅游区</div>
+    <div class="step-desc">
+      <strong>推荐路线：</strong>游客中心 → 巨石镇 → 登天云梯 → 万寿山空中栈道 → 巨蜥湖（明信片打卡地）→ 悬崖秋千 → 龙脊背（精华段！两侧悬崖，超刺激）<br><br>
+      ⏱️ 全程约4-5小时，建议穿防滑鞋，带够水。
+    </div>
+    <div class="step-price">🎫 门票 ¥68（学生半价¥40）</div>
+    <div class="step-tip">📸 龙脊背是最佳拍照点，建议带无人机航拍！</div>
+  </div>
+
+  <div class="step-card food">
+    <div class="step-time">17:00 - 19:00</div>
+    <div class="step-title">🍜 裕后街 · 郴州美食</div>
+    <div class="step-desc">
+      郴州最有名的老街，红灯笼映郴江，夜景很美。<br><br>
+      <strong>必吃推荐：</strong><br>
+      🐟 <strong>棲鳳渡鱼粉</strong> — 郴州第一名小吃，鲜辣爽口<br>
+      🫓 <strong>油粑子</strong> — 酥脆金黄的传统小吃<br>
+      🦆 <strong>血鸭</strong> — 湘南特色，鲜香微辣<br>
+      🐔 <strong>烧鸡公</strong> — 柴火慢炖，超入味
+    </div>
+  </div>
+
+  <div class="step-card hotel">
+    <div class="step-time">20:00</div>
+    <div class="step-title">🏨 入住东江湖附近民宿</div>
+    <div class="step-desc">
+      从裕后街打车约1小时到东江湖/资兴市区。建议住在小东江景区附近，方便明天一早看晨雾。<br><br>
+      推荐搜索关键词：<strong>「东江湖民宿」「小东江附近住宿」</strong>
+    </div>
+    <div class="step-tip">⏰ 定好5:00的闹钟！明天要早起看晨雾！</div>
+  </div>
+</div>
+
+<!-- ========== Day4: 郴州Day2 + 返深 ========== -->
+<div id="day4" class="tab-content">
+  <div class="day-header" style="background: linear-gradient(135deg, #0277bd, #4fc3f7);">
+    <div class="day-label">Day 4 · 4月6日 周一</div>
+    <h2>🌊 东江湖晨雾 → 返回深圳</h2>
+    <div class="day-desc">雾漫小东江 · 龙景峡谷 · 高铁返深</div>
+  </div>
+
+  <!-- Map for Chenzhou Day2 -->
+  <div class="map-section">
+    <h3>🗺️ 郴州Day2 路线地图</h3>
+    <div class="map-container">
+      <iframe src="https://uri.amap.com/marker?markers=113.386,25.955,东江湖民宿|113.378,25.938,小东江2号站台|113.370,25.920,龙景峡谷|113.016,25.799,郴州西站&src=travel&callnative=0" allowfullscreen></iframe>
+    </div>
+    <div class="route-visual">
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot hotel"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 东江湖民宿</h4>
+          <p>早起5:00出发</p>
+          <span class="transport-tag walk">🚶 步行/景区大巴 → 2号站台</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot scenic"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 小东江 2号观景台</h4>
+          <p>看晨雾+渔夫撒网 | 6:00-9:00</p>
+          <span class="transport-tag walk">🚶 景区大巴 → 龙景峡谷</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot scenic"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 龙景峡谷</h4>
+          <p>看瀑布走浮桥 | 1-2小时</p>
+          <span class="transport-tag car">🚗 打车1h → 郴州西站</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot end"></div></div>
+        <div class="info">
+          <h4>📍 郴州西站 → 深圳北</h4>
+          <p>高铁约2小时到家</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenic-highlight" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">
+    <h4>🌊 小东江 · 雾漫仙境</h4>
+    <p>东江湖的晨雾是此生必看的美景之一！薄雾如轻纱般笼罩湖面，渔船在雾中穿行，渔夫撒网的瞬间阳光透过雾气洒在水面上，宛如一幅流动的水墨画。4月正是观雾最佳季节！</p>
+    <div class="scenic-tags">
+      <span>🌅 晨雾仙境</span>
+      <span>🐟 渔夫撒网</span>
+      <span>⛵ 乌篷船</span>
+      <span>📸 2号站台最佳</span>
+      <span>🕐 6:00-9:00</span>
+    </div>
+  </div>
+
+  <div class="step-card scenic">
+    <div class="step-time">05:30 - 09:00</div>
+    <div class="step-title">🌅 雾漫小东江</div>
+    <div class="step-desc">
+      <strong>最佳观赏攻略：</strong><br>
+      ⏰ 6点前入园（园区6点开门）<br>
+      🚌 坐景区大巴到<strong>2号站台</strong>下车（景观最好）<br>
+      🚶 沿观雾栈道往3号站台方向走<br>
+      🐟 6:30开始渔夫撒网，每隔15分钟一次<br>
+      📸 6点前大雾缭绕，6点后开始升腾，拍照绝佳！
+    </div>
+    <div class="step-price">🎫 线路1 ¥80（小东江+龙景峡谷）</div>
+  </div>
+
+  <div class="step-card scenic">
+    <div class="step-time">09:30 - 11:30</div>
+    <div class="step-title">🏞️ 龙景峡谷</div>
+    <div class="step-desc">
+      看完晨雾后前往龙景峡谷，俯瞰东江湖，看瀑布走水上浮桥。全程约2小时，沿途风景秀丽。<br><br>
+      亮点：鸳鸯瀑布、龙吟瀑布、水上浮桥
+    </div>
+  </div>
+
+  <div class="step-card food">
+    <div class="step-time">12:00 - 13:00</div>
+    <div class="step-title">🐟 午餐：东江湖烤鱼</div>
+    <div class="step-desc">
+      景区出来后在镇上吃午饭。东江湖的烤鱼是一绝，鲜嫩入味，几块钱一条，便宜又好吃！<br><br>
+      也可以尝尝当地的<strong>杀猪粉</strong>和<strong>鱼粉</strong>。
+    </div>
+  </div>
+
+  <div class="step-card transport">
+    <div class="step-time">14:00</div>
+    <div class="step-title">🚗 返回郴州西站</div>
+    <div class="step-desc">从东江湖/资兴打车回郴州西站，约1小时车程。建议提前叫好网约车。</div>
+  </div>
+
+  <div class="step-card transport">
+    <div class="step-time">17:08 或 19:45</div>
+    <div class="step-title">🚄 郴州西 → 深圳北</div>
+    <div class="step-desc">
+      <strong>推荐车次：</strong><br>
+      🔵 G1095：17:08发车 → 19:17到达（2h09m）<br>
+      🔵 G903：19:45发车 → 21:38到达（1h53m）<br><br>
+      选择哪班取决于你在东江湖玩多久～ 建议买晚班车，多玩会儿。
+    </div>
+    <div class="step-price">💺 二等座 ¥264.5</div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-time">19:17 / 21:38</div>
+    <div class="step-title">🏠 到达深圳北，回家休息</div>
+    <div class="step-desc">完美的清明假期结束～ 周二正常上班！</div>
+  </div>
+</div>
+
+<!-- ========== 地图总览 ========== -->
+<div id="map" class="tab-content">
+  <div class="map-section">
+    <h3>🗺️ 全程路线总览</h3>
+    <div class="map-container">
+      <iframe src="https://uri.amap.com/marker?markers=114.028,22.609,深圳北站|112.853,26.411,耒阳西站|113.016,25.799,郴州西站|113.023,25.695,高椅岭|113.015,25.770,裕后街|113.386,25.955,东江湖景区&src=travel&callnative=0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="overview-card">
+    <h3>🚄 高铁路线</h3>
+    <div class="route-visual">
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot start"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 深圳北站</h4>
+          <p>4月3日 18:53出发</p>
+          <span class="transport-tag train">🚄 G6184 · 2h19m · ¥314.5</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot scenic"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 耒阳西站</h4>
+          <p>4月3日 21:12到达 → 4月4日祭祖</p>
+          <span class="transport-tag train">🚄 约20min · ¥50</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot scenic"></div><div class="line"></div></div>
+        <div class="info">
+          <h4>📍 郴州西站</h4>
+          <p>4月5-6日 郴州两日游</p>
+          <span class="transport-tag train">🚄 G1095/G903 · 约2h · ¥264.5</span>
+        </div>
+      </div>
+      <div class="route-stop">
+        <div class="dot-line"><div class="dot end"></div></div>
+        <div class="info">
+          <h4>📍 深圳北站</h4>
+          <p>4月6日 19:17/21:38到达</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chenzhou Detail Map -->
+  <div class="map-section">
+    <h3>🏔️ 郴州景点地图</h3>
+    <div class="map-container">
+      <iframe src="https://uri.amap.com/marker?markers=113.016,25.799,郴州西站,0|113.023,25.695,高椅岭旅游区,1|113.015,25.770,裕后街(美食街),2|113.386,25.955,东江湖景区,3|113.378,25.938,小东江观雾栈道,4|113.370,25.920,龙景峡谷,5&src=travel&callnative=0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- Photo Spots -->
+  <div class="overview-card">
+    <h3>📸 郴州必打卡拍照点</h3>
+    <div class="photo-grid">
+      <div class="photo-spot">
+        <div class="emoji">🦎</div>
+        <div class="name">巨蜥湖</div>
+        <div class="tag">高椅岭 · 明信片机位</div>
+      </div>
+      <div class="photo-spot">
+        <div class="emoji">🐉</div>
+        <div class="name">龙脊背</div>
+        <div class="tag">高椅岭 · 惊险刺激</div>
+      </div>
+      <div class="photo-spot">
+        <div class="emoji">🌫️</div>
+        <div class="name">雾漫小东江</div>
+        <div class="tag">东江湖 · 水墨仙境</div>
+      </div>
+      <div class="photo-spot">
+        <div class="emoji">🐟</div>
+        <div class="name">渔夫撒网</div>
+        <div class="tag">2号站台 · 6:30开始</div>
+      </div>
+      <div class="photo-spot">
+        <div class="emoji">🏮</div>
+        <div class="name">裕后街夜景</div>
+        <div class="tag">红灯笼映郴江</div>
+      </div>
+      <div class="photo-spot">
+        <div class="emoji">💧</div>
+        <div class="name">龙景峡谷瀑布</div>
+        <div class="tag">东江湖 · 水上浮桥</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Back Home Button -->
+<a href="index.html" class="back-home" title="返回首页">🏠</a>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top: document.querySelector('.tab-nav').offsetTop - 10, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
