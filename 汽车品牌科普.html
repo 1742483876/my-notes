@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚗 汽车品牌速查手册 · 从BBA到超跑一文搞懂</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif; background:#0a0a0f; color:#e0e0e0; min-height:100vh; }
+
+/* Hero */
+.hero { background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%); padding:40px 20px 30px; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 50%, rgba(99,102,241,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(239,68,68,0.06) 0%, transparent 50%); }
+.hero h1 { font-size:28px; font-weight:800; position:relative; background:linear-gradient(135deg, #fff 0%, #a5b4fc 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero h1 span { display:block; font-size:13px; font-weight:400; margin-top:6px; -webkit-text-fill-color:#8b8fa3; }
+.hero-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:14px; position:relative; }
+.hero-tags span { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:4px 12px; font-size:11px; color:#9ca3af; }
+
+/* Search */
+.search-box { max-width:500px; margin:16px auto 0; position:relative; }
+.search-box input { width:100%; padding:10px 16px 10px 38px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#fff; font-size:14px; outline:none; transition:all .3s; }
+.search-box input:focus { border-color:rgba(99,102,241,0.5); background:rgba(255,255,255,0.08); }
+.search-box::before { content:'🔍'; position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:14px; }
+
+/* Tabs */
+.tabs { display:flex; gap:6px; padding:16px 16px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:800px; margin:0 auto; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab-btn { flex-shrink:0; padding:8px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:#9ca3af; font-size:12px; font-weight:500; cursor:pointer; transition:all .3s; white-space:nowrap; }
+.tab-btn.active { background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.15)); border-color:rgba(99,102,241,0.4); color:#a5b4fc; }
+.tab-btn:hover { border-color:rgba(255,255,255,0.2); }
+
+/* Tier Header */
+.tier-section { max-width:800px; margin:0 auto; padding:0 16px; }
+.tier-header { display:flex; align-items:center; gap:10px; margin:24px 0 12px; padding:12px 16px; background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border-radius:12px; border-left:3px solid; }
+.tier-header.t0 { border-color:#ef4444; }
+.tier-header.t1 { border-color:#f59e0b; }
+.tier-header.t2 { border-color:#8b5cf6; }
+.tier-header.t3 { border-color:#3b82f6; }
+.tier-header.t4 { border-color:#06b6d4; }
+.tier-header.t5 { border-color:#10b981; }
+.tier-title { font-size:16px; font-weight:700; }
+.tier-price { font-size:11px; color:#6b7280; margin-left:auto; }
+
+/* Brand Card */
+.brand-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+.brand-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:16px; transition:all .3s; cursor:pointer; }
+.brand-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12); transform:translateY(-1px); }
+.brand-top { display:flex; align-items:center; gap:12px; }
+.brand-logo { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.brand-info { flex:1; min-width:0; }
+.brand-name { font-size:15px; font-weight:700; color:#f0f0f0; display:flex; align-items:center; gap:6px; }
+.brand-name .country { font-size:12px; }
+.brand-sub { font-size:11px; color:#6b7280; margin-top:2px; }
+.brand-price-tag { font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; white-space:nowrap; }
+.brand-desc { font-size:13px; color:#9ca3af; margin-top:10px; line-height:1.6; }
+.brand-desc em { color:#a5b4fc; font-style:normal; font-weight:500; }
+
+/* Models */
+.models { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.model-tag { font-size:11px; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); color:#9ca3af; }
+.model-tag.hot { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.2); color:#fca5a5; }
+
+/* BBA Detail */
+.bba-detail { margin-top:10px; }
+.bba-series { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
+.series-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 10px; }
+.series-name { font-size:12px; font-weight:700; color:#c4b5fd; }
+.series-desc { font-size:11px; color:#6b7280; margin-top:2px; line-height:1.4; }
+.series-price { font-size:10px; color:#4ade80; margin-top:3px; }
+
+/* Tags */
+.tag { display:inline-block; font-size:10px; padding:2px 6px; border-radius:4px; margin-right:4px; }
+.tag-red { background:rgba(239,68,68,0.15); color:#fca5a5; }
+.tag-blue { background:rgba(59,130,246,0.15); color:#93c5fd; }
+.tag-purple { background:rgba(139,92,246,0.15); color:#c4b5fd; }
+.tag-green { background:rgba(16,185,129,0.15); color:#6ee7b7; }
+.tag-yellow { background:rgba(245,158,11,0.15); color:#fcd34d; }
+.tag-cyan { background:rgba(6,182,212,0.15); color:#67e8f9; }
+
+/* Comparison Table */
+.compare-section { max-width:800px; margin:30px auto; padding:0 16px; }
+.compare-title { font-size:16px; font-weight:700; margin-bottom:12px; }
+.compare-table { width:100%; border-collapse:collapse; font-size:12px; background:rgba(255,255,255,0.02); border-radius:12px; overflow:hidden; }
+.compare-table th { background:rgba(99,102,241,0.1); padding:10px 8px; text-align:left; font-weight:600; color:#a5b4fc; border-bottom:1px solid rgba(255,255,255,0.06); }
+.compare-table td { padding:8px; border-bottom:1px solid rgba(255,255,255,0.04); color:#9ca3af; }
+.compare-table tr:hover td { background:rgba(255,255,255,0.03); }
+
+/* Pyramid */
+.pyramid { max-width:500px; margin:20px auto; }
+.pyramid-level { text-align:center; margin:4px auto; padding:10px; border-radius:8px; font-size:12px; font-weight:600; transition:all .3s; }
+.pyramid-level:hover { transform:scale(1.02); }
+.p0 { width:40%; background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.1)); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; }
+.p1 { width:55%; background:linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1)); border:1px solid rgba(245,158,11,0.3); color:#fcd34d; }
+.p2 { width:70%; background:linear-gradient(135deg, rgba(139,92,246,0.2), rgba(124,58,237,0.1)); border:1px solid rgba(139,92,246,0.3); color:#c4b5fd; }
+.p3 { width:85%; background:linear-gradient(135deg, rgba(59,130,246,0.2), rgba(37,99,235,0.1)); border:1px solid rgba(59,130,246,0.3); color:#93c5fd; }
+.p4 { width:95%; background:linear-gradient(135deg, rgba(6,182,212,0.2), rgba(8,145,178,0.1)); border:1px solid rgba(6,182,212,0.3); color:#67e8f9; }
+.p5 { width:100%; background:linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1)); border:1px solid rgba(16,185,129,0.3); color:#6ee7b7; }
+
+.hidden { display:none !important; }
+
+/* Footer */
+.footer { text-align:center; padding:30px 16px; font-size:11px; color:#4b5563; }
+
+/* Responsive */
+@media(min-width:600px) {
+  .brand-grid { grid-template-columns:1fr 1fr; }
+  .hero h1 { font-size:32px; }
+  .bba-series { grid-template-columns:repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🚗 汽车品牌速查手册<span>从 BBA 到超跑，一文搞懂品牌定位 · 价格 · 热门车型</span></h1>
+  <div class="hero-tags">
+    <span>🏎️ 6个档次</span>
+    <span>🏷️ 30+品牌</span>
+    <span>📊 价位 · 定位 · 热门车型</span>
+  </div>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索品牌名、车型名..." oninput="doSearch(this.value)">
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs" id="tabs">
+  <div class="tab-btn active" onclick="switchTab('all')">🏠 全部</div>
+  <div class="tab-btn" onclick="switchTab('pyramid')">🔺 金字塔</div>
+  <div class="tab-btn" onclick="switchTab('t0')">👑 顶级超跑</div>
+  <div class="tab-btn" onclick="switchTab('t1')">💎 奢华品牌</div>
+  <div class="tab-btn" onclick="switchTab('t2')">🏆 豪华品牌</div>
+  <div class="tab-btn" onclick="switchTab('t3')">⭐ BBA一线</div>
+  <div class="tab-btn" onclick="switchTab('t4')">🔷 二线豪华</div>
+  <div class="tab-btn" onclick="switchTab('t5')">🚀 新势力</div>
+  <div class="tab-btn" onclick="switchTab('bba')">📋 BBA车型详解</div>
+</div>
+
+<!-- Pyramid View -->
+<div id="view-pyramid" class="hidden" style="max-width:800px;margin:20px auto;padding:0 16px;">
+  <div style="text-align:center;margin-bottom:16px;font-size:13px;color:#6b7280;">👇 越往上越贵越稀有，越往下越常见</div>
+  <div class="pyramid">
+    <div class="pyramid-level p0">👑 顶级超跑<br><span style="font-size:10px;font-weight:400;">布加迪 · 柯尼塞格 · 帕加尼 | 1000万+</span></div>
+    <div class="pyramid-level p1">💎 奢华品牌<br><span style="font-size:10px;font-weight:400;">劳斯莱斯 · 法拉利 · 兰博基尼 · 宾利 · 迈凯伦 | 300万+</span></div>
+    <div class="pyramid-level p2">🏆 豪华品牌<br><span style="font-size:10px;font-weight:400;">保时捷 · 玛莎拉蒂 · 迈巴赫 | 60-300万</span></div>
+    <div class="pyramid-level p3">⭐ BBA 一线豪华<br><span style="font-size:10px;font-weight:400;">奔驰 · 宝马 · 奥迪 | 25-100万（旗舰更高）</span></div>
+    <div class="pyramid-level p4">🔷 二线豪华<br><span style="font-size:10px;font-weight:400;">雷克萨斯 · 沃尔沃 · 凯迪拉克 · 路虎 · 红旗 | 20-80万</span></div>
+    <div class="pyramid-level p5">🚀 中国新势力<br><span style="font-size:10px;font-weight:400;">蔚来 · 理想 · 小米 · 极氪 · 仰望 | 15-110万</span></div>
+  </div>
+  <div style="margin-top:20px;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+    <div style="font-size:13px;font-weight:700;color:#f0f0f0;margin-bottom:8px;">💡 快速记忆口诀</div>
+    <div style="font-size:12px;color:#9ca3af;line-height:1.8;">
+      · <em style="color:#fca5a5;">布加迪帕加尼</em> = 亿万富翁的玩具，路上基本看不到<br>
+      · <em style="color:#fcd34d;">劳斯莱斯宾利</em> = 顶级老钱，坐后排的；<em style="color:#fcd34d;">法拉利兰博基尼</em> = 超跑双雄，开着爽的<br>
+      · <em style="color:#c4b5fd;">保时捷</em> = BBA车主的下一台车，<em style="color:#c4b5fd;">迈巴赫</em> = 奔驰的顶配加强版<br>
+      · <em style="color:#93c5fd;">BBA</em> = 路上最常见的豪车，奔驰坐、宝马开、奥迪官<br>
+      · <em style="color:#67e8f9;">雷克萨斯</em> = 省心之王，<em style="color:#67e8f9;">沃尔沃</em> = 安全代名词<br>
+      · <em style="color:#6ee7b7;">蔚来</em> = 服务海底捞，<em style="color:#6ee7b7;">理想</em> = 奶爸神车，<em style="color:#6ee7b7;">仰望</em> = 国产天花板
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="tier-section" id="mainContent">
+
+<!-- T0: 顶级超跑 -->
+<div class="tier-block" data-tier="t0">
+<div class="tier-header t0">
+  <span style="font-size:20px;">👑</span>
+  <span class="tier-title">顶级超跑</span>
+  <span class="tier-price">💰 1000万+，有钱也不一定买得到</span>
+</div>
+<div class="brand-grid">
+
+<div class="brand-card" data-brand="布加迪" data-search="布加迪 bugatti chiron veyron 威龙">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(239,68,68,0.1);">🏎️</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇫🇷</span> 布加迪 Bugatti</div>
+      <div class="brand-sub">大众集团旗下 · 1909年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">2500万+</span>
+  </div>
+  <div class="brand-desc">地球上最快的量产车制造商。Chiron极速490km/h，W16四涡轮增压发动机1500匹马力。<em>全球年产量仅几十台</em>，不是有钱就能买，得排队审核。</div>
+  <div class="models"><span class="model-tag hot">🔥 Chiron</span><span class="model-tag">Veyron（经典）</span><span class="model-tag">Mistral</span></div>
+</div>
+
+<div class="brand-card" data-brand="柯尼塞格" data-search="柯尼塞格 koenigsegg">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(245,158,11,0.1);">⚡</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇸🇪</span> 柯尼塞格 Koenigsegg</div>
+      <div class="brand-sub">瑞典超跑 · 1994年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">2000万+</span>
+  </div>
+  <div class="brand-desc">瑞典"幽灵"超跑，<em>极速记录保持者</em>。Jesko Absolut理论极速531km/h。全手工打作，年产量不到50台，比布加迪还稀有。</div>
+  <div class="models"><span class="model-tag hot">🔥 Jesko</span><span class="model-tag">Gemera</span><span class="model-tag">Regera</span></div>
+</div>
+
+<div class="brand-card" data-brand="帕加尼" data-search="帕加尼 pagani huayra zonda 风之子">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(139,92,246,0.1);">🎨</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇮🇹</span> 帕加尼 Pagani</div>
+      <div class="brand-sub">意大利手工超跑 · 1992年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">2000万+</span>
+  </div>
+  <div class="brand-desc">汽车界的"艺术品"，每一台都是手工打造的移动雕塑。<em>碳钛合金车身</em>，内饰像钟表一样精密。创始人曾在兰博基尼工作。</div>
+  <div class="models"><span class="model-tag hot">🔥 Huayra（风之子）</span><span class="model-tag">Utopia</span><span class="model-tag">Zonda（经典）</span></div>
+</div>
+
+</div></div>
+
+<!-- T1: 奢华品牌 -->
+<div class="tier-block" data-tier="t1">
+<div class="tier-header t1">
+  <span style="font-size:20px;">💎</span>
+  <span class="tier-title">奢华品牌</span>
+  <span class="tier-price">💰 300-2000万，身份与品味的象征</span>
+</div>
+<div class="brand-grid">
+
+<div class="brand-card" data-brand="劳斯莱斯" data-search="劳斯莱斯 rolls royce 幻影 古思特 库里南">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(245,158,11,0.1);">👑</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇬🇧</span> 劳斯莱斯 Rolls-Royce</div>
+      <div class="brand-sub">宝马集团旗下 · 1906年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">450-1800万</span>
+  </div>
+  <div class="brand-desc">豪华汽车的<em>绝对天花板</em>，"老钱"的终极座驾。手工缝制星空顶、自杀门、飞天女神车标。坐后排才是正确打开方式，前排是给司机的。</div>
+  <div class="models"><span class="model-tag hot">🔥 幻影 Phantom（旗舰）</span><span class="model-tag hot">🔥 库里南 Cullinan（SUV）</span><span class="model-tag">古思特 Ghost</span><span class="model-tag">闪灵 Spectre（纯电）</span></div>
+</div>
+
+<div class="brand-card" data-brand="宾利" data-search="宾利 bentley 飞驰 添越 欧陆 continental">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(245,158,11,0.1);">🦅</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇬🇧</span> 宾利 Bentley</div>
+      <div class="brand-sub">大众集团旗下 · 1919年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">250-560万</span>
+  </div>
+  <div class="brand-desc">和劳斯莱斯并列的超豪华品牌，区别是宾利<em>更强调自己开</em>。W12发动机 + 手工真皮内饰，既豪华又有驾驶乐趣。"低调老钱"的选择。</div>
+  <div class="models"><span class="model-tag hot">🔥 添越 Bentayga（SUV）</span><span class="model-tag hot">🔥 欧陆GT Continental</span><span class="model-tag">飞驰 Flying Spur</span></div>
+</div>
+
+<div class="brand-card" data-brand="法拉利" data-search="法拉利 ferrari 跃马 f8 296 sf90 roma 超跑">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(239,68,68,0.1);">🐎</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇮🇹</span> 法拉利 Ferrari</div>
+      <div class="brand-sub">独立上市 · 1947年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">300-700万+</span>
+  </div>
+  <div class="brand-desc"><em>超跑界的信仰</em>，跃马标志无人不识。F1赛车基因，V8/V12发动机声浪让人上瘾。年产量仅1万多台，部分车型需要"配货"才能买（先买普通款才有资格买限量款）。</div>
+  <div class="models"><span class="model-tag hot">🔥 296 GTB（入门）</span><span class="model-tag hot">🔥 SF90（旗舰混动）</span><span class="model-tag">Roma（GT轿跑）</span><span class="model-tag">Purosangue（首款SUV）</span></div>
+</div>
+
+<div class="brand-card" data-brand="兰博基尼" data-search="兰博基尼 lamborghini 大牛 小牛 urus huracan aventador revuelto">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(245,158,11,0.1);">🐂</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇮🇹</span> 兰博基尼 Lamborghini</div>
+      <div class="brand-sub">大众集团旗下 · 1963年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">260-800万</span>
+  </div>
+  <div class="brand-desc">法拉利的<em>宿敌</em>，斗牛标志，外观比法拉利更张扬、更有攻击性。"小牛"Huracán是入门，"大牛"是旗舰。Urus是它的SUV，被称为"最快SUV"。</div>
+  <div class="models"><span class="model-tag hot">🔥 Revuelto（新大牛）</span><span class="model-tag hot">🔥 Urus（SUV爆款）</span><span class="model-tag">Huracán（小牛）</span><span class="model-tag">Temerario（新小牛）</span></div>
+</div>
+
+<div class="brand-card" data-brand="迈凯伦" data-search="迈凯伦 mclaren 720s 765lt artura">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(245,158,11,0.1);">🏁</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇬🇧</span> 迈凯伦 McLaren</div>
+      <div class="brand-sub">独立品牌 · 1963年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">250-2500万</span>
+  </div>
+  <div class="brand-desc">F1赛车队出身的超跑品牌，<em>纯粹的赛道基因</em>。碳纤维单体壳技术领先，操控极其精准。比法拉利/兰博基尼更低调、更技术流。</div>
+  <div class="models"><span class="model-tag hot">🔥 750S</span><span class="model-tag">Artura（混动）</span><span class="model-tag">765LT</span></div>
+</div>
+
+<div class="brand-card" data-brand="阿斯顿马丁" data-search="阿斯顿马丁 aston martin 007 db11 db12 vantage">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(6,182,212,0.1);">🕶️</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇬🇧</span> 阿斯顿·马丁 Aston Martin</div>
+      <div class="brand-sub">独立品牌 · 1913年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(6,182,212,0.15);color:#67e8f9;">200-500万</span>
+  </div>
+  <div class="brand-desc"><em>007詹姆斯·邦德的座驾</em>，英伦绅士风格GT跑车。外观优雅性感，不像法拉利那么张扬，但气场同样强大。适合低调有品位的人。</div>
+  <div class="models"><span class="model-tag hot">🔥 DB12（GT轿跑）</span><span class="model-tag">Vantage（运动）</span><span class="model-tag">DBX（SUV）</span></div>
+</div>
+
+</div></div>
+
+<!-- T2: 豪华品牌 -->
+<div class="tier-block" data-tier="t2">
+<div class="tier-header t2">
+  <span style="font-size:20px;">🏆</span>
+  <span class="tier-title">豪华品牌</span>
+  <span class="tier-price">💰 60-300万，BBA之上、超豪之下</span>
+</div>
+<div class="brand-grid">
+
+<div class="brand-card" data-brand="保时捷" data-search="保时捷 porsche 911 卡宴 cayenne macan panamera 帕拉梅拉 taycan">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(139,92,246,0.1);">🛡️</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇩🇪</span> 保时捷 Porsche</div>
+      <div class="brand-sub">大众集团旗下 · 1931年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">55-300万</span>
+  </div>
+  <div class="brand-desc"><em>BBA车主升级的首选目标</em>，精准卡位在BBA之上。911是跑车界的常青树，操控登峰造极。"一旦拥有，以后车库都是保时捷"。所有车型都长得像911（官方叫"经典传承"😂）。</div>
+  <div class="models"><span class="model-tag hot">🔥 911（灵魂跑车）</span><span class="model-tag hot">🔥 卡宴 Cayenne（SUV）</span><span class="model-tag hot">🔥 帕拉梅拉 Panamera（四门轿跑）</span><span class="model-tag">Macan（小SUV）</span><span class="model-tag">Taycan（纯电）</span><span class="model-tag">718（入门跑车）</span></div>
+  <div style="margin-top:10px;padding:10px;background:rgba(139,92,246,0.05);border-radius:8px;border:1px solid rgba(139,92,246,0.1);">
+    <div style="font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:4px;">💡 保时捷车型速记</div>
+    <div style="font-size:11px;color:#9ca3af;line-height:1.7;">
+      <b>911</b> = 后置发动机经典跑车，保时捷的灵魂，100万+<br>
+      <b>帕拉梅拉 Panamera</b> = "拉长版911"四门轿跑，商务+运动，100万+<br>
+      <b>卡宴 Cayenne</b> = 大SUV，保时捷销量担当，75万+<br>
+      <b>Macan</b> = 小SUV，保时捷入门之选，55万+<br>
+      <b>Taycan</b> = 纯电轿跑，电动时代的保时捷，90万+<br>
+      <b>718</b> = 中置发动机入门跑车，年轻人的第一台保时捷，55万+
+    </div>
+  </div>
+</div>
+
+<div class="brand-card" data-brand="玛莎拉蒂" data-search="玛莎拉蒂 maserati 总裁 ghibli mc20 grecale levante">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(59,130,246,0.1);">🔱</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇮🇹</span> 玛莎拉蒂 Maserati</div>
+      <div class="brand-sub">Stellantis集团旗下 · 1914年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">60-250万</span>
+  </div>
+  <div class="brand-desc">意式豪华的代表，三叉戟标志。<em>声浪是最大卖点</em>，V6/V8发动机的排气声让人欲罢不能。定位和保时捷接近，但更感性、更浪漫，适合不走寻常路的人。近年销量下滑较大。</div>
+  <div class="models"><span class="model-tag hot">🔥 MC20（超跑）</span><span class="model-tag">Grecale（SUV）</span><span class="model-tag">GranTurismo（GT）</span><span class="model-tag">Levante（大SUV）</span></div>
+</div>
+
+<div class="brand-card" data-brand="迈巴赫" data-search="迈巴赫 maybach s480 s580 s680 gls">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(139,92,246,0.1);">✨</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇩🇪</span> 迈巴赫 Maybach</div>
+      <div class="brand-sub">奔驰旗下子品牌 · 1921年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">150-320万</span>
+  </div>
+  <div class="brand-desc"><em>奔驰S级的终极加强版</em>，超豪华行政座驾。双色车身是标志性设计，后排老板座堪比头等舱。定位在奔驰之上、劳斯莱斯之下，是"新贵"和企业家的热门选择。</div>
+  <div class="models"><span class="model-tag hot">🔥 S 480/S 580/S 680</span><span class="model-tag hot">🔥 GLS 600（SUV）</span></div>
+</div>
+
+</div></div>
+
+<!-- T3: BBA -->
+<div class="tier-block" data-tier="t3">
+<div class="tier-header t3">
+  <span style="font-size:20px;">⭐</span>
+  <span class="tier-title">BBA 一线豪华</span>
+  <span class="tier-price">💰 25-100万，路上最常见的豪车</span>
+</div>
+<div class="brand-grid" style="grid-template-columns:1fr;">
+
+<div class="brand-card" data-brand="奔驰" data-search="奔驰 benz mercedes a级 c级 e级 s级 gle glc gla amg 大g g级">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(59,130,246,0.1);">⭐</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇩🇪</span> 奔驰 Mercedes-Benz</div>
+      <div class="brand-sub">汽车发明者 · 1886年创立 · <span class="tag tag-blue">坐奔驰</span></div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">25-300万+</span>
+  </div>
+  <div class="brand-desc">汽车的发明者，<em>豪华舒适是核心卖点</em>。BBA中最有"面子"的品牌，S级是商务旗舰标杆。内饰最豪华，乘坐最舒适，适合注重排面和后排体验的人。口头禅："坐奔驰"。</div>
+  <div class="bba-detail">
+    <div style="font-size:12px;font-weight:600;color:#93c5fd;margin-bottom:6px;">📋 奔驰车型速查（字母=级别，越往后越高端）</div>
+    <div class="bba-series">
+      <div class="series-item"><div class="series-name">A级</div><div class="series-desc">入门紧凑轿车，最便宜的奔驰</div><div class="series-price">25万+</div></div>
+      <div class="series-item"><div class="series-name">C级 ⭐</div><div class="series-desc">中型轿车，年轻白领首选</div><div class="series-price">33万+</div></div>
+      <div class="series-item"><div class="series-name">E级 ⭐</div><div class="series-desc">中大型，商务接待标配</div><div class="series-price">44万+</div></div>
+      <div class="series-item"><div class="series-name">S级 👑</div><div class="series-desc">旗舰！老板座驾天花板</div><div class="series-price">90万+</div></div>
+      <div class="series-item"><div class="series-name">GLA/GLB</div><div class="series-desc">紧凑SUV，城市代步</div><div class="series-price">30万+</div></div>
+      <div class="series-item"><div class="series-name">GLC ⭐</div><div class="series-desc">中型SUV，销量王</div><div class="series-price">40万+</div></div>
+      <div class="series-item"><div class="series-name">GLE</div><div class="series-desc">中大型SUV，家庭豪华</div><div class="series-price">55万+</div></div>
+      <div class="series-item"><div class="series-name">G级（大G）🔥</div><div class="series-desc">硬派越野，社交神器</div><div class="series-price">155万+</div></div>
+      <div class="series-item"><div class="series-name">AMG</div><div class="series-desc">高性能版，赛道暴力机器</div><div class="series-price">60万+</div></div>
+      <div class="series-item"><div class="series-name">EQ系列</div><div class="series-desc">纯电系列（EQE/EQS等）</div><div class="series-price">48万+</div></div>
+      <div class="series-item"><div class="series-name">CLE</div><div class="series-desc">轿跑/敞篷，时尚运动</div><div class="series-price">45万+</div></div>
+      <div class="series-item"><div class="series-name">V级</div><div class="series-desc">商务MPV，老板接送车</div><div class="series-price">50万+</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="brand-card" data-brand="宝马" data-search="宝马 bmw 1系 2系 3系 4系 5系 7系 x1 x3 x5 x7 m系 i系">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(59,130,246,0.1);">🔵</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇩🇪</span> 宝马 BMW</div>
+      <div class="brand-sub">巴伐利亚发动机制造厂 · 1916年创立 · <span class="tag tag-blue">开宝马</span></div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">22-250万+</span>
+  </div>
+  <div class="brand-desc"><em>操控之王，驾驶乐趣是信仰</em>。50:50前后配重、后驱为主，开起来最爽。"每个男人一生都绕不开一台3系"。BBA中最运动的品牌。口头禅："开宝马"。</div>
+  <div class="bba-detail">
+    <div style="font-size:12px;font-weight:600;color:#93c5fd;margin-bottom:6px;">📋 宝马车型速查（数字=级别，越大越高端）</div>
+    <div class="bba-series">
+      <div class="series-item"><div class="series-name">1系</div><div class="series-desc">入门紧凑，最便宜的宝马</div><div class="series-price">22万+</div></div>
+      <div class="series-item"><div class="series-name">3系 ⭐🔥</div><div class="series-desc">宝马灵魂！操控标杆</div><div class="series-price">30万+</div></div>
+      <div class="series-item"><div class="series-name">4系</div><div class="series-desc">3系的轿跑版，更帅</div><div class="series-price">37万+</div></div>
+      <div class="series-item"><div class="series-name">5系 ⭐</div><div class="series-desc">商务运动兼顾，销量王</div><div class="series-price">44万+</div></div>
+      <div class="series-item"><div class="series-name">7系 👑</div><div class="series-desc">旗舰！科技感拉满</div><div class="series-price">83万+</div></div>
+      <div class="series-item"><div class="series-name">8系</div><div class="series-desc">豪华GT轿跑，优雅</div><div class="series-price">97万+</div></div>
+      <div class="series-item"><div class="series-name">X1/X2</div><div class="series-desc">紧凑SUV，城市通勤</div><div class="series-price">28万+</div></div>
+      <div class="series-item"><div class="series-name">X3 ⭐</div><div class="series-desc">中型SUV，最热销</div><div class="series-price">38万+</div></div>
+      <div class="series-item"><div class="series-name">X5 ⭐</div><div class="series-desc">中大型SUV，全能选手</div><div class="series-price">62万+</div></div>
+      <div class="series-item"><div class="series-name">X7</div><div class="series-desc">全尺寸SUV，7座旗舰</div><div class="series-price">102万+</div></div>
+      <div class="series-item"><div class="series-name">M系列 🏁</div><div class="series-desc">高性能版，赛道利器</div><div class="series-price">60万+</div></div>
+      <div class="series-item"><div class="series-name">i系列</div><div class="series-desc">纯电（i3/i4/i5/i7/iX）</div><div class="series-price">35万+</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="brand-card" data-brand="奥迪" data-search="奥迪 audi a3 a4 a5 a6 a7 a8 q3 q5 q7 rs s 灯厂 e-tron">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(59,130,246,0.1);">💡</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇩🇪</span> 奥迪 Audi</div>
+      <div class="brand-sub">大众集团旗下 · 1909年创立 · <span class="tag tag-blue">官车/灯厂</span></div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">22-200万+</span>
+  </div>
+  <div class="brand-desc"><em>科技感和灯光设计是招牌</em>（"灯厂"外号名不虚传）。Quattro四驱系统是看家本领。早年是"官车"代名词，现在偏向科技豪华路线。BBA中性价比最高。口头禅："奥迪的灯"。</div>
+  <div class="bba-detail">
+    <div style="font-size:12px;font-weight:600;color:#93c5fd;margin-bottom:6px;">📋 奥迪车型速查（A=轿车 Q=SUV S/RS=性能版）</div>
+    <div class="bba-series">
+      <div class="series-item"><div class="series-name">A3</div><div class="series-desc">入门紧凑，年轻人首选</div><div class="series-price">22万+</div></div>
+      <div class="series-item"><div class="series-name">A4L ⭐</div><div class="series-desc">中型轿车，家用商务</div><div class="series-price">32万+</div></div>
+      <div class="series-item"><div class="series-name">A5</div><div class="series-desc">轿跑版A4，更运动</div><div class="series-price">40万+</div></div>
+      <div class="series-item"><div class="series-name">A6L ⭐🔥</div><div class="series-desc">中大型，曾经的官车标配</div><div class="series-price">42万+</div></div>
+      <div class="series-item"><div class="series-name">A7</div><div class="series-desc">溜背轿跑，最美奥迪</div><div class="series-price">58万+</div></div>
+      <div class="series-item"><div class="series-name">A8L 👑</div><div class="series-desc">旗舰！低调的奢华</div><div class="series-price">85万+</div></div>
+      <div class="series-item"><div class="series-name">Q3</div><div class="series-desc">紧凑SUV，城市代步</div><div class="series-price">28万+</div></div>
+      <div class="series-item"><div class="series-name">Q5L ⭐</div><div class="series-desc">中型SUV，销量担当</div><div class="series-price">40万+</div></div>
+      <div class="series-item"><div class="series-name">Q7</div><div class="series-desc">中大型SUV，7座豪华</div><div class="series-price">62万+</div></div>
+      <div class="series-item"><div class="series-name">Q8</div><div class="series-desc">轿跑SUV，运动旗舰</div><div class="series-price">77万+</div></div>
+      <div class="series-item"><div class="series-name">RS系列 🏁</div><div class="series-desc">高性能版，暴力美学</div><div class="series-price">80万+</div></div>
+      <div class="series-item"><div class="series-name">e-tron</div><div class="series-desc">纯电系列（Q4/Q8等）</div><div class="series-price">30万+</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div style="margin-top:16px;padding:14px;background:rgba(59,130,246,0.05);border-radius:12px;border:1px solid rgba(59,130,246,0.1);">
+  <div style="font-size:13px;font-weight:700;color:#93c5fd;margin-bottom:8px;">🆚 BBA 对标速查表</div>
+  <div style="overflow-x:auto;">
+  <table class="compare-table">
+    <tr><th>级别</th><th>奔驰</th><th>宝马</th><th>奥迪</th><th>定位</th></tr>
+    <tr><td>入门</td><td>A级</td><td>1系</td><td>A3</td><td>22-30万，年轻人第一台豪车</td></tr>
+    <tr><td>中型 ⭐</td><td>C级</td><td>3系</td><td>A4L</td><td>30-45万，白领标配</td></tr>
+    <tr><td>中大型 ⭐</td><td>E级</td><td>5系</td><td>A6L</td><td>40-65万，商务主力</td></tr>
+    <tr><td>旗舰 👑</td><td>S级</td><td>7系</td><td>A8L</td><td>80万+，老板座驾</td></tr>
+    <tr><td>紧凑SUV</td><td>GLA/GLB</td><td>X1/X2</td><td>Q3</td><td>25-40万，城市SUV</td></tr>
+    <tr><td>中型SUV ⭐</td><td>GLC</td><td>X3</td><td>Q5L</td><td>38-55万，家庭首选</td></tr>
+    <tr><td>大型SUV</td><td>GLE/GLS</td><td>X5/X7</td><td>Q7/Q8</td><td>55-120万，全能旗舰</td></tr>
+    <tr><td>性能版</td><td>AMG</td><td>M</td><td>RS</td><td>60万+，赛道利器</td></tr>
+    <tr><td>纯电</td><td>EQ系列</td><td>i系列</td><td>e-tron</td><td>30-120万，电动化转型</td></tr>
+  </table>
+  </div>
+  <div style="font-size:11px;color:#6b7280;margin-top:8px;">
+    💬 江湖总结：<em style="color:#93c5fd;">坐奔驰（舒适豪华）、开宝马（操控乐趣）、奥迪是灯厂（科技均衡）</em>
+  </div>
+</div>
+</div>
+
+<!-- T4: 二线豪华 -->
+<div class="tier-block" data-tier="t4">
+<div class="tier-header t4">
+  <span style="font-size:20px;">🔷</span>
+  <span class="tier-title">二线豪华</span>
+  <span class="tier-price">💰 20-80万，各有特色的个性之选</span>
+</div>
+<div class="brand-grid">
+
+<div class="brand-card" data-brand="雷克萨斯" data-search="雷克萨斯 lexus es rx ls lc 丰田高端">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(6,182,212,0.1);">🔷</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇯🇵</span> 雷克萨斯 Lexus</div>
+      <div class="brand-sub">丰田集团旗下 · 1989年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(6,182,212,0.15);color:#67e8f9;">25-120万</span>
+  </div>
+  <div class="brand-desc"><em>省心之王</em>，丰田的高端品牌。质量稳定性极高，免费保养，保值率碾压BBA。在广东有极高的信仰加成。适合"厌倦了修车"的人。不国产，全进口。</div>
+  <div class="models"><span class="model-tag hot">🔥 ES（轿车王牌）</span><span class="model-tag hot">🔥 RX（SUV热销）</span><span class="model-tag">LS（旗舰轿车）</span><span class="model-tag">LC（GT跑车）</span></div>
+</div>
+
+<div class="brand-card" data-brand="沃尔沃" data-search="沃尔沃 volvo xc60 xc90 s60 s90 安全">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(6,182,212,0.1);">🛡️</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇸🇪</span> 沃尔沃 Volvo</div>
+      <div class="brand-sub">吉利集团旗下 · 1927年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(6,182,212,0.15);color:#67e8f9;">25-80万</span>
+  </div>
+  <div class="brand-desc"><em>安全代名词</em>，三点式安全带的发明者。北欧简约设计，车内用料环保健康。被吉利收购后品质不降，性价比提升。适合注重安全和家庭的人。</div>
+  <div class="models"><span class="model-tag hot">🔥 XC60（SUV主力）</span><span class="model-tag">XC90（旗舰SUV）</span><span class="model-tag">S60/S90（轿车）</span></div>
+</div>
+
+<div class="brand-card" data-brand="凯迪拉克" data-search="凯迪拉克 cadillac ct5 ct6 xt5 escalade 凯雷德">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(6,182,212,0.1);">🇺🇸</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇺🇸</span> 凯迪拉克 Cadillac</div>
+      <div class="brand-sub">通用集团旗下 · 1902年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(6,182,212,0.15);color:#67e8f9;">25-150万</span>
+  </div>
+  <div class="brand-desc">美式豪华代表，曾经的"总统座驾"。<em>动力大、隔音好、配置高</em>，终端优惠大（被戏称"洗浴王"因为折扣太猛）。CT5被称为"小5系"，性价比极高。</div>
+  <div class="models"><span class="model-tag hot">🔥 CT5（运动轿车）</span><span class="model-tag">CT6（旗舰轿车）</span><span class="model-tag">XT5（SUV）</span><span class="model-tag">凯雷德 Escalade（全尺寸SUV）</span></div>
+</div>
+
+<div class="brand-card" data-brand="路虎" data-search="路虎 land rover range rover 揽胜 卫士 发现 越野">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(16,185,129,0.1);">🏔️</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇬🇧</span> 路虎 Land Rover</div>
+      <div class="brand-sub">塔塔集团旗下 · 1948年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">35-320万</span>
+  </div>
+  <div class="brand-desc"><em>豪华越野的代名词</em>，英国皇室御用。揽胜是SUV界的"劳斯莱斯"，卫士是硬派越野经典。但可靠性口碑一般（修不好的路虎）。</div>
+  <div class="models"><span class="model-tag hot">🔥 揽胜 Range Rover</span><span class="model-tag hot">🔥 卫士 Defender</span><span class="model-tag">发现 Discovery</span><span class="model-tag">揽胜运动版</span></div>
+</div>
+
+<div class="brand-card" data-brand="林肯" data-search="林肯 lincoln 飞行家 航海家 冒险家">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(6,182,212,0.1);">⬛</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇺🇸</span> 林肯 Lincoln</div>
+      <div class="brand-sub">福特集团旗下 · 1917年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(6,182,212,0.15);color:#67e8f9;">25-70万</span>
+  </div>
+  <div class="brand-desc">美式豪华的另一面——<em>静谧与舒适</em>。曾是美国总统专车。车内隔音极好，座椅舒适度一流。在中国知名度不如BBA但产品力不错。</div>
+  <div class="models"><span class="model-tag hot">🔥 飞行家 Aviator</span><span class="model-tag">航海家 Nautilus</span><span class="model-tag">冒险家 Corsair</span></div>
+</div>
+
+<div class="brand-card" data-brand="红旗" data-search="红旗 hongqi h9 hs7 l5 国产豪华">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(239,68,68,0.1);">🚩</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇨🇳</span> 红旗 Hongqi</div>
+      <div class="brand-sub">一汽集团旗下 · 1958年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">18-600万</span>
+  </div>
+  <div class="brand-desc">唯一的<em>国家级豪华品牌</em>，国庆阅兵检阅车。L5对标劳斯莱斯（买需要政审）。H9主打中式豪华，在公务和商务市场很受欢迎。情怀加成拉满。</div>
+  <div class="models"><span class="model-tag hot">🔥 H9（旗舰轿车）</span><span class="model-tag">HS7（SUV）</span><span class="model-tag">L5（超豪华，政审）</span><span class="model-tag">E-HS9（纯电SUV）</span></div>
+</div>
+
+</div></div>
+
+<!-- T5: 新势力 -->
+<div class="tier-block" data-tier="t5">
+<div class="tier-header t5">
+  <span style="font-size:20px;">🚀</span>
+  <span class="tier-title">中国新势力 & 特斯拉</span>
+  <span class="tier-price">💰 15-110万，电动化时代的新玩家</span>
+</div>
+<div class="brand-grid">
+
+<div class="brand-card" data-brand="特斯拉" data-search="特斯拉 tesla model 3 y s x 马斯克">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(239,68,68,0.1);">⚡</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇺🇸</span> 特斯拉 Tesla</div>
+      <div class="brand-sub">独立品牌 · 2003年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">24-80万</span>
+  </div>
+  <div class="brand-desc"><em>电动车革命的开创者</em>，马斯克的"钢铁侠"光环。自动驾驶FSD是最大卖点，极简内饰风格。Model 3/Y是全球最畅销的电动车。争议多但销量猛。</div>
+  <div class="models"><span class="model-tag hot">🔥 Model Y（SUV爆款）</span><span class="model-tag hot">🔥 Model 3（轿车）</span><span class="model-tag">Model S（旗舰）</span><span class="model-tag">Model X（SUV旗舰）</span></div>
+</div>
+
+<div class="brand-card" data-brand="蔚来" data-search="蔚来 nio es6 es8 et5 et7 换电">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(59,130,246,0.1);">🔵</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇨🇳</span> 蔚来 NIO</div>
+      <div class="brand-sub">独立品牌 · 2014年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30-65万</span>
+  </div>
+  <div class="brand-desc">主打<em>"服务豪华"</em>，海底捞式用户体验。换电技术3分钟满电，NIO House是车主社交圈。用户粘性极高，车主自发安利。被称为"中国版BBA"。</div>
+  <div class="models"><span class="model-tag hot">🔥 ES6（SUV主力）</span><span class="model-tag">ET7（旗舰轿车）</span><span class="model-tag">ET5（运动轿车）</span><span class="model-tag">ES8（7座SUV）</span></div>
+</div>
+
+<div class="brand-card" data-brand="理想" data-search="理想 li auto l7 l8 l9 mega 奶爸车 冰箱彩电大沙发">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(16,185,129,0.1);">🟢</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇨🇳</span> 理想 Li Auto</div>
+      <div class="brand-sub">独立品牌 · 2015年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">25-50万</span>
+  </div>
+  <div class="brand-desc"><em>奶爸神车</em>，精准击中中国家庭痛点。"冰箱、彩电、大沙发"是标签——后排大屏看电影、车载冰箱、按摩座椅全配齐。增程式（有油有电）没有续航焦虑。</div>
+  <div class="models"><span class="model-tag hot">🔥 L7（5座SUV）</span><span class="model-tag hot">🔥 L8（6座SUV）</span><span class="model-tag">L9（旗舰6座）</span><span class="model-tag">MEGA（MPV）</span></div>
+</div>
+
+<div class="brand-card" data-brand="小米汽车" data-search="小米 xiaomi su7 su7 ultra 雷军">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(245,158,11,0.1);">🟠</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇨🇳</span> 小米汽车 Xiaomi Auto</div>
+      <div class="brand-sub">小米集团 · 2024年首款车</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">22-53万</span>
+  </div>
+  <div class="brand-desc">雷军亲自下场造车，<em>SU7被称为"年轻人的第一台保时捷"</em>（外观确实像）。小米生态链无缝联动，性价比炸裂。SU7 Ultra纽北刷圈成绩惊人。话题度和热度拉满。</div>
+  <div class="models"><span class="model-tag hot">🔥 SU7（轿跑）</span><span class="model-tag hot">🔥 SU7 Ultra（性能版）</span><span class="model-tag">YU7（SUV，即将上市）</span></div>
+</div>
+
+<div class="brand-card" data-brand="仰望" data-search="仰望 yangwang u8 u9 比亚迪高端">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(139,92,246,0.1);">🔺</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇨🇳</span> 仰望 Yangwang</div>
+      <div class="brand-sub">比亚迪旗下高端品牌 · 2023年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">70-170万</span>
+  </div>
+  <div class="brand-desc"><em>国产车的天花板</em>，比亚迪的百万级品牌。U8可以水上漂（浮水模式）、原地掉头（四轮独立电机）。U9是纯电超跑，零百2秒。用技术硬刚国际超豪。</div>
+  <div class="models"><span class="model-tag hot">🔥 U8（硬派SUV）</span><span class="model-tag">U9（纯电超跑）</span></div>
+</div>
+
+<div class="brand-card" data-brand="极氪" data-search="极氪 zeekr 001 007 009 吉利高端">
+  <div class="brand-top">
+    <div class="brand-logo" style="background:rgba(59,130,246,0.1);">💎</div>
+    <div class="brand-info">
+      <div class="brand-name"><span class="country">🇨🇳</span> 极氪 ZEEKR</div>
+      <div class="brand-sub">吉利集团旗下 · 2021年创立</div>
+    </div>
+    <span class="brand-price-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">20-80万</span>
+  </div>
+  <div class="brand-desc">吉利的高端纯电品牌，<em>性能和设计都很在线</em>。001猎装车造型独特，007轿车颜值高。三电技术（电池/电机/电控）来自吉利自研，品质口碑不错。</div>
+  <div class="models"><span class="model-tag hot">🔥 001（猎装轿跑）</span><span class="model-tag hot">🔥 007（轿车）</span><span class="model-tag">009（MPV）</span><span class="model-tag">X（SUV）</span></div>
+</div>
+
+</div></div>
+
+</div>
+
+<!-- BBA Detail View -->
+<div id="view-bba" class="hidden" style="max-width:800px;margin:20px auto;padding:0 16px;">
+  <div style="font-size:18px;font-weight:800;margin-bottom:16px;background:linear-gradient(135deg, #fff, #93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📋 BBA 车型全解析</div>
+  
+  <div style="padding:14px;background:rgba(59,130,246,0.05);border-radius:12px;border:1px solid rgba(59,130,246,0.1);margin-bottom:16px;">
+    <div style="font-size:13px;font-weight:700;color:#93c5fd;margin-bottom:8px;">🔑 核心记忆法</div>
+    <div style="font-size:12px;color:#9ca3af;line-height:2;">
+      <b>奔驰</b>：字母越靠后越高端 → A &lt; C &lt; E &lt; S（S=Super）<br>
+      <b>宝马</b>：数字越大越高端 → 1 &lt; 3 &lt; 5 &lt; 7（奇数=轿车，偶数=轿跑）<br>
+      <b>奥迪</b>：A+数字越大越高端 → A3 &lt; A4 &lt; A6 &lt; A8（Q=SUV，S/RS=性能）<br>
+      <b>对应关系</b>：C级 = 3系 = A4 | E级 = 5系 = A6 | S级 = 7系 = A8<br>
+      <b>SUV</b>：GLC = X3 = Q5 | GLE = X5 = Q7
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;">
+  <table class="compare-table" style="font-size:11px;">
+    <tr><th>车型</th><th>级别</th><th>价位</th><th>适合人群</th><th>一句话</th></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奔驰C级</td><td>中型轿车</td><td>33万+</td><td>年轻白领</td><td>小S级，入门商务</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奔驰E级</td><td>中大型轿车</td><td>44万+</td><td>商务人士</td><td>接待客户的标配</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奔驰S级</td><td>旗舰轿车</td><td>90万+</td><td>企业老板</td><td>移动头等舱</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">大G</td><td>越野车</td><td>155万+</td><td>社交达人</td><td>方盒子，社交硬通货</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">宝马3系</td><td>中型轿车</td><td>30万+</td><td>驾驶爱好者</td><td>宝马的灵魂，操控之王</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">宝马5系</td><td>中大型轿车</td><td>44万+</td><td>商务+运动</td><td>运动与舒适的平衡</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">宝马7系</td><td>旗舰轿车</td><td>83万+</td><td>科技爱好者</td><td>巨幅屏幕+科技拉满</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">宝马X5</td><td>中大型SUV</td><td>62万+</td><td>全能需求</td><td>最均衡的豪华SUV</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奥迪A4L</td><td>中型轿车</td><td>32万+</td><td>务实白领</td><td>性价比之选</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奥迪A6L</td><td>中大型轿车</td><td>42万+</td><td>公务/商务</td><td>曾经的官车标配</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奥迪A7</td><td>轿跑</td><td>58万+</td><td>颜值控</td><td>最美奥迪，溜背设计</td></tr>
+    <tr><td style="color:#93c5fd;font-weight:600;">奥迪A8L</td><td>旗舰轿车</td><td>85万+</td><td>低调老板</td><td>低调的奢华</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="footer">
+  🚗 汽车品牌速查手册 · 数据来源于公开信息，价格为指导价参考 · 2026年3月更新
+</div>
+
+<script>
+let currentTab = 'all';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', 
+      (tab === 'all' && i === 0) ||
+      (tab === 'pyramid' && i === 1) ||
+      (tab === 't0' && i === 2) ||
+      (tab === 't1' && i === 3) ||
+      (tab === 't2' && i === 4) ||
+      (tab === 't3' && i === 5) ||
+      (tab === 't4' && i === 6) ||
+      (tab === 't5' && i === 7) ||
+      (tab === 'bba' && i === 8)
+    );
+  });
+
+  const main = document.getElementById('mainContent');
+  const pyramid = document.getElementById('view-pyramid');
+  const bba = document.getElementById('view-bba');
+
+  if (tab === 'pyramid') {
+    main.classList.add('hidden');
+    pyramid.classList.remove('hidden');
+    bba.classList.add('hidden');
+    return;
+  }
+  if (tab === 'bba') {
+    main.classList.add('hidden');
+    pyramid.classList.add('hidden');
+    bba.classList.remove('hidden');
+    return;
+  }
+
+  main.classList.remove('hidden');
+  pyramid.classList.add('hidden');
+  bba.classList.add('hidden');
+
+  document.querySelectorAll('.tier-block').forEach(block => {
+    if (tab === 'all') {
+      block.classList.remove('hidden');
+    } else {
+      block.classList.toggle('hidden', block.dataset.tier !== tab);
+    }
+  });
+}
+
+function doSearch(val) {
+  const q = val.toLowerCase().trim();
+  if (!q) {
+    switchTab(currentTab);
+    return;
+  }
+  document.getElementById('mainContent').classList.remove('hidden');
+  document.getElementById('view-pyramid').classList.add('hidden');
+  document.getElementById('view-bba').classList.add('hidden');
+  document.querySelectorAll('.tier-block').forEach(b => b.classList.remove('hidden'));
+  
+  document.querySelectorAll('.brand-card').forEach(card => {
+    const searchText = (card.dataset.search || '').toLowerCase() + ' ' + card.textContent.toLowerCase();
+    card.style.display = searchText.includes(q) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
