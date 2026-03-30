@@ -230,6 +230,8 @@
     <div class="tab" onclick="switchTab('strategies')">⚡ 策略类型</div>
     <div class="tab" onclick="switchTab('indicators')">📊 评估指标</div>
     <div class="tab" onclick="switchTab('tools')">🛠️ 工具平台</div>
+    <div class="tab" onclick="switchTab('companies')">🏢 量化公司</div>
+    <div class="tab" onclick="switchTab('career')">👤 从业分析</div>
   </div>
 </div>
 
@@ -969,7 +971,658 @@
   </div>
 </div>
 
-<script>
+<!-- ===== 量化公司 ===== -->
+<div class="content" id="tab-companies">
+
+  <div class="section">
+    <div class="section-title">🇨🇳 国内量化私募行业全景（2025年末数据）</div>
+    <div class="card" style="border-left: 3px solid var(--accent); margin-bottom: 20px;">
+      <div class="card-desc" style="font-size:14px; line-height:2;">
+        截至2025年末，百亿私募增至 <strong style="color:var(--accent)">113家</strong>，其中百亿量化私募 <strong style="color:var(--accent2)">55家</strong>，首次超越主观私募（45家）。<br>
+        私募行业规模突破 <strong style="color:var(--accent)">22万亿</strong> 大关，量化私募已从"边缘角色"迅猛崛起，站上舞台中央。<br><br>
+        <strong style="color:var(--accent4)">📍 地域分布：</strong>上海占52%（半壁江山） > 北京20% > 深圳8% > 珠海6% > 杭州5% > 海南5%<br>
+        <strong style="color:var(--accent3)">👥 人员规模：</strong>头部量化私募一般50-170人，超百人的仅6家（灵均168人 > 九坤166人 > 宽德118人 > 因诺117人）
+      </div>
+    </div>
+  </div>
+
+  <!-- 规模金字塔 -->
+  <div class="section">
+    <div class="section-title">规模金字塔（AUM分层）</div>
+    <div class="card" style="padding:24px;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <div style="display:inline-block; padding:12px 40px; background:linear-gradient(135deg,rgba(244,114,182,0.2),rgba(244,114,182,0.05)); border:1px solid rgba(244,114,182,0.3); border-radius:8px; font-size:13px; margin-bottom:8px;">
+          <strong style="color:var(--accent3);">👑 四大天王 · 700亿+</strong><br>
+          <span style="color:var(--muted);font-size:12px;">幻方 · 九坤 · 明汯 · 衍复 &nbsp;合计 ~3000亿</span>
+        </div><br>
+        <div style="display:inline-block; padding:12px 60px; background:linear-gradient(135deg,rgba(251,146,60,0.2),rgba(251,146,60,0.05)); border:1px solid rgba(251,146,60,0.3); border-radius:8px; font-size:13px; margin-bottom:8px;">
+          <strong style="color:var(--accent4);">🥈 第二梯队 · 400-700亿</strong><br>
+          <span style="color:var(--muted);font-size:12px;">世纪前沿(600亿+) · 灵均(500-600亿) · 诚奇(500亿) · 顽岩(400亿)</span>
+        </div><br>
+        <div style="display:inline-block; padding:12px 80px; background:linear-gradient(135deg,rgba(124,106,247,0.2),rgba(124,106,247,0.05)); border:1px solid rgba(124,106,247,0.3); border-radius:8px; font-size:13px; margin-bottom:8px;">
+          <strong style="color:var(--accent);">🥉 腰部梯队 · 100-400亿</strong><br>
+          <span style="color:var(--muted);font-size:12px;">宽德 · 茂源 · 黑翼 · 量派 · 稳博 · 思勰 · 锐天 · 龙旗 · 天演 · 启林 · 佳期 等20+家</span>
+        </div><br>
+        <div style="display:inline-block; padding:12px 100px; background:linear-gradient(135deg,rgba(94,234,212,0.15),rgba(94,234,212,0.03)); border:1px solid rgba(94,234,212,0.2); border-radius:8px; font-size:13px;">
+          <strong style="color:var(--accent2);">🌱 成长梯队 · 50-100亿</strong><br>
+          <span style="color:var(--muted);font-size:12px;">蒙玺 · 微观博易 · 千象 · 进化论 · 鸣石 · 赫富 · 因诺 等29家</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 四大天王 -->
+  <div class="section">
+    <div class="section-title">👑 四大天王 详细档案</div>
+
+    <div class="concept-card" style="border-left:3px solid var(--accent3);">
+      <div class="concept-header">
+        <div class="concept-badge" style="background:rgba(244,114,182,0.15);color:var(--accent3)">No.1</div>
+        <div>
+          <div class="concept-name">幻方量化 <span class="concept-en">Quant Fund · DeepSeek母公司</span></div>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
+          <div><strong style="color:var(--text);">📅 成立：</strong>2015年（2008年开始研究）</div>
+          <div><strong style="color:var(--text);">💰 规模：</strong>600-700亿元</div>
+          <div><strong style="color:var(--text);">📍 总部：</strong>杭州（宁波注册）</div>
+          <div><strong style="color:var(--text);">👥 员工：</strong>~66人（精英小团队）</div>
+          <div><strong style="color:var(--text);">🎯 策略：</strong>AI驱动 · 高频 · 多因子</div>
+          <div><strong style="color:var(--text);">🏆 荣誉：</strong>连续多年金牛奖</div>
+        </div>
+        <strong style="color:var(--accent3);">创始人：</strong>梁文锋（浙大计算机博士），同时是 <strong style="color:var(--accent);">DeepSeek</strong> 创始人，入选《自然》2025年度十大科学人物、《时代》全球最具影响力100人。<br><br>
+        <strong style="color:var(--accent3);">技术特色：</strong>All in AI，自建"萤火"系列超算平台（萤火一号500张卡，萤火二号投入10亿元），累积数据量超10PB。2017年全面应用深度学习交易。2025年产品收益均值超56%。<br><br>
+        <strong style="color:var(--accent3);">行业标签：</strong>"北九坤、南幻方"——量化行业两大标杆。梁文锋同时控制幻方量化+九章资产两家百亿私募。
+      </div>
+      <div class="concept-tips">
+        <span class="tip-item good">✅ AI技术最强</span>
+        <span class="tip-item neutral">🔥 DeepSeek母公司</span>
+        <span class="tip-item good">✅ 2025收益56%+</span>
+      </div>
+    </div>
+
+    <div class="concept-card" style="border-left:3px solid var(--accent);">
+      <div class="concept-header">
+        <div class="concept-badge">No.2</div>
+        <div>
+          <div class="concept-name">九坤投资 <span class="concept-en">Ubiquant Investment</span></div>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
+          <div><strong style="color:var(--text);">📅 成立：</strong>2012年（国内最早一批）</div>
+          <div><strong style="color:var(--text);">💰 规模：</strong>600亿+</div>
+          <div><strong style="color:var(--text);">📍 总部：</strong>北京中关村</div>
+          <div><strong style="color:var(--text);">👥 员工：</strong>166人（国内最大规模之一）</div>
+          <div><strong style="color:var(--text);">🎯 策略：</strong>多PM体系 · 指增/CTA/对冲</div>
+          <div><strong style="color:var(--text);">🏆 荣誉：</strong>连续6年+金牛奖</div>
+        </div>
+        <strong style="color:var(--accent);">创始人：</strong>王琛（清华数学物理学士、计算机博士）+ 姚齐聪（北大数学学士、金融数学硕士），两人曾供职于千禧年基金（Millennium Partners），2010年回国创业。<br><br>
+        <strong style="color:var(--accent);">技术特色：</strong>投研团队90%毕业于清华、北大和常青藤，博士60余人。自建"北溟"超算集群、AI实验室。与微软合作垂直场景AI。举办"UBIQUANT CHALLENGE"量化新星挑战赛，吸引全球6000+支队伍。<br><br>
+        <strong style="color:var(--accent);">行业标签：</strong>学术派量化帝国，人员规模最大的量化机构之一，策略线最全面。
+      </div>
+      <div class="concept-tips">
+        <span class="tip-item good">✅ 历史最悠久</span>
+        <span class="tip-item neutral">🎓 学术派代表</span>
+        <span class="tip-item good">✅ 策略线最全</span>
+      </div>
+    </div>
+
+    <div class="concept-card" style="border-left:3px solid var(--accent4);">
+      <div class="concept-header">
+        <div class="concept-badge" style="background:rgba(251,146,60,0.15);color:var(--accent4)">No.3</div>
+        <div>
+          <div class="concept-name">明汯投资 <span class="concept-en">Minghong Investment</span></div>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
+          <div><strong style="color:var(--text);">📅 成立：</strong>2014年（上海）</div>
+          <div><strong style="color:var(--text);">💰 规模：</strong>700-800亿元</div>
+          <div><strong style="color:var(--text);">📍 总部：</strong>上海北外滩来福士</div>
+          <div><strong style="color:var(--text);">👥 员工：</strong>100+人</div>
+          <div><strong style="color:var(--text);">🎯 策略：</strong>全周期 · 多频段 · 多策略</div>
+          <div><strong style="color:var(--text);">🏆 荣誉：</strong>2017年首获金牛奖</div>
+        </div>
+        <strong style="color:var(--accent4);">创始人：</strong>裘慧明（宾夕法尼亚大学物理学博士，复旦物理学学士），超20年投资经验。<br><br>
+        <strong style="color:var(--accent4);">技术特色：</strong>国内较早一批将AI技术成功应用到金融市场的私募。覆盖全周期、多策略、多品种的资产管理平台。国内首家管理规模曾突破千亿的量化机构。<br><br>
+        <strong style="color:var(--accent4);">办公地点：</strong>上海（总部）、北京、香港、纽约。
+      </div>
+      <div class="concept-tips">
+        <span class="tip-item good">✅ 规模最大（曾破千亿）</span>
+        <span class="tip-item neutral">🌍 全球化布局</span>
+        <span class="tip-item good">✅ 全周期覆盖</span>
+      </div>
+    </div>
+
+    <div class="concept-card" style="border-left:3px solid var(--accent2);">
+      <div class="concept-header">
+        <div class="concept-badge" style="background:rgba(94,234,212,0.15);color:var(--accent2)">No.4</div>
+        <div>
+          <div class="concept-name">衍复投资 <span class="concept-en">Yanfu Investment</span></div>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
+          <div><strong style="color:var(--text);">📅 成立：</strong>2019年（最年轻的天王）</div>
+          <div><strong style="color:var(--text);">💰 规模：</strong>600-700亿元</div>
+          <div><strong style="color:var(--text);">📍 总部：</strong>上海</div>
+          <div><strong style="color:var(--text);">👥 员工：</strong>—</div>
+          <div><strong style="color:var(--text);">🎯 策略：</strong>精选Alpha因子 · 严控Beta</div>
+          <div><strong style="color:var(--text);">🏆 荣誉：</strong>6年跻身行业顶端</div>
+        </div>
+        <strong style="color:var(--accent2);">创始人：</strong>高亢，国际物理奥赛金牌、北大物理系保送、MIT物理+计算机双学位，曾任职DRW Trading Group、Two Sigma等顶尖量化机构，10年+全球策略研发经验。<br><br>
+        <strong style="color:var(--accent2);">技术特色：</strong>高频迭代+多因子覆盖，每年投入超亿元升级算力，模型更新频率每周一次（行业平均每月一次）。2025年主动关闭500/1000指增新客户申购，控制规模维持策略有效性。<br><br>
+        <strong style="color:var(--accent2);">成长速度：</strong>2020年1月首只产品 → 11个月后破10亿 → 2020年10月破100亿 → 2025年600亿+，堪称行业奇迹。
+      </div>
+      <div class="concept-tips">
+        <span class="tip-item good">✅ 成长最快</span>
+        <span class="tip-item neutral">🚀 6年600亿</span>
+        <span class="tip-item good">✅ 策略迭代最快</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 其他重要机构 -->
+  <div class="section">
+    <div class="section-title">🏆 其他重要量化机构</div>
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table class="indicator-table">
+        <thead>
+          <tr>
+            <th>机构</th>
+            <th>规模</th>
+            <th>总部</th>
+            <th>创始人/背景</th>
+            <th>核心特色</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="indicator-name">世纪前沿</div></td>
+            <td style="color:var(--accent4);font-size:12px;">600-700亿</td>
+            <td style="font-size:12px;">海南</td>
+            <td style="color:var(--muted);font-size:12px;">吴敌，境内外量化经验</td>
+            <td style="font-size:12px;">年度最大跃迁者，一年净增300亿+</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">灵均投资</div></td>
+            <td style="color:var(--accent4);font-size:12px;">500-600亿</td>
+            <td style="font-size:12px;">宁波/北京/上海/香港/新加坡</td>
+            <td style="color:var(--muted);font-size:12px;">马志宇（原WorldQuant中国区）</td>
+            <td style="font-size:12px;">2025年收益冠军73.5%，168人最大团队</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">诚奇资产</div></td>
+            <td style="color:var(--accent4);font-size:12px;">500亿</td>
+            <td style="font-size:12px;">深圳</td>
+            <td style="color:var(--muted);font-size:12px;">张万成</td>
+            <td style="font-size:12px;">多层次模型+机器学习融合，2025产品创新高</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">顽岩资产</div></td>
+            <td style="color:var(--accent);font-size:12px;">400亿</td>
+            <td style="font-size:12px;">上海</td>
+            <td style="color:var(--muted);font-size:12px;">—</td>
+            <td style="font-size:12px;">2025年Q4"两级跳"，单季增超100亿</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">宽德投资</div></td>
+            <td style="color:var(--accent);font-size:12px;">300亿+</td>
+            <td style="font-size:12px;">上海/北京/深圳/珠海/成都</td>
+            <td style="color:var(--muted);font-size:12px;">徐御之，~150人</td>
+            <td style="font-size:12px;">多周期全频段融合，IT团队70-80人</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">茂源量化</div></td>
+            <td style="color:var(--accent);font-size:12px;">100-300亿</td>
+            <td style="font-size:12px;">海南澄迈</td>
+            <td style="color:var(--muted);font-size:12px;">郭学文（清华+东英大学博士），130人</td>
+            <td style="font-size:12px;">近三年收益冠军，国内最早高频交易策略</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">黑翼资产</div></td>
+            <td style="color:var(--accent);font-size:12px;">100-300亿</td>
+            <td style="font-size:12px;">上海/北京/成都</td>
+            <td style="color:var(--muted);font-size:12px;">邹倚天+陈泽浩（华尔街归国）</td>
+            <td style="font-size:12px;">连续5年金牛奖，60%+博士学历</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">鸣石基金</div></td>
+            <td style="color:var(--accent2);font-size:12px;">50-100亿</td>
+            <td style="font-size:12px;">上海</td>
+            <td style="color:var(--muted);font-size:12px;">成立于2010年，国内最早</td>
+            <td style="font-size:12px;">全频段交易信号，参考海外对冲基金架构</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">锐天投资</div></td>
+            <td style="color:var(--accent);font-size:12px;">100-200亿</td>
+            <td style="font-size:12px;">上海</td>
+            <td style="color:var(--muted);font-size:12px;">成立于2013年</td>
+            <td style="font-size:12px;">高科技数据驱动，穿越多轮牛熊</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">蒙玺投资</div></td>
+            <td style="color:var(--accent2);font-size:12px;">70亿</td>
+            <td style="font-size:12px;">上海</td>
+            <td style="color:var(--muted);font-size:12px;">核心团队海内外知名机构</td>
+            <td style="font-size:12px;">2025年近一年收益第2名</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 外资量化 -->
+  <div class="section">
+    <div class="section-title">🌍 在华外资量化机构</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🇺🇸</div>
+        <div class="card-title">Two Sigma（腾胜投资）</div>
+        <div class="card-desc">
+          全球顶级量化对冲基金，在华管理规模2025年突破100亿元。<br>
+          <span style="color:var(--accent2);">带来成熟市场策略理念和风控体系</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🇺🇸</div>
+        <div class="card-title">Citadel</div>
+        <div class="card-desc">
+          Ken Griffin创立，全球管理规模500亿美元+。多策略架构+量化交易+做市业务。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🇺🇸</div>
+        <div class="card-title">WorldQuant</div>
+        <div class="card-desc">
+          全球最大的量化因子研究平台之一，灵均投资CIO马志宇曾任其中国区总经理。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2025业绩排行 -->
+  <div class="section">
+    <div class="section-title">📊 2025年百亿量化私募业绩Top10</div>
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table class="indicator-table">
+        <thead>
+          <tr>
+            <th>排名</th>
+            <th>机构</th>
+            <th>2025年收益均值</th>
+            <th>策略类型</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-size:16px;">🥇</td>
+            <td><div class="indicator-name">灵均投资</div></td>
+            <td><span class="good-tag" style="font-size:14px;font-weight:700;">73.51%</span></td>
+            <td style="font-size:12px;">量化多头</td>
+          </tr>
+          <tr>
+            <td style="font-size:16px;">🥈</td>
+            <td><div class="indicator-name">远信投资</div></td>
+            <td><span class="good-tag">72.05%</span></td>
+            <td style="font-size:12px;">主观</td>
+          </tr>
+          <tr>
+            <td style="font-size:16px;">🥉</td>
+            <td><div class="indicator-name">复胜资产</div></td>
+            <td><span class="good-tag">70.57%</span></td>
+            <td style="font-size:12px;">主观</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><div class="indicator-name">久期投资</div></td>
+            <td><span class="good-tag">57%</span></td>
+            <td style="font-size:12px;">债券（唯一）</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><div class="indicator-name">幻方量化</div></td>
+            <td><span class="good-tag">56.55%</span></td>
+            <td style="font-size:12px;">量化多头</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><div class="indicator-name">信弘天禾</div></td>
+            <td><span class="good-tag">50%+</span></td>
+            <td style="font-size:12px;">量化 · AI驱动</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><div class="indicator-name">诚奇资产</div></td>
+            <td><span class="good-tag">50%+</span></td>
+            <td style="font-size:12px;">量化多头</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><div class="indicator-name">稳博投资</div></td>
+            <td><span class="good-tag">50%+</span></td>
+            <td style="font-size:12px;">量化 · 高频算法</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><div class="indicator-name">天演资本</div></td>
+            <td><span class="good-tag">48.49%</span></td>
+            <td style="font-size:12px;">量化 · Alpha+T0</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><div class="indicator-name">进化论资产</div></td>
+            <td><span class="good-tag">47.91%</span></td>
+            <td style="font-size:12px;">量化多头</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note-box" style="margin-top:12px;">
+      📊 <strong>关键数据：</strong>2025年Top20百亿私募中，量化机构占据 <strong style="color:var(--accent);">17席</strong>，仅3家为主观私募。超八成百亿私募跑赢上证指数（+18.41%）。唯一负收益的是林园投资（-6.46%）。
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== 从业分析 ===== -->
+<div class="content" id="tab-career">
+
+  <div class="section">
+    <div class="section-title">🎯 量化从业岗位全景</div>
+    <div class="strategy-grid">
+      <div class="strategy-card" style="border-top: 2px solid var(--accent3);">
+        <div class="strategy-icon">🧪</div>
+        <div class="strategy-name">量化研究员 Quant Researcher</div>
+        <div class="strategy-desc">
+          核心岗位。负责因子挖掘、策略开发、模型构建。需要扎实的数理统计基础+Python编程能力。
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag" style="background:rgba(244,114,182,0.1);color:var(--accent3);">💰 50-200万/年</span>
+          <span class="meta-tag">985硕+</span>
+          <span class="meta-tag">数/理/统/计</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent);">
+        <div class="strategy-icon">🤖</div>
+        <div class="strategy-name">AI/ML研究员</div>
+        <div class="strategy-desc">
+          2026年最抢手岗位！负责机器学习/深度学习建模、策略研究。AI算法研究员已站上舞台中央。
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag" style="background:rgba(244,114,182,0.1);color:var(--accent3);">💰 80-200万/年</span>
+          <span class="meta-tag">985博士优先</span>
+          <span class="meta-tag">ML/DL/RL/NLP</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent2);">
+        <div class="strategy-icon">💻</div>
+        <div class="strategy-name">量化开发工程师 Quant Dev</div>
+        <div class="strategy-desc">
+          负责交易系统、回测系统、投研平台开发。C++/Python为主，需要高性能编程能力。
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag" style="background:rgba(94,234,212,0.1);color:var(--accent2);">💰 40-80万/年</span>
+          <span class="meta-tag">985本+</span>
+          <span class="meta-tag">C++/Python</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent4);">
+        <div class="strategy-icon">📊</div>
+        <div class="strategy-name">数据工程师</div>
+        <div class="strategy-desc">
+          负责数据清洗、入库、管理维护。金融数据+另类数据处理，构建数据基础设施。
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag" style="background:rgba(251,146,60,0.1);color:var(--accent4);">💰 30-60万/年</span>
+          <span class="meta-tag">985本+</span>
+          <span class="meta-tag">Python/SQL/大数据</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid var(--accent5);">
+        <div class="strategy-icon">🎮</div>
+        <div class="strategy-name">高频系统工程师</div>
+        <div class="strategy-desc">
+          负责高频交易系统开发，追求极致延迟。需要深入理解操作系统、网络协议。
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag" style="background:rgba(52,211,153,0.1);color:var(--accent5);">💰 60-150万/年</span>
+          <span class="meta-tag">C++精通</span>
+          <span class="meta-tag">系统底层</span>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="border-top: 2px solid #a78bfa;">
+        <div class="strategy-icon">🧠</div>
+        <div class="strategy-name">大模型算法研究员</div>
+        <div class="strategy-desc">
+          2026年新兴岗位。将LLM/大模型技术应用于金融场景，处理非结构化数据（新闻/公告/社交媒体）。
+        </div>
+        <div class="strategy-meta">
+          <span class="meta-tag" style="background:rgba(167,139,250,0.1);color:#a78bfa;">💰 80-200万/年</span>
+          <span class="meta-tag">博士优先</span>
+          <span class="meta-tag">LLM/NLP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 学历门槛 -->
+  <div class="section">
+    <div class="section-title">🎓 学历与门槛要求</div>
+    <div class="card" style="border-left: 3px solid var(--accent3); margin-bottom:16px;">
+      <div class="card-desc" style="font-size:14px; line-height:2;">
+        <strong style="color:var(--accent3);">硬性门槛：</strong><br>
+        • 学历：<strong style="color:var(--text);">985本科起步</strong>，头部机构清北华五硕/博是标配<br>
+        • 专业：数学、物理、统计、计算机、金融工程（理工科为王）<br>
+        • 竞赛：奥赛/ACM/Kaggle奖牌是重要加分项<br>
+        • 实习：2-3段量化实习几乎是必须的<br><br>
+        <strong style="color:var(--accent2);">2026年新趋势：</strong><br>
+        • 人才结构从"金融+数学"转向 <strong style="color:var(--accent);">"科学+工程"</strong><br>
+        • 过去找"会敲代码的金融分析师"，现在要"懂金融问题的工程师"<br>
+        • AI岗位薪酬已可与互联网大厂算法岗"正面硬碰"<br>
+        • 头部机构招聘已提前到2027届、2028届
+      </div>
+    </div>
+  </div>
+
+  <!-- 薪资体系 -->
+  <div class="section">
+    <div class="section-title">💰 薪资体系参考</div>
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table class="indicator-table">
+        <thead>
+          <tr>
+            <th>岗位</th>
+            <th>机构规模</th>
+            <th>应届生年包</th>
+            <th>3-5年经验</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="indicator-name">量化研究员</div></td>
+            <td style="font-size:12px;">百亿+</td>
+            <td style="color:var(--accent5);font-size:13px;">50-80万</td>
+            <td style="color:var(--accent3);font-size:13px;">100-300万+</td>
+            <td style="color:var(--muted);font-size:11px;">绩效奖金不封顶</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">AI/ML研究员</div></td>
+            <td style="font-size:12px;">百亿+</td>
+            <td style="color:var(--accent5);font-size:13px;">80-200万</td>
+            <td style="color:var(--accent3);font-size:13px;">200-500万+</td>
+            <td style="color:var(--muted);font-size:11px;">博士年薪百万起步</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">量化开发</div></td>
+            <td style="font-size:12px;">百亿+</td>
+            <td style="color:var(--accent5);font-size:13px;">40-80万</td>
+            <td style="color:var(--accent3);font-size:13px;">80-200万</td>
+            <td style="color:var(--muted);font-size:11px;">C++大厂经验优先</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">量化研究员</div></td>
+            <td style="font-size:12px;">50亿以下</td>
+            <td style="color:var(--muted);font-size:13px;">15-40万</td>
+            <td style="color:var(--muted);font-size:13px;">40-100万</td>
+            <td style="color:var(--muted);font-size:11px;">base较低但有分成</td>
+          </tr>
+          <tr>
+            <td><div class="indicator-name">实习生</div></td>
+            <td style="font-size:12px;">头部机构</td>
+            <td style="color:var(--accent2);font-size:13px;">日薪1000-1500元</td>
+            <td style="color:var(--muted);font-size:13px;">—</td>
+            <td style="color:var(--muted);font-size:11px;">含单身公寓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note-box" style="margin-top:12px;">
+      ⚠️ <strong>注意：</strong>量化行业不是二八原则，而是极少数人拿到极高薪酬。大部分人的base在15-40万，真正拉开差距的是<strong style="color:var(--accent);">绩效奖金</strong>（与策略收益直接挂钩）。头部机构965作息，但竞争极其激烈。
+    </div>
+  </div>
+
+  <!-- 你的背景分析 -->
+  <div class="section">
+    <div class="section-title">🔍 你的背景竞争力分析</div>
+    <div class="concept-card" style="border-left:3px solid var(--accent5);">
+      <div class="concept-header">
+        <div class="concept-badge" style="background:rgba(52,211,153,0.15);color:var(--accent5)">个人画像</div>
+        <div>
+          <div class="concept-name">中南大学本科 → 中山大学硕士 → 达摩院3D → 腾讯混元大模型</div>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div style="margin-bottom:16px;">
+          <strong style="color:var(--accent5);font-size:14px;">✅ 你的优势（非常强）</strong>
+          <div style="margin-top:8px; display:grid; gap:8px;">
+            <div style="padding:10px 14px; background:rgba(52,211,153,0.06); border-radius:8px; border:1px solid rgba(52,211,153,0.15);">
+              <strong style="color:var(--accent5);">🎓 学历：</strong>中南大学（985）本科 + 中山大学（985）硕士 — <strong style="color:var(--text);">完全达标</strong>头部量化的学历门槛。电子信息+AI专业组合，正是行业从"金融+数学"转向"科学+工程"的理想人才画像。
+            </div>
+            <div style="padding:10px 14px; background:rgba(52,211,153,0.06); border-radius:8px; border:1px solid rgba(52,211,153,0.15);">
+              <strong style="color:var(--accent5);">🤖 AI经验：</strong>阿里达摩院3D + 腾讯混元大模型 — <strong style="color:var(--text);">顶级AI实战经验</strong>。2026年量化行业最抢手的就是AI/ML岗位，你有大厂AI实习+大模型数据经验，这是极大的差异化优势。
+            </div>
+            <div style="padding:10px 14px; background:rgba(52,211,153,0.06); border-radius:8px; border:1px solid rgba(52,211,153,0.15);">
+              <strong style="color:var(--accent5);">💼 大厂背景：</strong>达摩院+腾讯混元，两段顶级AI实验室经历。招聘JD里明确写"有大厂机器学习相关工作或实习经验优先"。
+            </div>
+            <div style="padding:10px 14px; background:rgba(52,211,153,0.06); border-radius:8px; border:1px solid rgba(52,211,153,0.15);">
+              <strong style="color:var(--accent5);">📊 数据能力：</strong>在腾讯做大模型数据，数据清洗、处理、质量把控的经验对量化数据工程直接可迁移。量化行业越来越重视非结构化数据处理能力。
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <strong style="color:var(--accent4);font-size:14px;">⚠️ 需要补强的方面</strong>
+          <div style="margin-top:8px; display:grid; gap:8px;">
+            <div style="padding:10px 14px; background:rgba(251,146,60,0.06); border-radius:8px; border:1px solid rgba(251,146,60,0.15);">
+              <strong style="color:var(--accent4);">📉 金融知识：</strong>需要补充金融市场基础知识（K线、技术指标、市场微观结构）。不需要CFA级别，但要理解"因子""Alpha""回测"这些核心概念。
+            </div>
+            <div style="padding:10px 14px; background:rgba(251,146,60,0.06); border-radius:8px; border:1px solid rgba(251,146,60,0.15);">
+              <strong style="color:var(--accent4);">🧮 数理统计：</strong>量化面试会考概率论、随机过程、统计检验等。你的电子信息专业有数学基础，但可能需要针对性复习。
+            </div>
+            <div style="padding:10px 14px; background:rgba(251,146,60,0.06); border-radius:8px; border:1px solid rgba(251,146,60,0.15);">
+              <strong style="color:var(--accent4);">💹 量化实习：</strong>头部机构几乎都要求有量化相关实习经验。可以先投中小型量化私募实习，或参加九坤UBIQUANT CHALLENGE等比赛积累经验。
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <strong style="color:var(--accent);font-size:14px;">🎯 最适合你的岗位方向</strong>
+          <div style="margin-top:8px; display:grid; gap:8px;">
+            <div style="padding:10px 14px; background:rgba(124,106,247,0.06); border-radius:8px; border:1px solid rgba(124,106,247,0.15);">
+              <strong style="color:var(--accent);">🥇 首选：AI/ML量化研究员</strong> — 你的AI背景+大模型经验是最大卖点。幻方、九坤、世纪前沿等都在疯抢AI人才。年包80-200万起。
+            </div>
+            <div style="padding:10px 14px; background:rgba(124,106,247,0.06); border-radius:8px; border:1px solid rgba(124,106,247,0.15);">
+              <strong style="color:var(--accent);">🥈 次选：大模型算法研究员</strong> — 2026年新兴岗位，将LLM应用于金融（舆情分析、公告解读、另类数据）。你在混元做大模型数据的经验完美匹配。
+            </div>
+            <div style="padding:10px 14px; background:rgba(124,106,247,0.06); border-radius:8px; border:1px solid rgba(124,106,247,0.15);">
+              <strong style="color:var(--accent);">🥉 备选：量化开发工程师</strong> — 如果想先进入行业积累经验，开发岗门槛相对低一些，可以边做边学策略。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 求职建议 -->
+  <div class="section">
+    <div class="section-title">📋 量化求职Checklist</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📐</div>
+        <div class="card-title">数理基础</div>
+        <div class="card-desc">
+          ☐ 概率论与数理统计<br>
+          ☐ 线性代数（矩阵分解）<br>
+          ☐ 随机过程基础<br>
+          ☐ 统计检验（t检验/IC值）
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🐍</div>
+        <div class="card-title">编程能力</div>
+        <div class="card-desc">
+          ☐ Python（Pandas/NumPy/Scipy）<br>
+          ☐ 机器学习框架（PyTorch/TF）<br>
+          ☐ C++基础（加分项）<br>
+          ☐ SQL数据库操作
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">AI/ML技能</div>
+        <div class="card-desc">
+          ☐ 经典ML（随机森林/XGBoost）<br>
+          ☐ 深度学习（LSTM/Transformer）<br>
+          ☐ 强化学习基础<br>
+          ☐ NLP/大模型应用
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💹</div>
+        <div class="card-title">金融知识</div>
+        <div class="card-desc">
+          ☐ 多因子模型框架<br>
+          ☐ Alpha/Beta/夏普比率<br>
+          ☐ 回测方法论<br>
+          ☐ 风险管理基础
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">竞赛/项目</div>
+        <div class="card-desc">
+          ☐ 九坤UBIQUANT CHALLENGE<br>
+          ☐ WorldQuant Brain因子挖掘<br>
+          ☐ Kaggle金融类比赛<br>
+          ☐ 个人量化项目/GitHub
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">面试准备</div>
+        <div class="card-desc">
+          ☐ 智力题/概率题（Green Book）<br>
+          ☐ 编程题（LeetCode中等）<br>
+          ☐ 策略设计题<br>
+          ☐ 行为面试（为什么转量化）
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    🎀 <strong>小K说：</strong>老板你的背景其实很适合做量化呀～中南+中大双985，达摩院+腾讯混元的AI经验，放在量化行业简直是香饽饽。现在行业最缺的就是"懂AI又能落地的工程师"，你完全匹配！唯一要补的就是金融知识和量化实习经验，建议先在聚宽上跑几个策略练手，然后投几家量化私募的AI岗位试试水～ 💪
+  </div>
+</div>
 function switchTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
