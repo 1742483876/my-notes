@@ -277,6 +277,71 @@ body::before {
 .action-btn:active { transform: scale(0.9); }
 .action-btn.delete:hover { border-color: rgba(248,113,113,0.4); color: var(--red); }
 
+/* ── 组合卡片 ── */
+.group-card {
+  background: var(--glass);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 2px 16px rgba(124,106,247,0.08);
+}
+.group-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 18px 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.group-header:hover { background: rgba(124,106,247,0.04); }
+.group-chevron {
+  font-size: 14px; color: var(--accent);
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(124,106,247,0.1);
+  border-radius: 8px;
+}
+.group-card.expanded .group-chevron { transform: rotate(90deg); }
+.group-title {
+  font-size: 15px; font-weight: 600; color: var(--text);
+  flex: 1; min-width: 0;
+}
+.group-title small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+.group-stats {
+  display: flex; gap: 14px; align-items: center; flex-shrink: 0;
+}
+.group-stat {
+  text-align: center;
+}
+.group-stat-label { font-size: 10px; color: var(--muted); }
+.group-stat-value { font-size: 14px; font-weight: 700; color: var(--accent); }
+.group-stat-value.price-v { color: var(--green); }
+.group-children {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s;
+  padding: 0 12px;
+}
+.group-card.expanded .group-children {
+  max-height: 3000px;
+  padding: 0 12px 12px;
+}
+.group-children .product-card {
+  border: 1px solid rgba(124,106,247,0.15);
+  margin-bottom: 10px;
+  box-shadow: 0 1px 6px rgba(124,106,247,0.06);
+}
+.group-children .product-card:last-child { margin-bottom: 0; }
+.group-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; padding: 2px 8px; border-radius: 6px;
+  background: rgba(124,106,247,0.1); color: var(--accent);
+  font-weight: 500;
+}
+
 /* ── 弹窗 ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 200;
@@ -552,6 +617,17 @@ body::before {
     </div>
 
     <div class="form-group">
+      <label class="form-label">🔗 所属组合</label>
+      <select class="form-select" id="fGroup">
+        <option value="">不属于任何组合</option>
+      </select>
+      <div style="display:flex;gap:8px;margin-top:6px;">
+        <input class="form-input" id="fNewGroupName" type="text" placeholder="或输入新组合名称..." style="flex:1;font-size:12px;">
+        <button type="button" class="modal-btn" onclick="createGroupFromForm()" style="padding:6px 12px;font-size:12px;border-radius:8px;">创建</button>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label class="form-label">备注</label>
       <textarea class="form-textarea" id="fNote" placeholder="型号/颜色/配置/心得..."></textarea>
     </div>
@@ -572,8 +648,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v27';
-const OLD_STORAGE_KEY = 'knot_gadgets_v26';
+const STORAGE_KEY = 'knot_gadgets_v28';
+const OLD_STORAGE_KEY = 'knot_gadgets_v27';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -608,12 +684,12 @@ const DEMO_DATA = [
   { id:'tb2', name:'狼蛛 F99 客制化机械键盘（三模无线）', category:'配件', price:259, date:'2023-11-08', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'蓝牙/2.4G/有线三模，日常办公用' },
   { id:'tb3', name:'罗技 B330 静音无线鼠标', category:'配件', price:79, date:'2023-02-15', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'静音无线鼠标，办公主力' },
   { id:'tb4', name:'倍思 Apple Pencil 电容笔', category:'配件', price:89, date:'2023-12-29', channel:'淘宝', frequency:'monthly', monthlyUse:2, status:'using', note:'iPad用电容笔，偶尔画画/做笔记' },
-  { id:'tb5', name:'DIY台式机（E3 1220V3+H81+RTX4070+240G SSD）', category:'电脑', price:4839, date:'2024-02-20', channel:'淘宝', frequency:'daily', monthlyUse:25, status:'using', note:'自组NAS/游戏机：微星RTX4070¥4099+鑫谷GX850W电源¥459+技嘉H81¥69+E3 CPU¥53+SSD¥69+内存¥12+鱼巢机箱¥79（电源购于2023-12-08拼多多百亿补贴）' },
+  { id:'tb5', name:'DIY台式机（E3 1220V3+H81+RTX4070+240G SSD）', category:'电脑', price:4839, date:'2024-02-20', channel:'淘宝', frequency:'daily', monthlyUse:25, status:'using', note:'自组NAS/游戏机：微星RTX4070¥4099+鑫谷GX850W电源¥459+技嘉H81¥69+E3 CPU¥53+SSD¥69+内存¥12+鱼巢机箱¥79（电源购于2023-12-08拼多多百亿补贴）', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
   // ── 用户截图补充数据（2026-03-30） ──
   { id:'sc1', name:'DJI Action 5 Pro', category:'相机', price:1900, date:'2025-06-09', channel:'其他', frequency:'weekly', monthlyUse:4, status:'using', note:'运动相机' },
   { id:'sc2', name:'Nintendo Switch', category:'游戏', price:1788, date:'2025-05-01', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'游戏主机' },
-  { id:'jd5', name:'西部数据 WD Red Plus 4TB NAS硬盘 x2', category:'存储', price:1618, date:'2025-06-03', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'NAS存储盘，搭配绿联DXP4800使用，两块4TB共¥1618' },
-  { id:'sc3', name:'绿联 DXP4800 NAS', category:'存储', price:1530, date:'2025-06-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'NAS主机，家庭存储/媒体服务器' },
+  { id:'jd5', name:'西部数据 WD Red Plus 4TB NAS硬盘 x2', category:'存储', price:1618, date:'2025-06-03', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'NAS存储盘，搭配绿联DXP4800使用，两块4TB共¥1618', groupId:'grp_nas', groupName:'NAS 存储套装' },
+  { id:'sc3', name:'绿联 DXP4800 NAS', category:'存储', price:1530, date:'2025-06-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'NAS主机，家庭存储/媒体服务器', groupId:'grp_nas', groupName:'NAS 存储套装' },
   { id:'sc4', name:'iPhone 13', category:'手机', price:6294, date:'2021-10-07', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2025-01-22', note:'已换iPhone 16 Pro Max' },
   { id:'sc5', name:'小米泡脚桶', category:'其他', price:338, date:'2025-12-07', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'小米智能泡脚桶' },
   { id:'sc6', name:'DJI Pocket + SD256存储卡', category:'相机', price:3954, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'口袋云台相机¥3800 + SD256存储卡¥154，拍视频/Vlog用' },
@@ -623,10 +699,10 @@ const DEMO_DATA = [
   { id:'pdd1', name:'Xiaomi 红米Note11 5G', category:'手机', price:756, date:'2023-07-07', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'浅梦星河 6GB+128GB，百亿补贴¥866-110券=¥756' },
   { id:'pdd2', name:'小米 CIVI（12GB+256GB）', category:'手机', price:2079, date:'2022-06-13', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'怦怦粉，中国移动官方旗舰店百亿补贴，建行卡支付¥2079' },
   { id:'pdd3', name:'vivo iQOO Z6 8GB+128GB', category:'手机', price:1289, date:'2023-01-02', channel:'拼多多', frequency:'rarely', monthlyUse:0, status:'sold', retireDate:'2023-01-02', note:'墨玉配色，百亿补贴拼单价¥1339-平台优惠¥50=¥1289，未发货已退款' },
-  { id:'pdd4', name:'玩嘉孤勇者电脑机箱（M-ATX+360水冷）', category:'配件', price:169, date:'2023-11-12', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'大孤勇者白，无A柱光影4风扇，原价¥177满减8元=¥169，搭配DIY台式机使用' },
-  { id:'pdd5', name:'光威Gloway天策D5 32GB(16Gx2) DDR5 6400 C32', category:'配件', price:604, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'海力士A-die颗粒，天策D5 16x2 6400C32A套装，原价¥624-20元券=¥604，搭配DIY台式机使用' },
-  { id:'pdd6', name:'宏碁掠夺者GM7 2TB SSD NVMe PCIe4.0', category:'存储', price:629, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'2TB固态硬盘，7200MB/s读取，搭配DIY台式机使用' },
-  { id:'pdd7', name:'英特尔 i5 13490F + 华硕 B760M 天选 WIFI D5', category:'配件', price:2219, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'CPU+主板套装，百亿补贴¥2219，搭配DIY台式机使用' },
+  { id:'pdd4', name:'玩嘉孤勇者电脑机箱（M-ATX+360水冷）', category:'配件', price:169, date:'2023-11-12', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'大孤勇者白，无A柱光影4风扇，原价¥177满减8元=¥169，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
+  { id:'pdd5', name:'光威Gloway天策D5 32GB(16Gx2) DDR5 6400 C32', category:'配件', price:604, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'海力士A-die颗粒，天策D5 16x2 6400C32A套装，原价¥624-20元券=¥604，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
+  { id:'pdd6', name:'宏碁掠夺者GM7 2TB SSD NVMe PCIe4.0', category:'存储', price:629, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'2TB固态硬盘，7200MB/s读取，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
+  { id:'pdd7', name:'英特尔 i5 13490F + 华硕 B760M 天选 WIFI D5', category:'配件', price:2219, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'CPU+主板套装，百亿补贴¥2219，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
 ];
 
 function migrateOldData(data) {
@@ -792,19 +868,7 @@ function getFilteredSorted() {
   return list;
 }
 
-function renderProducts() {
-  const list = getFilteredSorted();
-  const container = document.getElementById('productsGrid');
-  const empty = document.getElementById('emptyState');
-
-  if (list.length === 0) {
-    container.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-
-  container.innerHTML = list.map(p => {
+function renderProductCard(p, isGroupChild) {
     const days = daysSince(p.date, p.retireDate);
     const dailyCost = calcDailyCost(p);
     const perUseCost = calcPerUseCost(p);
@@ -874,12 +938,115 @@ function renderProducts() {
           <span class="tag ${levelClass}">${levelLabel}</span>
           <span class="tag" style="background:rgba(96,165,250,0.1);color:var(--blue)">${STATUS_LABELS[p.status] || p.status}</span>
           ${sell ? '<span class="tag tag-sell">💡 建议出掉</span>' : ''}
+          ${p.groupId && !isGroupChild ? `<span class="group-badge">🔗 ${p.groupName || '组合'}</span>` : ''}
         </div>
         ${p.retireDate ? `<div class="retire-badge">🏁 已退役 · 实际使用 ${yearsMonths}</div>` : ''}
         ${p.note ? `<div class="product-note" title="${p.note.replace(/"/g,'&quot;')}">${p.note}</div>` : ''}
       </div>
     `;
-  }).join('');
+}
+
+function renderGroupCard(groupId, groupName, items) {
+  const totalPrice = items.reduce((s, p) => s + p.price, 0);
+  const totalDailyCost = items.reduce((s, p) => s + calcDailyCost(p), 0);
+  const avgUsage = items.length > 0 ? items.reduce((s, p) => s + calcUsageRate(p), 0) / items.length : 0;
+  const childCards = items.map(p => renderProductCard(p, true)).join('');
+
+  return `
+    <div class="group-card" id="grp_${groupId}" onclick="toggleGroup('${groupId}', event)">
+      <div class="group-header">
+        <div class="group-chevron">▶</div>
+        <div class="group-title">🔗 ${groupName} <small>${items.length}件配件</small></div>
+        <div class="group-stats">
+          <div class="group-stat">
+            <div class="group-stat-label">组合总价</div>
+            <div class="group-stat-value price-v">¥${totalPrice.toLocaleString()}</div>
+          </div>
+          <div class="group-stat">
+            <div class="group-stat-label">日均成本</div>
+            <div class="group-stat-value">¥${totalDailyCost.toFixed(1)}</div>
+          </div>
+          <div class="group-stat">
+            <div class="group-stat-label">平均使用率</div>
+            <div class="group-stat-value">${avgUsage.toFixed(0)}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="group-children">
+        ${childCards}
+      </div>
+    </div>
+  `;
+}
+
+const expandedGroups = new Set();
+
+function toggleGroup(groupId, event) {
+  // 不要让组合内的卡片点击冒泡到组合头
+  if (event.target.closest('.product-card') || event.target.closest('.action-btn')) return;
+  const el = document.getElementById('grp_' + groupId);
+  if (!el) return;
+  if (expandedGroups.has(groupId)) {
+    expandedGroups.delete(groupId);
+    el.classList.remove('expanded');
+  } else {
+    expandedGroups.add(groupId);
+    el.classList.add('expanded');
+  }
+}
+
+function renderProducts() {
+  const list = getFilteredSorted();
+  const container = document.getElementById('productsGrid');
+  const empty = document.getElementById('emptyState');
+
+  if (list.length === 0) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // 将产品分为：有组合的 和 无组合的
+  const groupMap = new Map(); // groupId -> { name, items[] }
+  const ungrouped = [];
+  const groupOrder = []; // 记录组合出现顺序
+
+  list.forEach(p => {
+    if (p.groupId) {
+      if (!groupMap.has(p.groupId)) {
+        groupMap.set(p.groupId, { name: p.groupName || '未命名组合', items: [] });
+        groupOrder.push(p.groupId);
+      }
+      groupMap.get(p.groupId).items.push(p);
+    } else {
+      ungrouped.push(p);
+    }
+  });
+
+  // 按排序后的顺序渲染：组合卡片按其第一个成员在列表中的位置插入
+  let html = '';
+  const renderedGroups = new Set();
+
+  list.forEach(p => {
+    if (p.groupId) {
+      if (!renderedGroups.has(p.groupId)) {
+        renderedGroups.add(p.groupId);
+        const group = groupMap.get(p.groupId);
+        html += renderGroupCard(p.groupId, group.name, group.items);
+      }
+    } else {
+      html += renderProductCard(p, false);
+    }
+  });
+
+  container.innerHTML = html;
+
+  // 恢复已展开的组合状态
+  expandedGroups.forEach(gid => {
+    const el = document.getElementById('grp_' + gid);
+    if (el) el.classList.add('expanded');
+  });
 }
 
 function render() {
@@ -929,6 +1096,9 @@ function openModal(editId) {
   document.getElementById('modalTitle').textContent = editId ? '编辑产品' : '添加电子产品';
   document.getElementById('fEditId').value = editId || '';
 
+  // 填充组合下拉列表
+  populateGroupSelect(editId);
+
   if (editId) {
     const p = products.find(x => x.id === editId);
     if (p) {
@@ -942,6 +1112,7 @@ function openModal(editId) {
       document.getElementById('fStatus').value = p.status;
       document.getElementById('fRetireDate').value = p.retireDate || '';
       document.getElementById('fNote').value = p.note || '';
+      document.getElementById('fGroup').value = p.groupId || '';
       toggleRetireDate();
     }
   } else {
@@ -954,9 +1125,49 @@ function openModal(editId) {
     document.getElementById('fStatus').value = 'using';
     document.getElementById('fRetireDate').value = '';
     document.getElementById('fNote').value = '';
+    document.getElementById('fGroup').value = '';
     toggleRetireDate();
   }
+  document.getElementById('fNewGroupName').value = '';
   document.body.style.overflow = 'hidden';
+}
+
+function populateGroupSelect(editId) {
+  const sel = document.getElementById('fGroup');
+  // 收集所有已有的组合
+  const groups = new Map();
+  products.forEach(p => {
+    if (p.groupId && !groups.has(p.groupId)) {
+      groups.set(p.groupId, p.groupName || '未命名组合');
+    }
+  });
+  // 也检查 DEMO_DATA 中的组合
+  DEMO_DATA.forEach(p => {
+    if (p.groupId && !groups.has(p.groupId)) {
+      groups.set(p.groupId, p.groupName || '未命名组合');
+    }
+  });
+
+  sel.innerHTML = '<option value="">不属于任何组合</option>';
+  groups.forEach((name, id) => {
+    const count = products.filter(p => p.groupId === id).length;
+    sel.innerHTML += `<option value="${id}">🔗 ${name}（${count}件）</option>`;
+  });
+}
+
+function createGroupFromForm() {
+  const name = document.getElementById('fNewGroupName').value.trim();
+  if (!name) { showToast('请输入组合名称', 'var(--red)'); return; }
+  const newId = 'grp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5);
+  const sel = document.getElementById('fGroup');
+  const opt = document.createElement('option');
+  opt.value = newId;
+  opt.textContent = '🔗 ' + name + '（新建）';
+  opt.dataset.groupName = name;
+  sel.appendChild(opt);
+  sel.value = newId;
+  document.getElementById('fNewGroupName').value = '';
+  showToast('✅ 组合已创建，保存后生效');
 }
 
 function closeModal() {
@@ -985,6 +1196,24 @@ function saveProduct() {
     retireDate: document.getElementById('fRetireDate').value || undefined,
     note: document.getElementById('fNote').value.trim(),
   };
+
+  // 处理组合信息
+  const groupSel = document.getElementById('fGroup');
+  const groupId = groupSel.value;
+  if (groupId) {
+    data.groupId = groupId;
+    // 获取组合名称：优先从新建的option的dataset获取，其次从已有产品获取
+    const selectedOpt = groupSel.options[groupSel.selectedIndex];
+    if (selectedOpt.dataset.groupName) {
+      data.groupName = selectedOpt.dataset.groupName;
+    } else {
+      const existing = products.find(p => p.groupId === groupId);
+      data.groupName = existing ? existing.groupName : '未命名组合';
+    }
+  } else {
+    delete data.groupId;
+    delete data.groupName;
+  }
 
   const freqDefaults = { daily:30, weekly:12, monthly:4, rarely:2, idle:0 };
   if (!document.getElementById('fMonthlyUse').value) {
