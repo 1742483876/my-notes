@@ -679,8 +679,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v34';
-const OLD_STORAGE_KEY = 'knot_gadgets_v33';
+const STORAGE_KEY = 'knot_gadgets_v35';
+const OLD_STORAGE_KEY = 'knot_gadgets_v34';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -708,6 +708,9 @@ const DEMO_DATA = [
   { id:'tb6', name:'米家小米智能宠物喂食器2', category:'智能家居', price:255, date:'2024-12-19', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'定时定量远程操控猫粮自动投喂，乐淘淘数码店¥254.87', groupId:'grp_cat', groupName:'小猫用品' },
   { id:'tb7', name:'米家无线智能宠物饮水机2代（二手9成新）', category:'智能家居', price:149, date:'2024-12-19', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'自动循环流动大容量不插电，小米紫米官方严选店¥149，带新滤芯', groupId:'grp_cat', groupName:'小猫用品' },
   { id:'jd9', name:'enabot EBO Air 2S 宠物陪伴机器人', category:'智能家居', price:1487, date:'2026-02-12', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2026-02-12', note:'32G内存，移动监控摄像头+AI陪伴，原价¥1799-优惠¥312.35=¥1486.65，已退款', groupId:'grp_cat', groupName:'小猫用品' },
+  { id:'pdd8', name:'小米摄像机3 Pro 云台版（500w像素+128G卡）', category:'智能家居', price:265, date:'2025-01-22', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2025-01-22', note:'500w像素+蓝牙Mesh网关+128G内存卡，9折平台券抵扣26.5元，已退款', groupId:'grp_cat', groupName:'小猫用品' },
+  { id:'jd10', name:'小米智能摄像机 3 3K 云台版 500万像素', category:'智能家居', price:217, date:'2023-06-15', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'360度云台摄像头，夜视，远程看猫用', groupId:'grp_cat', groupName:'小猫用品' },
+  { id:'jd11', name:'小米固速视频监控存储卡 32GB', category:'配件', price:2, date:'2023-06-15', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'摄像机专用存储卡，与小米摄像机3搭配使用，订单总价¥219.01', groupId:'grp_cat', groupName:'小猫用品' },
   { id:'jd6', name:'Brateck北弧 双屏支架', category:'配件', price:284, date:'2023-11-20', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'笔记本+显示器双屏支架', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
   { id:'jd7', name:'BOYA博雅 mini 无线领夹麦克风', category:'配件', price:143, date:'2025-04-26', channel:'京东自营', frequency:'weekly', monthlyUse:4, status:'using', note:'Type-C无线麦克风，拍视频收音用' },
   { id:'jd8', name:'米家小米便携电热杯2', category:'其他', price:138, date:'2026-01-01', channel:'京东自营', frequency:'weekly', monthlyUse:8, status:'using', note:'便携电热杯，出差/办公用' },
@@ -766,7 +769,7 @@ function loadProducts() {
       products = JSON.parse(raw);
     } else {
       // 尝试迁移旧版本数据（回溯查找）
-      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
       for (const key of oldKeys) {
         raw = localStorage.getItem(key);
         if (raw) break;
