@@ -279,67 +279,98 @@ body::before {
 
 /* ── 组合卡片 ── */
 .group-card {
+  grid-column: 1 / -1;
   background: var(--glass);
   border: 1.5px solid var(--accent);
   border-radius: 18px;
   padding: 0;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(.4,0,.2,1);
-  box-shadow: 0 2px 16px rgba(124,106,247,0.08);
+  box-shadow: 0 2px 16px rgba(124,106,247,0.12);
 }
 .group-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 18px 20px;
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px 24px;
   cursor: pointer;
   user-select: none;
   transition: background 0.2s;
+  flex-wrap: wrap;
 }
-.group-header:hover { background: rgba(124,106,247,0.04); }
+.group-header:hover { background: rgba(124,106,247,0.06); }
 .group-chevron {
   font-size: 14px; color: var(--accent);
   transition: transform 0.3s cubic-bezier(.4,0,.2,1);
   flex-shrink: 0;
-  width: 24px; height: 24px;
+  width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(124,106,247,0.1);
-  border-radius: 8px;
+  background: rgba(124,106,247,0.12);
+  border-radius: 10px;
 }
 .group-card.expanded .group-chevron { transform: rotate(90deg); }
-.group-title {
-  font-size: 15px; font-weight: 600; color: var(--text);
-  flex: 1; min-width: 0;
+.group-info {
+  flex: 1; min-width: 200px;
 }
-.group-title small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+.group-title {
+  font-size: 17px; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.group-title small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 8px; }
+.group-subtitle {
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+}
+.group-subtitle span { margin-right: 6px; }
 .group-stats {
-  display: flex; gap: 14px; align-items: center; flex-shrink: 0;
+  display: flex; gap: 24px; align-items: center; flex-shrink: 0;
 }
 .group-stat {
-  text-align: center;
+  text-align: center; min-width: 70px;
 }
-.group-stat-label { font-size: 10px; color: var(--muted); }
-.group-stat-value { font-size: 14px; font-weight: 700; color: var(--accent); }
+.group-stat-label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+.group-stat-value { font-size: 18px; font-weight: 700; color: var(--accent); }
 .group-stat-value.price-v { color: var(--green); }
+.group-expand-hint {
+  font-size: 11px; color: var(--muted); margin-left: auto; flex-shrink: 0;
+  opacity: 0.6;
+}
+.group-card.expanded .group-expand-hint { display: none; }
 .group-children {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s;
-  padding: 0 12px;
+  padding: 0 16px;
 }
 .group-card.expanded .group-children {
-  max-height: 3000px;
-  padding: 0 12px 12px;
+  max-height: 5000px;
+  padding: 0 16px 16px;
+}
+.group-children-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
 }
 .group-children .product-card {
-  border: 1px solid rgba(124,106,247,0.15);
-  margin-bottom: 10px;
+  border: 1px solid rgba(124,106,247,0.18);
+  margin-bottom: 0;
   box-shadow: 0 1px 6px rgba(124,106,247,0.06);
 }
-.group-children .product-card:last-child { margin-bottom: 0; }
 .group-badge {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 10px; padding: 2px 8px; border-radius: 6px;
   background: rgba(124,106,247,0.1); color: var(--accent);
   font-weight: 500;
+}
+.section-divider {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0; margin: 4px 0;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148,163,184,0.3), transparent);
+}
+.section-divider span {
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  white-space: nowrap; letter-spacing: 0.5px;
 }
 
 /* ── 弹窗 ── */
@@ -648,8 +679,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v28';
-const OLD_STORAGE_KEY = 'knot_gadgets_v27';
+const STORAGE_KEY = 'knot_gadgets_v29';
+const OLD_STORAGE_KEY = 'knot_gadgets_v28';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -723,7 +754,7 @@ function loadProducts() {
       products = JSON.parse(raw);
     } else {
       // 尝试迁移旧版本数据（回溯查找）
-      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
       for (const key of oldKeys) {
         raw = localStorage.getItem(key);
         if (raw) break;
@@ -949,14 +980,41 @@ function renderProductCard(p, isGroupChild) {
 function renderGroupCard(groupId, groupName, items) {
   const totalPrice = items.reduce((s, p) => s + p.price, 0);
   const totalDailyCost = items.reduce((s, p) => s + calcDailyCost(p), 0);
+  const totalPerUseCost = items.reduce((s, p) => s + calcPerUseCost(p), 0);
   const avgUsage = items.length > 0 ? items.reduce((s, p) => s + calcUsageRate(p), 0) / items.length : 0;
+  const avgLevel = avgUsage >= 70 ? 'high' : avgUsage >= 30 ? 'medium' : 'low';
+  const avgLevelLabel = { high:'高频使用', medium:'中频使用', low:'低频使用' }[avgLevel];
+  const avgLevelClass = { high:'tag-high', medium:'tag-medium', low:'tag-low' }[avgLevel];
+
+  // 获取日期范围
+  const dates = items.map(p => p.date).sort();
+  const firstDate = dates[0];
+  const lastDate = dates[dates.length - 1];
+  const dateRange = firstDate === lastDate ? firstDate : `${firstDate} ~ ${lastDate}`;
+
+  // 配件名称摘要
+  const itemNames = items.map(p => {
+    const icon = CATEGORY_ICONS[p.category] || '📦';
+    return `${icon} ${p.name.length > 15 ? p.name.slice(0,15) + '…' : p.name}（¥${p.price.toLocaleString()}）`;
+  }).join('、');
+
+  // 渠道汇总
+  const channels = [...new Set(items.map(p => p.channel).filter(Boolean))].join(' / ');
+
   const childCards = items.map(p => renderProductCard(p, true)).join('');
 
   return `
     <div class="group-card" id="grp_${groupId}" onclick="toggleGroup('${groupId}', event)">
       <div class="group-header">
         <div class="group-chevron">▶</div>
-        <div class="group-title">🔗 ${groupName} <small>${items.length}件配件</small></div>
+        <div class="group-info">
+          <div class="group-title">🔗 ${groupName} <small>${items.length}件配件</small></div>
+          <div class="group-subtitle">
+            <span>📅 ${dateRange}</span>
+            ${channels ? `<span>· 🛒 ${channels}</span>` : ''}
+            <span>· 包含：${itemNames}</span>
+          </div>
+        </div>
         <div class="group-stats">
           <div class="group-stat">
             <div class="group-stat-label">组合总价</div>
@@ -967,13 +1025,20 @@ function renderGroupCard(groupId, groupName, items) {
             <div class="group-stat-value">¥${totalDailyCost.toFixed(1)}</div>
           </div>
           <div class="group-stat">
+            <div class="group-stat-label">次均成本</div>
+            <div class="group-stat-value">¥${totalPerUseCost.toFixed(1)}</div>
+          </div>
+          <div class="group-stat">
             <div class="group-stat-label">平均使用率</div>
             <div class="group-stat-value">${avgUsage.toFixed(0)}%</div>
           </div>
         </div>
+        <div class="group-expand-hint">点击展开 ▸</div>
       </div>
       <div class="group-children">
-        ${childCards}
+        <div class="group-children-grid">
+          ${childCards}
+        </div>
       </div>
     </div>
   `;
@@ -1024,20 +1089,24 @@ function renderProducts() {
     }
   });
 
-  // 按排序后的顺序渲染：组合卡片按其第一个成员在列表中的位置插入
+  // 按排序后的顺序渲染：组合卡片优先显示在顶部
   let html = '';
-  const renderedGroups = new Set();
 
-  list.forEach(p => {
-    if (p.groupId) {
-      if (!renderedGroups.has(p.groupId)) {
-        renderedGroups.add(p.groupId);
-        const group = groupMap.get(p.groupId);
-        html += renderGroupCard(p.groupId, group.name, group.items);
-      }
-    } else {
-      html += renderProductCard(p, false);
+  // 1. 先渲染所有组合卡片
+  if (groupOrder.length > 0) {
+    groupOrder.forEach(gid => {
+      const group = groupMap.get(gid);
+      html += renderGroupCard(gid, group.name, group.items);
+    });
+    // 分隔线
+    if (ungrouped.length > 0) {
+      html += `<div class="section-divider"><span>📦 独立设备</span></div>`;
     }
+  }
+
+  // 2. 再渲染所有独立（非组合）卡片
+  ungrouped.forEach(p => {
+    html += renderProductCard(p, false);
   });
 
   container.innerHTML = html;
