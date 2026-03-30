@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🎬 精品视频收藏</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #141420;
+  --surface2: #1c1c2e;
+  --border: #252538;
+  --text: #e8e8f0;
+  --muted: #6b6b88;
+  --accent: #e50914;
+  --accent2: #7c6af7;
+  --gold: #fbbf24;
+  --green: #4ade80;
+  --blue: #60a5fa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── 顶部导航 ── */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 56px;
+  display: flex; align-items: center; gap: 16px;
+}
+.nav-logo { font-size: 22px; font-weight: 800; color: var(--accent); flex-shrink: 0; }
+.nav-tabs {
+  display: flex; gap: 4px; overflow-x: auto; flex: 1;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 8px 16px; border-radius: 20px; border: none;
+  background: transparent; color: var(--muted); font-size: 13px;
+  cursor: pointer; white-space: nowrap; transition: all 0.2s;
+  font-weight: 500;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { background: var(--accent); color: #fff; font-weight: 600; }
+.nav-search {
+  width: 200px; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 7px 12px 7px 32px;
+  color: var(--text); font-size: 13px; outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6b88' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 10px center;
+}
+.nav-search:focus { border-color: rgba(229,9,20,0.5); }
+.nav-search::placeholder { color: var(--muted); }
+@media(max-width:640px) {
+  .nav-search { display: none; }
+  .nav-tab { font-size: 12px; padding: 6px 12px; }
+}
+
+/* ── Hero Banner ── */
+.hero {
+  position: relative;
+  height: 320px;
+  background: linear-gradient(135deg, #1a0a2e 0%, #0f0a1e 50%, #0a1628 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(transparent, var(--bg));
+}
+.hero-content { text-align: center; z-index: 2; padding: 0 20px; }
+.hero-emoji { font-size: 64px; margin-bottom: 12px; filter: drop-shadow(0 4px 20px rgba(229,9,20,0.3)); }
+.hero-title {
+  font-size: 32px; font-weight: 800;
+  background: linear-gradient(135deg, #fff, #e0e0ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero-sub { color: var(--muted); font-size: 15px; max-width: 500px; line-height: 1.6; }
+.hero-stats {
+  display: flex; gap: 24px; justify-content: center; margin-top: 16px;
+}
+.hero-stat { text-align: center; }
+.hero-stat-val { font-size: 22px; font-weight: 800; color: var(--gold); }
+.hero-stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+@media(max-width:480px) {
+  .hero { height: 260px; }
+  .hero-emoji { font-size: 48px; }
+  .hero-title { font-size: 24px; }
+  .hero-sub { font-size: 13px; }
+}
+
+/* ── 分类行 ── */
+.section {
+  padding: 24px 20px 8px;
+}
+.section-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.section-icon { font-size: 20px; }
+.section-title { font-size: 18px; font-weight: 700; }
+.section-count {
+  font-size: 11px; color: var(--muted);
+  background: var(--surface2); border-radius: 10px; padding: 2px 8px;
+}
+.section-more {
+  margin-left: auto; font-size: 12px; color: var(--muted);
+  cursor: pointer; transition: color 0.2s;
+}
+.section-more:hover { color: var(--accent); }
+
+/* ── 横向滚动卡片行 ── */
+.scroll-row {
+  display: flex; gap: 14px;
+  overflow-x: auto; padding-bottom: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.scroll-row::-webkit-scrollbar { display: none; }
+
+/* ── 视频卡片 ── */
+.vcard {
+  flex-shrink: 0;
+  width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s;
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.vcard:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  border-color: rgba(229,9,20,0.4);
+}
+.vcard-cover {
+  width: 100%; height: 158px;
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.vcard-cover img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.vcard-badge {
+  position: absolute; top: 8px; left: 8px;
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  background: var(--accent); color: #fff;
+}
+.vcard-rating {
+  position: absolute; top: 8px; right: 8px;
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  background: rgba(0,0,0,0.7); color: var(--gold);
+}
+.vcard-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.3);
+  opacity: 0; transition: opacity 0.2s;
+  font-size: 40px;
+}
+.vcard:hover .vcard-play { opacity: 1; }
+.vcard-body { padding: 12px 14px; }
+.vcard-title {
+  font-size: 14px; font-weight: 600; color: #fff;
+  margin-bottom: 4px;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.vcard-desc {
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 8px;
+}
+.vcard-meta {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.vcard-tag {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  background: rgba(124,106,247,0.15); color: var(--accent2);
+}
+.vcard-platform {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  background: rgba(96,165,250,0.15); color: var(--blue);
+  margin-left: auto;
+}
+@media(max-width:480px) {
+  .vcard { width: 240px; }
+  .vcard-cover { height: 135px; }
+}
+
+/* ── 网格模式 ── */
+.grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  padding: 0 20px 24px;
+}
+.grid-view .vcard {
+  width: 100%; flex-shrink: unset;
+}
+
+/* ── 空状态 ── */
+.empty-state {
+  text-align: center; padding: 60px 20px; color: var(--muted);
+}
+.empty-state .em-icon { font-size: 48px; margin-bottom: 12px; }
+
+/* ── 底部 ── */
+.footer {
+  text-align: center; padding: 40px 20px; color: var(--muted);
+  font-size: 12px; border-top: 1px solid var(--border);
+}
+.footer a { color: var(--accent2); text-decoration: none; }
+
+/* ── 浮动添加按钮 ── */
+.fab {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  border: none; font-size: 24px; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(229,9,20,0.4);
+  transition: all 0.2s; z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+}
+.fab:hover { transform: scale(1.1); }
+
+/* ── 添加弹窗 ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; width: 90%; max-width: 480px;
+  max-height: 85vh; overflow-y: auto; padding: 24px;
+}
+.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; display: block; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text); font-size: 14px; outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(229,9,20,0.5); }
+.form-textarea { resize: vertical; min-height: 60px; }
+.form-actions { display: flex; gap: 10px; margin-top: 18px; }
+.btn {
+  flex: 1; padding: 10px; border-radius: 10px; border: none;
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-cancel { background: var(--surface2); color: var(--muted); }
+.btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="navbar">
+  <div class="nav-logo">🎬 精品库</div>
+  <div class="nav-tabs" id="navTabs"></div>
+  <input class="nav-search" type="search" placeholder="搜索视频..." id="searchInput" autocomplete="off">
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-emoji">🎬</div>
+    <div class="hero-title">精品视频收藏</div>
+    <div class="hero-sub">告别漫无目的刷B站，这里都是精挑细选的好内容<br>下班点开就能看，每一部都值得你的时间</div>
+    <div class="hero-stats" id="heroStats"></div>
+  </div>
+</div>
+
+<!-- 内容区 -->
+<div id="contentArea"></div>
+
+<!-- 底部 -->
+<div class="footer">
+  精品视频收藏 · 由 <a href="index.html">Knot 知识库</a> 驱动 · 数据存储于本地
+</div>
+
+<!-- 浮动添加按钮 -->
+<button class="fab" onclick="openAddModal()" title="添加视频">＋</button>
+
+<!-- 添加弹窗 -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-title">📝 添加新视频</div>
+    <div class="form-group">
+      <label class="form-label">标题 *</label>
+      <input class="form-input" id="f_title" placeholder="视频标题">
+    </div>
+    <div class="form-group">
+      <label class="form-label">简介</label>
+      <textarea class="form-textarea" id="f_desc" placeholder="一句话简介"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">链接 *</label>
+      <input class="form-input" id="f_url" placeholder="B站/YouTube/Netflix链接">
+    </div>
+    <div class="form-group">
+      <label class="form-label">封面图URL（可选）</label>
+      <input class="form-input" id="f_cover" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">分类</label>
+      <select class="form-select" id="f_cat">
+        <option value="documentary">🎥 纪录片</option>
+        <option value="talkshow">🎤 脱口秀</option>
+        <option value="interview">💬 访谈节目</option>
+        <option value="movie">🎬 电影</option>
+        <option value="series">📺 剧集</option>
+        <option value="variety">🎪 综艺</option>
+        <option value="knowledge">📚 知识科普</option>
+        <option value="short">⚡ 短视频/UP主</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">评分（1-10）</label>
+      <input class="form-input" id="f_rating" type="number" min="1" max="10" step="0.1" placeholder="9.0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">平台</label>
+      <select class="form-select" id="f_platform">
+        <option value="bilibili">B站</option>
+        <option value="youtube">YouTube</option>
+        <option value="netflix">Netflix</option>
+        <option value="douban">豆瓣</option>
+        <option value="iqiyi">爱奇艺</option>
+        <option value="tencent">腾讯视频</option>
+        <option value="youku">优酷</option>
+        <option value="other">其他</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">标签（逗号分隔）</label>
+      <input class="form-input" id="f_tags" placeholder="人文, 治愈, 必看">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-cancel" onclick="closeAddModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveVideo()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+//  分类配置
+// ══════════════════════════════════════
+const CATEGORIES = [
+  { id: 'all', label: '全部', icon: '🏠' },
+  { id: 'documentary', label: '纪录片', icon: '🎥' },
+  { id: 'talkshow', label: '脱口秀', icon: '🎤' },
+  { id: 'interview', label: '访谈节目', icon: '💬' },
+  { id: 'movie', label: '电影', icon: '🎬' },
+  { id: 'series', label: '剧集', icon: '📺' },
+  { id: 'variety', label: '综艺', icon: '🎪' },
+  { id: 'knowledge', label: '知识科普', icon: '📚' },
+  { id: 'short', label: '短视频/UP主', icon: '⚡' },
+];
+
+const PLATFORM_LABELS = {
+  bilibili: 'B站', youtube: 'YouTube', netflix: 'Netflix',
+  douban: '豆瓣', iqiyi: '爱奇艺', tencent: '腾讯视频',
+  youku: '优酷', other: '其他'
+};
+
+// ══════════════════════════════════════
+//  预置精品内容
+// ══════════════════════════════════════
+const PRESET_VIDEOS = [
+  // ── 🎥 纪录片 ──
+  { title: '人生一串（1-3季）', desc: '国内首档汇聚民间烧烤美食的深夜纪录片，烟火气里的江湖。"人生一串，来日方长"', url: 'https://www.bilibili.com/bangumi/play/ss25460', cat: 'documentary', rating: 9.8, platform: 'bilibili', tags: ['美食','深夜','治愈'], cover: '' },
+  { title: '风味人间（1-4季）', desc: '陈晓卿团队出品，全球视角的美食纪录片。从中国到世界，舌尖上的人间百态', url: 'https://www.bilibili.com/bangumi/play/ss28597', cat: 'documentary', rating: 9.4, platform: 'bilibili', tags: ['美食','人文','陈晓卿'], cover: '' },
+  { title: '河西走廊', desc: '横跨两千年的历史长卷，展现西北的壮美。每一帧都是史诗级的视听盛宴', url: 'https://www.bilibili.com/bangumi/play/ss20784', cat: 'documentary', rating: 9.7, platform: 'bilibili', tags: ['历史','人文','必看'], cover: '' },
+  { title: '我在故宫修文物', desc: '故宫文物修复师们的故事，用几十年守护中华文明瑰宝。"慢即是快"的匠心哲学', url: 'https://www.bilibili.com/bangumi/play/ss20836', cat: 'documentary', rating: 9.4, platform: 'bilibili', tags: ['人文','匠心','治愈'], cover: '' },
+  { title: '但是，还有书籍（1-2季）', desc: '记录那些对书籍怀抱热忱的编舟者、创作者和爱书人。"天堂应该就是图书馆的模样"', url: 'https://www.bilibili.com/bangumi/play/ep451875', cat: 'documentary', rating: 9.4, platform: 'bilibili', tags: ['阅读','人文','治愈'], cover: '' },
+  { title: '众神之地', desc: '跨越山海，高原、海洋、陆地、森林。视听上乘的唯美自然类纪录片', url: 'https://www.bilibili.com/bangumi/play/ep515963', cat: 'documentary', rating: 9.2, platform: 'bilibili', tags: ['自然','动物','唯美'], cover: '' },
+  { title: '绿色星球', desc: 'BBC出品，大卫·爱丁堡爵士带你从植物的角度看地球。每一帧都可以做壁纸', url: 'https://www.bilibili.com/bangumi/play/ep451881', cat: 'documentary', rating: 9.5, platform: 'bilibili', tags: ['自然','BBC','震撼'], cover: '' },
+  { title: '地球脉动（1-3季）', desc: 'BBC经典自然系列。高清画质、震撼音效、细腻镜头，每一秒都值得回味', url: 'https://www.bilibili.com/bangumi/play/ss39468', cat: 'documentary', rating: 9.9, platform: 'bilibili', tags: ['自然','BBC','神作'], cover: '' },
+  { title: '九零后', desc: '西南联大纪录片。国破山河在，却也是人类群星闪耀时。杨振宁、李政道珍贵影像', url: 'https://www.bilibili.com/bangumi/play/ss40066', cat: 'documentary', rating: 9.0, platform: 'bilibili', tags: ['历史','教育','感动'], cover: '' },
+  { title: '寻找手艺', desc: '三个纪录片外行，寻找拍摄199名手艺人。没有华丽画面，只有最温暖的中国故事', url: 'https://www.bilibili.com/bangumi/play/ss20792', cat: 'documentary', rating: 9.9, platform: 'bilibili', tags: ['人文','匠心','感动'], cover: '' },
+  { title: '无穷之路（1-2季）', desc: '深入十个深度贫困地区，见证中国扶贫成果。豆瓣9.5，看完热泪盈眶', url: 'https://www.bilibili.com/bangumi/play/ss42267', cat: 'documentary', rating: 9.5, platform: 'bilibili', tags: ['社会','感动','正能量'], cover: '' },
+  { title: '四海中医', desc: '2025豆瓣评分最高纪录剧集，探寻中医文化在全球的传播与影响', url: 'https://www.bilibili.com/bangumi/play/ss47890', cat: 'documentary', rating: 9.2, platform: 'bilibili', tags: ['中医','文化','2025'], cover: '' },
+  { title: '穿越极致美洲', desc: '2025年度高分纪录片，穿越南北美洲极致自然景观', url: 'https://www.bilibili.com/bangumi/play/ss48120', cat: 'documentary', rating: 9.1, platform: 'bilibili', tags: ['自然','旅行','2025'], cover: '' },
+  { title: '惟有香如故', desc: '以香为媒，五种味道链接五个人物命运。中国式表达的纪录片标杆', url: 'https://www.bilibili.com/bangumi/play/ep725383', cat: 'documentary', rating: 9.1, platform: 'bilibili', tags: ['人文','历史','诗意'], cover: '' },
+
+  // ── 🎤 脱口秀 ──
+  { title: 'Bo Burnham: Inside', desc: '疫情隔离期间独自创作的天才之作。融合音乐、喜剧和存在主义反思，Netflix史上最佳', url: 'https://www.netflix.com/title/81289483', cat: 'talkshow', rating: 9.5, platform: 'netflix', tags: ['天才','音乐','深度'], cover: '' },
+  { title: 'Dave Chappelle: The Closer', desc: '传奇脱口秀演员Dave Chappelle的封箱之作。犀利、深刻、争议性十足', url: 'https://www.netflix.com/title/81228510', cat: 'talkshow', rating: 9.0, platform: 'netflix', tags: ['传奇','犀利','经典'], cover: '' },
+  { title: 'John Mulaney: Kid Gorgeous', desc: '在Radio City的精彩演出。讲述童年、成长和荒诞的美国生活，笑到停不下来', url: 'https://www.netflix.com/title/80238110', cat: 'talkshow', rating: 9.2, platform: 'netflix', tags: ['幽默','叙事','经典'], cover: '' },
+  { title: 'Ali Wong: Baby Cobra', desc: '挺着大肚子上台的Ali Wong，讲述亚裔女性的婚姻、怀孕和职场，爆笑又真实', url: 'https://www.netflix.com/title/80101493', cat: 'talkshow', rating: 9.0, platform: 'netflix', tags: ['女性','亚裔','爆笑'], cover: '' },
+  { title: 'Ricky Gervais: Mortality', desc: '2025年末最新作品，Ricky Gervais探讨死亡、衰老和人生意义，黑色幽默巅峰', url: 'https://www.netflix.com/title/81726543', cat: 'talkshow', rating: 8.8, platform: 'netflix', tags: ['黑色幽默','2025','深度'], cover: '' },
+  { title: 'Kevin Hart: Acting My Age', desc: '2025年Kevin Hart在麦迪逊广场花园的高能演出，讲述中年危机的爆笑故事', url: 'https://www.netflix.com/title/81698432', cat: 'talkshow', rating: 8.5, platform: 'netflix', tags: ['高能','2025','中年'], cover: '' },
+  { title: '脱口秀和Ta的朋友们（1-2季）', desc: '2025最受关注综艺！罗永浩、大张伟、陈鲁豫坐镇，国内脱口秀新高度', url: 'https://www.bilibili.com/bangumi/play/ss46789', cat: 'talkshow', rating: 8.8, platform: 'bilibili', tags: ['国产','2025','热门'], cover: '' },
+  { title: '喜剧之王单口季（1-2季）', desc: '2025高分喜剧综艺，单口喜剧的极致展现', url: 'https://www.bilibili.com/bangumi/play/ss47123', cat: 'talkshow', rating: 8.6, platform: 'bilibili', tags: ['国产','2025','单口'], cover: '' },
+
+  // ── 💬 访谈节目 ──
+  { title: '十三邀（1-8季）', desc: '许知远与各领域嘉宾的深度对话。执着追问的思想者姿态，每一季都不容错过', url: 'https://v.qq.com/x/cover/mzc00200mp8vo9b.html', cat: 'interview', rating: 9.1, platform: 'tencent', tags: ['深度','思想','许知远'], cover: '' },
+  { title: '圆桌派（1-6季）', desc: '窦文涛携各界名流，围绕百姓关心的话题轻松聊天。有深度又不失趣味的"文化沙龙"', url: 'https://v.youku.com/v_show/id_XMjk1MzI0.html', cat: 'interview', rating: 9.2, platform: 'youku', tags: ['文化','窦文涛','下饭'], cover: '' },
+  { title: '锵锵三人行 / 锵锵行天下', desc: '窦文涛经典谈话节目，"多少天下事，尽付笑谈中"。油管有按年份做的完整专辑', url: 'https://www.youtube.com/user/qqsrxofficial', cat: 'interview', rating: 9.4, platform: 'youtube', tags: ['经典','窦文涛','时事'], cover: '' },
+  { title: '非正式会谈（1-8季）', desc: '10个国家青年代表讨论热点话题。全球文化碰撞，幽默又涨知识', url: 'https://www.bilibili.com/bangumi/play/ss33650', cat: 'interview', rating: 9.3, platform: 'bilibili', tags: ['文化','搞笑','多元'], cover: '' },
+  { title: '众声', desc: '蔡康永时隔18年回归的访谈节目。对话新海诚、孙俪、刘震云等，追问人与时代', url: 'https://v.youku.com/v_show/id_XNjE1.html', cat: 'interview', rating: 8.5, platform: 'youku', tags: ['蔡康永','深度','2023'], cover: '' },
+  { title: '酌见', desc: '俞敏洪探访企业家好友。杯酒言欢中洞见中国一代企业家群像', url: 'https://v.qq.com/x/cover/mzc002006.html', cat: 'interview', rating: 8.6, platform: 'tencent', tags: ['商业','企业家','真实'], cover: '' },
+  { title: '我的青铜时代', desc: '陈晓楠对话各领域名人的青春时代，寻找天分与热爱的故事', url: 'https://v.qq.com/x/cover/mzc002007.html', cat: 'interview', rating: 8.7, platform: 'tencent', tags: ['成长','青春','励志'], cover: '' },
+
+  // ── 🎬 电影 ──
+  { title: '南京照相馆', desc: '2025豆瓣华语电影TOP1，豆瓣8.8分。1937年南京，一家照相馆保存历史真相的故事', url: 'https://movie.douban.com/subject/35892655/', cat: 'movie', rating: 8.8, platform: 'douban', tags: ['2025','华语','历史'], cover: '' },
+  { title: '哪吒之魔童闹海', desc: '中国影史票房冠军154亿！全球票房第五。国漫的飞跃之作', url: 'https://movie.douban.com/subject/35503073/', cat: 'movie', rating: 8.4, platform: 'douban', tags: ['2025','动画','国漫'], cover: '' },
+  { title: 'F1：狂飙飞车', desc: '2025豆瓣外语电影TOP1，布拉德·皮特主演。2.5亿美金打造的赛车视听盛宴', url: 'https://movie.douban.com/subject/35267224/', cat: 'movie', rating: 8.7, platform: 'douban', tags: ['2025','赛车','大片'], cover: '' },
+  { title: '一战再战', desc: '保罗·托马斯·安德森执导，莱昂纳多主演。烂番茄98%，年度必看之作', url: 'https://movie.douban.com/subject/36104015/', cat: 'movie', rating: 8.1, platform: 'douban', tags: ['2025','冲奥','大师'], cover: '' },
+  { title: '肖申克的救赎', desc: 'IMDb #1，豆瓣9.7。"有些鸟儿是关不住的，它们的羽毛太鲜亮了"', url: 'https://movie.douban.com/subject/1292052/', cat: 'movie', rating: 9.7, platform: 'douban', tags: ['经典','必看','人生'], cover: '' },
+  { title: '星际穿越', desc: '诺兰的科幻巨作。"爱是唯一可以超越时间与空间的事物"', url: 'https://movie.douban.com/subject/1889243/', cat: 'movie', rating: 9.4, platform: 'douban', tags: ['科幻','诺兰','震撼'], cover: '' },
+  { title: '千与千寻', desc: '宫崎骏的永恒经典。"不管前方的路有多苦，只要走的方向正确，都比站在原地更接近幸福"', url: 'https://movie.douban.com/subject/1291561/', cat: 'movie', rating: 9.4, platform: 'douban', tags: ['动画','宫崎骏','治愈'], cover: '' },
+  { title: '沙丘2', desc: '维伦纽瓦的史诗续作。IMAX视听体验的天花板，2024年度最佳科幻', url: 'https://movie.douban.com/subject/35575567/', cat: 'movie', rating: 8.3, platform: 'douban', tags: ['科幻','史诗','IMAX'], cover: '' },
+
+  // ── 📺 剧集 ──
+  { title: '无尽的尽头', desc: '2025豆瓣华语剧集TOP1，8.5分。悬疑+人性的深度探讨', url: 'https://movie.douban.com/subject/36104567/', cat: 'series', rating: 8.5, platform: 'douban', tags: ['2025','华语','悬疑'], cover: '' },
+  { title: '怪奇物语 第五季', desc: '2025最高分续订剧！经典美剧终章，致敬80年代的科幻冒险', url: 'https://www.netflix.com/title/80057281', cat: 'series', rating: 9.0, platform: 'netflix', tags: ['2025','科幻','经典'], cover: '' },
+  { title: '黑镜 第七季', desc: '2025续订高分剧。探讨科技与人性的暗黑寓言，每集独立成篇', url: 'https://www.netflix.com/title/70264888', cat: 'series', rating: 8.8, platform: 'netflix', tags: ['2025','科技','烧脑'], cover: '' },
+  { title: '安多 第二季', desc: '星球大战最佳衍生剧续集。政治惊悚+革命叙事，比电影还精彩', url: 'https://www.disneyplus.com/series/andor', cat: 'series', rating: 8.9, platform: 'other', tags: ['2025','星战','神作'], cover: '' },
+
+  // ── 🎪 综艺 ──
+  { title: '喜人奇妙夜2', desc: '2025年度最佳喜剧综艺。sketch comedy的极致展现，每期都有名场面', url: 'https://www.bilibili.com/bangumi/play/ss47456', cat: 'variety', rating: 8.8, platform: 'bilibili', tags: ['2025','喜剧','爆笑'], cover: '' },
+  { title: '花儿与少年·同心季', desc: '2025最受关注综艺TOP1。旅行+真人秀的完美结合', url: 'https://www.bilibili.com/bangumi/play/ss47789', cat: 'variety', rating: 8.5, platform: 'bilibili', tags: ['2025','旅行','真人秀'], cover: '' },
+
+  // ── 📚 知识科普 ──
+  { title: '李永乐老师', desc: '从量子力学到经济学，用最通俗的语言讲最硬核的知识。B站知识区天花板', url: 'https://space.bilibili.com/9458053', cat: 'knowledge', rating: 9.5, platform: 'bilibili', tags: ['科普','数学','物理'], cover: '' },
+  { title: '3Blue1Brown', desc: '用绝美动画讲解数学原理。线性代数、微积分、神经网络，看完恍然大悟', url: 'https://www.youtube.com/c/3blue1brown', cat: 'knowledge', rating: 9.8, platform: 'youtube', tags: ['数学','动画','神级'], cover: '' },
+  { title: '半佛仙人', desc: '用幽默的方式拆解商业逻辑和社会现象。"有一说一"系列经典', url: 'https://space.bilibili.com/37663924', cat: 'knowledge', rating: 9.0, platform: 'bilibili', tags: ['商业','幽默','社会'], cover: '' },
+  { title: '回形针PaperClip', desc: '万物皆可解释。用严谨的数据和精美的动画，讲述身边事物的运作原理', url: 'https://space.bilibili.com/258150656', cat: 'knowledge', rating: 9.2, platform: 'bilibili', tags: ['科普','设计','万物'], cover: '' },
+];
+
+// ══════════════════════════════════════
+//  数据管理（localStorage）
+// ══════════════════════════════════════
+const STORAGE_KEY = 'curated_videos_v1';
+
+function loadVideos() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  // 首次加载：用预置数据初始化
+  const init = PRESET_VIDEOS.map((v, i) => ({
+    id: Date.now() + i,
+    title: v.title,
+    desc: v.desc,
+    url: v.url,
+    cover: v.cover || '',
+    category: v.cat,
+    rating: v.rating,
+    platform: v.platform,
+    tags: v.tags || [],
+    addedDate: '2026-03-30',
+    watched: false,
+  }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(init));
+  return init;
+}
+
+function saveVideos(videos) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(videos));
+}
+
+let allVideos = loadVideos();
+let currentCat = 'all';
+let searchQuery = '';
+let viewMode = 'scroll'; // scroll | grid
+
+// ══════════════════════════════════════
+//  渲染
+// ══════════════════════════════════════
+function getFiltered() {
+  const q = searchQuery.trim().toLowerCase();
+  return allVideos.filter(v => {
+    const matchCat = currentCat === 'all' || v.category === currentCat;
+    const matchSearch = !q || v.title.toLowerCase().includes(q) || (v.desc||'').toLowerCase().includes(q) || (v.tags||[]).some(t => t.toLowerCase().includes(q));
+    return matchCat && matchSearch;
+  });
+}
+
+function renderNav() {
+  const tabs = document.getElementById('navTabs');
+  tabs.innerHTML = CATEGORIES.map(c => {
+    const count = currentCat === 'all' && c.id === 'all' ? allVideos.length : allVideos.filter(v => v.category === c.id).length;
+    const active = currentCat === c.id ? ' active' : '';
+    const label = c.id === 'all' ? `${c.icon} 全部` : `${c.icon} ${c.label}`;
+    return `<button class="nav-tab${active}" onclick="selectCat('${c.id}')">${label}</button>`;
+  }).join('');
+}
+
+function renderHeroStats() {
+  const el = document.getElementById('heroStats');
+  const catCounts = CATEGORIES.filter(c => c.id !== 'all').map(c => ({
+    ...c, count: allVideos.filter(v => v.category === c.id).length
+  })).filter(c => c.count > 0);
+  el.innerHTML = `
+    <div class="hero-stat"><div class="hero-stat-val">${allVideos.length}</div><div class="hero-stat-label">总收藏</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">${catCounts.length}</div><div class="hero-stat-label">分类</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">${allVideos.filter(v=>v.rating>=9).length}</div><div class="hero-stat-label">9分+神作</div></div>
+  `;
+}
+
+function renderContent() {
+  const area = document.getElementById('contentArea');
+  const filtered = getFiltered();
+
+  if (searchQuery.trim()) {
+    // 搜索模式：网格展示
+    if (filtered.length === 0) {
+      area.innerHTML = `<div class="empty-state"><div class="em-icon">🔍</div><p>没有找到"${searchQuery}"相关的视频</p></div>`;
+      return;
+    }
+    area.innerHTML = `
+      <div class="section"><div class="section-header">
+        <span class="section-icon">🔍</span>
+        <span class="section-title">搜索结果</span>
+        <span class="section-count">${filtered.length} 个</span>
+      </div></div>
+      <div class="grid-view">${filtered.map(renderCard).join('')}</div>
+    `;
+    return;
+  }
+
+  if (currentCat !== 'all') {
+    // 单分类：网格展示
+    const catInfo = CATEGORIES.find(c => c.id === currentCat);
+    if (filtered.length === 0) {
+      area.innerHTML = `<div class="empty-state"><div class="em-icon">${catInfo.icon}</div><p>${catInfo.label}还没有收藏内容</p></div>`;
+      return;
+    }
+    area.innerHTML = `
+      <div class="section"><div class="section-header">
+        <span class="section-icon">${catInfo.icon}</span>
+        <span class="section-title">${catInfo.label}</span>
+        <span class="section-count">${filtered.length} 个</span>
+      </div></div>
+      <div class="grid-view">${filtered.map(renderCard).join('')}</div>
+    `;
+    return;
+  }
+
+  // 全部：按分类横向滚动
+  let html = '';
+  CATEGORIES.filter(c => c.id !== 'all').forEach(cat => {
+    const items = allVideos.filter(v => v.category === cat.id);
+    if (items.length === 0) return;
+    html += `
+      <div class="section">
+        <div class="section-header">
+          <span class="section-icon">${cat.icon}</span>
+          <span class="section-title">${cat.label}</span>
+          <span class="section-count">${items.length} 个</span>
+          <span class="section-more" onclick="selectCat('${cat.id}')">查看全部 →</span>
+        </div>
+        <div class="scroll-row">${items.map(renderCard).join('')}</div>
+      </div>
+    `;
+  });
+  area.innerHTML = html || '<div class="empty-state"><div class="em-icon">🎬</div><p>还没有收藏任何视频，点击右下角 + 开始添加吧！</p></div>';
+}
+
+function renderCard(v) {
+  const coverContent = v.cover
+    ? `<img src="${v.cover}" alt="${v.title}" loading="lazy">`
+    : getCategoryEmoji(v.category);
+  const ratingColor = v.rating >= 9 ? 'var(--gold)' : v.rating >= 8 ? 'var(--green)' : 'var(--muted)';
+  const tagsHtml = (v.tags||[]).slice(0,2).map(t => `<span class="vcard-tag">${t}</span>`).join('');
+  const platformLabel = PLATFORM_LABELS[v.platform] || v.platform;
+
+  return `
+    <a class="vcard" href="${v.url}" target="_blank" rel="noopener">
+      <div class="vcard-cover">
+        ${v.cover ? `<img src="${v.cover}" alt="${v.title}" loading="lazy">` : `<span>${getCategoryEmoji(v.category)}</span>`}
+        ${v.rating ? `<span class="vcard-rating" style="color:${ratingColor}">★ ${v.rating}</span>` : ''}
+        <div class="vcard-play">▶</div>
+      </div>
+      <div class="vcard-body">
+        <div class="vcard-title">${v.title}</div>
+        <div class="vcard-desc">${v.desc || ''}</div>
+        <div class="vcard-meta">
+          ${tagsHtml}
+          <span class="vcard-platform">${platformLabel}</span>
+        </div>
+      </div>
+    </a>
+  `;
+}
+
+function getCategoryEmoji(cat) {
+  const map = { documentary:'🎥', talkshow:'🎤', interview:'💬', movie:'🎬', series:'📺', variety:'🎪', knowledge:'📚', short:'⚡' };
+  return map[cat] || '🎬';
+}
+
+function selectCat(id) {
+  currentCat = id;
+  renderNav();
+  renderContent();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════
+//  添加视频
+// ══════════════════════════════════════
+function openAddModal() {
+  document.getElementById('addModal').classList.add('open');
+}
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+}
+function saveVideo() {
+  const title = document.getElementById('f_title').value.trim();
+  const url = document.getElementById('f_url').value.trim();
+  if (!title || !url) { alert('标题和链接必填哦～'); return; }
+
+  const v = {
+    id: Date.now(),
+    title,
+    desc: document.getElementById('f_desc').value.trim(),
+    url,
+    cover: document.getElementById('f_cover').value.trim(),
+    category: document.getElementById('f_cat').value,
+    rating: parseFloat(document.getElementById('f_rating').value) || 0,
+    platform: document.getElementById('f_platform').value,
+    tags: document.getElementById('f_tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    addedDate: new Date().toISOString().slice(0,10),
+    watched: false,
+  };
+
+  allVideos.unshift(v);
+  saveVideos(allVideos);
+  closeAddModal();
+  renderNav();
+  renderHeroStats();
+  renderContent();
+
+  // 清空表单
+  ['f_title','f_desc','f_url','f_cover','f_rating','f_tags'].forEach(id => document.getElementById(id).value = '');
+}
+
+// 搜索
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderContent();
+});
+
+// 点击弹窗外关闭
+document.getElementById('addModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeAddModal();
+});
+
+// ══════════════════════════════════════
+//  初始化
+// ══════════════════════════════════════
+renderNav();
+renderHeroStats();
+renderContent();
+</script>
+</body>
+</html>
