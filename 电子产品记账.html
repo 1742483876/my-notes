@@ -391,6 +391,20 @@ body::before {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
+/* ── 退役标记 ── */
+.retire-badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 6px;
+  background: rgba(255,255,255,0.06); color: var(--muted);
+  border: 1px dashed rgba(255,255,255,0.1);
+  margin-top: 6px; display: inline-block;
+}
+.product-card.retired {
+  opacity: 0.65;
+}
+.product-card.retired:hover {
+  opacity: 0.85;
+}
+
 /* ── 涟漪效果 ── */
 .ripple {
   position: absolute; border-radius: 50%;
@@ -522,6 +536,11 @@ body::before {
       </select>
     </div>
 
+    <div class="form-group" id="fRetireDateGroup" style="display:none">
+      <label class="form-label">退役日期</label>
+      <input class="form-input" id="fRetireDate" type="date">
+    </div>
+
     <div class="form-group">
       <label class="form-label">备注</label>
       <textarea class="form-textarea" id="fNote" placeholder="型号/颜色/配置/心得..."></textarea>
@@ -543,8 +562,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v6';
-const OLD_STORAGE_KEY = 'knot_gadgets_v5';
+const STORAGE_KEY = 'knot_gadgets_v7';
+const OLD_STORAGE_KEY = 'knot_gadgets_v6';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -629,24 +648,24 @@ function saveToStorage() {
 // ══════════════════════════════════════════════
 //  计算逻辑
 // ══════════════════════════════════════════════
-function daysSince(dateStr) {
+function daysSince(dateStr, endDateStr) {
   const d = new Date(dateStr);
-  const now = new Date();
-  return Math.max(1, Math.floor((now - d) / 86400000));
+  const end = endDateStr ? new Date(endDateStr) : new Date();
+  return Math.max(1, Math.floor((end - d) / 86400000));
 }
 
-function monthsSince(dateStr) {
+function monthsSince(dateStr, endDateStr) {
   const d = new Date(dateStr);
-  const now = new Date();
-  return Math.max(0.1, (now - d) / (86400000 * 30.44));
+  const end = endDateStr ? new Date(endDateStr) : new Date();
+  return Math.max(0.1, (end - d) / (86400000 * 30.44));
 }
 
 function calcDailyCost(p) {
-  return p.price / daysSince(p.date);
+  return p.price / daysSince(p.date, p.retireDate);
 }
 
 function calcPerUseCost(p) {
-  const months = monthsSince(p.date);
+  const months = monthsSince(p.date, p.retireDate);
   const totalUses = Math.max(1, months * (p.monthlyUse || 0));
   return p.price / totalUses;
 }
@@ -775,7 +794,7 @@ function renderProducts() {
       : days >= 30 ? `${Math.floor(days/30)}个月` : `${days}天`;
 
     return `
-      <div class="product-card ${level}-use" onclick="addRipple(event, this)">
+      <div class="product-card ${level}-use${p.retireDate ? ' retired' : ''}" onclick="addRipple(event, this)">
         <div class="product-actions">
           <button class="action-btn" onclick="event.stopPropagation();editProduct('${p.id}')" title="编辑">✏️</button>
           <button class="action-btn delete" onclick="event.stopPropagation();deleteProduct('${p.id}')" title="删除">🗑</button>
@@ -788,6 +807,7 @@ function renderProducts() {
               <span>${p.date}</span>
               ${p.channel ? `<span>· ${p.channel}</span>` : ''}
               <span>· ${yearsMonths}</span>
+              ${p.retireDate ? `<span>· 退役 ${p.retireDate}</span>` : ''}
             </div>
           </div>
         </div>
@@ -824,6 +844,7 @@ function renderProducts() {
           <span class="tag" style="background:rgba(96,165,250,0.1);color:var(--blue)">${STATUS_LABELS[p.status] || p.status}</span>
           ${sell ? '<span class="tag tag-sell">💡 建议出掉</span>' : ''}
         </div>
+        ${p.retireDate ? `<div class="retire-badge">🏁 已退役 · 实际使用 ${yearsMonths}</div>` : ''}
         ${p.note ? `<div class="product-note" title="${p.note.replace(/"/g,'&quot;')}">${p.note}</div>` : ''}
       </div>
     `;
@@ -888,7 +909,9 @@ function openModal(editId) {
       document.getElementById('fFrequency').value = p.frequency;
       document.getElementById('fMonthlyUse').value = p.monthlyUse;
       document.getElementById('fStatus').value = p.status;
+      document.getElementById('fRetireDate').value = p.retireDate || '';
       document.getElementById('fNote').value = p.note || '';
+      toggleRetireDate();
     }
   } else {
     document.getElementById('fName').value = '';
@@ -898,7 +921,9 @@ function openModal(editId) {
     document.getElementById('fFrequency').value = 'daily';
     document.getElementById('fMonthlyUse').value = '30';
     document.getElementById('fStatus').value = 'using';
+    document.getElementById('fRetireDate').value = '';
     document.getElementById('fNote').value = '';
+    toggleRetireDate();
   }
   document.body.style.overflow = 'hidden';
 }
@@ -914,7 +939,7 @@ function saveProduct() {
   const date = document.getElementById('fDate').value;
 
   if (!name) { showToast('请输入产品名称', 'var(--red)'); return; }
-  if (!price || price <= 0) { showToast('请输入正确的价格', 'var(--red)'); return; }
+  if (isNaN(price) || price < 0) { showToast('请输入正确的价格', 'var(--red)'); return; }
   if (!date) { showToast('请选择购买日期', 'var(--red)'); return; }
 
   const data = {
@@ -926,6 +951,7 @@ function saveProduct() {
     frequency: document.getElementById('fFrequency').value,
     monthlyUse: parseFloat(document.getElementById('fMonthlyUse').value) || 0,
     status: document.getElementById('fStatus').value,
+    retireDate: document.getElementById('fRetireDate').value || undefined,
     note: document.getElementById('fNote').value.trim(),
   };
 
@@ -1013,6 +1039,21 @@ document.getElementById('fFrequency').addEventListener('change', function() {
   const defaults = { daily:30, weekly:12, monthly:4, rarely:2, idle:0 };
   document.getElementById('fMonthlyUse').value = defaults[this.value] || 0;
 });
+
+// ── 状态联动退役日期 ──
+function toggleRetireDate() {
+  const status = document.getElementById('fStatus').value;
+  const group = document.getElementById('fRetireDateGroup');
+  if (status === 'sold' || status === 'broken') {
+    group.style.display = 'block';
+    if (!document.getElementById('fRetireDate').value) {
+      document.getElementById('fRetireDate').value = new Date().toISOString().slice(0, 10);
+    }
+  } else {
+    group.style.display = 'none';
+  }
+}
+document.getElementById('fStatus').addEventListener('change', toggleRetireDate);
 
 // ── 弹窗关闭 ──
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
