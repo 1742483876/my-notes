@@ -562,12 +562,12 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v7';
-const OLD_STORAGE_KEY = 'knot_gadgets_v6';
+const STORAGE_KEY = 'knot_gadgets_v8';
+const OLD_STORAGE_KEY = 'knot_gadgets_v7';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
-  '存储':'💾','配件':'🔌','其他':'📦'
+  '存储':'💾','配件':'🔌','电视':'📺','其他':'📦'
 };
 const FREQ_LABELS = {
   daily:'每天使用', weekly:'每周几次', monthly:'每月几次',
@@ -600,6 +600,8 @@ const DEMO_DATA = [
   { id:'tb3', name:'罗技 B330 静音无线鼠标', category:'配件', price:79, date:'2023-02-15', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'静音无线鼠标，办公主力' },
   { id:'tb4', name:'倍思 Apple Pencil 电容笔', category:'配件', price:89, date:'2023-12-29', channel:'淘宝', frequency:'monthly', monthlyUse:2, status:'using', note:'iPad用电容笔，偶尔画画/做笔记' },
   { id:'tb5', name:'DIY台式机（E3 1220V3+H81+RTX4070+240G SSD）', category:'电脑', price:4380, date:'2024-02-20', channel:'淘宝', frequency:'daily', monthlyUse:25, status:'using', note:'自组NAS/游戏机：微星RTX4070¥4099+技嘉H81¥69+E3 CPU¥53+SSD¥69+内存¥12+鱼巢机箱¥79' },
+  // ── 用户截图补充数据（2026-03-30） ──
+  { id:'sc1', name:'DJI Action 5 Pro', category:'相机', price:1900, date:'2025-06-09', channel:'其他', frequency:'weekly', monthlyUse:4, status:'using', note:'运动相机' },
 ];
 
 function migrateOldData(data) {
