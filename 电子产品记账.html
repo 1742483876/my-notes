@@ -543,8 +543,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v5';
-const OLD_STORAGE_KEY = 'knot_gadgets_v4';
+const STORAGE_KEY = 'knot_gadgets_v6';
+const OLD_STORAGE_KEY = 'knot_gadgets_v5';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -603,8 +603,11 @@ function loadProducts() {
       // 尝试迁移旧版本数据
       raw = localStorage.getItem(OLD_STORAGE_KEY);
       if (raw) {
-        products = migrateOldData(JSON.parse(raw));
-        // 补充新增的设备（如果旧数据中没有的话）
+        let oldData = migrateOldData(JSON.parse(raw));
+        // 只保留DEMO_DATA中存在的设备id，丢弃旧示例数据
+        const demoIds = new Set(DEMO_DATA.map(d => d.id));
+        products = oldData.filter(p => demoIds.has(p.id));
+        // 补充新增的设备
         DEMO_DATA.forEach(d => {
           if (!products.find(p => p.id === d.id)) {
             products.push(d);
