@@ -562,8 +562,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v8';
-const OLD_STORAGE_KEY = 'knot_gadgets_v7';
+const STORAGE_KEY = 'knot_gadgets_v9';
+const OLD_STORAGE_KEY = 'knot_gadgets_v8';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -602,6 +602,9 @@ const DEMO_DATA = [
   { id:'tb5', name:'DIY台式机（E3 1220V3+H81+RTX4070+240G SSD）', category:'电脑', price:4380, date:'2024-02-20', channel:'淘宝', frequency:'daily', monthlyUse:25, status:'using', note:'自组NAS/游戏机：微星RTX4070¥4099+技嘉H81¥69+E3 CPU¥53+SSD¥69+内存¥12+鱼巢机箱¥79' },
   // ── 用户截图补充数据（2026-03-30） ──
   { id:'sc1', name:'DJI Action 5 Pro', category:'相机', price:1900, date:'2025-06-09', channel:'其他', frequency:'weekly', monthlyUse:4, status:'using', note:'运动相机' },
+  { id:'sc2', name:'Nintendo Switch', category:'游戏', price:1788, date:'2025-05-01', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'游戏主机' },
+  { id:'sc3', name:'绿联 DXP4800 NAS + WD红盘8TB', category:'存储', price:2244, date:'2025-06-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'NAS主机¥1530 + WD红盘8TB¥714，家庭存储/媒体服务器' },
+  { id:'sc4', name:'iPhone 13', category:'手机', price:6294, date:'2021-10-07', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2025-01-22', note:'已换iPhone 16 Pro Max' },
 ];
 
 function migrateOldData(data) {
