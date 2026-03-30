@@ -778,8 +778,23 @@ function loadProducts() {
       if (raw) {
         let oldData = migrateOldData(JSON.parse(raw));
         const demoMap = new Map(DEMO_DATA.map(d => [d.id, d]));
-        // 保留用户自定义数据，DEMO_DATA中的条目用最新版本覆盖
-        products = oldData.map(p => demoMap.has(p.id) ? {...demoMap.get(p.id)} : p);
+        // 智能合并：保留用户编辑的内容，只从DEMO_DATA补充新增字段和结构性更新
+        products = oldData.map(p => {
+          if (!demoMap.has(p.id)) return p;
+          const demo = demoMap.get(p.id);
+          // 结构性字段始终用最新DEMO_DATA（这些是开发者主动调整的）
+          const structFields = ['groupId', 'groupName'];
+          const merged = { ...p };
+          structFields.forEach(f => {
+            if (demo[f] !== undefined) merged[f] = demo[f];
+            else delete merged[f];
+          });
+          // DEMO_DATA中新增的字段补充到用户数据中（不覆盖已有）
+          Object.keys(demo).forEach(k => {
+            if (merged[k] === undefined) merged[k] = demo[k];
+          });
+          return merged;
+        });
         // 补充新增的设备
         DEMO_DATA.forEach(d => {
           if (!products.find(p => p.id === d.id)) {
