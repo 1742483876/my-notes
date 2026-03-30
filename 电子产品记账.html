@@ -572,8 +572,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v15';
-const OLD_STORAGE_KEY = 'knot_gadgets_v14';
+const STORAGE_KEY = 'knot_gadgets_v19';
+const OLD_STORAGE_KEY = 'knot_gadgets_v18';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -608,16 +608,19 @@ const DEMO_DATA = [
   { id:'tb2', name:'狼蛛 F99 客制化机械键盘（三模无线）', category:'配件', price:259, date:'2023-11-08', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'蓝牙/2.4G/有线三模，日常办公用' },
   { id:'tb3', name:'罗技 B330 静音无线鼠标', category:'配件', price:79, date:'2023-02-15', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'静音无线鼠标，办公主力' },
   { id:'tb4', name:'倍思 Apple Pencil 电容笔', category:'配件', price:89, date:'2023-12-29', channel:'淘宝', frequency:'monthly', monthlyUse:2, status:'using', note:'iPad用电容笔，偶尔画画/做笔记' },
-  { id:'tb5', name:'DIY台式机（E3 1220V3+H81+RTX4070+240G SSD）', category:'电脑', price:4380, date:'2024-02-20', channel:'淘宝', frequency:'daily', monthlyUse:25, status:'using', note:'自组NAS/游戏机：微星RTX4070¥4099+技嘉H81¥69+E3 CPU¥53+SSD¥69+内存¥12+鱼巢机箱¥79' },
+  { id:'tb5', name:'DIY台式机（E3 1220V3+H81+RTX4070+240G SSD）', category:'电脑', price:4839, date:'2024-02-20', channel:'淘宝', frequency:'daily', monthlyUse:25, status:'using', note:'自组NAS/游戏机：微星RTX4070¥4099+鑫谷GX850W电源¥459+技嘉H81¥69+E3 CPU¥53+SSD¥69+内存¥12+鱼巢机箱¥79（电源购于2023-12-08拼多多百亿补贴）' },
   // ── 用户截图补充数据（2026-03-30） ──
   { id:'sc1', name:'DJI Action 5 Pro', category:'相机', price:1900, date:'2025-06-09', channel:'其他', frequency:'weekly', monthlyUse:4, status:'using', note:'运动相机' },
   { id:'sc2', name:'Nintendo Switch', category:'游戏', price:1788, date:'2025-05-01', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'游戏主机' },
-  { id:'sc3', name:'绿联 DXP4800 NAS + WD Red Plus 4TB x2', category:'存储', price:2244, date:'2025-06-04', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'NAS主机¥1530（其他渠道）+ WD Red Plus 4TB x2 ¥715（京东自营），家庭存储/媒体服务器' },
+  { id:'jd5', name:'西部数据 WD Red Plus 4TB NAS硬盘 x2', category:'存储', price:715, date:'2025-06-03', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'NAS存储盘，搭配绿联DXP4800使用' },
+  { id:'sc3', name:'绿联 DXP4800 NAS + WD红盘8TB', category:'存储', price:3148, date:'2025-06-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'NAS主机¥1530 + WD红盘8TB ¥1618，家庭存储/媒体服务器' },
   { id:'sc4', name:'iPhone 13', category:'手机', price:6294, date:'2021-10-07', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2025-01-22', note:'已换iPhone 16 Pro Max' },
   { id:'sc5', name:'小米泡脚桶', category:'其他', price:338, date:'2025-12-07', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'小米智能泡脚桶' },
   { id:'sc6', name:'DJI Pocket + SD256存储卡', category:'相机', price:3954, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'口袋云台相机¥3800 + SD256存储卡¥154，拍视频/Vlog用' },
   { id:'sc7', name:'小米电视 S65 MiniLED', category:'电视', price:3029, date:'2024-10-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'含电视支架¥229，总价¥2800+¥229' },
   { id:'sc8', name:'Redmi K20 Pro', category:'手机', price:3019, date:'2019-06-18', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2021-10-07', note:'购机¥2999+充电器¥20，换iPhone 13后退役' },
+  // ── 拼多多订单数据（2026-03-30 从拼多多订单截图导入） ──
+  { id:'pdd1', name:'Xiaomi 红米Note11 5G', category:'手机', price:756, date:'2023-07-07', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'浅梦星河 6GB+128GB，百亿补贴¥866-110券=¥756' },
 ];
 
 function migrateOldData(data) {
@@ -637,13 +640,17 @@ function loadProducts() {
     if (raw) {
       products = JSON.parse(raw);
     } else {
-      // 尝试迁移旧版本数据
-      raw = localStorage.getItem(OLD_STORAGE_KEY);
+      // 尝试迁移旧版本数据（回溯查找）
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      for (const key of oldKeys) {
+        raw = localStorage.getItem(key);
+        if (raw) break;
+      }
       if (raw) {
         let oldData = migrateOldData(JSON.parse(raw));
-        // 只保留DEMO_DATA中存在的设备id，丢弃旧示例数据
-        const demoIds = new Set(DEMO_DATA.map(d => d.id));
-        products = oldData.filter(p => demoIds.has(p.id));
+        const demoMap = new Map(DEMO_DATA.map(d => [d.id, d]));
+        // 保留用户自定义数据，DEMO_DATA中的条目用最新版本覆盖
+        products = oldData.map(p => demoMap.has(p.id) ? {...demoMap.get(p.id)} : p);
         // 补充新增的设备
         DEMO_DATA.forEach(d => {
           if (!products.find(p => p.id === d.id)) {
