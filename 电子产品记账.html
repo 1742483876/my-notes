@@ -681,6 +681,7 @@ body::before {
 // ══════════════════════════════════════════════
 const STORAGE_KEY = 'knot_gadgets_v42';
 const OLD_STORAGE_KEY = 'knot_gadgets_v41';
+const DELETED_IDS_KEY = 'knot_gadgets_deleted_ids';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -740,6 +741,8 @@ const DEMO_DATA = [
   { id:'sc5', name:'小米泡脚桶', category:'其他', price:338, date:'2025-12-07', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'小米智能泡脚桶', groupId:'grp_daily', groupName:'日用品' },
   { id:'sc6a', name:'DJI Pocket 3', category:'相机', price:3800, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'口袋云台相机，拍视频/Vlog用', groupId:'grp_camera', groupName:'拍摄设备' },
   { id:'sc6b', name:'SD256 存储卡', category:'配件', price:154, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'搭配DJI Pocket 3使用', groupId:'grp_camera', groupName:'拍摄设备' },
+  { id:'jd14', name:'毕亚兹 DJI Pocket3 钢化膜 4片装', category:'配件', price:20, date:'2025-05-26', channel:'京东', frequency:'weekly', monthlyUse:8, status:'using', note:'Pocket3镜头屏幕防刮保护贴膜 XJM10，¥19.50', groupId:'grp_camera', groupName:'拍摄设备' },
+  { id:'jd15', name:'闪迪 256GB TF(MicroSD) 4K极速金卡', category:'配件', price:165, date:'2025-05-26', channel:'京东', frequency:'weekly', monthlyUse:8, status:'using', note:'A2 V30 U3 读190MB/s，运动相机/行车记录仪/无人机用，¥164.90', groupId:'grp_camera', groupName:'拍摄设备' },
   { id:'sc7', name:'小米电视 S65 MiniLED', category:'电视', price:2800, date:'2024-10-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'纯电视价格¥2800，电视支架已单独记录', groupId:'grp_tv', groupName:'电视设备' },
   { id:'jd12', name:'贝石 移动电视支架落地推车', category:'配件', price:229, date:'2025-03-08', channel:'京东·贝石家电配件旗舰店', frequency:'daily', monthlyUse:30, status:'using', note:'艺术电视支架，适用于索尼海信华为创维等通用电视挂，¥228.73', groupId:'grp_tv', groupName:'电视设备' },
   { id:'jd13', name:'米家 K歌麦克风 大屏版 2支装', category:'配件', price:288, date:'2025-04-29', channel:'京东', frequency:'rarely', monthlyUse:0, status:'sold', retireDate:'2025-04-29', note:'小米电视Redmi电视家庭KTV无线连麦，¥287.56，已取消订单', groupId:'grp_tv', groupName:'电视设备' },
@@ -765,7 +768,20 @@ function migrateOldData(data) {
   });
 }
 
+function getDeletedIds() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(DELETED_IDS_KEY) || '[]'));
+  } catch { return new Set(); }
+}
+
+function addDeletedId(id) {
+  const ids = getDeletedIds();
+  ids.add(id);
+  localStorage.setItem(DELETED_IDS_KEY, JSON.stringify([...ids]));
+}
+
 function loadProducts() {
+  const deletedIds = getDeletedIds();
   try {
     let raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -782,11 +798,9 @@ function loadProducts() {
         const demoMap = new Map(DEMO_DATA.map(d => [d.id, d]));
         const demoIds = new Set(DEMO_DATA.map(d => d.id));
         // 智能合并：保留用户编辑的内容，只从DEMO_DATA补充新增字段和结构性更新
-        // 同时过滤掉DEMO_DATA中已不存在的旧id（如被拆分/删除的记录）
+        // 同时过滤掉DEMO_DATA中已不存在的旧id 和 用户手动删除过的id
         products = oldData.filter(p => {
-          // 如果是用户手动添加的（不在任何版本的DEMO_DATA中），保留
-          // 如果在当前DEMO_DATA中存在，保留并合并
-          // 如果曾经在DEMO_DATA中但现在不存在了（如sc6被拆成sc6a+sc6b），过滤掉
+          if (deletedIds.has(p.id)) return false;
           return demoIds.has(p.id) || !p.id.match(/^(jd|tb|sc|pdd|real)\d/);
         }).map(p => {
           if (!demoMap.has(p.id)) return p;
@@ -804,15 +818,16 @@ function loadProducts() {
           });
           return merged;
         });
-        // 补充新增的设备
+        // 补充新增的设备（跳过已删除的）
         DEMO_DATA.forEach(d => {
-          if (!products.find(p => p.id === d.id)) {
+          if (!deletedIds.has(d.id) && !products.find(p => p.id === d.id)) {
             products.push(d);
           }
         });
         saveToStorage();
       } else {
-        products = DEMO_DATA;
+        // 全新用户，加载DEMO_DATA（跳过已删除的）
+        products = DEMO_DATA.filter(d => !deletedIds.has(d.id));
         saveToStorage();
       }
     }
@@ -1351,6 +1366,7 @@ function deleteProduct(id) {
   if (!p) return;
   if (!confirm(`确定删除「${p.name}」吗？`)) return;
   products = products.filter(x => x.id !== id);
+  addDeletedId(id);
   saveToStorage();
   render();
   showToast('🗑 已删除');
