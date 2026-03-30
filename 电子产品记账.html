@@ -462,6 +462,7 @@ body::before {
           <option value="相机">📷 相机</option>
           <option value="游戏">🎮 游戏设备</option>
           <option value="音箱">🔊 音箱</option>
+          <option value="智能家居">🏠 智能家居</option>
           <option value="存储">💾 存储设备</option>
           <option value="配件">🔌 配件</option>
           <option value="其他">📦 其他</option>
@@ -542,11 +543,11 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v3';
-const OLD_STORAGE_KEY = 'knot_gadgets_v0_deprecated';
+const STORAGE_KEY = 'knot_gadgets_v4';
+const OLD_STORAGE_KEY = 'knot_gadgets_v3';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
-  '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊',
+  '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
   '存储':'💾','配件':'🔌','其他':'📦'
 };
 const FREQ_LABELS = {
@@ -572,6 +573,8 @@ const DEMO_DATA = [
   { id:'jd6', name:'Brateck北弧 双屏支架', category:'配件', price:284, date:'2023-11-20', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'笔记本+显示器双屏支架' },
   { id:'jd7', name:'BOYA博雅 mini 无线领夹麦克风', category:'配件', price:143, date:'2025-04-26', channel:'京东自营', frequency:'weekly', monthlyUse:4, status:'using', note:'Type-C无线麦克风，拍视频收音用' },
   { id:'jd8', name:'米家小米便携电热杯2', category:'其他', price:138, date:'2026-01-01', channel:'京东自营', frequency:'weekly', monthlyUse:8, status:'using', note:'便携电热杯，出差/办公用' },
+  { id:'real1', name:'MacBook Pro M3 Pro 36G/1TB', category:'电脑', price:0, date:'2024-07-01', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'公司入职配发，不算个人投入' },
+  { id:'real2', name:'iPhone 16 Pro Max 256G', category:'手机', price:8500, date:'2025-01-22', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'2025年年会找同事买的' },
 ];
 
 function migrateOldData(data) {
@@ -595,6 +598,12 @@ function loadProducts() {
       raw = localStorage.getItem(OLD_STORAGE_KEY);
       if (raw) {
         products = migrateOldData(JSON.parse(raw));
+        // 补充新增的设备（如果旧数据中没有的话）
+        DEMO_DATA.forEach(d => {
+          if (!products.find(p => p.id === d.id)) {
+            products.push(d);
+          }
+        });
         saveToStorage();
       } else {
         products = DEMO_DATA;
