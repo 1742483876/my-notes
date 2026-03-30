@@ -679,8 +679,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v39';
-const OLD_STORAGE_KEY = 'knot_gadgets_v38';
+const STORAGE_KEY = 'knot_gadgets_v40';
+const OLD_STORAGE_KEY = 'knot_gadgets_v39';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -770,7 +770,7 @@ function loadProducts() {
       products = JSON.parse(raw);
     } else {
       // 尝试迁移旧版本数据（回溯查找）
-      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v37', 'knot_gadgets_v36', 'knot_gadgets_v35', 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v38', 'knot_gadgets_v37', 'knot_gadgets_v36', 'knot_gadgets_v35', 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
       for (const key of oldKeys) {
         raw = localStorage.getItem(key);
         if (raw) break;
@@ -778,8 +778,15 @@ function loadProducts() {
       if (raw) {
         let oldData = migrateOldData(JSON.parse(raw));
         const demoMap = new Map(DEMO_DATA.map(d => [d.id, d]));
+        const demoIds = new Set(DEMO_DATA.map(d => d.id));
         // 智能合并：保留用户编辑的内容，只从DEMO_DATA补充新增字段和结构性更新
-        products = oldData.map(p => {
+        // 同时过滤掉DEMO_DATA中已不存在的旧id（如被拆分/删除的记录）
+        products = oldData.filter(p => {
+          // 如果是用户手动添加的（不在任何版本的DEMO_DATA中），保留
+          // 如果在当前DEMO_DATA中存在，保留并合并
+          // 如果曾经在DEMO_DATA中但现在不存在了（如sc6被拆成sc6a+sc6b），过滤掉
+          return demoIds.has(p.id) || !p.id.match(/^(jd|tb|sc|pdd|real)\d/);
+        }).map(p => {
           if (!demoMap.has(p.id)) return p;
           const demo = demoMap.get(p.id);
           // 结构性字段始终用最新DEMO_DATA（这些是开发者主动调整的）
