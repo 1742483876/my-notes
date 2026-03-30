@@ -6,14 +6,16 @@
 <title>我的电子产品资产</title>
 <style>
 :root {
-  --bg: #0a0a0f;
-  --surface: #13131a;
-  --surface2: #1a1a24;
-  --border: #1e1e2e;
+  --bg: #08080d;
+  --surface: rgba(18,18,28,0.65);
+  --surface-solid: #12121c;
+  --surface2: rgba(26,26,40,0.7);
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(124,106,247,0.3);
   --text: #e2e2e8;
-  --muted: #5a5a72;
+  --muted: #6a6a82;
   --accent: #7c6af7;
-  --accent-soft: #1e1a3a;
+  --accent-soft: rgba(124,106,247,0.12);
   --green: #4ade80;
   --yellow: #fbbf24;
   --blue: #60a5fa;
@@ -21,6 +23,8 @@
   --orange: #fb923c;
   --pink: #f472b6;
   --cyan: #22d3ee;
+  --glass: rgba(18,18,28,0.55);
+  --glass-border: rgba(255,255,255,0.08);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -33,14 +37,38 @@ body {
   overflow-x: hidden;
 }
 
+/* 背景装饰 */
+body::before {
+  content: '';
+  position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 20% 20%, rgba(124,106,247,0.06) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(34,211,238,0.04) 0%, transparent 50%),
+              radial-gradient(circle at 50% 50%, rgba(248,113,113,0.03) 0%, transparent 50%);
+  z-index: 0; pointer-events: none;
+  animation: bgFloat 20s ease-in-out infinite;
+}
+@keyframes bgFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(2%, 1%) rotate(1deg); }
+  66% { transform: translate(-1%, -2%) rotate(-1deg); }
+}
+
+/* ── 毛玻璃 Mixin ── */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--glass-border);
+}
+
 /* ── 顶部栏 ── */
 .topbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,15,0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(8,8,13,0.85);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border-bottom: 1px solid var(--border);
-  padding: 0 16px; height: 56px;
+  padding: 0 20px; height: 56px;
   display: flex; align-items: center; gap: 12px;
 }
 .topbar-logo {
@@ -51,219 +79,326 @@ body {
 }
 .topbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
 .topbar-btn {
-  padding: 7px 14px; border-radius: 10px; border: 1px solid var(--border);
-  background: var(--surface2); color: var(--text); font-size: 13px;
-  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  padding: 7px 14px; border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text); font-size: 13px;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
-.topbar-btn:hover { border-color: rgba(124,106,247,0.5); background: var(--accent-soft); }
+.topbar-btn:hover { border-color: var(--border-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(124,106,247,0.15); }
+.topbar-btn:active { transform: translateY(0) scale(0.97); }
 .topbar-btn.primary {
   background: linear-gradient(135deg, #7c6af7, #22d3ee);
   border: none; color: #fff; font-weight: 600;
 }
-.topbar-btn.primary:hover { opacity: 0.9; }
+.topbar-btn.primary:hover { opacity: 0.9; box-shadow: 0 4px 20px rgba(124,106,247,0.3); }
 
 /* ── 统计概览 ── */
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px; padding: 20px 16px;
-  border-bottom: 1px solid var(--border);
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px; padding: 20px 20px 16px;
+  position: relative; z-index: 1;
 }
-@media (max-width: 480px) { .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 14px 12px; } }
+@media (max-width: 700px) { .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 14px 12px; } }
+@media (max-width: 400px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
 .stat-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 14px; text-align: center;
+  background: var(--glass); backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px; padding: 16px; text-align: center;
+  transition: all 0.25s; cursor: default; position: relative; overflow: hidden;
 }
+.stat-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.stat-card:hover { transform: translateY(-2px); border-color: var(--border-hover); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
 .stat-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
 .stat-value { font-size: 22px; font-weight: 700; }
 .stat-value.total { color: var(--cyan); }
 .stat-value.daily { color: var(--green); }
+.stat-value.per-use { color: var(--yellow); }
 .stat-value.dust { color: var(--orange); }
 .stat-value.worth { color: var(--accent); }
 .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
 /* ── 筛选栏 ── */
 .filter-bar {
-  display: flex; gap: 8px; padding: 14px 16px;
+  display: flex; gap: 8px; padding: 12px 20px;
   overflow-x: auto; scrollbar-width: none;
   border-bottom: 1px solid var(--border);
+  position: relative; z-index: 1;
 }
 .filter-bar::-webkit-scrollbar { display: none; }
 .filter-btn {
   flex-shrink: 0; padding: 6px 14px; border-radius: 20px;
-  border: 1px solid var(--border); background: var(--surface);
+  border: 1px solid var(--glass-border);
+  background: var(--glass); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #a0a0b8; font-size: 13px; cursor: pointer;
-  white-space: nowrap; transition: all 0.15s;
+  white-space: nowrap; transition: all 0.2s;
 }
+.filter-btn:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+.filter-btn:active { transform: scale(0.96); }
 .filter-btn.active {
   background: var(--accent-soft); border-color: rgba(124,106,247,0.4);
   color: var(--accent); font-weight: 600;
+  box-shadow: 0 0 12px rgba(124,106,247,0.15);
 }
 
 /* ── 排序栏 ── */
 .sort-bar {
   display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  padding: 10px 20px; border-bottom: 1px solid var(--border);
+  position: relative; z-index: 1;
 }
 .sort-label { font-size: 12px; color: var(--muted); flex-shrink: 0; }
 .sort-btn {
   padding: 4px 10px; border-radius: 8px; border: none;
   background: transparent; color: #a0a0b8; font-size: 12px;
-  cursor: pointer; transition: all 0.12s;
+  cursor: pointer; transition: all 0.15s;
 }
+.sort-btn:hover { color: var(--text); }
+.sort-btn:active { transform: scale(0.95); }
 .sort-btn.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 .sort-btn .arrow { font-size: 10px; margin-left: 2px; }
 
-/* ── 产品列表 ── */
-.products-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-@media (max-width: 480px) { .products-list { padding: 12px; gap: 10px; } }
+/* ── 产品网格 ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px; padding: 20px;
+  position: relative; z-index: 1;
+}
+@media (max-width: 800px) { .products-grid { grid-template-columns: 1fr; gap: 12px; padding: 14px; } }
+@media (min-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
 
+/* ── 产品卡片 ── */
 .product-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 14px; padding: 16px; position: relative;
-  transition: all 0.18s; overflow: hidden;
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 18px; position: relative;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden; cursor: default;
 }
 .product-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 2px; opacity: 0; transition: opacity 0.18s;
+  height: 2px; opacity: 0; transition: opacity 0.3s;
 }
-.product-card:hover { border-color: rgba(124,106,247,0.3); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.product-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 60%);
+  pointer-events: none; opacity: 0; transition: opacity 0.3s;
+}
+.product-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(124,106,247,0.08);
+}
 .product-card:hover::before { opacity: 1; }
+.product-card:hover::after { opacity: 1; }
 .product-card.high-use::before { background: linear-gradient(90deg, var(--green), transparent); }
 .product-card.medium-use::before { background: linear-gradient(90deg, var(--yellow), transparent); }
 .product-card.low-use::before { background: linear-gradient(90deg, var(--red), transparent); }
 
-.product-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.product-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
 .product-icon {
-  width: 44px; height: 44px; border-radius: 12px;
+  width: 46px; height: 46px; border-radius: 13px;
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; flex-shrink: 0;
+  transition: transform 0.3s;
 }
+.product-card:hover .product-icon { transform: scale(1.1) rotate(-3deg); }
 .product-info { flex: 1; min-width: 0; }
 .product-name { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-.product-meta { font-size: 12px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+.product-meta { font-size: 11px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; }
 
 .product-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-  background: var(--surface2); border-radius: 10px; padding: 12px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  background: rgba(0,0,0,0.2); border-radius: 12px; padding: 12px;
+  border: 1px solid rgba(255,255,255,0.03);
 }
-@media (max-width: 480px) { .product-stats { grid-template-columns: repeat(2, 1fr); } }
 .ps-item { text-align: center; }
 .ps-label { font-size: 10px; color: var(--muted); margin-bottom: 3px; }
 .ps-value { font-size: 14px; font-weight: 600; }
 .ps-value.price { color: var(--cyan); }
 .ps-value.days { color: var(--blue); }
 .ps-value.per-day { color: var(--green); }
-.ps-value.per-use { color: var(--yellow); }
+.ps-value.per-use-v { color: var(--yellow); }
+
+/* ── 使用频率进度条 ── */
+.usage-bar-wrap { margin-top: 12px; }
+.usage-bar-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.usage-bar { height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+.usage-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+.usage-bar-fill.high { background: linear-gradient(90deg, var(--green), #86efac); }
+.usage-bar-fill.medium { background: linear-gradient(90deg, var(--yellow), #fde68a); }
+.usage-bar-fill.low { background: linear-gradient(90deg, var(--red), #fca5a5); }
 
 .product-footer {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 6px;
   margin-top: 10px; flex-wrap: wrap;
 }
 .tag {
-  font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 500;
+  font-size: 10px; padding: 2px 8px; border-radius: 6px; font-weight: 500;
+  transition: transform 0.15s;
 }
-.tag-high { background: rgba(74,222,128,0.15); color: var(--green); }
-.tag-medium { background: rgba(251,191,36,0.15); color: var(--yellow); }
-.tag-low { background: rgba(248,113,113,0.15); color: var(--red); }
-.tag-category { background: rgba(124,106,247,0.15); color: var(--accent); }
-.tag-sell { background: rgba(248,113,113,0.2); color: var(--red); border: 1px dashed rgba(248,113,113,0.4); }
+.tag:hover { transform: scale(1.05); }
+.tag-high { background: rgba(74,222,128,0.12); color: var(--green); }
+.tag-medium { background: rgba(251,191,36,0.12); color: var(--yellow); }
+.tag-low { background: rgba(248,113,113,0.12); color: var(--red); }
+.tag-category { background: rgba(124,106,247,0.12); color: var(--accent); }
+.tag-sell { background: rgba(248,113,113,0.15); color: var(--red); border: 1px dashed rgba(248,113,113,0.35); animation: pulse-sell 2s infinite; }
+@keyframes pulse-sell {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
+  50% { box-shadow: 0 0 8px 0 rgba(248,113,113,0.15); }
+}
 
 .product-actions {
-  position: absolute; top: 12px; right: 12px;
-  display: flex; gap: 6px;
+  position: absolute; top: 14px; right: 14px;
+  display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s;
 }
+.product-card:hover .product-actions { opacity: 1; }
 .action-btn {
   width: 28px; height: 28px; border-radius: 8px;
-  border: 1px solid var(--border); background: var(--surface2);
-  color: var(--muted); font-size: 13px; cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: var(--glass); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--muted); font-size: 12px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.12s;
+  transition: all 0.2s;
 }
-.action-btn:hover { border-color: rgba(124,106,247,0.4); color: var(--accent); }
+.action-btn:hover { border-color: var(--border-hover); color: var(--accent); transform: scale(1.1); }
+.action-btn:active { transform: scale(0.9); }
 .action-btn.delete:hover { border-color: rgba(248,113,113,0.4); color: var(--red); }
 
 /* ── 弹窗 ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   justify-content: center; align-items: flex-start;
   padding: 40px 16px; overflow-y: auto;
 }
 .modal-overlay.open { display: flex; }
 .modal {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; width: 100%; max-width: 500px;
-  padding: 24px; position: relative;
+  background: var(--surface-solid);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px; width: 100%; max-width: 520px;
+  padding: 28px; position: relative;
+  animation: modalIn 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #fff; }
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 22px; color: #fff; }
 .modal-close {
-  position: absolute; top: 16px; right: 16px;
-  width: 32px; height: 32px; border-radius: 8px;
-  border: 1px solid var(--border); background: var(--surface2);
+  position: absolute; top: 18px; right: 18px;
+  width: 32px; height: 32px; border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
   color: var(--text); font-size: 18px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
 }
-.modal-close:hover { background: var(--border); }
+.modal-close:hover { background: rgba(248,113,113,0.15); color: var(--red); transform: rotate(90deg); }
 
 .form-group { margin-bottom: 16px; }
 .form-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: block; font-weight: 500; }
 .form-input, .form-select, .form-textarea {
   width: 100%; padding: 10px 14px; border-radius: 10px;
-  border: 1px solid var(--border); background: var(--surface2);
+  border: 1px solid var(--glass-border);
+  background: rgba(0,0,0,0.3);
   color: var(--text); font-size: 14px; outline: none;
-  transition: border-color 0.15s; font-family: inherit;
+  transition: all 0.2s; font-family: inherit;
 }
-.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(124,106,247,0.5); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: rgba(124,106,247,0.5);
+  box-shadow: 0 0 12px rgba(124,106,247,0.1);
+}
 .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
 .form-textarea { min-height: 60px; resize: vertical; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 400px) { .form-row { grid-template-columns: 1fr; } }
-.form-select { appearance: none; cursor: pointer;
+.form-select {
+  appearance: none; cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a72' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 12px center;
   padding-right: 32px;
 }
-.form-select option { background: var(--surface); color: var(--text); }
+.form-select option { background: var(--surface-solid); color: var(--text); }
 
-.form-actions { display: flex; gap: 10px; margin-top: 20px; }
+.form-actions { display: flex; gap: 10px; margin-top: 22px; }
 .btn {
-  flex: 1; padding: 11px; border-radius: 10px; border: none;
-  font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  flex: 1; padding: 12px; border-radius: 12px; border: none;
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
 }
+.btn:active { transform: scale(0.97); }
 .btn-primary { background: linear-gradient(135deg, #7c6af7, #22d3ee); color: #fff; }
-.btn-primary:hover { opacity: 0.9; }
-.btn-cancel { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-.btn-cancel:hover { color: var(--text); }
+.btn-primary:hover { opacity: 0.9; box-shadow: 0 4px 16px rgba(124,106,247,0.3); }
+.btn-cancel {
+  background: var(--glass); color: var(--muted);
+  border: 1px solid var(--glass-border);
+}
+.btn-cancel:hover { color: var(--text); border-color: var(--border-hover); }
 
 /* ── 空状态 ── */
-.empty { text-align: center; padding: 80px 20px; color: var(--muted); }
-.empty-icon { font-size: 56px; margin-bottom: 16px; }
+.empty { text-align: center; padding: 80px 20px; color: var(--muted); position: relative; z-index: 1; }
+.empty-icon { font-size: 56px; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .empty-text { font-size: 15px; margin-bottom: 8px; }
 .empty-sub { font-size: 13px; }
 
-/* ── 使用频率进度条 ── */
-.usage-bar-wrap { margin-top: 10px; }
-.usage-bar-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
-.usage-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-.usage-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
-.usage-bar-fill.high { background: var(--green); }
-.usage-bar-fill.medium { background: var(--yellow); }
-.usage-bar-fill.low { background: var(--red); }
-
-/* ── 导出/导入 ── */
-.data-actions { display: flex; gap: 8px; }
-
-/* ── 提示 ── */
+/* ── Toast ── */
 .toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 10px 20px; font-size: 13px;
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--glass); backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px; padding: 12px 24px; font-size: 13px;
   color: var(--green); z-index: 300; opacity: 0;
-  transition: opacity 0.3s; pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); pointer-events: none;
 }
-.toast.show { opacity: 1; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── 卡片新增动画 ── */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.product-card { animation: cardIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) both; }
+.product-card:nth-child(2) { animation-delay: 0.05s; }
+.product-card:nth-child(3) { animation-delay: 0.1s; }
+.product-card:nth-child(4) { animation-delay: 0.15s; }
+.product-card:nth-child(5) { animation-delay: 0.2s; }
+.product-card:nth-child(6) { animation-delay: 0.25s; }
+.product-card:nth-child(n+7) { animation-delay: 0.3s; }
+
+/* ── 备注展示 ── */
+.product-note {
+  font-size: 11px; color: var(--muted); margin-top: 8px;
+  padding: 6px 10px; border-radius: 8px;
+  background: rgba(255,255,255,0.02); border-left: 2px solid rgba(124,106,247,0.3);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── 涟漪效果 ── */
+.ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(124,106,247,0.15);
+  transform: scale(0); animation: ripple-anim 0.6s linear;
+  pointer-events: none;
+}
+@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
 </style>
 </head>
 <body>
@@ -272,10 +407,8 @@ body {
 <div class="topbar">
   <div class="topbar-logo">📱 电子产品资产</div>
   <div class="topbar-right">
-    <div class="data-actions">
-      <button class="topbar-btn" onclick="exportData()" title="导出数据">📤 导出</button>
-      <label class="topbar-btn" title="导入数据">📥 导入<input type="file" accept=".json" onchange="importData(event)" style="display:none"></label>
-    </div>
+    <button class="topbar-btn" onclick="exportData()" title="导出数据">📤 导出</button>
+    <label class="topbar-btn" title="导入数据">📥 导入<input type="file" accept=".json" onchange="importData(event)" style="display:none"></label>
     <button class="topbar-btn primary" onclick="openModal()">＋ 添加</button>
   </div>
 </div>
@@ -297,7 +430,7 @@ body {
 </div>
 
 <!-- 产品列表 -->
-<div class="products-list" id="productsList"></div>
+<div class="products-grid" id="productsGrid"></div>
 
 <!-- 空状态 -->
 <div class="empty" id="emptyState" style="display:none">
@@ -373,8 +506,8 @@ body {
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">每周大约使用次数</label>
-        <input class="form-input" id="fWeeklyUse" type="number" placeholder="7" min="0" step="0.5">
+        <label class="form-label">每月大约使用次数</label>
+        <input class="form-input" id="fMonthlyUse" type="number" placeholder="30" min="0" step="1">
       </div>
     </div>
 
@@ -409,48 +542,66 @@ body {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v1';
+const STORAGE_KEY = 'knot_gadgets_v2';
+const OLD_STORAGE_KEY = 'knot_gadgets_v1';
 const CATEGORY_ICONS = {
-  '电脑': '💻', '手机': '📱', '平板': '📲', '耳机': '🎧',
-  '手表': '⌚', '相机': '📷', '游戏': '🎮', '音箱': '🔊',
-  '存储': '💾', '配件': '🔌', '其他': '📦'
+  '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
+  '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊',
+  '存储':'💾','配件':'🔌','其他':'📦'
 };
 const FREQ_LABELS = {
-  daily: '每天使用', weekly: '每周几次', monthly: '每月几次',
-  rarely: '很少使用', idle: '完全吃灰'
+  daily:'每天使用', weekly:'每周几次', monthly:'每月几次',
+  rarely:'很少使用', idle:'完全吃灰'
 };
 const STATUS_LABELS = {
-  using: '🟢 使用中', idle: '🟡 闲置', broken: '🔴 已损坏', sold: '⚪ 已出手'
+  using:'🟢 使用中', idle:'🟡 闲置', broken:'🔴 已损坏', sold:'⚪ 已出手'
 };
 
 let products = [];
 let currentFilter = 'all';
 let currentSort = 'date';
-let sortAsc = false; // 默认降序
+let sortAsc = false;
 
-// ── 示例数据（首次打开时加载）──
+// ── 示例数据 ──
 const DEMO_DATA = [
-  { id: 'd1', name: 'MacBook Pro 14 M3 Pro', category: '电脑', price: 16999, date: '2024-01-15', channel: '苹果官网', frequency: 'daily', weeklyUse: 7, status: 'using', note: '36G/1T 深空黑，主力生产工具' },
-  { id: 'd2', name: 'iPhone 15 Pro Max', category: '手机', price: 9999, date: '2023-09-22', channel: '苹果官网', frequency: 'daily', weeklyUse: 7, status: 'using', note: '256G 原色钛金属' },
-  { id: 'd3', name: 'AirPods Pro 2', category: '耳机', price: 1899, date: '2023-06-18', channel: '京东', frequency: 'daily', weeklyUse: 7, status: 'using', note: 'USB-C版，降噪很好' },
-  { id: 'd4', name: 'iPad mini 6', category: '平板', price: 3799, date: '2022-03-10', channel: '京东', frequency: 'rarely', weeklyUse: 0.5, status: 'idle', note: '256G WiFi，买来看视频，现在吃灰了' },
-  { id: 'd5', name: 'Nintendo Switch OLED', category: '游戏', price: 2599, date: '2022-11-11', channel: '拼多多', frequency: 'rarely', weeklyUse: 0.5, status: 'idle', note: '白色，就塞尔达通关后没怎么玩了' },
-  { id: 'd6', name: 'Sony WH-1000XM5', category: '耳机', price: 2499, date: '2023-11-11', channel: '京东', frequency: 'weekly', weeklyUse: 3, status: 'using', note: '头戴降噪，办公室用' },
-  { id: 'd7', name: 'Apple Watch Ultra 2', category: '手表', price: 5999, date: '2024-06-18', channel: '苹果官网', frequency: 'daily', weeklyUse: 7, status: 'using', note: '49mm 钛金属，运动+健康监测' },
-  { id: 'd8', name: 'GoPro Hero 12', category: '相机', price: 3398, date: '2024-02-20', channel: '京东', frequency: 'monthly', weeklyUse: 0.25, status: 'idle', note: '买来旅行用，但一年就用了两三次' },
-  { id: 'd9', name: 'Kindle Paperwhite 5', category: '其他', price: 1068, date: '2022-06-01', channel: '淘宝', frequency: 'rarely', weeklyUse: 0.2, status: 'idle', note: '32G 墨水屏，现在都在手机上看书了' },
-  { id: 'd10', name: 'Anker 100W 充电器', category: '配件', price: 299, date: '2024-03-15', channel: '京东', frequency: 'daily', weeklyUse: 7, status: 'using', note: '4口GaN，出差必备' },
+  { id:'d1', name:'MacBook Pro 14 M3 Pro', category:'电脑', price:16999, date:'2024-01-15', channel:'苹果官网', frequency:'daily', monthlyUse:30, status:'using', note:'36G/1T 深空黑，主力生产工具' },
+  { id:'d2', name:'iPhone 15 Pro Max', category:'手机', price:9999, date:'2023-09-22', channel:'苹果官网', frequency:'daily', monthlyUse:30, status:'using', note:'256G 原色钛金属' },
+  { id:'d3', name:'AirPods Pro 2', category:'耳机', price:1899, date:'2023-06-18', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'USB-C版，降噪很好' },
+  { id:'d4', name:'iPad mini 6', category:'平板', price:3799, date:'2022-03-10', channel:'京东', frequency:'rarely', monthlyUse:2, status:'idle', note:'256G WiFi，买来看视频，现在吃灰了' },
+  { id:'d5', name:'Nintendo Switch OLED', category:'游戏', price:2599, date:'2022-11-11', channel:'拼多多', frequency:'rarely', monthlyUse:2, status:'idle', note:'白色，塞尔达通关后就没怎么玩了' },
+  { id:'d6', name:'Sony WH-1000XM5', category:'耳机', price:2499, date:'2023-11-11', channel:'京东', frequency:'weekly', monthlyUse:12, status:'using', note:'头戴降噪，办公室用' },
+  { id:'d7', name:'Apple Watch Ultra 2', category:'手表', price:5999, date:'2024-06-18', channel:'苹果官网', frequency:'daily', monthlyUse:30, status:'using', note:'49mm 钛金属，运动+健康监测' },
+  { id:'d8', name:'GoPro Hero 12', category:'相机', price:3398, date:'2024-02-20', channel:'京东', frequency:'monthly', monthlyUse:1, status:'idle', note:'买来旅行用，但一年就用了两三次' },
+  { id:'d9', name:'Kindle Paperwhite 5', category:'其他', price:1068, date:'2022-06-01', channel:'淘宝', frequency:'rarely', monthlyUse:1, status:'idle', note:'32G 墨水屏，现在都在手机上看书了' },
+  { id:'d10', name:'Anker 100W 充电器', category:'配件', price:299, date:'2024-03-15', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'4口GaN，出差必备' },
 ];
+
+function migrateOldData(data) {
+  // 从v1迁移：weeklyUse → monthlyUse
+  return data.map(p => {
+    if (p.weeklyUse !== undefined && p.monthlyUse === undefined) {
+      p.monthlyUse = Math.round(p.weeklyUse * 4.33);
+      delete p.weeklyUse;
+    }
+    return p;
+  });
+}
 
 function loadProducts() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       products = JSON.parse(raw);
     } else {
-      // 首次访问，加载示例数据
-      products = DEMO_DATA;
-      saveToStorage();
+      // 尝试迁移旧版本数据
+      raw = localStorage.getItem(OLD_STORAGE_KEY);
+      if (raw) {
+        products = migrateOldData(JSON.parse(raw));
+        saveToStorage();
+      } else {
+        products = DEMO_DATA;
+        saveToStorage();
+      }
     }
   } catch { products = []; }
 }
@@ -468,35 +619,38 @@ function daysSince(dateStr) {
   return Math.max(1, Math.floor((now - d) / 86400000));
 }
 
-function calcDailyCost(product) {
-  return product.price / daysSince(product.date);
+function monthsSince(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  return Math.max(0.1, (now - d) / (86400000 * 30.44));
 }
 
-function calcPerUseCost(product) {
-  const days = daysSince(product.date);
-  const weeks = days / 7;
-  const totalUses = Math.max(1, weeks * (product.weeklyUse || 0));
-  return product.price / totalUses;
+function calcDailyCost(p) {
+  return p.price / daysSince(p.date);
 }
 
-function calcUsageRate(product) {
-  // 使用率 = 每周使用次数 / 7 * 100%
-  return Math.min(100, ((product.weeklyUse || 0) / 7) * 100);
+function calcPerUseCost(p) {
+  const months = monthsSince(p.date);
+  const totalUses = Math.max(1, months * (p.monthlyUse || 0));
+  return p.price / totalUses;
 }
 
-function getUsageLevel(product) {
-  const rate = calcUsageRate(product);
+function calcUsageRate(p) {
+  // 使用率 = 每月使用次数 / 30 * 100%
+  return Math.min(100, ((p.monthlyUse || 0) / 30) * 100);
+}
+
+function getUsageLevel(p) {
+  const rate = calcUsageRate(p);
   if (rate >= 60) return 'high';
   if (rate >= 20) return 'medium';
   return 'low';
 }
 
-function shouldSell(product) {
-  if (product.status === 'sold') return false;
-  const dailyCost = calcDailyCost(product);
-  const usageRate = calcUsageRate(product);
-  // 日均成本高 + 使用率低 → 建议出掉
-  return (usageRate < 15 && product.price > 500) || product.status === 'idle';
+function shouldSell(p) {
+  if (p.status === 'sold') return false;
+  const usageRate = calcUsageRate(p);
+  return (usageRate < 15 && p.price > 500) || p.status === 'idle';
 }
 
 // ══════════════════════════════════════════════
@@ -506,10 +660,12 @@ function renderStats() {
   const active = products.filter(p => p.status !== 'sold');
   const totalSpent = active.reduce((s, p) => s + p.price, 0);
   const totalDailyCost = active.reduce((s, p) => s + calcDailyCost(p), 0);
+  const totalPerUseCost = active.length > 0
+    ? (active.reduce((s, p) => s + calcPerUseCost(p), 0) / active.length)
+    : 0;
   const dustCount = active.filter(p => calcUsageRate(p) < 15).length;
   const avgUsageRate = active.length > 0
-    ? (active.reduce((s, p) => s + calcUsageRate(p), 0) / active.length)
-    : 0;
+    ? (active.reduce((s, p) => s + calcUsageRate(p), 0) / active.length) : 0;
 
   document.getElementById('statsRow').innerHTML = `
     <div class="stat-card">
@@ -523,6 +679,11 @@ function renderStats() {
       <div class="stat-sub">每天花这么多</div>
     </div>
     <div class="stat-card">
+      <div class="stat-label">平均次均成本</div>
+      <div class="stat-value per-use">¥${totalPerUseCost.toFixed(1)}</div>
+      <div class="stat-sub">每次使用花费</div>
+    </div>
+    <div class="stat-card">
       <div class="stat-label">吃灰设备</div>
       <div class="stat-value dust">${dustCount}</div>
       <div class="stat-sub">建议二手出掉</div>
@@ -530,7 +691,7 @@ function renderStats() {
     <div class="stat-card">
       <div class="stat-label">平均使用率</div>
       <div class="stat-value worth">${avgUsageRate.toFixed(0)}%</div>
-      <div class="stat-sub">${avgUsageRate >= 50 ? '利用率不错' : '还能更充分'}</div>
+      <div class="stat-sub">${avgUsageRate >= 50 ? '利用率不错👍' : '还能更充分哦'}</div>
     </div>
   `;
 }
@@ -549,13 +710,7 @@ function renderFilters() {
 
 function getFilteredSorted() {
   let list = [...products];
-
-  // 筛选
-  if (currentFilter !== 'all') {
-    list = list.filter(p => p.category === currentFilter);
-  }
-
-  // 排序
+  if (currentFilter !== 'all') list = list.filter(p => p.category === currentFilter);
   list.sort((a, b) => {
     let va, vb;
     switch (currentSort) {
@@ -568,13 +723,12 @@ function getFilteredSorted() {
     }
     return sortAsc ? va - vb : vb - va;
   });
-
   return list;
 }
 
 function renderProducts() {
   const list = getFilteredSorted();
-  const container = document.getElementById('productsList');
+  const container = document.getElementById('productsGrid');
   const empty = document.getElementById('emptyState');
 
   if (list.length === 0) {
@@ -592,23 +746,23 @@ function renderProducts() {
     const level = getUsageLevel(p);
     const icon = CATEGORY_ICONS[p.category] || '📦';
     const sell = shouldSell(p);
-    const levelLabel = { high: '高频使用', medium: '中频使用', low: '低频使用' }[level];
-    const levelClass = { high: 'tag-high', medium: 'tag-medium', low: 'tag-low' }[level];
+    const levelLabel = { high:'高频使用', medium:'中频使用', low:'低频使用' }[level];
+    const levelClass = { high:'tag-high', medium:'tag-medium', low:'tag-low' }[level];
     const iconBg = {
-      high: 'rgba(74,222,128,0.12)',
-      medium: 'rgba(251,191,36,0.12)',
-      low: 'rgba(248,113,113,0.12)'
+      high: 'rgba(74,222,128,0.1)',
+      medium: 'rgba(251,191,36,0.1)',
+      low: 'rgba(248,113,113,0.1)'
     }[level];
 
     const yearsMonths = days >= 365
-      ? `${Math.floor(days/365)}年${Math.floor((days%365)/30)}个月`
+      ? `${Math.floor(days/365)}年${Math.floor((days%365)/30)}月`
       : days >= 30 ? `${Math.floor(days/30)}个月` : `${days}天`;
 
     return `
-      <div class="product-card ${level}-use">
+      <div class="product-card ${level}-use" onclick="addRipple(event, this)">
         <div class="product-actions">
-          <button class="action-btn" onclick="editProduct('${p.id}')" title="编辑">✏️</button>
-          <button class="action-btn delete" onclick="deleteProduct('${p.id}')" title="删除">🗑</button>
+          <button class="action-btn" onclick="event.stopPropagation();editProduct('${p.id}')" title="编辑">✏️</button>
+          <button class="action-btn delete" onclick="event.stopPropagation();deleteProduct('${p.id}')" title="删除">🗑</button>
         </div>
         <div class="product-header">
           <div class="product-icon" style="background:${iconBg}">${icon}</div>
@@ -617,7 +771,7 @@ function renderProducts() {
             <div class="product-meta">
               <span>${p.date}</span>
               ${p.channel ? `<span>· ${p.channel}</span>` : ''}
-              <span>· 已持有 ${yearsMonths}</span>
+              <span>· ${yearsMonths}</span>
             </div>
           </div>
         </div>
@@ -627,16 +781,16 @@ function renderProducts() {
             <div class="ps-value price">¥${p.price.toLocaleString()}</div>
           </div>
           <div class="ps-item">
-            <div class="ps-label">持有天数</div>
-            <div class="ps-value days">${days.toLocaleString()}</div>
-          </div>
-          <div class="ps-item">
             <div class="ps-label">日均成本</div>
             <div class="ps-value per-day">¥${dailyCost < 1 ? dailyCost.toFixed(2) : dailyCost.toFixed(1)}</div>
           </div>
           <div class="ps-item">
             <div class="ps-label">次均成本</div>
-            <div class="ps-value per-use">¥${perUseCost < 1 ? perUseCost.toFixed(2) : perUseCost.toFixed(1)}</div>
+            <div class="ps-value per-use-v">¥${perUseCost < 1 ? perUseCost.toFixed(2) : perUseCost.toFixed(1)}</div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-label">月均使用</div>
+            <div class="ps-value days">${p.monthlyUse || 0}次</div>
           </div>
         </div>
         <div class="usage-bar-wrap">
@@ -651,10 +805,10 @@ function renderProducts() {
         <div class="product-footer">
           <span class="tag tag-category">${icon} ${p.category}</span>
           <span class="tag ${levelClass}">${levelLabel}</span>
-          <span class="tag" style="background:rgba(96,165,250,0.12);color:var(--blue)">${STATUS_LABELS[p.status] || p.status}</span>
+          <span class="tag" style="background:rgba(96,165,250,0.1);color:var(--blue)">${STATUS_LABELS[p.status] || p.status}</span>
           ${sell ? '<span class="tag tag-sell">💡 建议出掉</span>' : ''}
-          ${p.note ? `<span style="font-size:11px;color:var(--muted);margin-left:auto;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.note.replace(/"/g,'&quot;')}">${p.note}</span>` : ''}
         </div>
+        ${p.note ? `<div class="product-note" title="${p.note.replace(/"/g,'&quot;')}">${p.note}</div>` : ''}
       </div>
     `;
   }).join('');
@@ -668,20 +822,28 @@ function render() {
 }
 
 // ══════════════════════════════════════════════
-//  交互
+//  交互 & 动画
 // ══════════════════════════════════════════════
+function addRipple(e, el) {
+  const rect = el.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  el.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove());
+}
+
 function setFilter(cat) {
   currentFilter = cat;
   render();
 }
 
 function setSort(field) {
-  if (currentSort === field) {
-    sortAsc = !sortAsc;
-  } else {
-    currentSort = field;
-    sortAsc = false;
-  }
+  if (currentSort === field) { sortAsc = !sortAsc; }
+  else { currentSort = field; sortAsc = false; }
   render();
 }
 
@@ -708,7 +870,7 @@ function openModal(editId) {
       document.getElementById('fDate').value = p.date;
       document.getElementById('fChannel').value = p.channel || '';
       document.getElementById('fFrequency').value = p.frequency;
-      document.getElementById('fWeeklyUse').value = p.weeklyUse;
+      document.getElementById('fMonthlyUse').value = p.monthlyUse;
       document.getElementById('fStatus').value = p.status;
       document.getElementById('fNote').value = p.note || '';
     }
@@ -718,7 +880,7 @@ function openModal(editId) {
     document.getElementById('fDate').value = new Date().toISOString().slice(0, 10);
     document.getElementById('fChannel').value = '';
     document.getElementById('fFrequency').value = 'daily';
-    document.getElementById('fWeeklyUse').value = '7';
+    document.getElementById('fMonthlyUse').value = '30';
     document.getElementById('fStatus').value = 'using';
     document.getElementById('fNote').value = '';
   }
@@ -746,15 +908,14 @@ function saveProduct() {
     date,
     channel: document.getElementById('fChannel').value,
     frequency: document.getElementById('fFrequency').value,
-    weeklyUse: parseFloat(document.getElementById('fWeeklyUse').value) || 0,
+    monthlyUse: parseFloat(document.getElementById('fMonthlyUse').value) || 0,
     status: document.getElementById('fStatus').value,
     note: document.getElementById('fNote').value.trim(),
   };
 
-  // 自动根据频率设置每周使用次数（如果用户没改的话）
-  const freqDefaults = { daily: 7, weekly: 3, monthly: 1, rarely: 0.5, idle: 0 };
-  if (!document.getElementById('fWeeklyUse').value) {
-    data.weeklyUse = freqDefaults[data.frequency] || 0;
+  const freqDefaults = { daily:30, weekly:12, monthly:4, rarely:2, idle:0 };
+  if (!document.getElementById('fMonthlyUse').value) {
+    data.monthlyUse = freqDefaults[data.frequency] || 0;
   }
 
   const editId = document.getElementById('fEditId').value;
@@ -772,9 +933,7 @@ function saveProduct() {
   showToast(editId ? '✅ 已更新' : '✅ 已添加');
 }
 
-function editProduct(id) {
-  openModal(id);
-}
+function editProduct(id) { openModal(id); }
 
 function deleteProduct(id) {
   const p = products.find(x => x.id === id);
@@ -806,20 +965,19 @@ function importData(event) {
     try {
       const data = JSON.parse(e.target.result);
       if (Array.isArray(data)) {
-        if (confirm(`将导入 ${data.length} 条记录，是否覆盖当前数据？\n（选"取消"则追加到现有数据）`)) {
-          products = data;
+        const migrated = migrateOldData(data);
+        if (confirm(`将导入 ${migrated.length} 条记录，是否覆盖当前数据？\n（选"取消"则追加）`)) {
+          products = migrated;
         } else {
-          products = [...products, ...data];
+          products = [...products, ...migrated];
         }
         saveToStorage();
         render();
-        showToast(`📥 已导入 ${data.length} 条记录`);
+        showToast(`📥 已导入 ${migrated.length} 条记录`);
       } else {
         showToast('文件格式不正确', 'var(--red)');
       }
-    } catch {
-      showToast('文件解析失败', 'var(--red)');
-    }
+    } catch { showToast('文件解析失败', 'var(--red)'); }
   };
   reader.readAsText(file);
   event.target.value = '';
@@ -836,11 +994,11 @@ function showToast(msg, color) {
 
 // ── 频率联动 ──
 document.getElementById('fFrequency').addEventListener('change', function() {
-  const defaults = { daily: 7, weekly: 3, monthly: 1, rarely: 0.5, idle: 0 };
-  document.getElementById('fWeeklyUse').value = defaults[this.value] || 0;
+  const defaults = { daily:30, weekly:12, monthly:4, rarely:2, idle:0 };
+  document.getElementById('fMonthlyUse').value = defaults[this.value] || 0;
 });
 
-// ── 点击弹层外关闭 ──
+// ── 弹窗关闭 ──
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
