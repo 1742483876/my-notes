@@ -783,7 +783,7 @@ function renderProducts() {
   empty.style.display = 'none';
 
   container.innerHTML = list.map(p => {
-    const days = daysSince(p.date);
+    const days = daysSince(p.date, p.retireDate);
     const dailyCost = calcDailyCost(p);
     const perUseCost = calcPerUseCost(p);
     const usageRate = calcUsageRate(p);
