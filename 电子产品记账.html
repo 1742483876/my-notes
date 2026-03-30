@@ -679,7 +679,7 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v44';
+const STORAGE_KEY = 'knot_gadgets_v45';
 const OLD_STORAGE_KEY = 'knot_gadgets_v43';
 const DELETED_IDS_KEY = 'knot_gadgets_deleted_ids';
 const CATEGORY_ICONS = {
@@ -744,6 +744,7 @@ const DEMO_DATA = [
   { id:'sc6b', name:'SD256 存储卡', category:'配件', price:154, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'搭配DJI Pocket 3使用', groupId:'grp_camera', groupName:'拍摄设备' },
   { id:'jd14', name:'毕亚兹 DJI Pocket3 钢化膜 4片装', category:'配件', price:20, date:'2025-05-26', channel:'京东', frequency:'weekly', monthlyUse:8, status:'using', note:'Pocket3镜头屏幕防刮保护贴膜 XJM10，¥19.50', groupId:'grp_camera', groupName:'拍摄设备' },
   { id:'jd15', name:'闪迪 256GB TF(MicroSD) 4K极速金卡', category:'配件', price:165, date:'2025-05-26', channel:'京东', frequency:'weekly', monthlyUse:8, status:'using', note:'A2 V30 U3 读190MB/s，运动相机/行车记录仪/无人机用，¥164.90', groupId:'grp_camera', groupName:'拍摄设备' },
+  { id:'tb6', name:'JJC转接环 EF转RF卡口', category:'配件', price:140, date:'2023-12-31', channel:'淘宝', frequency:'weekly', monthlyUse:4, status:'using', note:'EF镜头转RF卡口转接环，搭配佳能R50使用EF镜头', groupId:'grp_camera', groupName:'拍摄设备' },
   { id:'sc7', name:'小米电视 S65 MiniLED', category:'电视', price:2800, date:'2024-10-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'纯电视价格¥2800，电视支架已单独记录', groupId:'grp_tv', groupName:'电视设备' },
   { id:'jd12', name:'贝石 移动电视支架落地推车', category:'配件', price:229, date:'2025-03-08', channel:'京东·贝石家电配件旗舰店', frequency:'daily', monthlyUse:30, status:'using', note:'艺术电视支架，适用于索尼海信华为创维等通用电视挂，¥228.73', groupId:'grp_tv', groupName:'电视设备' },
   { id:'jd13', name:'米家 K歌麦克风 大屏版 2支装', category:'配件', price:288, date:'2025-04-29', channel:'京东', frequency:'rarely', monthlyUse:0, status:'sold', retireDate:'2025-04-29', note:'小米电视Redmi电视家庭KTV无线连麦，¥287.56，已取消订单', groupId:'grp_tv', groupName:'电视设备' },
@@ -790,7 +791,7 @@ function loadProducts() {
       products = JSON.parse(raw);
     } else {
       // 尝试迁移旧版本数据（回溯查找）
-      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v42', 'knot_gadgets_v41', 'knot_gadgets_v40', 'knot_gadgets_v39', 'knot_gadgets_v38', 'knot_gadgets_v37', 'knot_gadgets_v36', 'knot_gadgets_v35', 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v44', 'knot_gadgets_v42', 'knot_gadgets_v41', 'knot_gadgets_v40', 'knot_gadgets_v39', 'knot_gadgets_v38', 'knot_gadgets_v37', 'knot_gadgets_v36', 'knot_gadgets_v35', 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
       for (const key of oldKeys) {
         raw = localStorage.getItem(key);
         if (raw) break;
