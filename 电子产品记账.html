@@ -679,7 +679,7 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v45';
+const STORAGE_KEY = 'knot_gadgets_v46';
 const OLD_STORAGE_KEY = 'knot_gadgets_v43';
 const DELETED_IDS_KEY = 'knot_gadgets_deleted_ids';
 const CATEGORY_ICONS = {
@@ -758,6 +758,7 @@ const DEMO_DATA = [
   { id:'pdd5', name:'光威Gloway天策D5 32GB(16Gx2) DDR5 6400 C32', category:'配件', price:604, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'海力士A-die颗粒，天策D5 16x2 6400C32A套装，原价¥624-20元券=¥604，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
   { id:'pdd6', name:'宏碁掠夺者GM7 2TB SSD NVMe PCIe4.0', category:'存储', price:629, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'2TB固态硬盘，7200MB/s读取，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
   { id:'pdd7', name:'英特尔 i5 13490F + 华硕 B760M 天选 WIFI D5', category:'配件', price:2219, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'CPU+主板套装，百亿补贴¥2219，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
+  { id:'jd18', name:'KTC 27英寸 4K电竞显示器 160Hz HDR400', category:'显示器', price:1542, date:'2023-11-08', channel:'京东自营·KTC京东自营旗舰店', frequency:'daily', monthlyUse:30, status:'using', note:'27\'4K/160Hz/HDR400，原价¥2599共减¥1057，实付¥1542', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
 ];
 
 function migrateOldData(data) {
@@ -791,7 +792,7 @@ function loadProducts() {
       products = JSON.parse(raw);
     } else {
       // 尝试迁移旧版本数据（回溯查找）
-      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v44', 'knot_gadgets_v42', 'knot_gadgets_v41', 'knot_gadgets_v40', 'knot_gadgets_v39', 'knot_gadgets_v38', 'knot_gadgets_v37', 'knot_gadgets_v36', 'knot_gadgets_v35', 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v45', 'knot_gadgets_v44', 'knot_gadgets_v42', 'knot_gadgets_v41', 'knot_gadgets_v40', 'knot_gadgets_v39', 'knot_gadgets_v38', 'knot_gadgets_v37', 'knot_gadgets_v36', 'knot_gadgets_v35', 'knot_gadgets_v33', 'knot_gadgets_v32', 'knot_gadgets_v31', 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
       for (const key of oldKeys) {
         raw = localStorage.getItem(key);
         if (raw) break;
