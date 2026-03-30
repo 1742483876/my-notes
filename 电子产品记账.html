@@ -320,6 +320,15 @@ body::before {
   background: rgba(0,0,0,0.3);
   color: var(--text); font-size: 14px; outline: none;
   transition: all 0.2s; font-family: inherit;
+  -webkit-appearance: none; appearance: none;
+}
+.form-input[type="date"] {
+  min-height: 44px; line-height: 1.4;
+  color-scheme: dark;
+  -webkit-appearance: none; appearance: none;
+}
+.form-input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: rgba(124,106,247,0.5);
@@ -328,6 +337,7 @@ body::before {
 .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
 .form-textarea { min-height: 60px; resize: vertical; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { position: relative; z-index: 1; overflow: visible; }
 @media (max-width: 400px) { .form-row { grid-template-columns: 1fr; } }
 .form-select {
   appearance: none; cursor: pointer;
