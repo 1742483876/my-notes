@@ -562,8 +562,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v12';
-const OLD_STORAGE_KEY = 'knot_gadgets_v11';
+const STORAGE_KEY = 'knot_gadgets_v14';
+const OLD_STORAGE_KEY = 'knot_gadgets_v13';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -608,6 +608,7 @@ const DEMO_DATA = [
   { id:'sc5', name:'小米泡脚桶', category:'其他', price:338, date:'2025-12-07', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'小米智能泡脚桶' },
   { id:'sc6', name:'DJI Pocket + SD256存储卡', category:'相机', price:3954, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'口袋云台相机¥3800 + SD256存储卡¥154，拍视频/Vlog用' },
   { id:'sc7', name:'小米电视 S65 MiniLED', category:'电视', price:3029, date:'2024-10-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'含电视支架¥229，总价¥2800+¥229' },
+  { id:'sc8', name:'Redmi K20 Pro', category:'手机', price:3019, date:'2019-06-18', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2021-10-07', note:'购机¥2999+充电器¥20，换iPhone 13后退役' },
 ];
 
 function migrateOldData(data) {
