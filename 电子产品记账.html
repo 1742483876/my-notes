@@ -542,8 +542,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v2';
-const OLD_STORAGE_KEY = 'knot_gadgets_v1';
+const STORAGE_KEY = 'knot_gadgets_v3';
+const OLD_STORAGE_KEY = 'knot_gadgets_v2';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊',
@@ -562,18 +562,16 @@ let currentFilter = 'all';
 let currentSort = 'date';
 let sortAsc = false;
 
-// ── 示例数据 ──
+// ── 京东订单真实数据（2026-03-30 从京东订单导入） ──
 const DEMO_DATA = [
-  { id:'d1', name:'MacBook Pro 14 M3 Pro', category:'电脑', price:16999, date:'2024-01-15', channel:'苹果官网', frequency:'daily', monthlyUse:30, status:'using', note:'36G/1T 深空黑，主力生产工具' },
-  { id:'d2', name:'iPhone 15 Pro Max', category:'手机', price:9999, date:'2023-09-22', channel:'苹果官网', frequency:'daily', monthlyUse:30, status:'using', note:'256G 原色钛金属' },
-  { id:'d3', name:'AirPods Pro 2', category:'耳机', price:1899, date:'2023-06-18', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'USB-C版，降噪很好' },
-  { id:'d4', name:'iPad mini 6', category:'平板', price:3799, date:'2022-03-10', channel:'京东', frequency:'rarely', monthlyUse:2, status:'idle', note:'256G WiFi，买来看视频，现在吃灰了' },
-  { id:'d5', name:'Nintendo Switch OLED', category:'游戏', price:2599, date:'2022-11-11', channel:'拼多多', frequency:'rarely', monthlyUse:2, status:'idle', note:'白色，塞尔达通关后就没怎么玩了' },
-  { id:'d6', name:'Sony WH-1000XM5', category:'耳机', price:2499, date:'2023-11-11', channel:'京东', frequency:'weekly', monthlyUse:12, status:'using', note:'头戴降噪，办公室用' },
-  { id:'d7', name:'Apple Watch Ultra 2', category:'手表', price:5999, date:'2024-06-18', channel:'苹果官网', frequency:'daily', monthlyUse:30, status:'using', note:'49mm 钛金属，运动+健康监测' },
-  { id:'d8', name:'GoPro Hero 12', category:'相机', price:3398, date:'2024-02-20', channel:'京东', frequency:'monthly', monthlyUse:1, status:'idle', note:'买来旅行用，但一年就用了两三次' },
-  { id:'d9', name:'Kindle Paperwhite 5', category:'其他', price:1068, date:'2022-06-01', channel:'淘宝', frequency:'rarely', monthlyUse:1, status:'idle', note:'32G 墨水屏，现在都在手机上看书了' },
-  { id:'d10', name:'Anker 100W 充电器', category:'配件', price:299, date:'2024-03-15', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'4口GaN，出差必备' },
+  { id:'jd1', name:'佳能 EOS R50 + RF-S 18-45mm 套机', category:'相机', price:4384, date:'2023-12-31', channel:'京东国际自营', frequency:'weekly', monthlyUse:8, status:'using', note:'微单相机，拍照/视频主力机' },
+  { id:'jd2', name:'佳能 RF-S 18-150mm 镜头（二手）', category:'相机', price:2619, date:'2024-09-30', channel:'京东·爱回收严选', frequency:'weekly', monthlyUse:6, status:'using', note:'长焦变焦镜头，搭配R50使用' },
+  { id:'jd3', name:'Apple AirPods Pro 2 (USB-C)', category:'耳机', price:1521, date:'2025-04-09', channel:'京东自营', frequency:'daily', monthlyUse:28, status:'using', note:'主力降噪耳机' },
+  { id:'jd4', name:'小佩智能猫砂盆 MAX2 + 配件', category:'智能家居', price:798, date:'2026-01-25', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'自动猫砂盆，每天自动清理' },
+  { id:'jd5', name:'西部数据 WD Red Plus 4TB NAS硬盘 x2', category:'存储', price:715, date:'2025-06-03', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'NAS专用硬盘，两块组RAID' },
+  { id:'jd6', name:'Brateck北弧 双屏支架', category:'配件', price:284, date:'2023-11-20', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'笔记本+显示器双屏支架' },
+  { id:'jd7', name:'BOYA博雅 mini 无线领夹麦克风', category:'配件', price:143, date:'2025-04-26', channel:'京东自营', frequency:'weekly', monthlyUse:4, status:'using', note:'Type-C无线麦克风，拍视频收音用' },
+  { id:'jd8', name:'米家小米便携电热杯2', category:'其他', price:138, date:'2026-01-01', channel:'京东自营', frequency:'weekly', monthlyUse:8, status:'using', note:'便携电热杯，出差/办公用' },
 ];
 
 function migrateOldData(data) {
