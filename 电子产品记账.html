@@ -679,8 +679,8 @@ body::before {
 // ══════════════════════════════════════════════
 //  数据管理
 // ══════════════════════════════════════════════
-const STORAGE_KEY = 'knot_gadgets_v31';
-const OLD_STORAGE_KEY = 'knot_gadgets_v30';
+const STORAGE_KEY = 'knot_gadgets_v32';
+const OLD_STORAGE_KEY = 'knot_gadgets_v31';
 const CATEGORY_ICONS = {
   '电脑':'💻','手机':'📱','平板':'📲','耳机':'🎧',
   '手表':'⌚','相机':'📷','游戏':'🎮','音箱':'🔊','智能家居':'🏠',
@@ -704,12 +704,12 @@ const DEMO_DATA = [
   { id:'jd1', name:'佳能 EOS R50 + RF-S 18-45mm 套机', category:'相机', price:4384, date:'2023-12-31', channel:'京东国际自营', frequency:'weekly', monthlyUse:8, status:'using', note:'微单相机，拍照/视频主力机' },
   { id:'jd2', name:'佳能 RF-S 18-150mm 镜头（二手）', category:'相机', price:2619, date:'2024-09-30', channel:'京东·爱回收严选', frequency:'weekly', monthlyUse:6, status:'using', note:'长焦变焦镜头，搭配R50使用' },
   { id:'jd3', name:'Apple AirPods Pro 2 (USB-C)', category:'耳机', price:1521, date:'2025-04-09', channel:'京东自营', frequency:'daily', monthlyUse:28, status:'using', note:'主力降噪耳机' },
-  { id:'jd4', name:'小佩智能猫砂盆 MAX2 + 配件', category:'智能家居', price:798, date:'2026-01-25', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'自动猫砂盆，每天自动清理' },
+  { id:'jd4', name:'小佩智能猫砂盆 MAX2 + 配件', category:'智能家居', price:798, date:'2026-01-25', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'自动猫砂盆，每天自动清理', groupId:'grp_cat', groupName:'小猫用品' },
   { id:'jd6', name:'Brateck北弧 双屏支架', category:'配件', price:284, date:'2023-11-20', channel:'京东自营', frequency:'daily', monthlyUse:30, status:'using', note:'笔记本+显示器双屏支架' },
   { id:'jd7', name:'BOYA博雅 mini 无线领夹麦克风', category:'配件', price:143, date:'2025-04-26', channel:'京东自营', frequency:'weekly', monthlyUse:4, status:'using', note:'Type-C无线麦克风，拍视频收音用' },
   { id:'jd8', name:'米家小米便携电热杯2', category:'其他', price:138, date:'2026-01-01', channel:'京东自营', frequency:'weekly', monthlyUse:8, status:'using', note:'便携电热杯，出差/办公用' },
   { id:'real1', name:'MacBook Pro M3 Pro 36G/1TB', category:'电脑', price:0, date:'2024-07-01', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'公司入职配发，不算个人投入' },
-  { id:'real2', name:'iPhone 16 Pro Max 256G', category:'手机', price:8500, date:'2025-01-22', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'2025年年会找同事买的' },
+  { id:'real2', name:'iPhone 16 Pro Max 256G', category:'手机', price:8500, date:'2025-01-22', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'2025年年会找同事买的', groupId:'grp_phones', groupName:'手机合集' },
   // ── 淘宝订单真实数据（2026-03-30 从淘宝订单导入） ──
   { id:'tb1', name:'佳能 EF 50mm F/1.8 STM 小痰盂三代（二手）', category:'相机', price:846, date:'2024-01-10', channel:'淘宝', frequency:'weekly', monthlyUse:4, status:'using', note:'定焦人像镜头，搭配R50转接使用' },
   { id:'tb2', name:'狼蛛 F99 客制化机械键盘（三模无线）', category:'配件', price:259, date:'2023-11-08', channel:'淘宝', frequency:'daily', monthlyUse:30, status:'using', note:'蓝牙/2.4G/有线三模，日常办公用' },
@@ -730,15 +730,15 @@ const DEMO_DATA = [
   { id:'sc2', name:'Nintendo Switch', category:'游戏', price:1788, date:'2025-05-01', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'游戏主机' },
   { id:'jd5', name:'西部数据 WD Red Plus 4TB NAS硬盘 x2', category:'存储', price:1618, date:'2025-06-03', channel:'京东', frequency:'daily', monthlyUse:30, status:'using', note:'NAS存储盘，搭配绿联DXP4800使用，两块4TB共¥1618', groupId:'grp_nas', groupName:'NAS 存储套装' },
   { id:'sc3', name:'绿联 DXP4800 NAS', category:'存储', price:1530, date:'2025-06-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'NAS主机，家庭存储/媒体服务器', groupId:'grp_nas', groupName:'NAS 存储套装' },
-  { id:'sc4', name:'iPhone 13', category:'手机', price:6294, date:'2021-10-07', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2025-01-22', note:'已换iPhone 16 Pro Max' },
+  { id:'sc4', name:'iPhone 13', category:'手机', price:6294, date:'2021-10-07', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2025-01-22', note:'已换iPhone 16 Pro Max', groupId:'grp_phones', groupName:'手机合集' },
   { id:'sc5', name:'小米泡脚桶', category:'其他', price:338, date:'2025-12-07', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'小米智能泡脚桶' },
   { id:'sc6', name:'DJI Pocket + SD256存储卡', category:'相机', price:3954, date:'2025-05-26', channel:'其他', frequency:'weekly', monthlyUse:8, status:'using', note:'口袋云台相机¥3800 + SD256存储卡¥154，拍视频/Vlog用' },
-  { id:'sc7', name:'小米电视 S65 MiniLED', category:'电视', price:3029, date:'2024-10-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'含电视支架¥229，总价¥2800+¥229' },
-  { id:'sc8', name:'Redmi K20 Pro', category:'手机', price:3019, date:'2019-06-18', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2021-10-07', note:'购机¥2999+充电器¥20，换iPhone 13后退役' },
+  { id:'sc7', name:'小米电视 S65 MiniLED', category:'电视', price:3029, date:'2024-10-04', channel:'其他', frequency:'daily', monthlyUse:30, status:'using', note:'含电视支架¥229，总价¥2800+¥229', groupId:'grp_tv', groupName:'电视设备' },
+  { id:'sc8', name:'Redmi K20 Pro', category:'手机', price:3019, date:'2019-06-18', channel:'其他', frequency:'daily', monthlyUse:30, status:'sold', retireDate:'2021-10-07', note:'购机¥2999+充电器¥20，换iPhone 13后退役', groupId:'grp_phones', groupName:'手机合集' },
   // ── 拼多多订单数据（2026-03-30 从拼多多订单截图导入） ──
-  { id:'pdd1', name:'Xiaomi 红米Note11 5G', category:'手机', price:756, date:'2023-07-07', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'浅梦星河 6GB+128GB，百亿补贴¥866-110券=¥756' },
-  { id:'pdd2', name:'小米 CIVI（12GB+256GB）', category:'手机', price:2079, date:'2022-06-13', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'怦怦粉，中国移动官方旗舰店百亿补贴，建行卡支付¥2079' },
-  { id:'pdd3', name:'vivo iQOO Z6 8GB+128GB', category:'手机', price:1289, date:'2023-01-02', channel:'拼多多', frequency:'rarely', monthlyUse:0, status:'sold', retireDate:'2023-01-02', note:'墨玉配色，百亿补贴拼单价¥1339-平台优惠¥50=¥1289，未发货已退款' },
+  { id:'pdd1', name:'Xiaomi 红米Note11 5G', category:'手机', price:756, date:'2023-07-07', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'浅梦星河 6GB+128GB，百亿补贴¥866-110券=¥756', groupId:'grp_phones', groupName:'手机合集' },
+  { id:'pdd2', name:'小米 CIVI（12GB+256GB）', category:'手机', price:2079, date:'2022-06-13', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'怦怦粉，中国移动官方旗舰店百亿补贴，建行卡支付¥2079', groupId:'grp_phones', groupName:'手机合集' },
+  { id:'pdd3', name:'vivo iQOO Z6 8GB+128GB', category:'手机', price:1289, date:'2023-01-02', channel:'拼多多', frequency:'rarely', monthlyUse:0, status:'sold', retireDate:'2023-01-02', note:'墨玉配色，百亿补贴拼单价¥1339-平台优惠¥50=¥1289，未发货已退款', groupId:'grp_phones', groupName:'手机合集' },
   { id:'pdd4', name:'玩嘉孤勇者电脑机箱（M-ATX+360水冷）', category:'配件', price:169, date:'2023-11-12', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'大孤勇者白，无A柱光影4风扇，原价¥177满减8元=¥169，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
   { id:'pdd5', name:'光威Gloway天策D5 32GB(16Gx2) DDR5 6400 C32', category:'配件', price:604, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'海力士A-die颗粒，天策D5 16x2 6400C32A套装，原价¥624-20元券=¥604，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
   { id:'pdd6', name:'宏碁掠夺者GM7 2TB SSD NVMe PCIe4.0', category:'存储', price:629, date:'2023-12-08', channel:'拼多多', frequency:'daily', monthlyUse:30, status:'using', note:'2TB固态硬盘，7200MB/s读取，搭配DIY台式机使用', groupId:'grp_diy_pc', groupName:'DIY 台式机全套' },
@@ -763,7 +763,7 @@ function loadProducts() {
       products = JSON.parse(raw);
     } else {
       // 尝试迁移旧版本数据（回溯查找）
-      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
+      const oldKeys = [OLD_STORAGE_KEY, 'knot_gadgets_v30', 'knot_gadgets_v29', 'knot_gadgets_v28', 'knot_gadgets_v27', 'knot_gadgets_v26', 'knot_gadgets_v25', 'knot_gadgets_v16', 'knot_gadgets_v15'];
       for (const key of oldKeys) {
         raw = localStorage.getItem(key);
         if (raw) break;
