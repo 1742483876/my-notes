@@ -2125,7 +2125,7 @@ let _searchTimer   = null;
 async function loadPredictIndex() {
   if (_predictIndex) return _predictIndex;
   try {
-    const r = await fetch(PREDICT_INDEX + '?t=' + Math.floor(Date.now()/3600000));
+    const r = await fetch(PREDICT_INDEX + '?t=' + Math.floor(Date.now()/60000));
     const d = await r.json();
     _predictIndex = d.stocks || [];
     return _predictIndex;
@@ -2267,7 +2267,7 @@ async function doPrediction() {
     }
 
     // 读取该股票的预测 JSON
-    const resp = await fetch(`${PREDICT_BASE}${code}.json?t=${Math.floor(Date.now()/3600000)}`);
+    const resp = await fetch(`${PREDICT_BASE}${code}.json?t=${Math.floor(Date.now()/60000)}`);
     if (!resp.ok) {
       showPredictError(`暂无「${input}」的预测数据，数据每日更新一次`);
       return;
