@@ -1910,12 +1910,12 @@ function renderKlineCharts() {
       animation: { duration: 200 },
       plugins: { legend: { display: false }, tooltip: {
         callbacks: {
-          label: ctx => `成交量: ${(ctx.parsed.y / 10000).toFixed(1)} 万手`
+          label: ctx => `成交量: ${(ctx.parsed.y / 1000000).toFixed(1)} 万手`
         }
       }},
       scales: {
         x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45, maxTicksLimit: 20 }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e', font: { size: 9 }, callback: v => (v/10000).toFixed(0)+'万' }, grid: { color: '#21262d' }, position: 'right' }
+        y: { ticks: { color: '#8b949e', font: { size: 9 }, callback: v => (v/1000000).toFixed(0)+'万' }, grid: { color: '#21262d' }, position: 'right' }
       }
     }
   });
@@ -2420,7 +2420,7 @@ async function loadPredictKline(code, predictDate, predictClose) {
         { label: '今日开盘', val: `¥${latestKline.open}`, color: 'var(--text)' },
         { label: '今日最高', val: `¥${latestKline.high}`, color: 'var(--red)' },
         { label: '今日最低', val: `¥${latestKline.low}`, color: 'var(--green)' },
-        { label: '成交量', val: latestKline.volume >= 10000 ? (latestKline.volume/10000).toFixed(1)+'万手' : latestKline.volume+'手', color: 'var(--text2)' },
+        { label: '成交量', val: latestKline.volume >= 1000000 ? (latestKline.volume/1000000).toFixed(1)+'万手' : (latestKline.volume/100).toFixed(0)+'手', color: 'var(--text2)' },
       ];
       document.getElementById('pTodayBar').innerHTML = todayItems.map(it =>
         `<div class="predict-today-item">
@@ -2505,7 +2505,7 @@ function renderPKlineCharts() {
     data:{ labels, datasets:[{ data:vols, backgroundColor:barColors, borderWidth:0, barPercentage:.8, categoryPercentage:.9 }] },
     options:{
       responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `量: ${ctx.parsed.y}` } } },
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `量: ${(ctx.parsed.y/1000000).toFixed(1)}万手` } } },
       scales:{
         x:{ display:false },
         y:{ position:'right', grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b949e',font:{size:9},maxTicksLimit:3} }
