@@ -94,6 +94,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
   <button class="tab-btn active" onclick="switchTab('weather')">🌤️ 天气PK</button>
   <button class="tab-btn" onclick="switchTab('sanya')">🏖️ 三亚</button>
   <button class="tab-btn" onclick="switchTab('dali')">🌿 大理</button>
+  <button class="tab-btn" onclick="switchTab('beihai')">🐚 北海</button>
   <button class="tab-btn" onclick="switchTab('huizhou')">🌊 惠州</button>
   <button class="tab-btn" onclick="switchTab('chenzhou')">🏔️ 郴州</button>
 </div>
@@ -115,6 +116,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <tr><th>目的地</th><th>4/4 周六</th><th>4/5 周日</th><th>4/6 周一</th><th>推荐</th></tr>
     <tr style="background:rgba(76,175,80,0.08)"><td>🏖️ <b>三亚</b></td><td>多云 24-31℃</td><td>多云 25-31℃</td><td>多云 25-31℃</td><td>⭐⭐⭐⭐⭐</td></tr>
     <tr style="background:rgba(76,175,80,0.05)"><td>🌿 <b>大理</b></td><td>多云 9-23℃</td><td>多云 9-22℃</td><td>多云 9-23℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(33,150,243,0.06)"><td>🐚 <b>北海</b></td><td>⛈️雷阵雨→阴 22-29℃</td><td>☁️阴→多云 24-29℃</td><td>☁️多云 24-30℃</td><td>⭐⭐⭐⭐</td></tr>
     <tr><td>🏔️ <b>郴州</b></td><td>☀️晴 13-25℃</td><td>🌧️小雨 17-27℃</td><td>🌧️小雨 18-25℃</td><td>⭐⭐⭐</td></tr>
     <tr><td>🌊 <b>惠州</b></td><td>⛈️雷雨 22-26℃</td><td>🌧️中雨 22-27℃</td><td>⛈️大雨 22-27℃</td><td>⭐⭐</td></tr>
     <tr><td>📍 <b>深圳</b></td><td>⛈️大雨 22-25℃</td><td>🌧️雨 22-27℃</td><td>⛈️雷雨 22-27℃</td><td>⭐</td></tr>
@@ -124,14 +126,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 
 <div class="route-overview">
   <table class="compare-table">
-    <tr><th></th><th>🏖️三亚</th><th>🌿大理</th><th>🏔️郴州</th><th>🌊惠州</th></tr>
-    <tr><td>天气</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐</td></tr>
-    <tr><td>交通</td><td>✈️1.5h</td><td>✈️2.5h</td><td>🚄2h</td><td>🚗2.5h</td></tr>
-    <tr><td>人均预算</td><td>¥2500-3500</td><td>¥2500-3500</td><td>¥1200-1500</td><td>¥700-1100</td></tr>
-    <tr><td>人流量</td><td>中等偏多</td><td>中等</td><td>少</td><td>中等</td></tr>
-    <tr><td>亲近自然</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-    <tr><td>美食</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-    <tr><td>出片指数</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><th></th><th>🏖️三亚</th><th>🌿大理</th><th>🐚北海</th><th>🏔️郴州</th><th>🌊惠州</th></tr>
+    <tr><td>天气</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐</td></tr>
+    <tr><td>交通</td><td>✈️1.5h</td><td>✈️2.5h</td><td>🚄5h/✈️1.5h</td><td>🚄2h</td><td>🚗2.5h</td></tr>
+    <tr><td>人均预算</td><td>¥2500-3500</td><td>¥2500-3500</td><td>¥1500-2500</td><td>¥1200-1500</td><td>¥700-1100</td></tr>
+    <tr><td>人流量</td><td>中等偏多</td><td>中等</td><td>少</td><td>少</td><td>中等</td></tr>
+    <tr><td>亲近自然</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>美食</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>出片指数</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
   </table>
 </div>
 
@@ -140,7 +142,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
   <ul>
     <li><b>🥇 三亚（天气最佳）</b>：全程多云25-31℃，完美海岛天气！深圳直飞1.5h，4月是淡季性价比高</li>
     <li><b>🥈 大理（风花雪月）</b>：多云9-23℃，干燥舒适。深圳直飞2.5h，苍山洱海+白族文化，最亲近自然</li>
-    <li><b>🥉 郴州+耒阳（祭祖+游玩）</b>：4/4晴天适合祭祖，后两天有雨但东江湖晨雾更美。高铁2h，最经济实惠</li>
+    <li><b>🥉 北海（最佳折中）</b>：4/5起转好，多云24-30℃。高铁5h/飞机1.5h，涠洲岛+银滩+海鲜，距离适中性价比高</li>
+    <li>🏅 郴州+耒阳（祭祖+游玩）：4/4晴天适合祭祖，后两天有雨但东江湖晨雾更美。高铁2h，最经济实惠</li>
     <li>🏅 惠州海岸线：天气最差但距离最近，如果临时天气转好可作为备选</li>
   </ul>
 </div>
@@ -150,6 +153,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
   <ul>
     <li>如果<b>追求好天气+海岛度假</b>：选三亚，4月淡季机票便宜，天气完美</li>
     <li>如果<b>追求亲近自然+文艺慢游</b>：选大理，苍山洱海+古镇，昼夜温差大需带外套</li>
+    <li>如果<b>想要海岛+不想太远</b>：选北海，涠洲岛+银滩+海鲜，4/5起天气转好，性价比高</li>
     <li>如果<b>要回家祭祖+顺路游玩</b>：选郴州方案，4/4晴天祭祖→东江湖晨雾</li>
     <li>如果<b>不想坐飞机+就近出行</b>：选惠州，带好雨具，雨天也有备选</li>
     <li>关于<b>澳门</b>：天气差+不顺路，不建议这次去</li>
@@ -341,6 +345,110 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 </div>
 </div>
 
+<!-- ========== 北海方案 ========== -->
+<div id="beihai" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#01579b 0%,#0288d1 50%,#4fc3f7 100%)">
+  <span class="hero-emoji">🐚</span>
+  <div class="hero-overlay"><h1>方案C · 北海涠洲岛</h1><p>银滩 → 老街 → 涠洲岛 → 侨港 · 4天3晚</p></div>
+</div>
+
+<div class="recommend-tag">🐚 最佳折中方案 · 距离适中+天气渐好</div>
+
+<div class="weather-alert wa-info">
+  <span class="icon">🌊</span>
+  <div class="text"><strong>4/4有雷阵雨，4/5起天气转好！多云24-30℃</strong>北海4月清明前后有短暂雷阵雨，但4/5-6迅速转为多云好天气。涠洲岛4月是观鲸季，还有机会偶遇布氏鲸！</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳✈️/🚄</span><span class="route-arrow">→</span>
+    <span class="route-city">北海银滩</span><span class="route-arrow">→</span>
+    <span class="route-city">涠洲岛</span><span class="route-arrow">→</span>
+    <span class="route-city">老街+侨港</span><span class="route-arrow">→</span>
+    <span class="route-city">✈️/🚄深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>4天3晚</em></span><span>✈️ <em>1.5h</em> / 🚄 <em>5h</em></span><span>💰 <em>¥1500-2500</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00 - 21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚，吃个饭或者玩一下～</div></div>
+    <div class="card transport"><div class="card-time">夜间</div><div class="card-name">🚄 深圳→北海（或4/4早班机）</div><div class="card-desc">方案①：高铁G2918 深圳北12:22→北海17:27，约5h，二等座¥402。方案②：飞机约1.5h，但深圳直飞北海航班少且贵，建议广州中转或选高铁。建议4/3晚高铁出发或4/4一早飞。</div>
+    <div class="tags"><span class="tag tag-tip">💡 高铁性价比最高</span><span class="tag">🎫 二等座¥402</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 银滩+老街</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-rain">⛈️ 雷阵雨→阴 22-29℃</span></div>
+    <div class="card scenic"><div class="card-time">09:00 - 12:00</div><div class="card-name">🏖️ 北海银滩 · 天下第一滩</div><div class="card-desc">"滩长平、沙细白、水温净、浪柔软"，被誉为中国第一滩。银色石英砂在阳光下闪闪发光。即使阴天，银滩的细腻沙质也值得踩踏感受。人少时可以拍出无人海景照！</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">📸 沙质全国最细</span></div></div>
+    <div class="card scenic"><div class="card-time">14:00 - 16:00</div><div class="card-name">🏘️ 北海老街 · 百年骑楼</div><div class="card-desc">始建于1883年，长1.44公里，中西合璧的骑楼建筑群。漫步青石板路，看英法德领事馆旧址、天主教堂。推荐钻小巷"升平街"，三角梅爬满墙面，比主街更有味道。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🧱 百年历史</span><span class="tag">📸 骑楼建筑</span></div></div>
+    <div class="card food"><div class="card-time">18:00</div><div class="card-name">🦐 侨港风情街海鲜大餐</div><div class="card-desc">北海最有名的美食街！越南风情浓郁。推荐：李姨虾饼3元/个、糖水铺、新鲜海鲜大排档。人均60-80元就能海鲜自由。比三亚便宜一半！</div>
+    <div class="tags"><span class="tag">🇻🇳 越南风情</span><span class="tag tag-tip">💰 人均60-80</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 涠洲岛</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-cloud">☁️ 阴→多云 24-29℃</span></div>
+    <div class="card transport"><div class="card-time">08:00 - 09:30</div><div class="card-name">🚢 北海→涠洲岛</div><div class="card-desc">北海国际客运港乘船，快船约1小时到达。⚠️ 船票一定要提前在"来游吧"公众号预订，清明可能紧张！往返船票约¥300。</div>
+    <div class="tags"><span class="tag tag-hot">⚠️ 必须提前订船票</span><span class="tag">🎫 往返¥300</span></div></div>
+    <div class="card scenic"><div class="card-time">10:00 - 12:00</div><div class="card-name">🌋 鳄鱼山火山地质公园</div><div class="card-desc">中国最年轻的火山岛！完整的火山活动遗迹，汤显祖观海台、贼佬洞、月亮湾、百兽闹海。登顶灯塔俯瞰整个南湾，海水碧蓝如宝石。</div>
+    <div class="tags"><span class="tag">🎫 上岛费98元（含公园）</span><span class="tag tag-tip">🌋 火山奇观</span></div></div>
+    <div class="card scenic"><div class="card-time">14:00 - 16:00</div><div class="card-name">⛪ 天主教堂 + 贝壳沙滩</div><div class="card-desc">始建于1882年的法式哥特教堂，斑驳外墙与芭蕉树相映，宁静庄严。贝壳沙滩遍布珊瑚和贝壳，可以捡贝壳、看小螃蟹，亲近自然的好去处。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">⛪ 法式教堂</span><span class="tag">🐚 捡贝壳</span></div></div>
+    <div class="card nature"><div class="card-time">17:00 - 19:00</div><div class="card-name">🌅 滴水丹屏看日落</div><div class="card-desc">火山岩上藤蔓垂下，时常滴水，因此得名。傍晚在这里看日落，火山岩、海浪、晚霞交织，是涠洲岛最美日落点。沙滩上满是珊瑚骨和小贝壳。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">📸 最美日落</span></div></div>
+    <div class="card food"><div class="card-time">19:30</div><div class="card-name">🦀 南湾海鲜市场</div><div class="card-desc">涠洲岛最繁华的地方，海鲜种类巨多且新鲜。自己挑海鲜到旁边加工，加工费10-30元/份。沿海酒吧街夜景也很美。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 3 · 涠洲岛+返程</div><div class="day-date">4月6日 周一</div><span class="weather-badge wb-sun">☁️ 多云 24-30℃</span></div>
+    <div class="card nature"><div class="card-time">05:30 - 07:00</div><div class="card-name">🌅 五彩滩看日出</div><div class="card-desc">涠洲岛东海岸，1.5公里海蚀平台。退潮后青苔与海水在朝阳下五彩斑斓，火山岩海上日出是绝美景观！租小电驴前往，早起值得。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">🌅 绝美日出</span></div></div>
+    <div class="card scenic"><div class="card-time">08:00 - 10:00</div><div class="card-name">🔵 蓝桥 + 北部海滩</div><div class="card-desc">四公里长的蓝色桥梁伸向大海，虽已封闭但可在沙滩远眺。北部海滩是全岛人最少、沙子最细的地方，可以捡到很多漂亮贝壳。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🏖️ 全岛最静</span></div></div>
+    <div class="card transport"><div class="card-time">11:00 - 12:30</div><div class="card-name">🚢 涠洲岛→北海</div><div class="card-desc">乘船返回北海市区。</div></div>
+    <div class="card food"><div class="card-time">13:00</div><div class="card-name">🍜 侨港越南卷粉 + 糖水</div><div class="card-desc">离开前再吃一顿！越南春卷、卷粉、椰椰大吉、二十四栋糖水店。人均30-50元。</div></div>
+    <div class="card transport"><div class="card-time">15:00</div><div class="card-name">🚄 北海→深圳</div><div class="card-desc">高铁返深约5h。或选择飞机（需中转）。建议买下午的车次，晚上到家休息。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>🚄/✈️ 交通方案</h4>
+  <div class="trow"><span class="tl">去程（推荐）：深圳北🚄北海</span><span class="tr">G2918 约5h · ¥402</span></div>
+  <div class="trow"><span class="tl">去程（备选）：深圳✈️北海</span><span class="tr">需中转 · ¥600-1200</span></div>
+  <div class="trow"><span class="tl">涠洲岛船票</span><span class="tr">快船1h · 往返¥300</span></div>
+  <div class="trow"><span class="tl">岛上交通</span><span class="tr">租电瓶车¥60-80/天</span></div>
+  <div class="trow"><span class="tl">回程：北海🚄深圳北</span><span class="tr">约5h · ¥402</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">🚄 往返高铁</span><span class="br">¥800</span></div>
+  <div class="brow"><span class="bl">🚢 涠洲岛船票+上岛费</span><span class="br">¥400</span></div>
+  <div class="brow"><span class="bl">🏨 住宿×3晚（市区1+岛上2）</span><span class="br">¥300-500</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（4天）</span><span class="br">¥300-400</span></div>
+  <div class="brow"><span class="bl">🎫 交通+杂费</span><span class="br">¥100-200</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥1900-2300</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>涠洲岛船票必须提前在"来游吧"公众号预订，清明期间容易售罄</li>
+    <li>4月是涠洲岛观鲸季！有机会在海上偶遇布氏鲸🐋</li>
+    <li>岛上租电瓶车最方便，环岛一圈约2-3小时</li>
+    <li>侨港海鲜比三亚便宜一半，人均60-80元就能海鲜自由</li>
+    <li>北海老街海鲜注意防宰，推荐去侨港风情街吃更实惠</li>
+    <li>涠洲岛住宿推荐石螺口或滴水村附近，步行到海边3-5分钟</li>
+    <li>五彩滩看日出要赶早，退潮时效果最佳</li>
+    <li>高铁5h虽然久，但二等座¥402比飞机性价比高很多</li>
+  </ul>
+</div>
+</div>
+
 <!-- ========== 惠州方案（精简版） ========== -->
 <div id="huizhou" class="tab-content">
 <div class="hero" style="background:linear-gradient(135deg,#1a237e 0%,#0097a7 50%,#00bcd4 100%)">
@@ -482,7 +590,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 </div>
 </div>
 
-<div class="footer">清明行程规划 · 2026.04 · 5个方案随心选 🌤️</div>
+<div class="footer">清明行程规划 · 2026.04 · 6个方案随心选 🌤️</div>
 </div>
 
 <script>
