@@ -5,760 +5,493 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>清明节行程路线图</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    min-height: 100vh;
-    padding: 20px 12px;
-    color: #333;
-  }
-  .container { max-width: 480px; margin: 0 auto; }
-
-  /* Tab 切换 */
-  .tab-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 14px;
-    padding: 4px;
-  }
-  .tab-btn {
-    flex: 1;
-    padding: 10px 6px;
-    border: none;
-    border-radius: 12px;
-    background: transparent;
-    color: rgba(255,255,255,0.5);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .tab-btn.active {
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* 顶部封面 */
-  .hero {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    height: 200px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex; align-items: flex-end;
-  }
-  .hero-overlay {
-    padding: 20px;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-  }
-  .hero-overlay h1 { color: #fff; font-size: 24px; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-  .hero-overlay p { color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 4px; }
-  .hero-emoji { position: absolute; top: 20px; right: 20px; font-size: 60px; opacity: 0.3; }
-
-  /* 天气警告 */
-  .weather-alert {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
-    border-radius: 16px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
-    color: #fff;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-  .weather-alert .icon { font-size: 24px; flex-shrink: 0; }
-  .weather-alert .text { font-size: 13px; line-height: 1.5; }
-  .weather-alert strong { display: block; font-size: 14px; margin-bottom: 2px; }
-
-  /* 路线概览条 */
-  .route-overview {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .route-cities { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
-  .route-city { color: #fff; font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: rgba(255,255,255,0.12); }
-  .route-arrow { color: rgba(255,255,255,0.5); font-size: 16px; }
-  .route-meta { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
-  .route-meta span { color: rgba(255,255,255,0.6); font-size: 12px; }
-  .route-meta span em { font-style: normal; color: #ffd700; font-weight: 700; }
-
-  /* 推荐标签 */
-  .recommend-tag {
-    display: inline-block;
-    background: linear-gradient(135deg, #00b09b, #96c93d);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-  }
-
-  /* 时间线 */
-  .timeline { position: relative; padding-left: 28px; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 10px; top: 0; bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
-  }
-  .day-section { margin-bottom: 24px; }
-  .day-header {
-    position: relative;
-    margin-bottom: 12px;
-  }
-  .day-dot {
-    position: absolute;
-    left: -24px; top: 4px;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: 2px solid rgba(255,255,255,0.3);
-  }
-  .day-title {
-    color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-  }
-  .day-date {
-    color: rgba(255,255,255,0.5);
-    font-size: 12px;
-    margin-top: 2px;
-  }
-  .day-weather {
-    display: inline-block;
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 8px;
-    margin-top: 4px;
-  }
-  .weather-good { background: rgba(76,175,80,0.3); color: #81c784; }
-  .weather-ok { background: rgba(255,193,7,0.3); color: #ffd54f; }
-  .weather-bad { background: rgba(244,67,54,0.3); color: #ef9a9a; }
-
-  /* 活动卡片 */
-  .activity-card {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-    overflow: hidden;
-  }
-  .activity-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    border-radius: 3px;
-  }
-  .activity-card.nature::before { background: linear-gradient(to bottom, #4CAF50, #81C784); }
-  .activity-card.food::before { background: linear-gradient(to bottom, #FF9800, #FFB74D); }
-  .activity-card.scenic::before { background: linear-gradient(to bottom, #2196F3, #64B5F6); }
-  .activity-card.transport::before { background: linear-gradient(to bottom, #9C27B0, #CE93D8); }
-  .activity-card.stay::before { background: linear-gradient(to bottom, #E91E63, #F48FB1); }
-  .activity-card.fun::before { background: linear-gradient(to bottom, #FF5722, #FF8A65); }
-
-  .activity-time {
-    color: rgba(255,255,255,0.4);
-    font-size: 11px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .activity-name {
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .activity-desc {
-    color: rgba(255,255,255,0.6);
-    font-size: 12px;
-    line-height: 1.5;
-  }
-  .activity-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-  .activity-tag {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.5);
-  }
-  .tag-free { background: rgba(76,175,80,0.2); color: #81c784; }
-  .tag-hot { background: rgba(244,67,54,0.2); color: #ef9a9a; }
-  .tag-tip { background: rgba(33,150,243,0.2); color: #64b5f6; }
-
-  /* 预算卡 */
-  .budget-card {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 16px;
-    margin-top: 16px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .budget-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-  .budget-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .budget-row:last-child { border-bottom: none; }
-  .budget-item { color: rgba(255,255,255,0.6); font-size: 13px; }
-  .budget-price { color: #ffd700; font-size: 13px; font-weight: 700; }
-  .budget-total { display: flex; justify-content: space-between; padding-top: 10px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.15); }
-  .budget-total .budget-item { color: #fff; font-weight: 700; }
-  .budget-total .budget-price { font-size: 16px; }
-
-  /* Tips 卡片 */
-  .tips-card {
-    background: rgba(33,150,243,0.1);
-    border: 1px solid rgba(33,150,243,0.2);
-    border-radius: 14px;
-    padding: 14px;
-    margin-top: 16px;
-  }
-  .tips-title { color: #64b5f6; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-  .tips-list { list-style: none; }
-  .tips-list li {
-    color: rgba(255,255,255,0.6);
-    font-size: 12px;
-    line-height: 1.6;
-    padding-left: 16px;
-    position: relative;
-    margin-bottom: 4px;
-  }
-  .tips-list li::before { content: '•'; position: absolute; left: 0; color: #64b5f6; }
-
-  /* 对比表格 */
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 12px;
-  }
-  .compare-table th, .compare-table td {
-    padding: 8px 6px;
-    font-size: 12px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .compare-table th {
-    color: rgba(255,255,255,0.5);
-    font-weight: 600;
-  }
-  .compare-table td { color: rgba(255,255,255,0.7); }
-  .compare-table tr:last-child td { border-bottom: none; }
-
-  .footer {
-    text-align: center;
-    color: rgba(255,255,255,0.2);
-    font-size: 11px;
-    margin-top: 30px;
-    padding-bottom: 20px;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;padding:20px 12px;color:#333}
+.container{max-width:480px;margin:0 auto}
+.tab-bar{display:flex;gap:4px;margin-bottom:16px;background:rgba(255,255,255,0.06);border-radius:14px;padding:4px;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:70px;padding:8px 4px;border:none;border-radius:12px;background:transparent;color:rgba(255,255,255,0.5);font-size:11px;font-weight:600;cursor:pointer;transition:all .3s}
+.tab-btn.active{background:rgba(255,255,255,0.15);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.tab-content{display:none}.tab-content.active{display:block}
+.hero{position:relative;border-radius:20px;overflow:hidden;margin-bottom:20px;height:180px;box-shadow:0 10px 40px rgba(0,0,0,0.4);display:flex;align-items:flex-end}
+.hero img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{padding:16px;width:100%;background:linear-gradient(to top,rgba(0,0,0,0.75)0%,transparent 100%);position:relative;z-index:1}
+.hero-overlay h1{color:#fff;font-size:22px;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+.hero-overlay p{color:rgba(255,255,255,0.85);font-size:12px;margin-top:4px}
+.hero-emoji{position:absolute;top:16px;right:16px;font-size:50px;opacity:.3;z-index:1}
+.weather-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;border-radius:10px;margin-top:6px;font-weight:600}
+.wb-sun{background:rgba(76,175,80,0.3);color:#81c784}
+.wb-cloud{background:rgba(255,193,7,0.3);color:#ffd54f}
+.wb-rain{background:rgba(244,67,54,0.3);color:#ef9a9a}
+.weather-alert{border-radius:16px;padding:14px 16px;margin-bottom:16px;color:#fff;display:flex;gap:10px;align-items:flex-start}
+.wa-warn{background:linear-gradient(135deg,#ff6b35,#f7931e)}
+.wa-good{background:linear-gradient(135deg,#43a047,#66bb6a)}
+.wa-info{background:linear-gradient(135deg,#1565c0,#42a5f5)}
+.weather-alert .icon{font-size:24px;flex-shrink:0}
+.weather-alert .text{font-size:12px;line-height:1.5}
+.weather-alert strong{display:block;font-size:13px;margin-bottom:2px}
+.route-overview{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.1)}
+.route-cities{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.route-city{color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.12)}
+.route-arrow{color:rgba(255,255,255,0.5);font-size:14px}
+.route-meta{display:flex;justify-content:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+.route-meta span{color:rgba(255,255,255,0.6);font-size:11px}
+.route-meta span em{font-style:normal;color:#ffd700;font-weight:700}
+.recommend-tag{display:inline-block;background:linear-gradient(135deg,#00b09b,#96c93d);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:10px}
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),rgba(255,255,255,0.05))}
+.day-section{margin-bottom:24px}
+.day-header{position:relative;margin-bottom:12px}
+.day-dot{position:absolute;left:-24px;top:4px;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);border:2px solid rgba(255,255,255,0.3)}
+.day-title{color:#fff;font-size:17px;font-weight:800}
+.day-date{color:rgba(255,255,255,0.5);font-size:11px;margin-top:2px}
+.card{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px}
+.card.nature::before{background:linear-gradient(to bottom,#4CAF50,#81C784)}
+.card.food::before{background:linear-gradient(to bottom,#FF9800,#FFB74D)}
+.card.scenic::before{background:linear-gradient(to bottom,#2196F3,#64B5F6)}
+.card.transport::before{background:linear-gradient(to bottom,#9C27B0,#CE93D8)}
+.card.stay::before{background:linear-gradient(to bottom,#E91E63,#F48FB1)}
+.card.fun::before{background:linear-gradient(to bottom,#FF5722,#FF8A65)}
+.card-time{color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;margin-bottom:4px}
+.card-name{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px}
+.card-desc{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.5}
+.tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5)}
+.tag-free{background:rgba(76,175,80,0.2);color:#81c784}
+.tag-hot{background:rgba(244,67,54,0.2);color:#ef9a9a}
+.tag-tip{background:rgba(33,150,243,0.2);color:#64b5f6}
+.budget{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-top:16px;border:1px solid rgba(255,255,255,0.1)}
+.budget h3{color:#fff;font-size:15px;font-weight:700;margin-bottom:12px}
+.brow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:rgba(255,255,255,0.6);font-size:12px}
+.brow .br{color:#ffd700;font-size:12px;font-weight:700}
+.btotal{display:flex;justify-content:space-between;padding-top:8px;margin-top:6px;border-top:1px solid rgba(255,255,255,0.15)}
+.btotal .bl{color:#fff;font-weight:700;font-size:13px}
+.btotal .br{font-size:15px}
+.tips{background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.2);border-radius:14px;padding:14px;margin-top:16px}
+.tips h4{color:#64b5f6;font-size:13px;font-weight:700;margin-bottom:8px}
+.tips ul{list-style:none}
+.tips li{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.6;padding-left:14px;position:relative;margin-bottom:3px}
+.tips li::before{content:'•';position:absolute;left:0;color:#64b5f6}
+.compare-table{width:100%;border-collapse:collapse;margin-top:12px}
+.compare-table th,.compare-table td{padding:7px 4px;font-size:11px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06)}
+.compare-table th{color:rgba(255,255,255,0.5);font-weight:600;position:sticky;top:0;background:#302b63}
+.compare-table td{color:rgba(255,255,255,0.7)}
+.compare-table tr:last-child td{border-bottom:none}
+.footer{text-align:center;color:rgba(255,255,255,0.2);font-size:10px;margin-top:30px;padding-bottom:20px}
+.transport-info{background:rgba(156,39,176,0.1);border:1px solid rgba(156,39,176,0.2);border-radius:14px;padding:14px;margin-top:16px}
+.transport-info h4{color:#ce93d8;font-size:13px;font-weight:700;margin-bottom:8px}
+.transport-info .trow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.transport-info .trow:last-child{border-bottom:none}
+.transport-info .tl{color:rgba(255,255,255,0.6);font-size:11px}
+.transport-info .tr{color:#ce93d8;font-size:11px;font-weight:600}
 </style>
 </head>
 <body>
 <div class="container">
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('weather')">🌤️ 天气PK</button>
+  <button class="tab-btn" onclick="switchTab('sanya')">🏖️ 三亚</button>
+  <button class="tab-btn" onclick="switchTab('dali')">🌿 大理</button>
+  <button class="tab-btn" onclick="switchTab('huizhou')">🌊 惠州</button>
+  <button class="tab-btn" onclick="switchTab('chenzhou')">🏔️ 郴州</button>
+</div>
 
-  <!-- Tab 切换 -->
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('planA')">🏖️ 方案A·海岸线</button>
-    <button class="tab-btn" onclick="switchTab('planB')">🌿 方案B·山海游</button>
-    <button class="tab-btn" onclick="switchTab('compare')">📊 对比</button>
+<!-- ========== 天气对比 ========== -->
+<div id="weather" class="tab-content active">
+<div class="hero" style="background:linear-gradient(135deg,#1a237e 0%,#0097a7 50%,#ff6f00 100%)">
+  <span class="hero-emoji">🌤️</span>
+  <div class="hero-overlay"><h1>清明天气大PK</h1><p>4月4日-6日 · 哪里天气最好？</p></div>
+</div>
+
+<div class="weather-alert wa-info">
+  <span class="icon">📊</span>
+  <div class="text"><strong>天气决定体验！先看天气再选方案</strong>清明期间华南雷雨频密，但西南和海南天气却很好。以下是各目的地4/4-6日天气实况对比。</div>
+</div>
+
+<div class="route-overview">
+  <table class="compare-table">
+    <tr><th>目的地</th><th>4/4 周六</th><th>4/5 周日</th><th>4/6 周一</th><th>推荐</th></tr>
+    <tr style="background:rgba(76,175,80,0.08)"><td>🏖️ <b>三亚</b></td><td>多云 24-31℃</td><td>多云 25-31℃</td><td>多云 25-31℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(76,175,80,0.05)"><td>🌿 <b>大理</b></td><td>多云 9-23℃</td><td>多云 9-22℃</td><td>多云 9-23℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td>🏔️ <b>郴州</b></td><td>☀️晴 13-25℃</td><td>🌧️小雨 17-27℃</td><td>🌧️小雨 18-25℃</td><td>⭐⭐⭐</td></tr>
+    <tr><td>🌊 <b>惠州</b></td><td>⛈️雷雨 22-26℃</td><td>🌧️中雨 22-27℃</td><td>⛈️大雨 22-27℃</td><td>⭐⭐</td></tr>
+    <tr><td>📍 <b>深圳</b></td><td>⛈️大雨 22-25℃</td><td>🌧️雨 22-27℃</td><td>⛈️雷雨 22-27℃</td><td>⭐</td></tr>
+    <tr><td>🎰 <b>澳门</b></td><td>⛈️大雨 22-25℃</td><td>🌧️雨 22-25℃</td><td>⛈️大雨 22-25℃</td><td>⭐</td></tr>
+  </table>
+</div>
+
+<div class="route-overview">
+  <table class="compare-table">
+    <tr><th></th><th>🏖️三亚</th><th>🌿大理</th><th>🏔️郴州</th><th>🌊惠州</th></tr>
+    <tr><td>天气</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐</td></tr>
+    <tr><td>交通</td><td>✈️1.5h</td><td>✈️2.5h</td><td>🚄2h</td><td>🚗2.5h</td></tr>
+    <tr><td>人均预算</td><td>¥2500-3500</td><td>¥2500-3500</td><td>¥1200-1500</td><td>¥700-1100</td></tr>
+    <tr><td>人流量</td><td>中等偏多</td><td>中等</td><td>少</td><td>中等</td></tr>
+    <tr><td>亲近自然</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>美食</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>出片指数</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+  </table>
+</div>
+
+<div class="tips" style="background:rgba(76,175,80,0.1);border-color:rgba(76,175,80,0.2)">
+  <h4 style="color:#81c784">✅ 综合推荐排名</h4>
+  <ul>
+    <li><b>🥇 三亚（天气最佳）</b>：全程多云25-31℃，完美海岛天气！深圳直飞1.5h，4月是淡季性价比高</li>
+    <li><b>🥈 大理（风花雪月）</b>：多云9-23℃，干燥舒适。深圳直飞2.5h，苍山洱海+白族文化，最亲近自然</li>
+    <li><b>🥉 郴州+耒阳（祭祖+游玩）</b>：4/4晴天适合祭祖，后两天有雨但东江湖晨雾更美。高铁2h，最经济实惠</li>
+    <li>🏅 惠州海岸线：天气最差但距离最近，如果临时天气转好可作为备选</li>
+  </ul>
+</div>
+
+<div class="tips">
+  <h4>💡 决策建议</h4>
+  <ul>
+    <li>如果<b>追求好天气+海岛度假</b>：选三亚，4月淡季机票便宜，天气完美</li>
+    <li>如果<b>追求亲近自然+文艺慢游</b>：选大理，苍山洱海+古镇，昼夜温差大需带外套</li>
+    <li>如果<b>要回家祭祖+顺路游玩</b>：选郴州方案，4/4晴天祭祖→东江湖晨雾</li>
+    <li>如果<b>不想坐飞机+就近出行</b>：选惠州，带好雨具，雨天也有备选</li>
+    <li>关于<b>澳门</b>：天气差+不顺路，不建议这次去</li>
+  </ul>
+</div>
+</div>
+
+<!-- ========== 三亚方案 ========== -->
+<div id="sanya" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#0277bd 0%,#00bcd4 50%,#26c6da 100%)">
+  <span class="hero-emoji">🏖️</span>
+  <div class="hero-overlay"><h1>方案A · 三亚阳光海岛</h1><p>椰梦长廊 → 蜈支洲岛 → 亚龙湾 · 4天3晚</p></div>
+</div>
+
+<div class="recommend-tag">⭐ 天气最佳方案 · 全程多云25-31℃</div>
+
+<div class="weather-alert wa-good">
+  <span class="icon">☀️</span>
+  <div class="text"><strong>天气完美！4/4-6全程多云，无雨</strong>三亚4月是旅游淡季，机票酒店性价比高。24-31℃多云天气，不暴晒不下雨，体感舒适。</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳✈️</span><span class="route-arrow">→</span>
+    <span class="route-city">三亚湾</span><span class="route-arrow">→</span>
+    <span class="route-city">蜈支洲岛</span><span class="route-arrow">→</span>
+    <span class="route-city">亚龙湾</span><span class="route-arrow">→</span>
+    <span class="route-city">✈️深圳</span>
   </div>
-
-  <!-- ============ 方案A：惠州海岸线 ============ -->
-  <div id="planA" class="tab-content active">
-    <div class="hero" style="background: linear-gradient(135deg, #1a237e 0%, #0097a7 50%, #00bcd4 100%);">
-      <span class="hero-emoji">🌊</span>
-      <div class="hero-overlay">
-        <h1>方案A · 惠州海岸线</h1>
-        <p>盐洲岛 → 双月湾 → 深圳天文台 · 4天3晚</p>
-      </div>
-    </div>
-
-    <div class="recommend-tag">⭐ 推荐方案 · 亲近自然 + 人少 + 顺路</div>
-
-    <div class="weather-alert">
-      <span class="icon">⛈️</span>
-      <div class="text">
-        <strong>天气预警：清明假期华南雷雨频密</strong>
-        4/4-6 深圳、汕尾均为雷阵雨/大雨，惠州类似。建议备好雨具，灵活调整行程。雨天海边栈道湿滑需注意安全。
-      </div>
-    </div>
-
-    <div class="route-overview">
-      <div class="route-cities">
-        <span class="route-city">深圳宝安</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">盐洲岛</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">双月湾</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">大鹏天文台</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">深圳</span>
-      </div>
-      <div class="route-meta">
-        <span>🗓️ <em>4天3晚</em></span>
-        <span>🚗 <em>自驾约350km</em></span>
-        <span>💰 <em>¥1500-2200</em></span>
-      </div>
-    </div>
-
-    <div class="timeline">
-      <!-- DAY 0 -->
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 0 · 出发夜</div>
-          <div class="day-date">4月3日 周五</div>
-          <span class="day-weather weather-ok">🌤️ 雷阵雨 21-26℃</span>
-        </div>
-        <div class="activity-card fun">
-          <div class="activity-time">18:00 - 21:00</div>
-          <div class="activity-name">🎯 下班后跟朋友约活动</div>
-          <div class="activity-desc">周五下班后跟朋友聚一聚，吃个饭或者玩一下，为假期预热～</div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">21:30</div>
-          <div class="activity-name">🚗 出发去盐洲岛</div>
-          <div class="activity-desc">宝安出发，走沈海高速→广惠高速→X213，约2.5h到达惠东黄埠镇。夜间路况好，不堵车。入住民宿/酒店直接休息。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-tip">💡 也可周六一早出发</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- DAY 1 -->
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 1 · 盐洲岛秘境</div>
-          <div class="day-date">4月4日 周六 · 清明节</div>
-          <span class="day-weather weather-bad">⛈️ 大雨转雷阵雨 22-26℃</span>
-        </div>
-        <div class="activity-card nature">
-          <div class="activity-time">08:30 - 10:30</div>
-          <div class="activity-name">🌳 白沙村红树林湿地</div>
-          <div class="activity-desc">退潮时去白沙村红树林，看野生白鹭群飞、滩涂倒影如镜。被称为"小霞浦"，摄影天堂。雨天雾气朦胧更有意境。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">免费</span>
-            <span class="activity-tag">📸 摄影圣地</span>
-            <span class="activity-tag">🦅 观鸟</span>
-          </div>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">10:30 - 12:00</div>
-          <div class="activity-name">🌬️ 观音山风车阵</div>
-          <div class="activity-desc">盐洲岛制高点，大片白色风车与碧海蓝天交相辉映。即使阴天，风车在云雾中也很有氛围感。山顶可俯瞰整个岛。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">免费</span>
-            <span class="activity-tag">🏔️ 登高</span>
-          </div>
-        </div>
-        <div class="activity-card food">
-          <div class="activity-time">12:00 - 13:30</div>
-          <div class="activity-name">🦐 渔村海鲜午餐</div>
-          <div class="activity-desc">盐洲岛渔村的海鲜价格实惠，推荐海胆炒饭、清蒸石斑、椒盐虾、白灼圣子。人均60-80元即可海鲜自由。</div>
-        </div>
-        <div class="activity-card nature">
-          <div class="activity-time">14:00 - 16:00</div>
-          <div class="activity-name">🪨 黑排角海岸线徒步</div>
-          <div class="activity-desc">壮观的黑色玄武岩礁石海岸，被称为"广东小垦丁"。浅滩在夕阳下可以营造"天空之镜"效果。⚠️ 注意潮汐和礁石湿滑。如遇大雨改为岛内闲逛。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">免费</span>
-            <span class="activity-tag tag-hot">⚠️ 注意潮汐</span>
-            <span class="activity-tag">🥾 徒步</span>
-          </div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">16:30</div>
-          <div class="activity-name">🚗 转移至双月湾</div>
-          <div class="activity-desc">盐洲岛到双月湾仅17km，车程约30分钟。入住双月湾海景酒店/民宿，阳台直面大海。</div>
-        </div>
-        <div class="activity-card stay">
-          <div class="activity-time">18:00</div>
-          <div class="activity-name">🌅 礁石酒吧看日落</div>
-          <div class="activity-desc">双月湾网红打卡地——建在悬崖礁石上的酒吧，海浪拍岸。点一杯海盐特调（38元），看一场海上日落。如遇雨天，在酒店阳台听海也很治愈。</div>
-        </div>
-      </div>
-
-      <!-- DAY 2 -->
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 2 · 双月湾深度游</div>
-          <div class="day-date">4月5日 周日</div>
-          <span class="day-weather weather-bad">🌧️ 中雨转雷阵雨 22-27℃</span>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">07:00 - 08:00</div>
-          <div class="activity-name">🌄 酒店阳台看日出</div>
-          <div class="activity-desc">双月湾面朝东方，日出时分即使有云层，金光穿透云隙也非常壮观。如果下雨就睡到自然醒～</div>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">09:00 - 11:00</div>
-          <div class="activity-name">⛰️ 大星山观景台</div>
-          <div class="activity-desc">登顶俯瞰双月湾全景——左湾平静如湖，右湾波涛汹涌，两轮弯月相依的奇景只有在这里才能看到。可骑摩的上山（来回约30元）。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">免费</span>
-            <span class="activity-tag">📸 必打卡</span>
-          </div>
-        </div>
-        <div class="activity-card nature">
-          <div class="activity-time">11:00 - 13:00</div>
-          <div class="activity-name">🐢 海龟湾 + 会仙桥栈道</div>
-          <div class="activity-desc">中国唯一的国家级海龟自然保护区。走网红"会仙桥"悬空栈道，蓝白灯塔是绝佳机位。门票30元。</div>
-          <div class="activity-tags">
-            <span class="activity-tag">🎫 30元</span>
-            <span class="activity-tag">🐢 看海龟</span>
-            <span class="activity-tag tag-tip">📸 网红栈道</span>
-          </div>
-        </div>
-        <div class="activity-card food">
-          <div class="activity-time">13:00 - 14:30</div>
-          <div class="activity-name">🦀 港口镇海鲜市场</div>
-          <div class="activity-desc">现挑现加工！花蟹约50/斤、海虾约35/斤，人均60元实现海鲜自由。推荐海胆炒饭（双月湾特色）。</div>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">15:00 - 17:00</div>
-          <div class="activity-name">📚 一滴水图书馆</div>
-          <div class="activity-desc">建在悬崖上的网红图书馆，落地窗直面大海。外面的水池可以拍出"水天一色"的大片。看书、发呆、喝咖啡，雨天更有意境。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">免费</span>
-            <span class="activity-tag">☕ 看海发呆</span>
-          </div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">17:30</div>
-          <div class="activity-name">🚗 返回深圳大鹏</div>
-          <div class="activity-desc">双月湾→大鹏约1.5h。晚上入住大鹏/西涌附近民宿，为明天天文台做准备。</div>
-        </div>
-      </div>
-
-      <!-- DAY 3 -->
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 3 · 天文台+海岸线</div>
-          <div class="day-date">4月6日 周一</div>
-          <span class="day-weather weather-bad">⛈️ 大雨转雷阵雨 22-27℃</span>
-        </div>
-
-        <div class="weather-alert" style="background: linear-gradient(135deg, #e53935, #ff5722); margin-bottom: 12px;">
-          <span class="icon">⚠️</span>
-          <div class="text">
-            <strong>天文台注意事项</strong>
-            ① 周一闭馆！如果想进天文台内部参观，需改到周日去，或者只走免费公共栈道段（不受闭馆影响）<br>
-            ② 预约制：每周一10点在"深圳天文"公众号抢号，每天仅300人<br>
-            ③ 遇雷雨预警将即时闭园
-          </div>
-        </div>
-
-        <div class="activity-card scenic">
-          <div class="activity-time">09:00 - 12:00</div>
-          <div class="activity-name">🔭 深圳天文台 · 山海栈道</div>
-          <div class="activity-desc">被《国家地理》评为"中国最美海岸线"！纯白悬崖栈道依山临海，脚下是果冻般蓝绿色海水。公共栈道段无需预约，免费开放。<br><br>📍 导航"西涌4号沙滩"→停车→坐接驳车上山（10元/人）或步行30min</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">栈道免费</span>
-            <span class="activity-tag tag-tip">🚌 接驳车10元</span>
-            <span class="activity-tag">🥾 步行1.1km</span>
-            <span class="activity-tag tag-hot">⚠️ 穿防滑鞋</span>
-          </div>
-        </div>
-        <div class="activity-card food">
-          <div class="activity-time">12:30 - 14:00</div>
-          <div class="activity-name">🍗 西涌海鲜午餐</div>
-          <div class="activity-desc">推荐海胆炒饭、窑鸡，海鲜新鲜且性价比高。</div>
-        </div>
-        <div class="activity-card nature">
-          <div class="activity-time">14:30 - 16:30</div>
-          <div class="activity-name">🏖️ 西涌沙滩 / 杨梅坑</div>
-          <div class="activity-desc">深圳最长最美的沙滩。如果天气好可以踩水玩沙；如果下雨，改去杨梅坑骑行或去鹿嘴山庄（《美人鱼》取景地）打卡。</div>
-          <div class="activity-tags">
-            <span class="activity-tag">🎫 沙滩门票约30元</span>
-            <span class="activity-tag">🎬 美人鱼取景地</span>
-          </div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">17:00</div>
-          <div class="activity-name">🏠 返回宝安</div>
-          <div class="activity-desc">大鹏→宝安约1.5h。注意：假期最后一天下午大鹏方向出城容易堵车，建议16:30前出发。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-hot">⚠️ 错峰返程</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 预算 -->
-    <div class="budget-card">
-      <div class="budget-title">💰 预算估算（2人）</div>
-      <div class="budget-row"><span class="budget-item">🏨 住宿 × 3晚</span><span class="budget-price">¥600-1000</span></div>
-      <div class="budget-row"><span class="budget-item">⛽ 油费（约350km）</span><span class="budget-price">¥200-250</span></div>
-      <div class="budget-row"><span class="budget-item">🍽️ 餐饮（4天）</span><span class="budget-price">¥400-600</span></div>
-      <div class="budget-row"><span class="budget-item">🎫 门票+停车+接驳</span><span class="budget-price">¥150-200</span></div>
-      <div class="budget-total">
-        <span class="budget-item">合计（人均）</span>
-        <span class="budget-price">¥700-1100</span>
-      </div>
-    </div>
-
-    <div class="tips-card">
-      <div class="tips-title">📝 重要提醒</div>
-      <ul class="tips-list">
-        <li>天文台每周一10点放号，想预约本周的需要提前抢（一年仅限3次）</li>
-        <li><strong>周一天文台闭馆</strong>，4月6日只能走公共栈道段。如果想进内部，建议4月5日（周日）去</li>
-        <li>大鹏半岛周末/节假日自驾需预约通行，提前在"i深圳"APP预约</li>
-        <li>盐洲岛商业化程度低，建议自带零食饮水</li>
-        <li>你天生偏黑易晒，即使阴天也要涂SPF50+防晒！</li>
-        <li>清明期间华南雷雨频密，随身带雨伞，穿防滑鞋</li>
-        <li>海边礁石湿滑，注意安全，不要靠近浪大的边缘</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ============ 方案B：汕尾+天文台 ============ -->
-  <div id="planB" class="tab-content">
-    <div class="hero" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #43a047 100%);">
-      <span class="hero-emoji">🌿</span>
-      <div class="hero-overlay">
-        <h1>方案B · 汕尾山海游</h1>
-        <p>汕尾红海湾 → 凤山妈祖 → 深圳天文台 · 4天3晚</p>
-      </div>
-    </div>
-
-    <div class="weather-alert">
-      <span class="icon">⛈️</span>
-      <div class="text">
-        <strong>天气预警：汕尾清明期间雨水较多</strong>
-        4/4 雷阵雨转大雨 20-25℃｜4/5 中雨转雷阵雨 20-26℃｜4/6 大雨转雷阵雨 21-26℃。汕尾比惠州更远，且天气同样不佳。
-      </div>
-    </div>
-
-    <div class="route-overview">
-      <div class="route-cities">
-        <span class="route-city">深圳宝安</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">汕尾红海湾</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">汕尾市区</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">大鹏天文台</span>
-        <span class="route-arrow">→</span>
-        <span class="route-city">深圳</span>
-      </div>
-      <div class="route-meta">
-        <span>🗓️ <em>4天3晚</em></span>
-        <span>🚗 <em>自驾约500km</em></span>
-        <span>💰 <em>¥1800-2500</em></span>
-      </div>
-    </div>
-
-    <div class="timeline">
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 0 · 出发夜</div>
-          <div class="day-date">4月3日 周五</div>
-          <span class="day-weather weather-ok">🌤️ 雷阵雨 21-26℃</span>
-        </div>
-        <div class="activity-card fun">
-          <div class="activity-time">18:00 - 21:00</div>
-          <div class="activity-name">🎯 下班后跟朋友约活动</div>
-          <div class="activity-desc">周五下班后跟朋友聚一聚～</div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">21:30</div>
-          <div class="activity-name">🚗 出发去汕尾</div>
-          <div class="activity-desc">宝安→汕尾约2.5-3h（沈海高速）。夜间路况好，入住红海湾附近酒店。</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 1 · 红海湾海滩</div>
-          <div class="day-date">4月4日 周六 · 清明节</div>
-          <span class="day-weather weather-bad">⛈️ 雷阵雨转大雨 20-25℃</span>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">09:00 - 12:00</div>
-          <div class="activity-name">🏖️ 红海湾 · 风车岛</div>
-          <div class="activity-desc">汕尾最美海湾，风车与海景交织。遮浪角有"粤东麒麟角"之称，一边风平浪静一边惊涛骇浪。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">免费</span>
-            <span class="activity-tag">🌬️ 风车</span>
-          </div>
-        </div>
-        <div class="activity-card nature">
-          <div class="activity-time">14:00 - 16:00</div>
-          <div class="activity-name">🌊 金町湾 / 浮日灣</div>
-          <div class="activity-desc">小众海滩，人少水清。金町湾有海边咖啡厅，点杯拿铁看海超有氛围感。</div>
-        </div>
-        <div class="activity-card food">
-          <div class="activity-time">18:00</div>
-          <div class="activity-name">🦐 汕尾海鲜大餐</div>
-          <div class="activity-desc">汕尾海鲜物美价廉，推荐薄壳、生腌、海鲜粿条。二马路小吃街值得逛逛。</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 2 · 汕尾文化+返程</div>
-          <div class="day-date">4月5日 周日</div>
-          <span class="day-weather weather-bad">🌧️ 中雨转雷阵雨 20-26℃</span>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">09:00 - 11:00</div>
-          <div class="activity-name">🏯 凤山妈祖石像</div>
-          <div class="activity-desc">全球最高妈祖石像（16.83米），山顶可俯瞰汕尾港全景。</div>
-          <div class="activity-tags"><span class="activity-tag tag-free">免费</span></div>
-        </div>
-        <div class="activity-card nature">
-          <div class="activity-time">11:00 - 12:30</div>
-          <div class="activity-name">🌿 莲花山鸡鸣寺</div>
-          <div class="activity-desc">千年古寺，藏在莲花山中，空气清新，清幽宁静。适合亲近自然。需提前预约限流。</div>
-          <div class="activity-tags"><span class="activity-tag tag-free">免费预约</span><span class="activity-tag">🙏 古寺</span></div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">14:00</div>
-          <div class="activity-name">🚗 汕尾→大鹏</div>
-          <div class="activity-desc">汕尾→大鹏约2h。入住西涌/大鹏民宿。</div>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">16:00 - 18:00</div>
-          <div class="activity-name">🏘️ 大鹏古城 / 较场尾</div>
-          <div class="activity-desc">600年历史的古城，深圳"鹏城"名字的由来。较场尾有彩色民宿群和海滩。</div>
-          <div class="activity-tags"><span class="activity-tag tag-free">免费</span></div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <div class="day-dot"></div>
-          <div class="day-title">DAY 3 · 天文台+返程</div>
-          <div class="day-date">4月6日 周一</div>
-          <span class="day-weather weather-bad">⛈️ 大雨转雷阵雨 22-27℃</span>
-        </div>
-        <div class="activity-card scenic">
-          <div class="activity-time">09:00 - 12:00</div>
-          <div class="activity-name">🔭 深圳天文台 · 山海栈道</div>
-          <div class="activity-desc">同方案A。注意周一闭馆，只能走公共栈道段。</div>
-          <div class="activity-tags">
-            <span class="activity-tag tag-free">栈道免费</span>
-            <span class="activity-tag tag-hot">⚠️ 周一闭馆</span>
-          </div>
-        </div>
-        <div class="activity-card transport">
-          <div class="activity-time">14:00</div>
-          <div class="activity-name">🏠 返回宝安</div>
-          <div class="activity-desc">大鹏→宝安约1.5h，早点出发避堵。</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="budget-card">
-      <div class="budget-title">💰 预算估算（2人）</div>
-      <div class="budget-row"><span class="budget-item">🏨 住宿 × 3晚</span><span class="budget-price">¥600-900</span></div>
-      <div class="budget-row"><span class="budget-item">⛽ 油费（约500km）</span><span class="budget-price">¥300-350</span></div>
-      <div class="budget-row"><span class="budget-item">🍽️ 餐饮（4天）</span><span class="budget-price">¥400-600</span></div>
-      <div class="budget-row"><span class="budget-item">🎫 门票+停车</span><span class="budget-price">¥100-150</span></div>
-      <div class="budget-total">
-        <span class="budget-item">合计（人均）</span>
-        <span class="budget-price">¥700-1000</span>
-      </div>
-    </div>
-
-    <div class="tips-card">
-      <div class="tips-title">📝 方案B特别提醒</div>
-      <ul class="tips-list">
-        <li>汕尾比惠州远约50km，路上多花1小时</li>
-        <li>汕尾商业化程度低于双月湾，更原生态但配套略差</li>
-        <li>鸡鸣寺需要提前预约，注意限流</li>
-        <li>清明期间汕尾祭扫人流大，避开市区墓园周边道路</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ============ 对比 ============ -->
-  <div id="compare" class="tab-content">
-    <div class="hero" style="background: linear-gradient(135deg, #37474f 0%, #455a64 50%, #546e7a 100%);">
-      <span class="hero-emoji">📊</span>
-      <div class="hero-overlay">
-        <h1>方案对比</h1>
-        <p>帮你选出最适合的路线</p>
-      </div>
-    </div>
-
-    <div class="route-overview">
-      <table class="compare-table">
-        <tr><th></th><th>🏖️ 方案A<br>惠州海岸线</th><th>🌿 方案B<br>汕尾山海游</th></tr>
-        <tr><td style="color:#ffd700">推荐指数</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-        <tr><td>总里程</td><td>~350km</td><td>~500km</td></tr>
-        <tr><td>人均预算</td><td>¥700-1100</td><td>¥700-1000</td></tr>
-        <tr><td>亲近自然</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>人流量</td><td>盐洲岛人少<br>双月湾中等</td><td>整体人少</td></tr>
-        <tr><td>海鲜性价比</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>住宿选择</td><td>丰富（网红酒店多）</td><td>一般（偏原生态）</td></tr>
-        <tr><td>景点丰富度</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-        <tr><td>拍照出片</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-        <tr><td>雨天备选</td><td>图书馆/咖啡厅多</td><td>备选较少</td></tr>
-        <tr><td>路线顺畅</td><td>惠州→大鹏顺路</td><td>汕尾→大鹏需折返</td></tr>
-      </table>
-    </div>
-
-    <div class="tips-card" style="background: rgba(76,175,80,0.1); border-color: rgba(76,175,80,0.2);">
-      <div class="tips-title" style="color: #81c784;">✅ 我的建议</div>
-      <ul class="tips-list">
-        <li><strong>首推方案A（惠州海岸线）</strong>：盐洲岛→双月湾→天文台，路线最顺、景点最丰富、雨天备选多、住宿选择多</li>
-        <li>盐洲岛是"广东最后一片净土"，商业化低、人少，完美契合"亲近自然"的需求</li>
-        <li>双月湾有一滴水图书馆、礁石酒吧等雨天也能玩的地方</li>
-        <li>惠州→大鹏方向是顺路的，汕尾则需要折返</li>
-        <li><strong>关于澳门</strong>：确实不顺路（深圳→澳门单程3h+），不建议硬塞进去</li>
-        <li><strong>关于天文台</strong>：4/6是周一闭馆日！建议把天文台安排在4/5（周日），或者只走公共栈道</li>
-        <li><strong>关于天气</strong>：清明华南雷雨是大概率事件，但不影响整体体验，雨中的海岸线别有风味</li>
-      </ul>
-    </div>
-
-    <div class="tips-card">
-      <div class="tips-title">🔄 灵活调整建议</div>
-      <ul class="tips-list">
-        <li>如果4/4天气特别差：盐洲岛改为惠州西湖/温泉（推荐春沐源温泉小镇）</li>
-        <li>如果4/5天气转好：把天文台提前到周日，避开周一闭馆</li>
-        <li>如果想多一天：4/7周二再去天文台（正常开放+人少）</li>
-        <li>天文台预约：今天是周三，下周一（4/7）10点可以抢4/8-4/13的号</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="footer">
-    清明行程规划 · 2026.04 · 愿每一次出发都有好天气 🌤️
+  <div class="route-meta">
+    <span>🗓️ <em>4天3晚</em></span><span>✈️ <em>直飞1.5h</em></span><span>💰 <em>¥2500-3500</em></span>
   </div>
 </div>
 
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00 - 21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚，吃个饭或者玩一下～</div></div>
+    <div class="card transport"><div class="card-time">21:30 - 23:20</div><div class="card-name">✈️ 深圳→三亚</div><div class="card-desc">宝安T3直飞三亚凤凰机场，约1.5h。4月淡季晚班机票约¥600-900。到达后打车至三亚湾酒店入住。</div>
+    <div class="tags"><span class="tag tag-tip">💡 建议买21:35深航ZH9265</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 蜈支洲岛</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-sun">☁️ 多云 24-31℃</span></div>
+    <div class="card scenic"><div class="card-time">08:30 - 17:00</div><div class="card-name">🏝️ 蜈支洲岛 · 全天深度游</div><div class="card-desc">被称为"中国马尔代夫"，海水能见度6-27米。乘船20分钟登岛，打卡情人桥、观日岩、私人订制取景地。下午体验浮潜/摩托艇等水上项目，或在白沙滩踏浪发呆。</div>
+    <div class="tags"><span class="tag">🎫 门船票168元</span><span class="tag tag-tip">📸 中国最美海岛</span><span class="tag">🤿 浮潜圣地</span></div></div>
+    <div class="card food"><div class="card-time">18:00</div><div class="card-name">🦐 第一市场海鲜大餐</div><div class="card-desc">三亚最地道的海鲜市场，自己挑海鲜到旁边加工店。推荐：椒盐皮皮虾、清蒸石斑、蒜蓉扇贝。人均80-120元海鲜自由。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 椰梦长廊+南山</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-sun">☁️ 多云 25-31℃</span></div>
+    <div class="card scenic"><div class="card-time">07:00 - 08:00</div><div class="card-name">🌅 三亚湾看日出</div><div class="card-desc">三亚湾面朝东方，清晨日出非常壮观。酒店阳台或沙滩都能看到。</div></div>
+    <div class="card scenic"><div class="card-time">09:00 - 12:00</div><div class="card-name">🙏 南山文化旅游区</div><div class="card-desc">108米海上观音圣像，世界之最！祈福打卡，游览南山寺、不二法门。景区很大，建议穿舒适的鞋子。</div>
+    <div class="tags"><span class="tag">🎫 108元</span><span class="tag tag-tip">🙏 祈福圣地</span></div></div>
+    <div class="card nature"><div class="card-time">14:00 - 17:00</div><div class="card-name">🌴 天涯海角 + 椰梦长廊</div><div class="card-desc">打卡天涯石、海角石。傍晚漫步20公里椰梦长廊，看三亚最美日落。可租共享电动车穿梭椰林。</div>
+    <div class="tags"><span class="tag">🎫 天涯海角68元</span><span class="tag tag-free">椰梦长廊免费</span></div></div>
+    <div class="card food"><div class="card-time">19:00</div><div class="card-name">🍲 椰子鸡火锅</div><div class="card-desc">三亚特色，用新鲜椰子水做锅底，鸡肉鲜嫩椰香浓郁。推荐嗲嗲的椰子鸡，人均80-100元。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 3 · 亚龙湾+返程</div><div class="day-date">4月6日 周一</div><span class="weather-badge wb-sun">☁️ 多云 25-31℃</span></div>
+    <div class="card nature"><div class="card-time">08:00 - 11:00</div><div class="card-name">🏖️ 亚龙湾 · 天下第一湾</div><div class="card-desc">深圳最细腻的沙滩，海水清澈见底。漫步沙滩、踏浪、发呆，享受最后的海岛时光。</div>
+    <div class="tags"><span class="tag tag-free">沙滩免费</span><span class="tag">🏊 适合游泳</span></div></div>
+    <div class="card food"><div class="card-time">12:00</div><div class="card-name">🍗 海南鸡饭 / 抱罗粉</div><div class="card-desc">离开前再吃一顿地道海南味。文昌鸡、海南粉、清补凉，人均30-50元。</div></div>
+    <div class="card transport"><div class="card-time">15:00</div><div class="card-name">✈️ 三亚→深圳</div><div class="card-desc">下午航班返深，约1.5h。建议买15:00-17:00的航班，到深圳晚上还能休息。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>✈️ 交通方案</h4>
+  <div class="trow"><span class="tl">去程：深圳✈️三亚</span><span class="tr">直飞1.5h · ¥600-900</span></div>
+  <div class="trow"><span class="tl">回程：三亚✈️深圳</span><span class="tr">直飞1.5h · ¥600-900</span></div>
+  <div class="trow"><span class="tl">岛内交通</span><span class="tr">打车/租车 约¥200/天</span></div>
+  <div class="trow"><span class="tl">航班频次</span><span class="tr">每天10+班 非常方便</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">✈️ 往返机票</span><span class="br">¥1200-1800</span></div>
+  <div class="brow"><span class="bl">🏨 住宿×3晚（三亚湾）</span><span class="br">¥400-600</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（4天）</span><span class="br">¥400-500</span></div>
+  <div class="brow"><span class="bl">🎫 门票+交通</span><span class="br">¥400-500</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥2400-3400</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>4月是三亚淡季，酒店机票比春节便宜一半以上</li>
+    <li>你天生偏黑易晒，即使多云也要涂SPF50+防晒！</li>
+    <li>蜈支洲岛建议提前1天在公众号买票，比现场便宜</li>
+    <li>第一市场海鲜注意防宰，选好店后先问价再买</li>
+    <li>三亚打车建议用滴滴，不要坐路边揽客的车</li>
+  </ul>
+</div>
+</div>
+
+<!-- ========== 大理方案 ========== -->
+<div id="dali" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 50%,#43a047 100%)">
+  <span class="hero-emoji">🌿</span>
+  <div class="hero-overlay"><h1>方案B · 大理风花雪月</h1><p>古城 → 洱海 → 喜洲 → 双廊 · 4天3晚</p></div>
+</div>
+
+<div class="recommend-tag">🌿 最亲近自然 · 多云干燥9-23℃</div>
+
+<div class="weather-alert wa-good">
+  <span class="icon">🌤️</span>
+  <div class="text"><strong>天气优秀！全程多云无雨，干燥舒适</strong>大理4月多云9-23℃，昼夜温差大需带外套。紫外线强，防晒必备。风花雪月的最佳观赏季！</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳✈️</span><span class="route-arrow">→</span>
+    <span class="route-city">大理古城</span><span class="route-arrow">→</span>
+    <span class="route-city">喜洲</span><span class="route-arrow">→</span>
+    <span class="route-city">双廊</span><span class="route-arrow">→</span>
+    <span class="route-city">✈️深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>4天3晚</em></span><span>✈️ <em>直飞2.5h</em></span><span>💰 <em>¥2500-3500</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00 - 21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚～</div></div>
+    <div class="card transport"><div class="card-time">夜间</div><div class="card-name">✈️ 深圳→大理</div><div class="card-desc">深圳直飞大理约2.5h。南航有早班机07:00出发，或选择4/4一早出发。4月机票约¥700-1200单程。到达后入住大理古城客栈。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 古城+崇圣寺</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-sun">☁️ 多云 9-23℃</span></div>
+    <div class="card scenic"><div class="card-time">09:00 - 12:00</div><div class="card-name">🏯 崇圣寺三塔</div><div class="card-desc">大理地标，金庸笔下"天龙寺"原型。千年古塔与苍山交相辉映，三塔倒影池是绝佳机位。下午4-5点光线最美。</div>
+    <div class="tags"><span class="tag">🎫 75元</span><span class="tag tag-tip">📸 三塔倒影必拍</span></div></div>
+    <div class="card nature"><div class="card-time">14:00 - 16:00</div><div class="card-name">🚲 洱海生态廊道骑行</div><div class="card-desc">40公里环海步行道，租共享单车沿洱海骑行。经过小桥流水、湿地，苍山洱海尽收眼底。自由的味道！</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🚲 租车15元/h</span></div></div>
+    <div class="card scenic"><div class="card-time">17:00 - 19:00</div><div class="card-name">🌆 龙龛码头看日落</div><div class="card-desc">洱海西岸，水中红杉与夕阳波光粼粼交相辉映。日落时分是最佳拍摄时间。</div>
+    <div class="tags"><span class="tag tag-free">免费</span></div></div>
+    <div class="card fun"><div class="card-time">20:00</div><div class="card-name">🎵 大理古城夜游</div><div class="card-desc">漫步青石板路，逛人民路文艺小店，洋人街酒吧听民谣。吃鲜花饼、喝大理啤酒，感受文艺慢生活。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 喜洲+双廊</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-sun">☁️ 多云 9-22℃</span></div>
+    <div class="card scenic"><div class="card-time">09:00 - 12:00</div><div class="card-name">🏘️ 喜洲古镇</div><div class="card-desc">千年白族古镇，保留完整的白族建筑群。体验白族扎染工艺，品尝现烤破酥粑粑（咸甜两味）。转角楼、喜林苑城墙边拍照超出片。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🧶 扎染体验</span><span class="tag">🥧 喜洲粑粑</span></div></div>
+    <div class="card scenic"><div class="card-time">14:00 - 17:00</div><div class="card-name">🌊 双廊古镇</div><div class="card-desc">"苍海风光第一镇"！找一家临海咖啡馆，坐在露台上看洱海波光粼粼。杨丽萍太阳宫外围观景，双廊艺术小镇逛手作店。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">☕ 临海咖啡</span><span class="tag tag-tip">📸 网红打卡</span></div></div>
+    <div class="card food"><div class="card-time">18:00</div><div class="card-name">🍲 白族风味晚餐</div><div class="card-desc">酸辣鱼、乳扇、凉鸡米线、饵丝，大理特色美食。人均40-60元。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 3 · 苍山+返程</div><div class="day-date">4月6日 周一</div><span class="weather-badge wb-sun">☁️ 多云 9-23℃</span></div>
+    <div class="card nature"><div class="card-time">08:00 - 12:00</div><div class="card-name">⛰️ 苍山 · 感通索道</div><div class="card-desc">索道缓缓上升，大理坝子全貌展开，洱海如碧绿宝石镶嵌大地。山顶栈道徒步，呼吸清新空气。4月可能看到苍山雪顶！</div>
+    <div class="tags"><span class="tag">🎫 索道+门票130元</span><span class="tag">🏔️ 俯瞰洱海</span></div></div>
+    <div class="card scenic"><div class="card-time">12:30 - 14:00</div><div class="card-name">🙏 寂照庵</div><div class="card-desc">"中国最美尼姑庵"，藏在苍山半山腰，鲜花满院。斋饭一定要试（20元随喜），素食做得极其精致。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🍃 最美寺庙</span></div></div>
+    <div class="card transport"><div class="card-time">16:00</div><div class="card-name">✈️ 大理→深圳</div><div class="card-desc">下午航班返深，约2.5h。如果时间充裕，上午还可以逛逛海舌生态公园。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>✈️ 交通方案</h4>
+  <div class="trow"><span class="tl">去程：深圳✈️大理</span><span class="tr">直飞2.5h · ¥700-1200</span></div>
+  <div class="trow"><span class="tl">回程：大理✈️深圳</span><span class="tr">直飞2.5h · ¥700-1200</span></div>
+  <div class="trow"><span class="tl">当地交通</span><span class="tr">包车¥300/天 或租电动车</span></div>
+  <div class="trow"><span class="tl">南航直飞</span><span class="tr">每天1-2班</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">✈️ 往返机票</span><span class="br">¥1400-2400</span></div>
+  <div class="brow"><span class="bl">🏨 住宿×3晚（古城客栈）</span><span class="br">¥300-500</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（4天）</span><span class="br">¥300-400</span></div>
+  <div class="brow"><span class="bl">🎫 门票+交通</span><span class="br">¥400-500</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥2400-3800</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>大理4月昼夜温差大（9-23℃），白天短袖+薄外套，晚上需加厚</li>
+    <li>紫外线极强！比三亚更需要防晒，SPF50+必备</li>
+    <li>环洱海骑行建议戴头盔，部分路段窄且有坡</li>
+    <li>古城住宿旺季（4-5月）要提前订，推荐洱海边民宿</li>
+    <li>崇圣寺三塔和苍山索道建议网上提前购票</li>
+    <li>大理物价比三亚低，餐饮性价比很高</li>
+  </ul>
+</div>
+</div>
+
+<!-- ========== 惠州方案（精简版） ========== -->
+<div id="huizhou" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#1a237e 0%,#0097a7 50%,#00bcd4 100%)">
+  <span class="hero-emoji">🌊</span>
+  <div class="hero-overlay"><h1>方案C · 惠州海岸线</h1><p>盐洲岛 → 双月湾 → 深圳天文台 · 4天3晚</p></div>
+</div>
+
+<div class="weather-alert wa-warn">
+  <span class="icon">⛈️</span>
+  <div class="text"><strong>天气预警：清明期间华南雷雨频密</strong>4/4-6深圳、惠州均为雷阵雨/大雨。优点是距离近、自驾方便，雨天也有室内备选。</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳</span><span class="route-arrow">→</span>
+    <span class="route-city">盐洲岛</span><span class="route-arrow">→</span>
+    <span class="route-city">双月湾</span><span class="route-arrow">→</span>
+    <span class="route-city">天文台</span><span class="route-arrow">→</span>
+    <span class="route-city">深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>4天3晚</em></span><span>🚗 <em>自驾350km</em></span><span>💰 <em>¥700-1100</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发夜</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00-21:00</div><div class="card-name">🎯 跟朋友约活动 → 夜间出发盐洲岛</div><div class="card-desc">宝安出发约2.5h到达。入住休息。</div></div>
+  </div>
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 盐洲岛</div><div class="day-date">4月4日 周六</div><span class="weather-badge wb-rain">⛈️ 大雨 22-26℃</span></div>
+    <div class="card nature"><div class="card-time">全天</div><div class="card-name">🌳 白沙村红树林 → 风车山 → 黑排角</div><div class="card-desc">"广东最后一片净土"。白沙村红树林看白鹭、观音山风车阵、黑排角海岸线徒步。⚠️ 雨天注意湿滑。傍晚转移至双月湾。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-hot">⚠️ 雨天注意安全</span></div></div>
+  </div>
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 双月湾</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-rain">🌧️ 中雨 22-27℃</span></div>
+    <div class="card scenic"><div class="card-time">全天</div><div class="card-name">⛰️ 大星山 → 海龟湾 → 一滴水图书馆</div><div class="card-desc">登顶俯瞰双月湾全景。海龟湾会仙桥栈道。一滴水图书馆悬崖看海——雨天更有意境。傍晚转移至大鹏。</div>
+    <div class="tags"><span class="tag">🎫 海龟湾30元</span><span class="tag tag-free">图书馆免费</span></div></div>
+  </div>
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 3 · 天文台</div><div class="day-date">4月6日 周一</div><span class="weather-badge wb-rain">⛈️ 大雨 22-27℃</span></div>
+    <div class="card scenic"><div class="card-time">09:00-16:00</div><div class="card-name">🔭 深圳天文台栈道 → 西涌/杨梅坑</div><div class="card-desc">公共栈道免费，无需预约。⚠️ 周一天文台闭馆，只能走栈道段。下午返回宝安。</div>
+    <div class="tags"><span class="tag tag-free">栈道免费</span><span class="tag tag-hot">⚠️ 周一闭馆</span></div></div>
+  </div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">🏨 住宿×3晚</span><span class="br">¥300-500</span></div>
+  <div class="brow"><span class="bl">⛽ 油费+过路费</span><span class="br">¥150-200</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮</span><span class="br">¥200-300</span></div>
+  <div class="brow"><span class="bl">🎫 门票</span><span class="br">¥50-100</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥700-1100</span></div>
+</div>
+</div>
+
+<!-- ========== 郴州方案 ========== -->
+<div id="chenzhou" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#33691e 0%,#558b2f 50%,#7cb342 100%)">
+  <span class="hero-emoji">🏔️</span>
+  <div class="hero-overlay"><h1>方案D · 耒阳祭祖+郴州</h1><p>耒阳清明祭祖 → 高椅岭 → 东江湖 · 4天3晚</p></div>
+</div>
+
+<div class="recommend-tag">🏠 回家祭祖 + 顺路游玩 · 最经济方案</div>
+
+<div class="weather-alert wa-info">
+  <span class="icon">🌤️</span>
+  <div class="text"><strong>4/4晴天适合祭祖！后两天有雨但东江湖晨雾更美</strong>郴州4/4晴转多云13-25℃，非常适合户外。4/5-6小雨，但东江湖雾漫小东江在雨后效果更佳。</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳🚄</span><span class="route-arrow">→</span>
+    <span class="route-city">耒阳</span><span class="route-arrow">→</span>
+    <span class="route-city">郴州</span><span class="route-arrow">→</span>
+    <span class="route-city">东江湖</span><span class="route-arrow">→</span>
+    <span class="route-city">🚄深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>4天3晚</em></span><span>🚄 <em>高铁2h</em></span><span>💰 <em>¥1200-1500</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 回家</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00-21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚～</div></div>
+    <div class="card transport"><div class="card-time">18:53 - 21:12</div><div class="card-name">🚄 深圳北→耒阳西</div><div class="card-desc">G6184次高铁，约2h19min。到达耒阳回家休息。耒阳是你老家，不需要住宿费。</div>
+    <div class="tags"><span class="tag tag-tip">🎫 高铁约¥200</span></div></div>
+  </div>
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 清明祭祖</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-sun">☀️ 晴转多云 13-25℃</span></div>
+    <div class="card scenic"><div class="card-time">全天</div><div class="card-name">🙏 清明祭祖 + 家人团聚</div><div class="card-desc">晴天非常适合祭祖扫墓。上午祭祖，下午跟家人团聚，吃家乡菜。晚上可以逛逛耒阳老城。</div>
+    <div class="tags"><span class="tag wb-sun">☀️ 完美祭祖天气</span></div></div>
+  </div>
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 3 · 郴州游</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-rain">🌧️ 小雨 17-27℃</span></div>
+    <div class="card transport"><div class="card-time">08:00</div><div class="card-name">🚄 耒阳西→郴州西</div><div class="card-desc">高铁约30min。到达后游览郴州。</div></div>
+    <div class="card nature"><div class="card-time">09:30 - 12:00</div><div class="card-name">🪨 高椅岭丹霞地貌</div><div class="card-desc">"广东小张家界"！红色丹霞与碧绿湖水交织，悬崖栈道惊险刺激。小雨中丹霞更加艳丽。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-hot">⚠️ 雨天注意防滑</span></div></div>
+    <div class="card fun"><div class="card-time">14:00 - 17:00</div><div class="card-name">🏮 裕后街 + 郴州美食</div><div class="card-desc">郴州网红老街，吃栖凤渡鱼粉、临武鸭、三文鱼。晚上入住资兴/东江湖附近。</div></div>
+  </div>
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 4 · 东江湖+返程</div><div class="day-date">4月6日 周一</div><span class="weather-badge wb-rain">🌧️ 小雨 18-25℃</span></div>
+    <div class="card nature"><div class="card-time">06:00 - 09:00</div><div class="card-name">🌫️ 雾漫小东江</div><div class="card-desc">4月是最佳观雾季！清晨江面雾气缭绕如仙境。⚠️ 最晚7:00起床，太阳一晒雾就散。雨后晨雾效果更佳！</div>
+    <div class="tags"><span class="tag">🎫 东江湖80元</span><span class="tag tag-tip">📸 4月最佳观雾季</span></div></div>
+    <div class="card scenic"><div class="card-time">09:30 - 12:00</div><div class="card-name">🏞️ 龙景峡谷</div><div class="card-desc">东江湖景区内，瀑布群+溶洞，负氧离子爆表。雨天瀑布水量更大更壮观。</div></div>
+    <div class="card transport"><div class="card-time">17:08 - 19:17</div><div class="card-name">🚄 郴州西→深圳北</div><div class="card-desc">G1095次高铁返深，约2h。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>🚄 交通方案</h4>
+  <div class="trow"><span class="tl">去程：深圳北→耒阳西</span><span class="tr">高铁2h · ¥200</span></div>
+  <div class="trow"><span class="tl">耒阳西→郴州西</span><span class="tr">高铁30min · ¥50</span></div>
+  <div class="trow"><span class="tl">回程：郴州西→深圳北</span><span class="tr">高铁2h · ¥200</span></div>
+  <div class="trow"><span class="tl">郴州当地</span><span class="tr">包车约¥200/天</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">🚄 高铁往返</span><span class="br">¥450</span></div>
+  <div class="brow"><span class="bl">🏨 住宿（郴州1晚）</span><span class="br">¥150-200</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮</span><span class="br">¥200-300</span></div>
+  <div class="brow"><span class="bl">🎫 门票+交通</span><span class="br">¥200-300</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥1000-1250</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>耒阳是你老家，住宿免费，最经济的方案</li>
+    <li>4/4晴天是完美的祭祖天气，不要错过</li>
+    <li>东江湖晨雾7点前必须到达，太阳一晒就散</li>
+    <li>高椅岭雨天路滑，穿防滑鞋，注意安全</li>
+    <li>可以提前在12306抢票，清明高铁票紧张</li>
+  </ul>
+</div>
+</div>
+
+<div class="footer">清明行程规划 · 2026.04 · 5个方案随心选 🌤️</div>
+</div>
+
 <script>
-function switchTab(id) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+function switchTab(id){
+  document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   event.target.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 </body>
