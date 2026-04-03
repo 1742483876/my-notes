@@ -92,9 +92,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 <div class="container">
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('weather')">🌤️ 天气PK</button>
+  <button class="tab-btn" onclick="switchTab('zhanjiang')">🦪 湛江</button>
+  <button class="tab-btn" onclick="switchTab('maoming')">🏄 茂名</button>
+  <button class="tab-btn" onclick="switchTab('haikou')">🌴 海口</button>
   <button class="tab-btn" onclick="switchTab('sanya')">🏖️ 三亚</button>
-  <button class="tab-btn" onclick="switchTab('dali')">🌿 大理</button>
   <button class="tab-btn" onclick="switchTab('beihai')">🐚 北海</button>
+  <button class="tab-btn" onclick="switchTab('dali')">🌿 大理</button>
   <button class="tab-btn" onclick="switchTab('huizhou')">🌊 惠州</button>
   <button class="tab-btn" onclick="switchTab('chenzhou')">🏔️ 郴州</button>
 </div>
@@ -108,55 +111,331 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 
 <div class="weather-alert wa-info">
   <span class="icon">📊</span>
-  <div class="text"><strong>天气决定体验！先看天气再选方案</strong>清明期间华南雷雨频密，但西南和海南天气却很好。以下是各目的地4/4-6日天气实况对比。</div>
+  <div class="text"><strong>天气决定体验！先看天气再选方案</strong>清明期间华南雷雨频密，但粤西沿海和海南天气却很好。以下是各目的地4/4-5日天气实况对比。</div>
 </div>
 
 <div class="route-overview">
   <table class="compare-table">
-    <tr><th>目的地</th><th>4/4 周六</th><th>4/5 周日</th><th>4/6 周一</th><th>推荐</th></tr>
-    <tr style="background:rgba(76,175,80,0.08)"><td>🏖️ <b>三亚</b></td><td>多云 24-31℃</td><td>多云 25-31℃</td><td>多云 25-31℃</td><td>⭐⭐⭐⭐⭐</td></tr>
-    <tr style="background:rgba(76,175,80,0.05)"><td>🌿 <b>大理</b></td><td>多云 9-23℃</td><td>多云 9-22℃</td><td>多云 9-23℃</td><td>⭐⭐⭐⭐⭐</td></tr>
-    <tr style="background:rgba(33,150,243,0.06)"><td>🐚 <b>北海</b></td><td>⛈️雷阵雨→阴 22-29℃</td><td>☁️阴→多云 24-29℃</td><td>☁️多云 24-30℃</td><td>⭐⭐⭐⭐</td></tr>
-    <tr><td>🏔️ <b>郴州</b></td><td>☀️晴 13-25℃</td><td>🌧️小雨 17-27℃</td><td>🌧️小雨 18-25℃</td><td>⭐⭐⭐</td></tr>
-    <tr><td>🌊 <b>惠州</b></td><td>⛈️雷雨 22-26℃</td><td>🌧️中雨 22-27℃</td><td>⛈️大雨 22-27℃</td><td>⭐⭐</td></tr>
-    <tr><td>📍 <b>深圳</b></td><td>⛈️大雨 22-25℃</td><td>🌧️雨 22-27℃</td><td>⛈️雷雨 22-27℃</td><td>⭐</td></tr>
-    <tr><td>🎰 <b>澳门</b></td><td>⛈️大雨 22-25℃</td><td>🌧️雨 22-25℃</td><td>⛈️大雨 22-25℃</td><td>⭐</td></tr>
+    <tr><th>目的地</th><th>4/4 周六</th><th>4/5 周日</th><th>推荐</th></tr>
+    <tr style="background:rgba(76,175,80,0.1)"><td>🦪 <b>湛江</b></td><td>☀️ 晴 24-29℃</td><td>☁️ 零星雨 24-31℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(76,175,80,0.1)"><td>🐚 <b>北海</b></td><td>☀️ 晴 24-29℃</td><td>☀️ 晴 24-28℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(76,175,80,0.08)"><td>🏄 <b>茂名</b></td><td>☁️ 多云 23-30℃</td><td>☁️ 零星雨 24-30℃</td><td>⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(76,175,80,0.08)"><td>🌴 <b>海口</b></td><td>☀️ 晴 24-31℃</td><td>☀️ 晴 25-36℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(76,175,80,0.08)"><td>🏖️ <b>三亚</b></td><td>☀️ 晴 21-38℃</td><td>☀️ 晴 22-39℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr style="background:rgba(76,175,80,0.05)"><td>🌿 <b>大理</b></td><td>多云 9-23℃</td><td>多云 9-22℃</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td>🏔️ <b>郴州</b></td><td>零星雨 11-19℃</td><td>🌧️中雨 14-22℃</td><td>⭐⭐⭐</td></tr>
+    <tr><td>🌊 <b>惠州</b></td><td>🌧️中雨 21-25℃</td><td>🌧️中雨 20-27℃</td><td>⭐⭐</td></tr>
+    <tr><td>📍 <b>深圳</b></td><td>🌧️中雨 23-27℃</td><td>零星雨 22-27℃</td><td>⭐</td></tr>
   </table>
 </div>
 
 <div class="route-overview">
   <table class="compare-table">
-    <tr><th></th><th>🏖️三亚</th><th>🌿大理</th><th>🐚北海</th><th>🏔️郴州</th><th>🌊惠州</th></tr>
-    <tr><td>天气</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐</td></tr>
-    <tr><td>交通</td><td>✈️1.5h</td><td>✈️2.5h</td><td>🚄5h/✈️1.5h</td><td>🚄2h</td><td>🚗2.5h</td></tr>
-    <tr><td>人均预算</td><td>¥2500-3500</td><td>¥2500-3500</td><td>¥1500-2500</td><td>¥1200-1500</td><td>¥700-1100</td></tr>
-    <tr><td>人流量</td><td>中等偏多</td><td>中等</td><td>少</td><td>少</td><td>中等</td></tr>
-    <tr><td>亲近自然</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-    <tr><td>美食</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
-    <tr><td>出片指数</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><th></th><th>🦪湛江</th><th>🏄茂名</th><th>🌴海口</th><th>🏖️三亚</th><th>🐚北海</th><th>🌿大理</th></tr>
+    <tr><td>天气</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td>交通</td><td>🚄2.5h</td><td>🚄2h</td><td>✈️1h</td><td>✈️1.5h</td><td>🚄5h</td><td>✈️2.5h</td></tr>
+    <tr><td>人均预算</td><td>¥800-1200</td><td>¥800-1200</td><td>¥1800-2800</td><td>¥2500-3500</td><td>¥1500-2500</td><td>¥2500-3500</td></tr>
+    <tr><td>性价比</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+    <tr><td>美食</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>出片指数</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
   </table>
 </div>
 
 <div class="tips" style="background:rgba(76,175,80,0.1);border-color:rgba(76,175,80,0.2)">
   <h4 style="color:#81c784">✅ 综合推荐排名</h4>
   <ul>
-    <li><b>🥇 三亚（天气最佳）</b>：全程多云25-31℃，完美海岛天气！深圳直飞1.5h，4月是淡季性价比高</li>
-    <li><b>🥈 大理（风花雪月）</b>：多云9-23℃，干燥舒适。深圳直飞2.5h，苍山洱海+白族文化，最亲近自然</li>
-    <li><b>🥉 北海（最佳折中）</b>：4/5起转好，多云24-30℃。高铁5h/飞机1.5h，涠洲岛+银滩+海鲜，距离适中性价比高</li>
-    <li>🏅 郴州+耒阳（祭祖+游玩）：4/4晴天适合祭祖，后两天有雨但东江湖晨雾更美。高铁2h，最经济实惠</li>
-    <li>🏅 惠州海岸线：天气最差但距离最近，如果临时天气转好可作为备选</li>
+    <li><b>🥇 湛江（最佳性价比）</b>：高铁仅2.5h，明天晴天☀️ 24-29℃！金沙湾+湖光岩+赤坎老街，海鲜超便宜</li>
+    <li><b>🥈 北海（海岛体验）</b>：连续两天大晴天，银滩+涠洲岛，高铁5h/飞机1.5h</li>
+    <li><b>🥉 茂名（省内最近好天气）</b>：高铁仅2h，多云为主。浪漫海岸+放鸡岛，潜水圣地</li>
+    <li>🏅 海口/三亚（天气完美）：全程晴天，需要飞但体验最佳。海口骑楼+火山口，三亚蜈支洲+亚龙湾</li>
+    <li>🏅 大理（风花雪月）：多云9-23℃干燥舒适，苍山洱海+白族文化</li>
+    <li>🏅 郴州+耒阳（祭祖+游玩）：高铁2h最经济，但天气一般</li>
   </ul>
 </div>
 
 <div class="tips">
   <h4>💡 决策建议</h4>
   <ul>
-    <li>如果<b>追求好天气+海岛度假</b>：选三亚，4月淡季机票便宜，天气完美</li>
-    <li>如果<b>追求亲近自然+文艺慢游</b>：选大理，苍山洱海+古镇，昼夜温差大需带外套</li>
-    <li>如果<b>想要海岛+不想太远</b>：选北海，涠洲岛+银滩+海鲜，4/5起天气转好，性价比高</li>
-    <li>如果<b>要回家祭祖+顺路游玩</b>：选郴州方案，4/4晴天祭祖→东江湖晨雾</li>
-    <li>如果<b>不想坐飞机+就近出行</b>：选惠州，带好雨具，雨天也有备选</li>
-    <li>关于<b>澳门</b>：天气差+不顺路，不建议这次去</li>
+    <li>如果<b>追求性价比+好天气+近</b>：选湛江🦪，高铁2.5h直达，海鲜便宜到哭</li>
+    <li>如果<b>想看海+不想太远</b>：选茂名🏄，高铁2h，浪漫海岸拍照超出片</li>
+    <li>如果<b>想要完美海岛度假</b>：选海口/三亚🌴，天气完美但需飞</li>
+    <li>如果<b>想要海岛+性价比</b>：选北海🐚，涠洲岛+银滩，连续晴天</li>
+    <li>如果<b>追求亲近自然+文艺</b>：选大理🌿，苍山洱海+古镇慢生活</li>
+    <li>如果<b>要回家祭祖</b>：选郴州方案🏔️，4/4祭祖→东江湖晨雾</li>
+  </ul>
+</div>
+</div>
+
+<!-- ========== 湛江方案 ========== -->
+<div id="zhanjiang" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#e65100 0%,#ff8f00 50%,#ffca28 100%)">
+  <span class="hero-emoji">🦪</span>
+  <div class="hero-overlay"><h1>方案① · 湛江海鲜之都</h1><p>金沙湾 → 赤坎老街 → 湖光岩 → 特呈岛 · 3天2晚</p></div>
+</div>
+
+<div class="recommend-tag">🥇 最佳性价比 · 高铁2.5h+晴天☀️+海鲜自由</div>
+
+<div class="weather-alert wa-good">
+  <span class="icon">☀️</span>
+  <div class="text"><strong>明天晴天！24-29℃，完美出游天气</strong>湛江位于粤西，避开了华南大范围降雨带。4/4全天晴朗，4/5零星小雨不影响出行。海鲜之都，人均60元海鲜自由！</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳🚄</span><span class="route-arrow">→</span>
+    <span class="route-city">金沙湾</span><span class="route-arrow">→</span>
+    <span class="route-city">赤坎老街</span><span class="route-arrow">→</span>
+    <span class="route-city">湖光岩</span><span class="route-arrow">→</span>
+    <span class="route-city">特呈岛</span><span class="route-arrow">→</span>
+    <span class="route-city">🚄深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>3天2晚</em></span><span>🚄 <em>高铁2.5h</em></span><span>💰 <em>¥800-1200</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00 - 21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚～</div></div>
+    <div class="card transport"><div class="card-time">夜间出发 或 4/4早班</div><div class="card-name">🚄 深圳→湛江</div><div class="card-desc">高铁约2.5h直达湛江西站。建议4/4一早出发，早班车7:30左右发车，10点前到达。二等座约¥250。到达后打车至金沙湾附近酒店入住。</div>
+    <div class="tags"><span class="tag tag-tip">💡 高铁班次多，非常方便</span><span class="tag">🎫 二等座¥250</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 金沙湾+赤坎老街</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-sun">☀️ 晴 24-29℃</span></div>
+    <div class="card scenic"><div class="card-time">10:30 - 12:30</div><div class="card-name">🏖️ 金沙湾海滨浴场</div><div class="card-desc">湛江地标！细软金色沙滩+椰林，被称为"湛江版小三亚"。观海长廊2.6公里，漫步海边吹海风。海湾大桥下奥运冠军劳丽诗手印墙是网红打卡点。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">📸 蓝天椰树超出片</span></div></div>
+    <div class="card food"><div class="card-time">12:30 - 14:00</div><div class="card-name">🦪 东风市场海鲜大餐</div><div class="card-desc">湛江是"中国海鲜之都"！东风市场自买海鲜+加工，炭烧生蚝5元/个、椒盐皮皮虾、白灼大虾、清蒸石斑。人均60-80元就能海鲜自由！比三亚便宜一半以上。</div>
+    <div class="tags"><span class="tag tag-tip">💰 人均60-80</span><span class="tag tag-hot">🦪 生蚝之都</span></div></div>
+    <div class="card scenic"><div class="card-time">15:00 - 17:30</div><div class="card-name">🏘️ 赤坎老街 · 百年骑楼</div><div class="card-desc">始建于清末的百年骑楼群，中西合璧的法式建筑。斑驳墙壁上的老字号牌匾，穿越感满满。必吃水井头海鲜汤、马鲛鱼丸汤配油条。夜晚骑楼灯光秀超美！</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🧱 广州湾历史</span><span class="tag">📸 穿汉服更出片</span></div></div>
+    <div class="card scenic"><div class="card-time">18:00 - 19:30</div><div class="card-name">🌅 渔港公园看日落</div><div class="card-desc">以"渔人、渔港、渔船"为主题，傍晚渔船剪影+金红色海面，原图直出就能刷爆朋友圈。旁边就是霞山观海长廊，散步超舒服。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">🌅 绝美日落</span></div></div>
+    <div class="card food"><div class="card-time">20:00</div><div class="card-name">🍗 湛江白切鸡+夜宵</div><div class="card-desc">湛江招牌名菜！用沸水慢浸至熟，皮黄肉嫩，蘸沙姜酱油，原汁原味。再来份蛤蒌饭、簸箕炊，感受地道湛江味。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 湖光岩+特呈岛</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-cloud">☁️ 零星雨 24-31℃</span></div>
+    <div class="card nature"><div class="card-time">08:30 - 11:30</div><div class="card-name">🌋 湖光岩 · 世界级玛珥湖</div><div class="card-desc">世界仅有两座玛珥湖之一！14万年前火山爆发形成的火山口湖，湖水清澈如镜。环湖骑行道7公里，负氧离子含量超标准20倍。参观火山地质博物馆，打卡楞严寺千年古榕。</div>
+    <div class="tags"><span class="tag">🎫 50元</span><span class="tag tag-tip">🌋 世界地质公园</span><span class="tag">🚲 环湖骑行20元/h</span></div></div>
+    <div class="card scenic"><div class="card-time">13:00 - 16:00</div><div class="card-name">🏝️ 特呈岛 · 红树林秘境</div><div class="card-desc">距市区仅8分钟船程的热带海岛！500多年历史的天然红树林1000多亩，白鹭翩翩起舞。白沙滩踩沙、红怪石（火山石）探秘，租电动车环岛超chill。</div>
+    <div class="tags"><span class="tag">🚢 船票20元往返</span><span class="tag tag-free">上岛免费</span><span class="tag">🌿 红树林</span></div></div>
+    <div class="card scenic"><div class="card-time">16:30 - 18:00</div><div class="card-name">⛪ 霞山天主教堂+法国公使署</div><div class="card-desc">广州湾时期的法式建筑遗存，哥特式天主教堂庄严肃穆。法国公使署旧址见证湛江的殖民历史，步行10分钟可达，免费参观。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🇫🇷 法式风情</span></div></div>
+    <div class="card transport"><div class="card-time">19:00</div><div class="card-name">🚄 湛江→深圳</div><div class="card-desc">晚班高铁返深约2.5h。或者如果不着急，可以多住一晚，第二天去硇洲岛（中国最大火山岛）再返程。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>🚄 交通方案</h4>
+  <div class="trow"><span class="tl">去程：深圳北🚄湛江西</span><span class="tr">高铁2.5h · ¥250</span></div>
+  <div class="trow"><span class="tl">回程：湛江西🚄深圳北</span><span class="tr">高铁2.5h · ¥250</span></div>
+  <div class="trow"><span class="tl">特呈岛渡轮</span><span class="tr">8分钟 · 往返¥20</span></div>
+  <div class="trow"><span class="tl">市区交通</span><span class="tr">打车起步价5元 超便宜</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">🚄 往返高铁</span><span class="br">¥500</span></div>
+  <div class="brow"><span class="bl">🏨 住宿×2晚（金沙湾海景）</span><span class="br">¥200-400</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（3天海鲜自由）</span><span class="br">¥200-300</span></div>
+  <div class="brow"><span class="bl">🎫 门票+交通</span><span class="br">¥100-150</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥1000-1350</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>湛江打车起步价仅5元，1.8元/公里，交通成本极低</li>
+    <li>海鲜去东风市场自买加工最划算，别在景区吃</li>
+    <li>湛江生蚝全国闻名，炭烧生蚝必吃！5元/个起</li>
+    <li>湖光岩建议租电瓶车游览，步行环湖太耗时</li>
+    <li>特呈岛船班要提前查好时间，最后一班别错过</li>
+    <li>金沙湾附近住宿推荐万达海景LOFT，人均120元起</li>
+    <li>4月湛江已经很热，注意防晒补水</li>
+  </ul>
+</div>
+</div>
+
+<!-- ========== 茂名方案 ========== -->
+<div id="maoming" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#00695c 0%,#00897b 50%,#4db6ac 100%)">
+  <span class="hero-emoji">🏄</span>
+  <div class="hero-overlay"><h1>方案② · 茂名浪漫海岸</h1><p>浪漫海岸 → 放鸡岛 → 中国第一滩 · 3天2晚</p></div>
+</div>
+
+<div class="recommend-tag">🏄 省内最近好天气 · 高铁2h+潜水圣地</div>
+
+<div class="weather-alert wa-good">
+  <span class="icon">🌊</span>
+  <div class="text"><strong>多云为主，基本不下雨！23-30℃</strong>茂名4/4多云偶有零星雨，不影响出行。浪漫海岸5.3公里私家海岸+放鸡岛广东第一潜水圣地，拍照超出片！</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳🚄</span><span class="route-arrow">→</span>
+    <span class="route-city">浪漫海岸</span><span class="route-arrow">→</span>
+    <span class="route-city">放鸡岛</span><span class="route-arrow">→</span>
+    <span class="route-city">中国第一滩</span><span class="route-arrow">→</span>
+    <span class="route-city">🚄深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>3天2晚</em></span><span>🚄 <em>高铁2h</em></span><span>💰 <em>¥800-1200</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00 - 21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚～</div></div>
+    <div class="card transport"><div class="card-time">夜间或4/4早班</div><div class="card-name">🚄 深圳→茂名</div><div class="card-desc">高铁约2h直达茂名站。早班车约8点出发，10点到达。二等座约¥200。到达后打车40分钟至浪漫海岸度假区。</div>
+    <div class="tags"><span class="tag tag-tip">💡 省内最近的好天气</span><span class="tag">🎫 二等座¥200</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 浪漫海岸</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-cloud">☁️ 多云 23-30℃</span></div>
+    <div class="card scenic"><div class="card-time">11:00 - 13:00</div><div class="card-name">🏖️ 浪漫海岸 · 南中国最大生态海岸</div><div class="card-desc">5.3公里私家海岸线！东南亚风格异域建筑，椰林沙滩+水晶教堂+天空泳池+海边秋千，每一处都是网红打卡点。被誉为茂名的"马尔代夫"，拍照超出片！</div>
+    <div class="tags"><span class="tag">🎫 约80元</span><span class="tag tag-tip">📸 网红打卡圣地</span><span class="tag">⛪ 水晶教堂</span></div></div>
+    <div class="card food"><div class="card-time">13:00 - 14:00</div><div class="card-name">🦐 电白海鲜大餐</div><div class="card-desc">茂名电白是海鲜重镇，陈村海鲜街现撈现做。白灼虾、清蒸鱼、炒花甲，新鲜又便宜。人均60-80元。</div></div>
+    <div class="card fun"><div class="card-time">15:00 - 17:00</div><div class="card-name">🏄 海上运动体验</div><div class="card-desc">浪漫海岸提供丰富的海上项目：摩托艇、香蕉船、沙滩车、帆船环游。或者在椰林下的吊篮躺着发呆，吹海风喝椰汁，度假感拉满。</div>
+    <div class="tags"><span class="tag">🏄 摩托艇</span><span class="tag">🚤 香蕉船</span><span class="tag">🌴 椰林发呆</span></div></div>
+    <div class="card scenic"><div class="card-time">17:30 - 19:00</div><div class="card-name">🌅 浪漫海岸灯塔看日落</div><div class="card-desc">粉白灯塔矗立礁石之上，夕阳熔金倾泻入海。光影交错间，恍若误入宫崎骏手绘世界。日落后沙滩酒吧街亮灯，超有氛围。</div>
+    <div class="tags"><span class="tag tag-free">含门票内</span><span class="tag tag-tip">📸 宫崎骏既视感</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 放鸡岛+返程</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-cloud">☁️ 零星雨 24-30℃</span></div>
+    <div class="card transport"><div class="card-time">08:00 - 08:40</div><div class="card-name">🚢 博贺港→放鸡岛</div><div class="card-desc">从博贺港码头乘船约40分钟到达放鸡岛。船票+门票约¥130（网上提前买更便宜）。</div>
+    <div class="tags"><span class="tag tag-hot">⚠️ 建议提前买票</span></div></div>
+    <div class="card scenic"><div class="card-time">09:00 - 11:00</div><div class="card-name">🏝️ 放鸡岛 · 广东第一潜水圣地</div><div class="card-desc">广东沿海最大海岛！海水能见度达8米，有"东方夏威夷"之称。鸡头风光的飞来石、接吻石千姿百态。野菠萝公园百年野菠萝蔚为奇观。坐观光车环岛，天空之境、水上教堂、海上云梯都是绝佳机位。</div>
+    <div class="tags"><span class="tag">🤿 潜水180元/人</span><span class="tag tag-tip">📸 天空之境</span><span class="tag">🏝️ 广东最大海岛</span></div></div>
+    <div class="card nature"><div class="card-time">11:00 - 12:30</div><div class="card-name">🏖️ 黄金沙滩 · 水上运动</div><div class="card-desc">放鸡岛的黄金沙滩沙质洁白松软，海水清澈见底。可以浮潜看珊瑚（玻璃船80元/人），或在沙滩上踏浪发呆。岛上还能偶遇孔雀、猴子和小鹿！</div>
+    <div class="tags"><span class="tag">🐠 玻璃船看珊瑚</span><span class="tag">🦚 岛上小动物</span></div></div>
+    <div class="card transport"><div class="card-time">13:30</div><div class="card-name">🚢 放鸡岛→博贺港</div><div class="card-desc">乘船返回茂名。</div></div>
+    <div class="card food"><div class="card-time">14:30</div><div class="card-name">🍜 茂名特色小吃</div><div class="card-desc">撈粉、簸箕炊、水东鸭粥、糖心糍，茂名特色小吃一条街。人均30-50元吃到撑。</div></div>
+    <div class="card transport"><div class="card-time">16:00</div><div class="card-name">🚄 茂名→深圳</div><div class="card-desc">下午高铁返深约2h。晚上到家休息。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>🚄 交通方案</h4>
+  <div class="trow"><span class="tl">去程：深圳北🚄茂名</span><span class="tr">高铁2h · ¥200</span></div>
+  <div class="trow"><span class="tl">回程：茂名🚄深圳北</span><span class="tr">高铁2h · ¥200</span></div>
+  <div class="trow"><span class="tl">放鸡岛船票+门票</span><span class="tr">约¥130/人</span></div>
+  <div class="trow"><span class="tl">当地交通</span><span class="tr">打车/租车 约¥150/天</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">🚄 往返高铁</span><span class="br">¥400</span></div>
+  <div class="brow"><span class="bl">🏨 住宿×2晚（浪漫海岸附近）</span><span class="br">¥200-400</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（3天）</span><span class="br">¥200-300</span></div>
+  <div class="brow"><span class="bl">🎫 门票（浪漫海岸+放鸡岛）</span><span class="br">¥210</span></div>
+  <div class="brow"><span class="bl">🚗 当地交通</span><span class="br">¥100-150</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥1110-1460</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>浪漫海岸拍照超出片，建议穿飘逸长裙/白色系</li>
+    <li>放鸡岛船票建议提前在公众号购买，比现场便宜</li>
+    <li>放鸡岛环岛建议坐观光车（50元），不限时间可随时上下</li>
+    <li>如果想潜水，4月能见度好，浮潜/深潜都可以体验</li>
+    <li>茂名站到浪漫海岸约40分钟车程，建议打车或租车</li>
+    <li>景点分散建议租车（150/天）或包车更省心</li>
+    <li>防晒！即使多云紫外线也很强</li>
+  </ul>
+</div>
+</div>
+
+<!-- ========== 海口方案 ========== -->
+<div id="haikou" class="tab-content">
+<div class="hero" style="background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 50%,#66bb6a 100%)">
+  <span class="hero-emoji">🌴</span>
+  <div class="hero-overlay"><h1>方案③ · 海口椰城风情</h1><p>骑楼老街 → 火山口 → 假日海滩 → 云洞图书馆 · 3天2晚</p></div>
+</div>
+
+<div class="recommend-tag">🌴 天气完美 · 全程晴天24-36℃ · 椰城慢生活</div>
+
+<div class="weather-alert wa-good">
+  <span class="icon">☀️</span>
+  <div class="text"><strong>全程大晴天！4/4晴24-31℃，4/5晴25-36℃</strong>海口清明天气完美，比三亚近、比三亚便宜。骑楼老街南洋风情+火山口地质奇观+假日海滩椰林海风，文化与自然兼得。</div>
+</div>
+
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">深圳✈️</span><span class="route-arrow">→</span>
+    <span class="route-city">骑楼老街</span><span class="route-arrow">→</span>
+    <span class="route-city">火山口</span><span class="route-arrow">→</span>
+    <span class="route-city">假日海滩</span><span class="route-arrow">→</span>
+    <span class="route-city">云洞图书馆</span><span class="route-arrow">→</span>
+    <span class="route-city">✈️深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>3天2晚</em></span><span>✈️ <em>直飞1h</em></span><span>💰 <em>¥1800-2800</em></span>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 0 · 出发</div><div class="day-date">4月3日 周五</div></div>
+    <div class="card fun"><div class="card-time">18:00 - 21:00</div><div class="card-name">🎯 下班后跟朋友约活动</div><div class="card-desc">周五下班后跟朋友聚一聚～</div></div>
+    <div class="card transport"><div class="card-time">夜间</div><div class="card-name">✈️ 深圳→海口</div><div class="card-desc">深圳直飞海口美兰机场仅1小时！晚班机票约¥500-800。到达后打车至骑楼老街附近酒店入住。</div>
+    <div class="tags"><span class="tag tag-tip">💡 比三亚近且便宜</span><span class="tag">✈️ 直飞1h</span></div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 1 · 骑楼老街+火山口</div><div class="day-date">4月4日 周六 · 清明节</div><span class="weather-badge wb-sun">☀️ 晴 24-31℃</span></div>
+    <div class="card scenic"><div class="card-time">09:00 - 12:00</div><div class="card-name">🏘️ 骑楼老街 · 南洋风情</div><div class="card-desc">海口名片！600多栋百年骑楼建筑，南洋华侨风格中西合璧。中山路、博爱路、得胜沙路一带最精华。逛老字号、看浮雕窗花、品特色小吃。上"尚南堂"三楼露台俯瞰全景超出片。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">📸 国家历史文化名街</span><span class="tag">🍜 小吃天堂</span></div></div>
+    <div class="card food"><div class="card-time">12:00 - 13:00</div><div class="card-name">🍜 海南特色午餐</div><div class="card-desc">骑楼小吃街品尝海南粉、清补凉、椰子糕、抱罗粉、文昌鸡饭。海口的清补凉是一绝，椰奶+水果+薏米，清甜解暑。人均30-50元。</div></div>
+    <div class="card nature"><div class="card-time">14:00 - 17:00</div><div class="card-name">🌋 火山口地质公园</div><div class="card-desc">世界罕见的第四纪火山群！40多座火山锥，8000年前喷发形成。登上最高峰（222米）俯瞰海口全城和琼州海峡。火山口内部是天然氧吧，植被茂密凉爽宜人。</div>
+    <div class="tags"><span class="tag">🎫 54元</span><span class="tag tag-tip">🌋 休眠火山奇观</span><span class="tag">🏔️ 俯瞰琼州海峡</span></div></div>
+    <div class="card scenic"><div class="card-time">18:00 - 20:00</div><div class="card-name">🦐 板桥海鲜市场</div><div class="card-desc">海口最实惠的海鲜市场！种类繁多价格便宜，自买加工。和乐蟹、基围虾、石斑鱼，海南四大名菜之一的和乐蟹必吃。人均80-100元。</div></div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-dot"></div><div class="day-title">DAY 2 · 海滩+图书馆+返程</div><div class="day-date">4月5日 周日</div><span class="weather-badge wb-sun">☀️ 晴 25-36℃</span></div>
+    <div class="card scenic"><div class="card-time">08:00 - 11:00</div><div class="card-name">🏖️ 假日海滩 · 椰林海风</div><div class="card-desc">海口最美海滩！6.2公里长，左边椰林右边碧海。沙滩上晒太阳、踏浪、玩水上运动。还可以租帐篷在椰林下野餐发呆，享受热带海滨的慵懒时光。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag">🌴 椰林海滩</span><span class="tag">🏊 适合游泳</span></div></div>
+    <div class="card scenic"><div class="card-time">11:30 - 13:00</div><div class="card-name">📖 云洞图书馆</div><div class="card-desc">海口网红地标！白色混凝土建筑如同海边的"虫洞"，建筑本身就是艺术品。面朝大海读书、拍照，日落时分光影效果绝美。旁边就是世纪公园海边栈道。</div>
+    <div class="tags"><span class="tag tag-free">免费</span><span class="tag tag-tip">📸 网红建筑</span></div></div>
+    <div class="card scenic"><div class="card-time">13:30 - 15:00</div><div class="card-name">🙏 五公祠 · 海南第一楼</div><div class="card-desc">纪念唐宋五位贬谪名臣的古建筑群，红墙黛瓦飞檐斗拱。70亩园林内古树参天，九曲桥与洗马潭相映成趣。了解海南千年历史文化。</div>
+    <div class="tags"><span class="tag">🎫 25元</span><span class="tag">🏛️ 千年古迹</span></div></div>
+    <div class="card food"><div class="card-time">15:30</div><div class="card-name">🥥 椰子鸡+清补凉</div><div class="card-desc">离开前再来一顿！椰子鸡火锅用新鲜椰子水做锅底，再来碗椰奶清补凉，完美收官。</div></div>
+    <div class="card transport"><div class="card-time">17:00</div><div class="card-name">✈️ 海口→深圳</div><div class="card-desc">下午航班返深，仅1小时。海口美兰机场离市区近，30分钟可达。</div></div>
+  </div>
+</div>
+
+<div class="transport-info">
+  <h4>✈️ 交通方案</h4>
+  <div class="trow"><span class="tl">去程：深圳✈️海口</span><span class="tr">直飞1h · ¥500-800</span></div>
+  <div class="trow"><span class="tl">回程：海口✈️深圳</span><span class="tr">直飞1h · ¥500-800</span></div>
+  <div class="trow"><span class="tl">市区交通</span><span class="tr">打车/公交 约¥100/天</span></div>
+  <div class="trow"><span class="tl">航班频次</span><span class="tr">每天20+班 非常方便</span></div>
+</div>
+
+<div class="budget">
+  <h3>💰 预算估算（人均）</h3>
+  <div class="brow"><span class="bl">✈️ 往返机票</span><span class="br">¥1000-1600</span></div>
+  <div class="brow"><span class="bl">🏨 住宿×2晚（骑楼老街附近）</span><span class="br">¥300-500</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（3天）</span><span class="br">¥300-400</span></div>
+  <div class="brow"><span class="bl">🎫 门票+交通</span><span class="br">¥200-300</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥1800-2800</span></div>
+</div>
+
+<div class="tips">
+  <h4>📝 重要提醒</h4>
+  <ul>
+    <li>海口比三亚便宜很多，4月机票淡季价格友好</li>
+    <li>4/5气温高达36℃，注意防暑降温！多喝椰子水</li>
+    <li>骑楼老街买东西记得砍价，而且要狠！</li>
+    <li>火山口公园建议上午去，下午太热</li>
+    <li>假日海滩可以BBQ烧烤，提前准备食材更划算</li>
+    <li>海口美兰机场离市区仅30分钟，不用太早去</li>
+    <li>如果时间充裕，可以高铁1.5h去三亚玩一天再飞回</li>
   </ul>
 </div>
 </div>
@@ -590,7 +869,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 </div>
 </div>
 
-<div class="footer">清明行程规划 · 2026.04 · 6个方案随心选 🌤️</div>
+<div class="footer">清明行程规划 · 2026.04 · 9个方案随心选 🌤️</div>
 </div>
 
 <script>
