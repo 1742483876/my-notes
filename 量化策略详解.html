@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>量化策略详解</title>
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
+  --text:#e6edf3;--text2:#8b949e;--accent:#58a6ff;--green:#3fb950;
+  --red:#f85149;--yellow:#d29922;--purple:#bc8cff;--orange:#ffa657;
+  --card-radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1f2e 0%,#161b22 100%);border-bottom:1px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header-left{display:flex;align-items:center;gap:16px}
+.logo{width:40px;height:40px;background:linear-gradient(135deg,#58a6ff,#bc8cff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.header h1{font-size:22px;font-weight:700;background:linear-gradient(90deg,#58a6ff,#bc8cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.back-btn{background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;text-decoration:none;transition:.2s}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* 导航tabs */
+.nav-tabs{display:flex;gap:4px;padding:12px 32px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:nowrap}
+.nav-tab{padding:8px 16px;cursor:pointer;font-size:12px;color:var(--text2);border:1px solid var(--border);border-radius:20px;white-space:nowrap;transition:.2s;background:transparent}
+.nav-tab.active{color:#fff;background:var(--accent);border-color:var(--accent)}
+.nav-tab:hover:not(.active){color:var(--text);border-color:var(--text2)}
+.nav-tab .cat-icon{margin-right:4px}
+
+.container{max-width:1200px;margin:0 auto;padding:24px 32px}
+
+/* 概览区 */
+.overview{margin-bottom:32px}
+.overview h2{font-size:20px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.overview h2 .emoji{font-size:24px}
+.overview-desc{color:var(--text2);font-size:14px;line-height:1.8;margin-bottom:20px;max-width:800px}
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.mini-stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;min-width:140px;flex:1}
+.mini-stat .label{font-size:11px;color:var(--text2);margin-bottom:4px}
+.mini-stat .value{font-size:22px;font-weight:700}
+.mini-stat .value.green{color:var(--green)}
+.mini-stat .value.red{color:var(--red)}
+.mini-stat .value.blue{color:var(--accent)}
+.mini-stat .value.purple{color:var(--purple)}
+.mini-stat .value.yellow{color:var(--yellow)}
+
+/* 策略分类 */
+.category-section{margin-bottom:40px}
+.category-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.category-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.category-header h3{font-size:18px;font-weight:600}
+.category-header .count{font-size:12px;color:var(--text2);background:var(--surface2);padding:2px 10px;border-radius:12px}
+
+/* 策略卡片 */
+.strategy-cards{display:grid;grid-template-columns:1fr;gap:16px}
+.strategy-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;transition:.2s}
+.strategy-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(88,166,255,.1)}
+.strategy-card.expanded .card-detail{display:block}
+.card-header{padding:18px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:16px}
+.card-rank{min-width:48px;height:48px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.card-rank .weight-num{font-size:16px;font-weight:800;line-height:1}
+.card-rank .weight-label{font-size:9px;opacity:.8;margin-top:2px}
+.card-info{flex:1;min-width:0}
+.card-title-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.card-name{font-size:16px;font-weight:600}
+.card-id{font-size:11px;color:var(--text2);background:var(--surface2);padding:2px 8px;border-radius:4px;font-family:monospace}
+.card-type-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600}
+.card-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.card-metrics{display:flex;gap:16px;flex-wrap:wrap}
+.metric{display:flex;align-items:center;gap:4px;font-size:12px}
+.metric .label{color:var(--text2)}
+.metric .val{font-weight:600}
+.metric .val.pos{color:var(--green)}
+.metric .val.neg{color:var(--red)}
+.card-expand-btn{min-width:32px;height:32px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;margin-top:8px}
+.card-expand-btn:hover{border-color:var(--accent);color:var(--accent)}
+.strategy-card.expanded .card-expand-btn{transform:rotate(180deg)}
+
+/* 详情展开区 */
+.card-detail{display:none;border-top:1px solid var(--border);padding:20px;background:rgba(0,0,0,.15)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.detail-grid{grid-template-columns:1fr}}
+.detail-section{background:var(--surface2);border-radius:10px;padding:16px}
+.detail-section h4{font-size:13px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.detail-section h4 .icon{font-size:14px}
+.detail-content{font-size:13px;color:var(--text);line-height:1.8}
+.detail-content ul{list-style:none;padding:0}
+.detail-content ul li{padding:4px 0;padding-left:16px;position:relative}
+.detail-content ul li::before{content:'▸';position:absolute;left:0;color:var(--accent)}
+.detail-content code{background:rgba(88,166,255,.1);color:var(--accent);padding:1px 6px;border-radius:4px;font-size:12px;font-family:'SF Mono',Consolas,monospace}
+.detail-content .formula{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:8px 0;font-family:'SF Mono',Consolas,monospace;font-size:12px;color:var(--purple);white-space:pre-wrap;overflow-x:auto}
+.detail-content .tip{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);border-radius:8px;padding:10px 14px;margin:8px 0;font-size:12px;color:var(--yellow)}
+.detail-content .tip::before{content:'💡 ';font-size:13px}
+
+/* 指标解释区 */
+.glossary{margin-top:40px;background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:24px}
+.glossary h3{font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.glossary-item{background:var(--surface2);border-radius:8px;padding:14px 16px}
+.glossary-item .term{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:4px}
+.glossary-item .def{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* 响应式 */
+@media(max-width:768px){
+  .container{padding:16px}
+  .header{padding:16px}
+  .nav-tabs{padding:8px 16px}
+  .card-header{flex-direction:column;gap:12px}
+  .card-metrics{gap:8px}
+  .stat-row{flex-direction:column}
+  .glossary-grid{grid-template-columns:1fr}
+}
+
+/* 滚动条 */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text2)}
+
+/* 筛选按钮 */
+.filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:12px;color:var(--text2);margin-right:4px}
+.filter-btn{padding:5px 14px;border:1px solid var(--border);border-radius:16px;background:transparent;color:var(--text2);cursor:pointer;font-size:12px;transition:.2s}
+.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filter-btn:hover:not(.active){border-color:var(--text2);color:var(--text)}
+
+.loading{display:flex;align-items:center;justify-content:center;padding:80px;flex-direction:column;gap:16px;color:var(--text2)}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">📊</div>
+    <div>
+      <h1>量化策略详解手册</h1>
+      <div class="header-sub">29个策略 × 详细量化指标 × 触发条件 × 代码逻辑</div>
+    </div>
+  </div>
+  <a class="back-btn" href="量化选股大盘.html">← 返回大盘</a>
+</div>
+
+<div class="nav-tabs" id="navTabs"></div>
+
+<div class="container">
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div>加载策略数据中...</div>
+  </div>
+  <div id="mainContent" style="display:none">
+    <!-- 概览 -->
+    <div class="overview" id="overview"></div>
+    <!-- 筛选 -->
+    <div class="filter-row" id="filterRow"></div>
+    <!-- 策略卡片 -->
+    <div id="strategyContent"></div>
+    <!-- 指标术语解释 -->
+    <div class="glossary" id="glossary"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// 策略详细知识库（手动编写，包含每个策略的深度解释）
+// ═══════════════════════════════════════════════════════════════════
+const STRATEGY_KNOWLEDGE = {
+  bollingerMeanReversion: {
+    category: 'technical',
+    typeTag: '均值回归',
+    color: '#58a6ff',
+    principle: '布林带（Bollinger Bands）由约翰·布林格发明，由中轨（20日均线）和上下轨（±2倍标准差）组成。当股价跌破下轨时，意味着价格偏离均值超过2个标准差，统计上属于极端低估区域（概率<2.5%），大概率会向均值回归。',
+    trigger: [
+      '收盘价 < 布林带下轨（20日均线 - 2×标准差）',
+      '即：Close < MA20 - 2 × STD20'
+    ],
+    formula: 'MA20 = SUM(Close, 20) / 20\nSTD20 = √(Σ(Close_i - MA20)² / 20)\n下轨 = MA20 - 2 × STD20\n信号 = Close < 下轨',
+    params: [
+      { name: '均线周期', value: '20日', desc: '布林带中轨的移动平均窗口' },
+      { name: '标准差倍数', value: '2倍', desc: '上下轨距离中轨的标准差倍数' },
+      { name: '持仓天数', value: '5天', desc: '信号触发后的默认持仓周期' }
+    ],
+    strengths: ['统计学原理清晰，回归概率高', '适合震荡市场中的低吸策略', '信号明确，不需要主观判断'],
+    weaknesses: ['趋势性下跌中可能连续触发（追跌）', '单边熊市中均值回归可能失效', '需要配合其他指标过滤假信号'],
+    tip: '布林回归是本系统权重最高的策略（12.1%），历史胜率59.6%，Sharpe比率2.27，说明其信号质量稳定可靠。建议配合RSI超卖或成交量指标使用。'
+  },
+  equalWeight: {
+    category: 'portfolio',
+    typeTag: '组合策略',
+    color: '#d29922',
+    principle: '等权组合是最简单的资产配置策略，对所有策略赋予相同权重。其核心思想来自诺贝尔奖获得者马科维茨的"分散化投资"理论——不把鸡蛋放在一个篮子里。研究表明，等权组合在长期往往能跑赢大多数主动管理策略。',
+    trigger: [
+      '每20个交易日（约1个月）检查一次',
+      '如果过去20日涨幅 > 0%（市场不在下跌趋势中），触发信号'
+    ],
+    formula: '每只股票权重 = 1/N（N为持仓股票数）\n再平衡周期 = 20个交易日\n触发条件 = (Close - Close_20d前) / Close_20d前 > 0',
+    params: [
+      { name: '再平衡周期', value: '20天', desc: '每月调仓一次，恢复等权' },
+      { name: '趋势过滤', value: '20日涨幅>0', desc: '只在上涨趋势中建仓' }
+    ],
+    strengths: ['极度分散化，降低个股风险', '不依赖任何预测模型，最朴素的策略', '长期表现稳健，适合基准对比'],
+    weaknesses: ['无法捕捉个股alpha', '在牛市中跑不赢集中持仓策略', '等权意味着小盘股权重偏高'],
+    tip: '等权组合在系统中主要作为"基准策略"存在，权重11.7%。它的作用是当其他策略信号不明确时，提供一个安全的默认选择。'
+  },
+  ahPremiumArb: {
+    category: 'value',
+    typeTag: '套利策略',
+    color: '#3fb950',
+    principle: 'AH溢价套利利用同一家公司在A股和H股的价格差异。理论上同一公司的A股和H股应该价格趋同，但由于市场分割、投资者结构不同，经常出现A股溢价。当A股相对H股溢价率低于历史均值时，说明A股相对低估，存在套利空间。',
+    trigger: [
+      '股价低于20日均线5%以上（超跌低估代理）',
+      '成交量 > 20日均量的30%（确保有流动性）',
+      '即：Close < MA20 × 0.95 且 Volume > VMA20 × 0.3'
+    ],
+    formula: '超跌信号 = Close < MA20 × 0.95\n流动性过滤 = Volume > VMA20 × 0.3\n综合信号 = 超跌信号 AND 流动性过滤',
+    params: [
+      { name: '超跌阈值', value: '-5%', desc: '相对20日均线的偏离度阈值' },
+      { name: '流动性阈值', value: '30%均量', desc: '最低成交量要求（避免僵尸股）' }
+    ],
+    strengths: ['基于价值回归的逻辑，长期有效', '有明确的安全边际（低于均线）', '适合中长期持有'],
+    weaknesses: ['真实AH溢价数据不可用，使用代理指标', '收敛时间不确定', '需要关注港股通资金流向'],
+    tip: 'AH溢价策略权重11.3%，IC值较高说明其选股能力稳定。但注意本系统使用的是代理指标（超跌+流动性），并非真实AH溢价率。'
+  },
+  bottomFishing76: {
+    category: 'technical',
+    typeTag: '抄底策略',
+    color: '#f85149',
+    principle: '76.4%斐波那契回调位是技术分析中的重要支撑位。斐波那契数列（0, 1, 1, 2, 3, 5, 8, 13...）的相邻比值趋近黄金分割0.618，而0.764 = 1 - 0.236是深度回调位。当价格回调到这个位置并出现止跌信号（下影线+RSI低位），往往是较好的抄底时机。',
+    trigger: [
+      '5日跌幅 > 4%（短期急跌）',
+      'RSI(14) < 35（超卖区域）',
+      '下影线长度 ≥ 实体长度（止跌K线形态）'
+    ],
+    formula: '急跌信号 = (Close - Close_5d前) / Close_5d前 < -4%\nRSI过滤 = RSI(14) < 35\nK线形态 = (min(O,C) - Low) ≥ |Close - Open|\n综合信号 = 急跌 AND RSI超卖 AND 下影线',
+    params: [
+      { name: '跌幅阈值', value: '-4%/5日', desc: '5日内跌幅超过4%' },
+      { name: 'RSI阈值', value: '<35', desc: 'RSI低于35进入超卖区' },
+      { name: '下影线比', value: '≥1.0倍', desc: '下影线长度不低于实体' }
+    ],
+    strengths: ['多重条件过滤，信号质量高', '结合量价形态，不是盲目抄底', '斐波那契回调位有广泛市场共识'],
+    weaknesses: ['信号较少，可能错过机会', '在系统性风险中可能失效', '需要精确判断止跌形态'],
+    tip: '76抄底策略权重10.9%，胜率66.7%是所有策略中最高的。其三重过滤（急跌+RSI超卖+止跌K线）确保了信号的高质量，但交易次数较少。'
+  },
+  rsiOversold: {
+    category: 'technical',
+    typeTag: '超买超卖',
+    color: '#bc8cff',
+    principle: 'RSI（相对强弱指数）由韦尔斯·怀尔德发明，衡量一段时间内价格涨跌的相对强度。RSI值在0-100之间，低于30为超卖区（过度下跌），高于70为超买区。当RSI从超卖区回升穿越30时，意味着卖压减弱、买盘开始介入，是经典的反弹信号。',
+    trigger: [
+      '前一日 RSI(14) < 30（处于超卖区）',
+      '当日 RSI(14) ≥ 30（从超卖区回升）'
+    ],
+    formula: 'RSI(14) = 100 - 100/(1 + RS)\nRS = 14日平均涨幅 / 14日平均跌幅\n信号 = RSI_昨日 < 30 AND RSI_今日 ≥ 30',
+    params: [
+      { name: 'RSI周期', value: '14日', desc: '计算RSI的回看窗口' },
+      { name: '超卖阈值', value: '30', desc: 'RSI低于此值视为超卖' },
+      { name: '信号类型', value: '金叉30', desc: 'RSI从下方穿越30线' }
+    ],
+    strengths: ['经典技术指标，市场认可度高', '信号明确，无模糊地带', '适合短线反弹交易'],
+    weaknesses: ['强趋势下跌中RSI可能长期低于30', '单一指标信号噪音较大', '不适合趋势跟踪'],
+    tip: 'RSI超卖权重9.9%，胜率62.3%，Sharpe 4.66是所有策略中最高的。这说明RSI超卖信号的风险调整后收益非常优秀。'
+  },
+  permanentPortfolio: {
+    category: 'portfolio',
+    typeTag: '资产配置',
+    color: '#ffa657',
+    principle: '永久组合（Permanent Portfolio）由哈里·布朗提出，将资金等分为四份：股票25% + 债券25% + 黄金25% + 现金25%。这四类资产在不同经济周期中表现各异，组合后可以实现"全天候"的稳定收益。本系统中简化为每60个交易日（约一个季度）触发一次再平衡信号。',
+    trigger: [
+      '每60个交易日自动触发一次',
+      '固定周期再平衡，无需其他条件'
+    ],
+    formula: '信号 = (当前K线索引 % 60 == 0)\n配置比例 = 股票25% + 债券25% + 黄金25% + 现金25%',
+    params: [
+      { name: '再平衡周期', value: '60天', desc: '约一个季度调仓一次' },
+      { name: '各资产权重', value: '各25%', desc: '四类资产等权配置' }
+    ],
+    strengths: ['极度分散化，穿越牛熊', '不依赖任何预测，纯被动策略', '历史回测波动率极低'],
+    weaknesses: ['牛市中收益大幅落后纯股票', '本系统中只能代理股票部分', '再平衡成本不可忽略'],
+    tip: '永久组合权重9.0%，作为系统中的"压舱石"策略，在市场波动剧烈时提供稳定性。'
+  },
+  oversoldBounce: {
+    category: 'technical',
+    typeTag: '超跌反弹',
+    color: '#f85149',
+    principle: '超跌反弹策略捕捉短期暴跌后的技术性反弹。当一只股票在10个交易日内跌幅超过8%，市场往往过度反应，随后出现的1.5%以上反弹可能是空头回补或抄底资金介入的信号。',
+    trigger: [
+      '10日跌幅 > 8%（短期超跌）',
+      '随后5天内出现单日涨幅 ≥ 1.5%（反弹确认）'
+    ],
+    formula: '超跌 = (Close_i - Close_{i-10}) / Close_{i-10} ≤ -8%\n反弹 = 在超跌后5日内，某日 (Close - Close_前日) / Close_前日 ≥ 1.5%',
+    params: [
+      { name: '超跌阈值', value: '-8%/10日', desc: '10日内跌幅超过8%' },
+      { name: '反弹阈值', value: '+1.5%/日', desc: '单日反弹幅度' },
+      { name: '等待窗口', value: '5天', desc: '超跌后等待反弹的最大天数' }
+    ],
+    strengths: ['捕捉恐慌性抛售后的修复行情', '信号有明确的止跌确认', '适合波动较大的市场'],
+    weaknesses: ['趋势性下跌中可能反复触发', '反弹幅度和持续性不确定', '需要快速执行，延迟可能错过'],
+    tip: '超跌反弹权重8.4%，累计收益+426%是所有策略中最高的，但最大回撤也较大。适合风险偏好较高的投资者。'
+  },
+  coldStock: {
+    category: 'value',
+    typeTag: '冷门价值',
+    color: '#3fb950',
+    principle: '冷门股策略基于"被忽视的股票往往被低估"的逻辑。当一只股票的价格处于过去60日价格区间的低25%分位时，说明市场对它关注度低、情绪悲观，但这恰恰可能是价值发现的机会。',
+    trigger: [
+      '当前价格处于过去60日价格区间的低25%分位',
+      '即：Cold Index = (Close - 60日最低) / (60日最高 - 60日最低) ≤ 0.25'
+    ],
+    formula: 'Hist_High = MAX(High, 60日)\nHist_Low = MIN(Low, 60日)\nRange = Hist_High - Hist_Low\nCold_Index = (Close - Hist_Low) / Range\n信号 = Cold_Index ≤ 0.25',
+    params: [
+      { name: '回看周期', value: '60天', desc: '计算价格区间的窗口' },
+      { name: '冷门阈值', value: '25%分位', desc: '价格处于区间的低位' }
+    ],
+    strengths: ['逆向投资逻辑，买入被忽视的标的', '简单直观，易于理解', '长期来看冷门股有超额收益'],
+    weaknesses: ['冷门可能是有原因的（基本面恶化）', '等待价值发现的时间可能很长', '流动性风险较高'],
+    tip: '冷门股权重6.7%，交易次数218,914次说明信号非常频繁。需要配合基本面筛选使用。'
+  },
+  lowVolatility: {
+    category: 'factor',
+    typeTag: '因子策略',
+    color: '#bc8cff',
+    principle: '低波动因子是量化投资中最著名的异象之一——低波动股票的长期收益反而高于高波动股票（违反了"高风险高收益"的传统理论）。这被称为"低波动异象"（Low Volatility Anomaly），可能源于投资者对高波动股票的偏好导致其被高估。',
+    trigger: [
+      '过去20日日收益率标准差 < 历史均值的85%',
+      '即当前波动率显著低于长期平均水平'
+    ],
+    formula: 'Returns_i = (Close_i - Close_{i-1}) / Close_{i-1}\nSTD_20 = √(Σ(Ret_i - Mean_Ret)² / 20)\nHist_Mean_STD = 所有20日窗口STD的均值\n信号 = STD_20 < Hist_Mean_STD × 0.85',
+    params: [
+      { name: '波动率窗口', value: '20天', desc: '计算日收益率标准差的窗口' },
+      { name: '低波阈值', value: '85%均值', desc: '低于历史均值85%视为低波动' }
+    ],
+    strengths: ['学术研究支持的稳健因子', '高Sharpe比率，风险调整后收益优', '适合长期持有'],
+    weaknesses: ['在牛市中可能跑输高beta股票', '信号非常频繁，需要组合管理', '因子拥挤可能导致效果减弱'],
+    tip: '低波动因子权重6.2%，信号触发次数475,895次，是最频繁的策略之一。建议作为底仓配置使用。'
+  },
+  highDividendRotation: {
+    category: 'value',
+    typeTag: '高股息',
+    color: '#3fb950',
+    principle: '高股息轮动策略选择股息率高、估值低的价值股，定期轮动持有。高股息股票通常是成熟企业，现金流稳定。PE<15确保估值合理，定期轮动可以持续获取股息收益并捕捉价值修复。',
+    trigger: [
+      '近60日涨幅 < 10%（价格相对稳定，非炒作股）',
+      '近20日下跌 > 5%（短期回调，提供买入机会）',
+      'RSI(14) < 50（不在超买区域）'
+    ],
+    formula: 'Change_60d = (Close - Close_60d前) / Close_60d前 × 100\nChange_20d = (Close - Close_20d前) / Close_20d前 × 100\n信号 = Change_60d < 10 AND Change_20d < -5 AND RSI(14) < 50',
+    params: [
+      { name: '长期涨幅上限', value: '<10%/60日', desc: '排除过度炒作的股票' },
+      { name: '短期回调', value: '>5%/20日', desc: '确保有买入折扣' },
+      { name: 'RSI过滤', value: '<50', desc: '不追高' }
+    ],
+    strengths: ['股息提供安全垫和现金流', '低估值+高分红的双重保障', '适合稳健型投资者'],
+    weaknesses: ['真实股息率数据不可用，使用代理指标', '高股息股可能是增长放缓的信号', '利率上升环境中吸引力下降'],
+    tip: '高股息轮动权重5.1%，是系统中偏防守的策略。在市场下跌时，高股息股票通常跌幅较小。'
+  },
+  shortTermReversal: {
+    category: 'factor',
+    typeTag: '反转因子',
+    color: '#f85149',
+    principle: '短期反转效应是A股市场最显著的量化因子之一。研究表明，A股5日内大幅下跌的股票在随后几天有显著的反弹倾向，IC约+0.05~+0.08。这可能源于散户投资者的过度反应和机构的逆向操作。',
+    trigger: [
+      '条件A：5日跌幅 > 8% 且 当日收涨',
+      '条件B：5日跌幅 > 5% 且 当日涨幅 > 1%'
+    ],
+    formula: 'Ret_5d = (Close_{i-1} - Close_{i-6}) / Close_{i-6} × 100\nRet_1d = (Close_i - Close_{i-1}) / Close_{i-1} × 100\n信号A = Ret_5d < -8% AND Ret_1d > 0\n信号B = Ret_5d < -5% AND Ret_1d > 1%',
+    params: [
+      { name: '急跌阈值A', value: '-8%/5日', desc: '深度超跌' },
+      { name: '急跌阈值B', value: '-5%/5日', desc: '中度超跌' },
+      { name: '反弹确认', value: '当日收涨', desc: '企稳信号' }
+    ],
+    strengths: ['A股实证IC最高的因子之一', '信号频率适中，实操性强', '两档阈值兼顾灵敏度和准确度'],
+    weaknesses: ['需要快速执行，T+1限制下可能延迟', '在系统性风险中反弹可能是"死猫跳"', '交易成本对短期策略影响大'],
+    tip: '短期反转权重4.3%，IC约+0.05~+0.08。这是学术界和业界公认的A股有效因子。'
+  },
+  mainForceDivergence: {
+    category: 'flow',
+    typeTag: '资金流',
+    color: '#ffa657',
+    principle: '主力背离策略检测价格走势与资金流向的不一致。当价格波动率和成交量波动率的乘积（背离度）较低，但价格仍在上涨时，说明主力在悄悄吸筹——价格平稳上升但没有引起市场注意。',
+    trigger: [
+      '20日价格波动率 × 20日成交量波动率（背离度）< 0.3',
+      '且当日收盘价 > 前一日收盘价（价格上涨）'
+    ],
+    formula: 'Price_Vol = √(Σ((C_i - C_{i-1})/C_{i-1})² / 20)\nAvg_Vol = Σ(Volume_i) / 20\nVol_Vol = √(Σ((Vol_i - Avg_Vol)/Avg_Vol)² / 20)\nDivergence = Vol_Vol × Price_Vol × 100\n信号 = Divergence < 0.3 AND Close > Close_前日',
+    params: [
+      { name: '背离度阈值', value: '<0.3', desc: '价格和量能波动的乘积' },
+      { name: '价格方向', value: '上涨', desc: '确保价格在温和上升' },
+      { name: '回看窗口', value: '20天', desc: '计算波动率的窗口' }
+    ],
+    strengths: ['捕捉主力悄悄吸筹的行为', '低波动+温和上涨是健康走势', '不容易被市场情绪干扰'],
+    weaknesses: ['背离度计算较复杂', '低波动也可能是无人关注', '需要配合其他指标确认'],
+    tip: '主力背离权重3.3%，胜率52%。该策略的核心逻辑是"量缩价升"，是主力控盘的经典特征。'
+  },
+  mainForceDivRate: {
+    category: 'flow',
+    typeTag: '资金流',
+    color: '#ffa657',
+    principle: '主力背离率是主力背离策略的进阶版，不仅看背离度的绝对值，还看其变化率。当背离度快速下降超过25%时，说明主力资金正在加速介入——波动在收窄、资金在聚集，配合价格上涨，是更强的吸筹信号。',
+    trigger: [
+      '背离度环比下降 > 25%（背离度快速收敛）',
+      '且当日收盘价 > 前一日收盘价'
+    ],
+    formula: 'Div_Rate = (Divergence_今 - Divergence_昨) / Divergence_昨\n信号 = Div_Rate < -0.25 AND Close > Close_前日',
+    params: [
+      { name: '变化率阈值', value: '-25%', desc: '背离度环比下降幅度' },
+      { name: '价格方向', value: '上涨', desc: '确保趋势向上' }
+    ],
+    strengths: ['比绝对背离度更灵敏', '捕捉加速吸筹的转折点', '信号更精准但更稀少'],
+    weaknesses: ['依赖前一日背离度不为0', '信号非常稀少', '短期有效性需要验证'],
+    tip: '主力背离率权重0.5%，信号极少但精准度较高。可以作为辅助确认信号使用。'
+  },
+  maGoldenCross: {
+    category: 'technical',
+    typeTag: '趋势跟踪',
+    color: '#58a6ff',
+    principle: 'MA均线金叉是最经典的趋势跟踪信号。当短期均线（MA5）从下方穿越长期均线（MA20）时，说明短期趋势转强，多头力量开始占优。这是技术分析教科书中的基础买入信号。',
+    trigger: [
+      '前一日 MA5 ≤ MA20（短期均线在长期均线下方）',
+      '当日 MA5 > MA20（短期均线上穿长期均线）'
+    ],
+    formula: 'MA5 = SUM(Close, 5) / 5\nMA20 = SUM(Close, 20) / 20\n信号 = MA5_昨 ≤ MA20_昨 AND MA5_今 > MA20_今',
+    params: [
+      { name: '短期均线', value: '5日', desc: '快速均线' },
+      { name: '长期均线', value: '20日', desc: '慢速均线' }
+    ],
+    strengths: ['最经典的技术分析信号', '简单直观，适合入门', '趋势确立后收益可观'],
+    weaknesses: ['滞后性强，往往在趋势已经启动后才发出信号', '震荡市中频繁假信号', '当前系统IC为0，权重为0'],
+    tip: '均线金叉在本系统中权重为0%，说明在当前市场环境下其预测能力较弱。这是因为A股短线波动大，均线信号滞后性明显。'
+  },
+  volumeBreakout: {
+    category: 'technical',
+    typeTag: '突破策略',
+    color: '#58a6ff',
+    principle: '放量突破策略寻找价格突破前期高点且成交量显著放大的股票。"量在价先"是技术分析的基本原则，放量突破意味着有大量资金推动价格创新高，突破的有效性较高。',
+    trigger: [
+      '收盘价 > 过去20日最高价（价格突破）',
+      '当日成交量 / 20日均量 ≥ 1.5（放量确认）'
+    ],
+    formula: 'Max_High_20 = MAX(High, 20日)\nVol_Ratio = Volume / VMA20\n信号 = Close > Max_High_20 AND Vol_Ratio ≥ 1.5',
+    params: [
+      { name: '突破周期', value: '20日', desc: '突破前期高点的回看窗口' },
+      { name: '量比阈值', value: '≥1.5倍', desc: '成交量相对均量的放大倍数' }
+    ],
+    strengths: ['量价配合是最可靠的突破确认', '适合趋势启动初期介入', '有明确的止损位（突破失败回落）'],
+    weaknesses: ['假突破风险，尤其在震荡市', '追高买入心理压力大', '当前系统IC为负，权重为0'],
+    tip: '放量突破权重为0%，累计收益-82.4%。这说明在A股市场中，追涨突破策略整体表现不佳，建议谨慎使用。'
+  },
+  kdjGoldenCross: {
+    category: 'technical',
+    typeTag: '超买超卖',
+    color: '#bc8cff',
+    principle: 'KDJ指标由George Lane发明，是RSV（未成熟随机值）的平滑版本。K线和D线的金叉（K上穿D）在J值低位时（<20），是强烈的超卖反弹信号。J值=3K-2D，是最灵敏的指标。',
+    trigger: [
+      '前一日 J < 20（深度超卖区）',
+      '当日 J ≥ K 且 前一日 J < K（J线金叉K线）'
+    ],
+    formula: 'RSV = (Close - Low_9) / (High_9 - Low_9) × 100\nK = 2/3 × K_前 + 1/3 × RSV\nD = 2/3 × D_前 + 1/3 × K\nJ = 3K - 2D\n信号 = J_昨 < 20 AND J_今 ≥ K_今 AND J_昨 < K_昨',
+    params: [
+      { name: 'RSV周期', value: '9日', desc: 'KDJ的基础计算窗口' },
+      { name: 'K平滑', value: '3', desc: 'K线的平滑系数' },
+      { name: 'J值阈值', value: '<20', desc: '深度超卖区域' }
+    ],
+    strengths: ['J值灵敏度高，反应快速', '低位金叉信号质量较好', '适合短线交易'],
+    weaknesses: ['高频信号中假信号较多', '趋势行情中容易过早发出信号', '当前系统权重为0'],
+    tip: 'KDJ金叉权重为0%，但Sharpe 1.82说明信号质量不差，只是IC不显著。可以作为辅助参考。'
+  },
+  supermarket: {
+    category: 'value',
+    typeTag: '价值投资',
+    color: '#3fb950',
+    principle: '"超市策略"源自格雷厄姆的"捡烟蒂"投资法——在市场中寻找被低估的便宜货。本系统中用低价股（<40元）+ 量能活跃 + 近期未暴涨 + 站上均线的条件，筛选基本面稳健但被忽视的标的。',
+    trigger: [
+      '股价 < 40元（低价股）',
+      '当日量比 ≥ 1.1（有一定活跃度）',
+      '近20日涨幅 < 5%（未被爆炒）',
+      '收盘价 > MA10（站上短期均线）'
+    ],
+    formula: 'Vol_Ratio = Volume / VMA5\nChange_20d = (Close - Close_20d前) / Close_20d前 × 100\n信号 = Close < 40 AND Vol_Ratio ≥ 1.1 AND Change_20d < 5 AND Close > MA10',
+    params: [
+      { name: '价格上限', value: '40元', desc: '筛选低价股' },
+      { name: '量比阈值', value: '≥1.1', desc: '成交量略高于均量' },
+      { name: '涨幅上限', value: '<5%/20日', desc: '排除已被爆炒的' }
+    ],
+    strengths: ['综合多维度筛选，信号质量高', '低价+低涨幅提供安全边际', 'Sharpe 2.76非常优秀'],
+    weaknesses: ['信号极少（仅10次交易）', '低价股可能有退市风险', '需要配合基本面深入分析'],
+    tip: '超市策略交易次数仅10次但Sharpe 2.76，说明少而精。适合耐心等待的价值投资者。'
+  },
+  smallCapMomentum: {
+    category: 'factor',
+    typeTag: '因子策略',
+    color: '#bc8cff',
+    principle: '小市值动量是果仁网长期霸榜的经典策略。核心逻辑是：小市值股票流动性低、研究覆盖少，一旦启动上涨动量，持续性更强。用低成交量代理小市值，配合价格动量筛选。',
+    trigger: [
+      '成交量 < 20日均量的80%（低流动性代理小市值）',
+      '近20日涨幅 > 5%（价格动量）',
+      '当日收涨（趋势延续）'
+    ],
+    formula: 'Vol_Ratio = Volume / VMA20\nChange_20d = (Close - Close_20d前) / Close_20d前 × 100\n信号 = Vol_Ratio < 0.8 AND Change_20d > 5 AND Close > Close_前日',
+    params: [
+      { name: '量比上限', value: '<0.8', desc: '低于均量80%' },
+      { name: '动量阈值', value: '>5%/20日', desc: '月度正动量' },
+      { name: '方向确认', value: '当日收涨', desc: '趋势延续' }
+    ],
+    strengths: ['果仁网实盘验证的有效策略', '小盘股alpha显著', '动量因子长期有效'],
+    weaknesses: ['小盘股流动性差，冲击成本高', '真实市值数据不可用', '监管风险（壳资源价值下降）'],
+    tip: '小市值动量当前权重为0%，可能是因为近期大盘股风格占优。但长期来看，小市值因子在A股有显著alpha。'
+  },
+  macdDivergence: {
+    category: 'technical',
+    typeTag: '背离信号',
+    color: '#58a6ff',
+    principle: 'MACD底背离是经典的底部反转信号。当价格创出新低，但MACD柱状线没有创新低时，说明下跌动能在减弱，空头力量衰竭，多头可能即将反攻。这是"量变到质变"的转折点。',
+    trigger: [
+      '当前价格 < 前一个低点价格（价格创新低）',
+      'MACD柱状线 > 前一个低点的MACD柱状线（动能未创新低）',
+      'MACD柱状线 < 0（仍在空头区域，但在改善）'
+    ],
+    formula: 'DIF = EMA12 - EMA26\nDEA = EMA(DIF, 9)\nMACD柱 = (DIF - DEA) × 2\n信号 = Close < Prev_Low AND MACD柱 > Prev_Low_MACD AND MACD柱 < 0',
+    params: [
+      { name: '快线', value: 'EMA12', desc: '12日指数移动平均' },
+      { name: '慢线', value: 'EMA26', desc: '26日指数移动平均' },
+      { name: '信号线', value: 'EMA9', desc: 'DIF的9日平滑' }
+    ],
+    strengths: ['底部反转的经典信号', '动能衰减是客观的数学事实', '适合中线布局'],
+    weaknesses: ['底背离后可能继续下跌', '低点的定义有主观性', '信号较少'],
+    tip: 'MACD底背离当前权重为0%，但作为经典的技术分析信号，仍有参考价值。建议配合成交量确认。'
+  },
+  industryRotation: {
+    category: 'flow',
+    typeTag: '行业轮动',
+    color: '#ffa657',
+    principle: '行业景气轮动策略基于"强者恒强"的动量效应，选择近期表现最强的行业进行配置。当一只股票的价格从下方突破10日均线且伴随量能放大，说明资金正在流入该板块。',
+    trigger: [
+      '前一日收盘价 < MA10（在均线下方）',
+      '当日收盘价 > MA10（突破均线）',
+      '当日成交量 > 10日均量的1.2倍（量能配合）'
+    ],
+    formula: '信号 = Close_昨 < MA10_昨 AND Close_今 > MA10_今 AND Volume > VMA10 × 1.2',
+    params: [
+      { name: '均线周期', value: '10日', desc: '短期趋势均线' },
+      { name: '量比阈值', value: '≥1.2倍', desc: '成交量放大确认' }
+    ],
+    strengths: ['捕捉板块轮动的启动点', '量价配合提高信号可靠性', '适合趋势交易'],
+    weaknesses: ['行业数据不可用，用个股代理', '轮动节奏难以把握', '假突破风险'],
+    tip: '行业轮动权重为0%，但其逻辑在机构投资中广泛使用。建议关注北向资金流向作为辅助。'
+  },
+  priceMomentum: {
+    category: 'factor',
+    typeTag: '动量因子',
+    color: '#bc8cff',
+    principle: '价格动量是聚宽多因子模型的核心因子。研究表明，过去20日涨幅超过10%的股票，在未来短期内大概率继续上涨（动量效应）。配合近5日未大幅回调的条件，确保动量仍在持续。',
+    trigger: [
+      '近20日涨幅 > 10%（强势动量）',
+      '近5日涨幅 > -5%（未出现大幅回调）'
+    ],
+    formula: 'Change_20d = (Close - Close_20d前) / Close_20d前 × 100\nChange_5d = (Close - Close_5d前) / Close_5d前 × 100\n信号 = Change_20d > 10 AND Change_5d > -5',
+    params: [
+      { name: '动量周期', value: '20日', desc: '月度动量窗口' },
+      { name: '动量阈值', value: '>10%', desc: '最低涨幅要求' },
+      { name: '回调容忍', value: '>-5%/5日', desc: '短期回调不超过5%' }
+    ],
+    strengths: ['学术界公认的有效因子', '逻辑简单清晰', '适合趋势跟踪'],
+    weaknesses: ['动量反转风险', '追涨心理压力大', '在A股短期反转效应更强'],
+    tip: '价格动量权重为0%，这反映了A股市场短期反转效应强于动量效应的特点。中长期动量可能更有效。'
+  },
+  soeValueSelect: {
+    category: 'value',
+    typeTag: '价值投资',
+    color: '#3fb950',
+    principle: '央企价值精选策略选择国资背景、低估值、高质量的标的。均线多头排列（MA20 > MA60）确保趋势向上，温和涨幅（0-15%）排除过度炒作。央企有政策红利和分红保障。',
+    trigger: [
+      '收盘价 > MA20 > MA60（均线多头排列）',
+      '近20日涨幅在0-15%之间（温和上涨，非暴涨）'
+    ],
+    formula: '信号 = Close > MA20 > MA60 AND 0 < Change_20d < 15',
+    params: [
+      { name: '短期均线', value: 'MA20', desc: '20日均线' },
+      { name: '长期均线', value: 'MA60', desc: '60日均线' },
+      { name: '涨幅范围', value: '0-15%', desc: '温和上涨区间' }
+    ],
+    strengths: ['政策红利+低估值双重保障', '均线多头排列确认趋势', '适合稳健投资者'],
+    weaknesses: ['无法识别真正的央企', '均线排列是滞后信号', '温和涨幅可能错过强势股'],
+    tip: '央企价值精选权重为0%，但在"中特估"行情中可能会重新获得高权重。'
+  },
+  earningsAcceleration: {
+    category: 'value',
+    typeTag: '业绩驱动',
+    color: '#3fb950',
+    principle: '业绩加速策略寻找净利润增速连续加速的公司。由于无法获取真实财报数据，本系统用价格加速上涨作为代理——近10日涨幅显著高于近30日涨幅的比例，说明市场在加速定价某个利好因素。',
+    trigger: [
+      '近30日涨幅 > 5%（基础上涨趋势）',
+      '近10日涨幅 > 近30日涨幅的50%（加速上涨）',
+      '近10日涨幅 > 3%（绝对涨幅要求）'
+    ],
+    formula: 'Change_30d = (Close - Close_30d前) / Close_30d前 × 100\nChange_10d = (Close - Close_10d前) / Close_10d前 × 100\n信号 = Change_30d > 5 AND Change_10d > Change_30d × 0.5 AND Change_10d > 3',
+    params: [
+      { name: '长期涨幅', value: '>5%/30日', desc: '确保有上涨趋势' },
+      { name: '加速比例', value: '>50%', desc: '10日涨幅占30日涨幅的比例' },
+      { name: '绝对涨幅', value: '>3%/10日', desc: '最低加速幅度' }
+    ],
+    strengths: ['加速上涨往往伴随基本面利好', '动量加速是强势信号', '适合趋势交易'],
+    weaknesses: ['无真实业绩数据，用价格代理', '加速后可能面临获利回吐', '追涨风险'],
+    tip: '业绩加速权重为0%，但其逻辑（业绩驱动的价格加速）在基本面投资中非常重要。'
+  },
+  insiderBuying: {
+    category: 'flow',
+    typeTag: '内部人信号',
+    color: '#ffa657',
+    principle: '大股东增持是最强的内部人信号之一——管理层比任何外部投资者都更了解公司真实价值。本系统用大成交量（>2倍均量）+ 价格上涨作为代理，模拟大资金介入的特征。',
+    trigger: [
+      '当日成交量 > 20日均量的2倍（大资金介入）',
+      '当日收涨（价格上涨）',
+      '近5日涨幅 > 1%（短期趋势向上）'
+    ],
+    formula: 'Vol_Ratio = Volume / VMA20\nChange_5d = (Close - Close_5d前) / Close_5d前 × 100\n信号 = Vol_Ratio > 2 AND Close > Close_前日 AND Change_5d > 1',
+    params: [
+      { name: '量比阈值', value: '>2倍', desc: '成交量放大2倍以上' },
+      { name: '价格方向', value: '收涨', desc: '确保是买入推动' },
+      { name: '趋势确认', value: '>1%/5日', desc: '短期趋势向上' }
+    ],
+    strengths: ['大资金介入是强信号', '量价配合提高可靠性', '适合跟庄策略'],
+    weaknesses: ['无法区分增持和出货', '大成交量也可能是对倒', '需要配合其他信息确认'],
+    tip: '大股东增持权重为0%，但放量上涨本身是值得关注的信号。建议结合公告信息使用。'
+  },
+  idiosyncraticMomentum: {
+    category: 'factor',
+    typeTag: 'FF因子',
+    color: '#bc8cff',
+    principle: '特质动量借鉴Fama-French四因子模型的残差思路。传统动量因子容易受大盘涨跌影响，特质动量去掉了大盘成分，只看个股超额收益的动量。如果一只股票在大盘下跌时仍能上涨，说明它有独立的alpha。',
+    trigger: [
+      '近20日涨幅 > 近60日滚动均值 + 5%（超额动量）',
+      '近20日涨幅 > 0（绝对正收益）'
+    ],
+    formula: 'Change_20d = (Close - Close_20d前) / Close_20d前 × 100\nAvg_Change_60d = 过去60日内所有20日涨幅的均值\n信号 = Change_20d > Avg_Change_60d + 5 AND Change_20d > 0',
+    params: [
+      { name: '动量窗口', value: '20日', desc: '计算动量的窗口' },
+      { name: '历史窗口', value: '60日', desc: '计算历史均值的窗口' },
+      { name: '超额阈值', value: '+5%', desc: '超过历史均值的幅度' }
+    ],
+    strengths: ['去除大盘噪音，更纯粹的alpha', '学术支持（FF四因子残差）', '选出真正有独立行情的股票'],
+    weaknesses: ['计算复杂度较高', '需要足够长的历史数据', '超额动量可能是短期事件驱动'],
+    tip: '特质动量权重为0%，但其理论基础（FF四因子残差动量）在学术界被广泛验证。'
+  },
+  turnoverSpike: {
+    category: 'flow',
+    typeTag: '量能异动',
+    color: '#ffa657',
+    principle: '换手率异动是A股实测IC最高的因子之一（可达+0.10）。当成交量突然放大2.5倍以上且价格上涨，通常意味着主力资金大举介入。三档阈值设计兼顾了不同强度的信号。',
+    trigger: [
+      '条件A：量比 ≥ 2.5 且 当日收涨',
+      '条件B：量比 ≥ 1.8 且 涨幅 > 1%',
+      '条件C：量比 ≥ 1.5 且 涨幅 > 2%'
+    ],
+    formula: 'Vol_Ratio = Volume / VMA20_前日\nPrice_Chg = (Close - Close_前日) / Close_前日 × 100\n信号A = Vol_Ratio ≥ 2.5 AND Price_Chg > 0\n信号B = Vol_Ratio ≥ 1.8 AND Price_Chg > 1.0\n信号C = Vol_Ratio ≥ 1.5 AND Price_Chg > 2.0',
+    params: [
+      { name: '量比阈值A', value: '≥2.5倍', desc: '超大量+小涨' },
+      { name: '量比阈值B', value: '≥1.8倍', desc: '大量+中涨' },
+      { name: '量比阈值C', value: '≥1.5倍', desc: '中量+大涨' }
+    ],
+    strengths: ['A股实测IC最高的因子之一', '三档阈值设计灵活', '量价配合是最可靠的信号'],
+    weaknesses: ['可能是利好兑现的出货信号', '高换手率也可能是对倒', '需要区分主动买入和被动卖出'],
+    tip: '换手率异动权重为0%，但IC可达+0.10。当前权重低可能是因为近期市场缩量。'
+  },
+  volumePriceDivergence: {
+    category: 'technical',
+    typeTag: '量价背离',
+    color: '#58a6ff',
+    principle: '缩量上涨（量价背离）是筹码锁定的经典信号。当股价创近期新高但成交量反而萎缩，说明持股者惜售、卖压极小，筹码高度集中在主力手中。这种状态下股价往往能持续上涨。',
+    trigger: [
+      '条件A：创20日新高 + 量比 ≤ 0.9 + 收涨',
+      '条件B：创10日新高 + 量比 ≤ 0.8 + 涨幅 > 0.5%',
+      '条件C：涨幅 > 1.5% + 量比 ≤ 0.6'
+    ],
+    formula: 'New_High_20 = Close ≥ MAX(Close, 20日)\nVol_Ratio = Volume / VMA20_前日\n信号A = New_High_20 AND Vol_Ratio ≤ 0.9 AND Close > Close_前日\n信号B = New_High_10 AND Vol_Ratio ≤ 0.8 AND Price_Chg > 0.5\n信号C = Price_Chg > 1.5 AND Vol_Ratio ≤ 0.6',
+    params: [
+      { name: '新高周期', value: '10/20日', desc: '价格创新高的窗口' },
+      { name: '缩量阈值', value: '≤0.6~0.9', desc: '量比低于均量' },
+      { name: '涨幅要求', value: '>0~1.5%', desc: '价格上涨确认' }
+    ],
+    strengths: ['筹码锁定是强势特征', '缩量新高说明卖压极小', 'IC约+0.04~+0.07'],
+    weaknesses: ['缩量也可能是无人关注', '创新高后可能面临获利盘', '需要持续观察量能变化'],
+    tip: '缩量上涨权重为0%，IC约+0.04~+0.07。在主升浪阶段这个信号非常有效。'
+  },
+  consecutiveYangLine: {
+    category: 'technical',
+    typeTag: 'K线形态',
+    color: '#58a6ff',
+    principle: '连阳策略寻找连续3天以上收阳线的股票。连续阳线是多头强势的直接体现，说明买盘持续占优。在A股中，连阳后往往还有惯性上涨。',
+    trigger: ['最近3天全部收阳线（收盘价 > 开盘价）'],
+    formula: '阳线 = Close > Open\n信号 = 连续3天阳线',
+    params: [{ name: '连阳天数', value: '≥3天', desc: '最少连续阳线数' }],
+    strengths: ['直观的多头强势信号', '简单易用', '短线动量延续'],
+    weaknesses: ['可能是拉升出货', '涨幅不确定', '需要配合量能确认'],
+    tip: '连阳策略权重为0%，信号过于简单，建议配合成交量和均线使用。'
+  },
+  volumeNewHigh: {
+    category: 'technical',
+    typeTag: '量价共振',
+    color: '#58a6ff',
+    principle: '新高放量策略要求成交额（价×量）连续60天创新高且价格上涨。这是极其严格的筛选条件，意味着资金在持续且加速流入。',
+    trigger: [
+      '当日成交额 > 过去60天每一天的成交额（连续新高）',
+      '当日收涨'
+    ],
+    formula: 'Amount = Close × Volume\n信号 = Amount_今 > MAX(Amount, 过去60天) AND Close > Close_前日',
+    params: [{ name: '新高周期', value: '60天', desc: '成交额创新高的回看窗口' }],
+    strengths: ['极其严格的筛选，信号稀少但精准', '资金持续流入是最强信号', '适合捕捉主升浪'],
+    weaknesses: ['条件过于严格，信号极少', '可能是行情末端的放量', '难以实时监控'],
+    tip: '新高放量权重为0%，条件极其严格导致信号稀少。'
+  }
+};
+
+// 策略分类
+const CATEGORIES = {
+  technical: { name: '技术分析策略', icon: '📈', color: '#58a6ff', desc: '基于价格、成交量等市场数据的技术指标' },
+  value:     { name: '价值投资策略', icon: '💎', color: '#3fb950', desc: '基于估值、股息、基本面等价值因素' },
+  factor:    { name: '量化因子策略', icon: '🧮', color: '#bc8cff', desc: '基于学术研究验证的量化因子' },
+  flow:      { name: '资金流向策略', icon: '💰', color: '#ffa657', desc: '基于成交量、资金流向等资金面信号' },
+  portfolio: { name: '组合配置策略', icon: '🎯', color: '#d29922', desc: '基于资产配置和分散化投资理论' }
+};
+
+// 加载数据
+async function loadData() {
+  try {
+    const resp = await fetch('data/api/quant_dashboard.json?' + Date.now());
+    return await resp.json();
+  } catch(e) {
+    console.error('加载失败:', e);
+    return null;
+  }
+}
+
+function renderPage(data) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+
+  const strategies = data.strategy_list || [];
+  const weights = data.weights || {};
+
+  // 概览
+  const activeCount = strategies.filter(s => s.weight > 0).length;
+  const totalWeight = Object.values(weights).reduce((a,b) => a + Math.max(b,0), 0);
+  document.getElementById('overview').innerHTML = `
+    <h2><span class="emoji">📖</span> 策略体系概览</h2>
+    <div class="overview-desc">
+      本量化系统共包含 <strong>${strategies.length}</strong> 个策略，分为技术分析、价值投资、量化因子、资金流向、组合配置五大类。
+      每个策略通过 <strong>IC（信息系数）</strong> 计算预测能力，并基于 <strong>ICIR（信息系数比率）</strong> 分配权重。
+      当前有 <strong>${activeCount}</strong> 个策略处于活跃状态（权重>0），系统每日自动扫描 <strong>${data.stock_count || 5198}</strong> 只A股。
+    </div>
+    <div class="stat-row">
+      <div class="mini-stat"><div class="label">策略总数</div><div class="value blue">${strategies.length}</div></div>
+      <div class="mini-stat"><div class="label">活跃策略</div><div class="value green">${activeCount}</div></div>
+      <div class="mini-stat"><div class="label">零权重策略</div><div class="value red">${strategies.length - activeCount}</div></div>
+      <div class="mini-stat"><div class="label">扫描股票数</div><div class="value purple">${(data.stock_count||5198).toLocaleString()}</div></div>
+      <div class="mini-stat"><div class="label">Alpha因子</div><div class="value yellow">${data.alpha_enabled ? '已启用' : '未启用'}</div></div>
+    </div>
+  `;
+
+  // 导航tabs
+  const tabsHtml = `
+    <div class="nav-tab active" data-cat="all"><span class="cat-icon">🏠</span>全部</div>
+    ${Object.entries(CATEGORIES).map(([k,v]) => 
+      `<div class="nav-tab" data-cat="${k}"><span class="cat-icon">${v.icon}</span>${v.name}</div>`
+    ).join('')}
+  `;
+  document.getElementById('navTabs').innerHTML = tabsHtml;
+
+  // 筛选
+  document.getElementById('filterRow').innerHTML = `
+    <span class="filter-label">排序：</span>
+    <button class="filter-btn active" data-sort="weight">按权重</button>
+    <button class="filter-btn" data-sort="winrate">按胜率</button>
+    <button class="filter-btn" data-sort="sharpe">按Sharpe</button>
+    <button class="filter-btn" data-sort="trades">按交易次数</button>
+    <span class="filter-label" style="margin-left:16px">显示：</span>
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="active">仅活跃</button>
+    <button class="filter-btn" data-filter="inactive">仅休眠</button>
+  `;
+
+  let currentSort = 'weight';
+  let currentFilter = 'all';
+  let currentCat = 'all';
+
+  function renderStrategies() {
+    let list = [...strategies];
+    // 分类过滤
+    if (currentCat !== 'all') {
+      list = list.filter(s => {
+        const k = STRATEGY_KNOWLEDGE[s.id];
+        return k && k.category === currentCat;
+      });
+    }
+    // 活跃过滤
+    if (currentFilter === 'active') list = list.filter(s => s.weight > 0);
+    if (currentFilter === 'inactive') list = list.filter(s => s.weight <= 0);
+    // 排序
+    if (currentSort === 'weight') list.sort((a,b) => b.weight - a.weight);
+    else if (currentSort === 'winrate') list.sort((a,b) => (b.backtest_1y?.win_rate||0) - (a.backtest_1y?.win_rate||0));
+    else if (currentSort === 'sharpe') list.sort((a,b) => (b.backtest_1y?.sharpe||0) - (a.backtest_1y?.sharpe||0));
+    else if (currentSort === 'trades') list.sort((a,b) => (b.backtest_1y?.total_trades||0) - (a.backtest_1y?.total_trades||0));
+
+    // 按分类分组
+    const grouped = {};
+    list.forEach(s => {
+      const k = STRATEGY_KNOWLEDGE[s.id];
+      const cat = k ? k.category : 'technical';
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(s);
+    });
+
+    let html = '';
+    const catOrder = currentCat === 'all' ? Object.keys(CATEGORIES) : [currentCat];
+    catOrder.forEach(cat => {
+      const items = grouped[cat];
+      if (!items || !items.length) return;
+      const catInfo = CATEGORIES[cat];
+      html += `
+        <div class="category-section">
+          <div class="category-header">
+            <div class="category-icon" style="background:${catInfo.color}20;color:${catInfo.color}">${catInfo.icon}</div>
+            <h3>${catInfo.name}</h3>
+            <span class="count">${items.length} 个策略</span>
+          </div>
+          <div class="strategy-cards">
+            ${items.map(s => renderStrategyCard(s)).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    document.getElementById('strategyContent').innerHTML = html;
+    bindCardEvents();
+  }
+
+  function renderStrategyCard(s) {
+    const k = STRATEGY_KNOWLEDGE[s.id] || {};
+    const bt = s.backtest_1y || {};
+    const weightPct = (s.weight * 100).toFixed(1);
+    const bgColor = s.weight > 0 ? (k.color || '#58a6ff') : '#30363d';
+
+    return `
+      <div class="strategy-card" data-id="${s.id}">
+        <div class="card-header">
+          <div class="card-rank" style="background:${bgColor}">
+            <span class="weight-num">${weightPct}%</span>
+            <span class="weight-label">权重</span>
+          </div>
+          <div class="card-info">
+            <div class="card-title-row">
+              <span class="card-name">${s.name}</span>
+              <span class="card-id">${s.id}</span>
+              ${k.typeTag ? `<span class="card-type-tag" style="background:${k.color||'#58a6ff'}22;color:${k.color||'#58a6ff'};border:1px solid ${k.color||'#58a6ff'}44">${k.typeTag}</span>` : ''}
+            </div>
+            <div class="card-desc">${s.desc}</div>
+            <div class="card-metrics">
+              <div class="metric"><span class="label">胜率</span><span class="val ${bt.win_rate>50?'pos':bt.win_rate>0?'neg':''}">${bt.win_rate||'-'}%</span></div>
+              <div class="metric"><span class="label">平均收益</span><span class="val ${(bt.avg_return||0)>0?'pos':'neg'}">${bt.avg_return>0?'+':''}${bt.avg_return||'-'}%</span></div>
+              <div class="metric"><span class="label">累计收益</span><span class="val ${(bt.total_return||0)>0?'pos':'neg'}">${bt.total_return>0?'+':''}${bt.total_return||'-'}%</span></div>
+              <div class="metric"><span class="label">Sharpe</span><span class="val">${bt.sharpe||'-'}</span></div>
+              <div class="metric"><span class="label">最大回撤</span><span class="val neg">${bt.max_drawdown||'-'}%</span></div>
+              <div class="metric"><span class="label">交易次数</span><span class="val">${(bt.total_trades||0).toLocaleString()}</span></div>
+            </div>
+          </div>
+          <button class="card-expand-btn" title="展开详情">▼</button>
+        </div>
+        <div class="card-detail">
+          ${renderCardDetail(s, k, bt)}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCardDetail(s, k, bt) {
+    if (!k.principle) return '<div style="padding:20px;color:var(--text2)">暂无详细说明</div>';
+    return `
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h4><span class="icon">📚</span> 策略原理</h4>
+          <div class="detail-content">${k.principle}</div>
+        </div>
+        <div class="detail-section">
+          <h4><span class="icon">⚡</span> 触发条件</h4>
+          <div class="detail-content">
+            <ul>${(k.trigger||[]).map(t => `<li>${t}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h4><span class="icon">🔢</span> 计算公式</h4>
+          <div class="detail-content">
+            <div class="formula">${k.formula||''}</div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h4><span class="icon">⚙️</span> 关键参数</h4>
+          <div class="detail-content">
+            <ul>${(k.params||[]).map(p => `<li><code>${p.name}</code> = <strong>${p.value}</strong> — ${p.desc}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h4><span class="icon">✅</span> 优势</h4>
+          <div class="detail-content">
+            <ul>${(k.strengths||[]).map(s => `<li>${s}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h4><span class="icon">⚠️</span> 风险与局限</h4>
+          <div class="detail-content">
+            <ul>${(k.weaknesses||[]).map(w => `<li>${w}</li>`).join('')}</ul>
+          </div>
+        </div>
+      </div>
+      ${k.tip ? `<div class="detail-content" style="margin-top:16px"><div class="tip">${k.tip}</div></div>` : ''}
+    `;
+  }
+
+  function bindCardEvents() {
+    document.querySelectorAll('.strategy-card').forEach(card => {
+      card.querySelector('.card-header').addEventListener('click', () => {
+        card.classList.toggle('expanded');
+      });
+    });
+  }
+
+  // 事件绑定
+  document.getElementById('navTabs').addEventListener('click', e => {
+    const tab = e.target.closest('.nav-tab');
+    if (!tab) return;
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentCat = tab.dataset.cat;
+    renderStrategies();
+  });
+
+  document.getElementById('filterRow').addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    if (btn.dataset.sort) {
+      document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSort = btn.dataset.sort;
+    }
+    if (btn.dataset.filter) {
+      document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+    }
+    renderStrategies();
+  });
+
+  // 渲染术语表
+  document.getElementById('glossary').innerHTML = `
+    <h3>📖 量化指标术语解释</h3>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="term">权重 (Weight)</div>
+        <div class="def">策略在综合评分中的占比。由IC（信息系数）计算得出，IC越高权重越大。正权重策略命中时加分，负权重策略命中时扣分（反向信号）。权重为0表示该策略当前无预测能力。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">胜率 (Win Rate)</div>
+        <div class="def">策略信号触发后，持仓5天内盈利的交易占总交易的比例。胜率>50%说明策略整体有正收益预期。注意胜率高不代表收益高，需结合平均收益看。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">平均收益 (Avg Return)</div>
+        <div class="def">所有交易的平均收益率（%）。正值表示策略整体盈利，负值表示亏损。这是衡量策略盈利能力的核心指标。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">累计收益 (Total Return)</div>
+        <div class="def">所有交易的复利累计收益。计算方式：(1+r₁) × (1+r₂) × ... × (1+rₙ) - 1。反映策略长期的总回报能力。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Sharpe 比率</div>
+        <div class="def">风险调整后收益 = 平均收益 / 收益标准差 × √(252/持仓天数)。Sharpe>1算不错，>2算优秀，>3算顶级。它衡量的是每承担一单位风险能获得多少收益。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">最大回撤 (Max Drawdown)</div>
+        <div class="def">从历史最高点到最低点的最大跌幅。反映策略最坏情况下的亏损程度。回撤越小说明策略越稳健。一般要求最大回撤<30%。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">IC (Information Coefficient)</div>
+        <div class="def">信息系数，衡量策略信号与未来收益的Spearman相关系数。IC>0说明策略有正向预测能力，IC<0说明是反向指标。|IC|>0.03就算有效因子。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">ICIR (IC Information Ratio)</div>
+        <div class="def">IC的均值除以IC的标准差，衡量IC的稳定性。ICIR>0.5说明因子稳定有效。本系统用ICIR分配Alpha因子权重，ICIR越高权重越大。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">交易次数 (Trade Count)</div>
+        <div class="def">回测期间策略信号触发的总次数。次数太少（<30）统计不可靠，次数太多（>100,000）可能信号过于宽松。理想范围：100-10,000次。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">Alpha 因子</div>
+        <div class="def">参照Qlib Alpha158标准的40+个量化因子，包括K-Bar形态、价格动量、均线偏离、波动率、成交量、技术衍生等六大类。通过ICIR引擎计算权重，与策略信号融合评分。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">信号窗口 (Signal Window)</div>
+        <div class="def">判断策略是否"最近触发"的时间窗口，默认15天。如果策略在最近15天内触发过信号，就计入该股票的评分。窗口越小信号越新鲜。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="term">融合评分</div>
+        <div class="def">最终评分 = 策略信号加权分 × 65% + Alpha因子加权分 × 35%。两个维度互相补充：策略信号捕捉技术形态，Alpha因子捕捉统计规律。</div>
+      </div>
+    </div>
+  `;
+
+  renderStrategies();
+}
+
+// 启动
+loadData().then(data => {
+  if (data) renderPage(data);
+  else {
+    document.getElementById('loading').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div>数据加载失败，请检查网络</div></div>';
+  }
+});
+</script>
+</body>
+</html>
