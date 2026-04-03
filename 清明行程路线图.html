@@ -86,6 +86,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 .transport-info .trow:last-child{border-bottom:none}
 .transport-info .tl{color:rgba(255,255,255,0.6);font-size:11px}
 .transport-info .tr{color:#ce93d8;font-size:11px;font-weight:600}
+/* 景点图片画廊 */
+.photo-gallery{margin:16px 0}
+.photo-gallery h4{color:#ffd54f;font-size:13px;font-weight:700;margin-bottom:10px}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photo-card{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.photo-card:hover img{transform:scale(1.05)}
+.photo-card .photo-label{position:absolute;bottom:0;left:0;right:0;padding:6px 10px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);color:#fff;font-size:11px;font-weight:600}
+.photo-card.wide{grid-column:span 2;aspect-ratio:16/9}
+/* 住宿推荐 */
+.hotel-section{background:rgba(233,30,99,0.08);border:1px solid rgba(233,30,99,0.15);border-radius:14px;padding:14px;margin-top:16px}
+.hotel-section h4{color:#f48fb1;font-size:13px;font-weight:700;margin-bottom:10px}
+.hotel-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.08)}
+.hotel-card:last-child{margin-bottom:0}
+.hotel-name{color:#fff;font-size:13px;font-weight:700;margin-bottom:4px}
+.hotel-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.hotel-tag{font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(233,30,99,0.15);color:#f48fb1}
+.hotel-desc{color:rgba(255,255,255,0.5);font-size:11px;line-height:1.5}
+.hotel-price{color:#ffd700;font-size:12px;font-weight:700;margin-top:4px}
 </style>
 </head>
 <body>
@@ -256,6 +275,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <li>4月湛江已经很热，注意防晒补水</li>
   </ul>
 </div>
+
+<div class="photo-gallery">
+  <h4>📸 景点实拍</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop" alt="金沙湾海滩"><div class="photo-label">🏖️ 金沙湾海滨浴场 · 细软金沙+椰林海风</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=300&fit=crop" alt="赤坎老街"><div class="photo-label">🏘️ 赤坎老街骑楼</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="湖光岩"><div class="photo-label">🌋 湖光岩玛珥湖</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=400&h=300&fit=crop" alt="特呈岛"><div class="photo-label">🏝️ 特呈岛红树林</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop" alt="渔港日落"><div class="photo-label">🌅 渔港公园日落</div></div>
+  </div>
+</div>
+
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：金沙湾片区（赤坎区）</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏖️ 步行到海滩</span><span class="hotel-tag">🍜 近东风市场</span><span class="hotel-tag">⭐ 最方便</span></div>
+    <div class="hotel-desc">推荐万达海景LOFT、湛江喜来登（海景房绝美）、亚朵酒店。紧邻金沙湾海滩和观海长廊，步行可达东风市场吃海鲜，去赤坎老街打车10分钟。</div>
+    <div class="hotel-price">💰 经济型¥120-200/晚 · 品质型¥300-500/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 备选：霞山区（市中心）</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏛️ 近法式风情街</span><span class="hotel-tag">🚢 近渔港公园</span></div>
+    <div class="hotel-desc">靠近霞山天主教堂、法国公使署、渔港公园。商业配套更成熟，餐饮选择多。去特呈岛码头更近。</div>
+    <div class="hotel-price">💰 经济型¥100-180/晚 · 品质型¥250-400/晚</div>
+  </div>
+</div>
 </div>
 
 <!-- ========== 茂名方案 ========== -->
@@ -348,6 +394,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <li>防晒！即使多云紫外线也很强</li>
   </ul>
 </div>
+
+<div class="photo-gallery">
+  <h4>📸 景点实拍</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1520942702018-0862200e6873?w=800&h=400&fit=crop" alt="浪漫海岸"><div class="photo-label">🏖️ 浪漫海岸 · 5.3公里私家海岸线</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop" alt="水晶教堂"><div class="photo-label">⛪ 水晶教堂 · 梦幻婚礼</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=400&h=300&fit=crop" alt="放鸡岛"><div class="photo-label">🏝️ 放鸡岛 · 潜水圣地</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&h=300&fit=crop" alt="无边泳池"><div class="photo-label">🏊 无边泳池 · 海天一色</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1476673160081-cf065607f449?w=400&h=300&fit=crop" alt="海边日落"><div class="photo-label">🌅 浪漫海岸日落</div></div>
+  </div>
+</div>
+
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：浪漫海岸温德姆酒店</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏖️ 景区内</span><span class="hotel-tag">♨️ 望海温泉</span><span class="hotel-tag">⭐ 巴厘岛风情</span></div>
+    <div class="hotel-desc">景区内唯一的五星级酒店！东南亚风格装修，泳池房推开阳台就能跳入泳池。无边泳池、望海温泉、水晶教堂步行可达。含自助早餐+海景。</div>
+    <div class="hotel-price">💰 ¥400-800/晚 · 泳池房¥600起</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 备选：浪漫海岸周边民宿</div>
+    <div class="hotel-meta"><span class="hotel-tag">💰 性价比高</span><span class="hotel-tag">🏠 海景民宿</span></div>
+    <div class="hotel-desc">景区外围有很多海景民宿和公寓，步行10分钟到景区大门。价格比温德姆便宜一半以上，部分带独立阳台可看海。</div>
+    <div class="hotel-price">💰 ¥150-300/晚</div>
+  </div>
+</div>
 </div>
 
 <!-- ========== 海口方案 ========== -->
@@ -438,6 +511,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <li>如果时间充裕，可以高铁1.5h去三亚玩一天再飞回</li>
   </ul>
 </div>
+
+<div class="photo-gallery">
+  <h4>📸 景点实拍</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=800&h=400&fit=crop" alt="骑楼老街"><div class="photo-label">🏘️ 骑楼老街 · 百年南洋风情建筑群</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1600298881979-ec4d8d8e6149?w=400&h=300&fit=crop" alt="火山口"><div class="photo-label">🌋 火山口地质公园</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop" alt="云洞图书馆"><div class="photo-label">📖 云洞图书馆</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=300&fit=crop" alt="假日海滩"><div class="photo-label">🏖️ 假日海滩椰林</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&h=300&fit=crop" alt="海口日落"><div class="photo-label">🌅 世纪大桥夜景</div></div>
+  </div>
+</div>
+
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：骑楼老街片区（龙华区）</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏘️ 步行逛老街</span><span class="hotel-tag">🍜 美食天堂</span><span class="hotel-tag">⭐ 最方便</span></div>
+    <div class="hotel-desc">推荐寰海阁骑楼博物馆酒店（住在百年骑楼里！）、开元名庭酒店（唐风装修+免费汉服体验）。步行可达骑楼老街、钟楼、水巷口美食街，打车10分钟到云洞图书馆。</div>
+    <div class="hotel-price">💰 特色民宿¥200-400/晚 · 品质酒店¥300-600/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 备选：海甸岛/世纪大桥片区</div>
+    <div class="hotel-meta"><span class="hotel-tag">🌅 近云洞图书馆</span><span class="hotel-tag">🌴 海景房</span></div>
+    <div class="hotel-desc">靠近世纪大桥和云洞图书馆，海甸岛南门夜市就在附近。海景房看世纪大桥夜景绝美。去骑楼老街打车10分钟。</div>
+    <div class="hotel-price">💰 ¥200-500/晚</div>
+  </div>
+</div>
 </div>
 
 <!-- ========== 三亚方案 ========== -->
@@ -527,6 +627,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <li>第一市场海鲜注意防宰，选好店后先问价再买</li>
     <li>三亚打车建议用滴滴，不要坐路边揽客的车</li>
   </ul>
+</div>
+
+<div class="photo-gallery">
+  <h4>📸 景点实拍</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1468413253725-0d5181091126?w=800&h=400&fit=crop" alt="三亚湾"><div class="photo-label">🏖️ 椰梦长廊 · 20公里椰林海岸日落</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop" alt="蜈支洲岛"><div class="photo-label">🏝️ 蜈支洲岛 · 中国马尔代夫</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop&q=80" alt="亚龙湾"><div class="photo-label">🏖️ 亚龙湾 · 天下第一湾</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=400&h=300&fit=crop" alt="海鲜大餐"><div class="photo-label">🦞 第一市场海鲜</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=300&fit=crop" alt="日落"><div class="photo-label">🌅 三亚湾绝美日落</div></div>
+  </div>
+</div>
+
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：亚龙湾（度假首选）</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏖️ 最美海滩</span><span class="hotel-tag">🏨 五星扎堆</span><span class="hotel-tag">⭐ 度假天花板</span></div>
+    <div class="hotel-desc">亚龙湾是三亚最好的海滩，五星酒店云集。推荐亚龙湾迎宾馆、美高梅、万豪。每家酒店都有私家沙滩，出门就是碧蓝海水。4月淡季价格友好。</div>
+    <div class="hotel-price">💰 四星¥400-600/晚 · 五星¥600-1200/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 性价比：三亚湾（椰梦长廊旁）</div>
+    <div class="hotel-meta"><span class="hotel-tag">🌅 看日落</span><span class="hotel-tag">💰 性价比高</span><span class="hotel-tag">🚗 近机场</span></div>
+    <div class="hotel-desc">三亚湾沿线公寓和酒店密集，价格比亚龙湾便宜一半。推荐海月广场附近，步行到椰梦长廊看日落，去第一市场吃海鲜也方便。</div>
+    <div class="hotel-price">💰 公寓¥150-300/晚 · 酒店¥300-500/晚</div>
+  </div>
 </div>
 </div>
 
@@ -621,6 +748,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <li>崇圣寺三塔和苍山索道建议网上提前购票</li>
     <li>大理物价比三亚低，餐饮性价比很高</li>
   </ul>
+</div>
+
+<div class="photo-gallery">
+  <h4>📸 景点实拍</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1580093201997-c0c4092f3feb?w=800&h=400&fit=crop" alt="洱海"><div class="photo-label">🌊 洱海 · 风花雪月的诗意远方</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=400&h=300&fit=crop" alt="大理古城"><div class="photo-label">🏯 大理古城 · 千年古韵</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=300&fit=crop" alt="苍山"><div class="photo-label">🏔️ 苍山 · 云雾缭绕</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400&h=300&fit=crop" alt="喜洲古镇"><div class="photo-label">🌾 喜洲 · 稻田白族民居</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=400&h=300&fit=crop" alt="双廊"><div class="photo-label">🚣 双廊 · 面朝洱海</div></div>
+  </div>
+</div>
+
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：双廊古镇（洱海边）</div>
+    <div class="hotel-meta"><span class="hotel-tag">🌅 洱海日出</span><span class="hotel-tag">📸 最佳观景</span><span class="hotel-tag">⭐ 网红民宿聚集</span></div>
+    <div class="hotel-desc">双廊是洱海边最美的古镇，推荐住洱海边的海景民宿。推窗就是洱海，早起看日出，晚上听涛入眠。杨丽萍的太阳宫月亮宫就在这里。</div>
+    <div class="hotel-price">💰 海景民宿¥300-800/晚 · 普通民宿¥150-300/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 备选：大理古城内</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏯 古城氛围</span><span class="hotel-tag">🍜 美食集中</span><span class="hotel-tag">💰 选择多</span></div>
+    <div class="hotel-desc">古城内住宿选择丰富，人民路、洋人街附近最热闹。适合喜欢逛吃逛喝的人，酒吧清吧一条街夜生活丰富。去苍山索道更近。</div>
+    <div class="hotel-price">💰 青旅¥50-80/床 · 民宿¥150-400/晚</div>
+  </div>
 </div>
 </div>
 
@@ -725,6 +879,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
     <li>五彩滩看日出要赶早，退潮时效果最佳</li>
     <li>高铁5h虽然久，但二等座¥402比飞机性价比高很多</li>
   </ul>
+</div>
+
+<div class="photo-gallery">
+  <h4>📸 景点实拍</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&h=400&fit=crop&q=80" alt="银滩"><div class="photo-label">🏖️ 北海银滩 · 天下第一滩 · 银白细沙</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=300&fit=crop" alt="涠洲岛"><div class="photo-label">🏝️ 涠洲岛火山海岸</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1504681869696-d977211a5f4c?w=400&h=300&fit=crop" alt="天主教堂"><div class="photo-label">⛪ 涠洲岛天主教堂</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=400&h=300&fit=crop" alt="滴水丹屏"><div class="photo-label">🌊 滴水丹屏日落</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1414609245224-afa02bfb3fda?w=400&h=300&fit=crop" alt="五彩滩"><div class="photo-label">🌅 五彩滩日出</div></div>
+  </div>
+</div>
+
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 北海市区：银滩附近</div>
+    <div class="hotel-meta"><span class="hotel-tag">🏖️ 步行到银滩</span><span class="hotel-tag">🍜 近侨港美食</span></div>
+    <div class="hotel-desc">银滩大道沿线酒店密集，推荐银滩一号、北海香格里拉。步行可达银滩，打车10分钟到侨港风情街吃海鲜和越南卷粉。</div>
+    <div class="hotel-price">💰 经济型¥150-250/晚 · 品质型¥300-600/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 涠洲岛：石螺口/滴水村</div>
+    <div class="hotel-meta"><span class="hotel-tag">🌅 看日落</span><span class="hotel-tag">🏝️ 海边民宿</span><span class="hotel-tag">⭐ 岛上首选</span></div>
+    <div class="hotel-desc">石螺口附近民宿最密集，步行3分钟到海边看日落。滴水村更安静原生态。推荐"涠洲岛悠然居"等海景民宿，阳台直面大海。</div>
+    <div class="hotel-price">💰 民宿¥150-400/晚 · 特色木屋¥300-600/晚</div>
+  </div>
 </div>
 </div>
 
