@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>茂名周末行程 · 4.4-4.7</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;padding:20px 12px;color:#333}
+.container{max-width:480px;margin:0 auto}
+.hero{position:relative;border-radius:20px;overflow:hidden;margin-bottom:20px;height:200px;box-shadow:0 10px 40px rgba(0,0,0,0.4);display:flex;align-items:flex-end}
+.hero img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{padding:16px;width:100%;background:linear-gradient(to top,rgba(0,0,0,0.85)0%,rgba(0,0,0,0.2)60%,transparent 100%);position:relative;z-index:1}
+.hero-overlay h1{color:#fff;font-size:22px;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+.hero-overlay p{color:rgba(255,255,255,0.85);font-size:12px;margin-top:4px}
+.hero-emoji{position:absolute;top:16px;right:16px;font-size:50px;opacity:.3;z-index:1}
+
+/* Route Overview */
+.route-overview{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.1)}
+.route-cities{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.route-city{color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.12)}
+.route-arrow{color:rgba(255,255,255,0.5);font-size:14px}
+.route-meta{display:flex;justify-content:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+.route-meta span{color:rgba(255,255,255,0.6);font-size:11px}
+.route-meta span em{font-style:normal;color:#ffd700;font-weight:700}
+
+/* Weather */
+.weather-section{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:16px;padding:14px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.1)}
+.weather-section h3{color:#fff;font-size:14px;font-weight:700;margin-bottom:10px}
+.weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.weather-day{text-align:center;padding:8px 4px;border-radius:12px;background:rgba(255,255,255,0.05)}
+.weather-day .wd-label{color:rgba(255,255,255,0.5);font-size:10px;margin-bottom:4px}
+.weather-day .wd-icon{font-size:22px;margin:4px 0}
+.weather-day .wd-temp{color:#fff;font-size:11px;font-weight:600}
+.weather-day .wd-desc{color:rgba(255,255,255,0.4);font-size:9px;margin-top:2px}
+
+/* Transport */
+.transport-section{background:rgba(156,39,176,0.1);border:1px solid rgba(156,39,176,0.2);border-radius:16px;padding:14px;margin-bottom:16px}
+.transport-section h3{color:#ce93d8;font-size:14px;font-weight:700;margin-bottom:10px}
+.train-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.08)}
+.train-card:last-child{margin-bottom:0}
+.train-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.train-no{color:#ce93d8;font-size:13px;font-weight:700}
+.train-tag{font-size:9px;padding:2px 7px;border-radius:8px;background:rgba(76,175,80,0.2);color:#81c784}
+.train-tag.rec{background:rgba(255,193,7,0.2);color:#ffd54f}
+.train-route{display:flex;align-items:center;justify-content:space-between}
+.train-station{text-align:center}
+.train-station .ts-time{color:#fff;font-size:16px;font-weight:700}
+.train-station .ts-name{color:rgba(255,255,255,0.5);font-size:10px;margin-top:2px}
+.train-line{flex:1;text-align:center;padding:0 10px}
+.train-line .tl-dur{color:rgba(255,255,255,0.4);font-size:10px}
+.train-line .tl-bar{height:2px;background:linear-gradient(to right,#ce93d8,rgba(255,255,255,0.2));border-radius:2px;margin:4px 0}
+.train-line .tl-type{color:rgba(255,255,255,0.3);font-size:9px}
+.train-price{display:flex;justify-content:center;gap:12px;margin-top:8px}
+.train-price span{color:rgba(255,255,255,0.5);font-size:10px}
+.train-price span em{font-style:normal;color:#ffd700;font-weight:600}
+
+/* Timeline */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),rgba(255,255,255,0.05))}
+.day-section{margin-bottom:24px}
+.day-header{position:relative;margin-bottom:12px}
+.day-dot{position:absolute;left:-24px;top:4px;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.3)}
+.day-dot.d1{background:linear-gradient(135deg,#667eea,#764ba2)}
+.day-dot.d2{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.day-dot.d3{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.day-dot.d4{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.day-title{color:#fff;font-size:17px;font-weight:800}
+.day-date{color:rgba(255,255,255,0.5);font-size:11px;margin-top:2px}
+
+/* Cards */
+.card{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px}
+.card.transport::before{background:linear-gradient(to bottom,#9C27B0,#CE93D8)}
+.card.scenic::before{background:linear-gradient(to bottom,#2196F3,#64B5F6)}
+.card.food::before{background:linear-gradient(to bottom,#FF9800,#FFB74D)}
+.card.nature::before{background:linear-gradient(to bottom,#4CAF50,#81C784)}
+.card.stay::before{background:linear-gradient(to bottom,#E91E63,#F48FB1)}
+.card.fun::before{background:linear-gradient(to bottom,#FF5722,#FF8A65)}
+.card.beach::before{background:linear-gradient(to bottom,#00BCD4,#80DEEA)}
+.card-time{color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;margin-bottom:4px}
+.card-name{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px}
+.card-desc{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.6}
+.tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5)}
+.tag-free{background:rgba(76,175,80,0.2);color:#81c784}
+.tag-hot{background:rgba(244,67,54,0.2);color:#ef9a9a}
+.tag-tip{background:rgba(33,150,243,0.2);color:#64b5f6}
+.tag-food{background:rgba(255,152,0,0.2);color:#ffb74d}
+.tag-rec{background:rgba(255,193,7,0.2);color:#ffd54f}
+
+/* Photo Gallery */
+.photo-gallery{margin:16px 0}
+.photo-gallery h4{color:#ffd54f;font-size:13px;font-weight:700;margin-bottom:10px}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photo-card{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.photo-card:hover img{transform:scale(1.05)}
+.photo-card .photo-label{position:absolute;bottom:0;left:0;right:0;padding:6px 10px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);color:#fff;font-size:11px;font-weight:600}
+.photo-card.wide{grid-column:span 2;aspect-ratio:16/9}
+
+/* Hotel */
+.hotel-section{background:rgba(233,30,99,0.08);border:1px solid rgba(233,30,99,0.15);border-radius:14px;padding:14px;margin-top:16px}
+.hotel-section h4{color:#f48fb1;font-size:13px;font-weight:700;margin-bottom:10px}
+.hotel-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.08)}
+.hotel-card:last-child{margin-bottom:0}
+.hotel-name{color:#fff;font-size:13px;font-weight:700;margin-bottom:4px}
+.hotel-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.hotel-tag{font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(233,30,99,0.15);color:#f48fb1}
+.hotel-desc{color:rgba(255,255,255,0.5);font-size:11px;line-height:1.5}
+.hotel-price{color:#ffd700;font-size:12px;font-weight:700;margin-top:4px}
+
+/* Budget */
+.budget{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-top:16px;border:1px solid rgba(255,255,255,0.1)}
+.budget h3{color:#fff;font-size:15px;font-weight:700;margin-bottom:12px}
+.brow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:rgba(255,255,255,0.6);font-size:12px}
+.brow .br{color:#ffd700;font-size:12px;font-weight:700}
+.btotal{display:flex;justify-content:space-between;padding-top:8px;margin-top:6px;border-top:1px solid rgba(255,255,255,0.15)}
+.btotal .bl{color:#fff;font-weight:700;font-size:13px}
+.btotal .br{font-size:15px;color:#ffd700;font-weight:800}
+
+/* Tips */
+.tips{background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.2);border-radius:14px;padding:14px;margin-top:16px}
+.tips h4{color:#64b5f6;font-size:13px;font-weight:700;margin-bottom:8px}
+.tips ul{list-style:none}
+.tips li{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.6;padding-left:14px;position:relative;margin-bottom:3px}
+.tips li::before{content:'•';position:absolute;left:0;color:#64b5f6}
+
+/* Packing */
+.packing{background:rgba(76,175,80,0.08);border:1px solid rgba(76,175,80,0.15);border-radius:14px;padding:14px;margin-top:16px}
+.packing h4{color:#81c784;font-size:13px;font-weight:700;margin-bottom:8px}
+.packing-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.packing-item{color:rgba(255,255,255,0.6);font-size:11px;padding:4px 0}
+
+.footer{text-align:center;color:rgba(255,255,255,0.2);font-size:10px;margin-top:30px;padding-bottom:20px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1520942702018-0862200e6873?w=800&h=400&fit=crop" alt="茂名海岸">
+  <div class="hero-emoji">🏖️</div>
+  <div class="hero-overlay">
+    <h1>茂名周末海岸之旅</h1>
+    <p>4月4日(周六) → 4月7日(周一) · 深圳出发</p>
+    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;border-radius:10px;margin-top:6px;font-weight:600;background:rgba(255,193,7,0.3);color:#ffd54f">☁️ 多云为主 · 23-31°C</span>
+  </div>
+</div>
+
+<!-- Route Overview -->
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">🏙️ 深圳</span>
+    <span class="route-arrow">🚄→</span>
+    <span class="route-city">🏖️ 茂名</span>
+    <span class="route-arrow">→🚄</span>
+    <span class="route-city">🏙️ 深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>3晚4天</em></span>
+    <span>🚄 <em>约3小时</em></span>
+    <span>💰 人均 <em>¥1200-1800</em></span>
+  </div>
+</div>
+
+<!-- Weather -->
+<div class="weather-section">
+  <h3>🌤️ 茂名天气预报</h3>
+  <div class="weather-grid">
+    <div class="weather-day">
+      <div class="wd-label">4/4 周六</div>
+      <div class="wd-icon">⛅</div>
+      <div class="wd-temp">23-31°C</div>
+      <div class="wd-desc">多云</div>
+    </div>
+    <div class="weather-day">
+      <div class="wd-label">4/5 周日</div>
+      <div class="wd-icon">🌦️</div>
+      <div class="wd-temp">24-30°C</div>
+      <div class="wd-desc">局部小雨</div>
+    </div>
+    <div class="weather-day">
+      <div class="wd-label">4/6 周一</div>
+      <div class="wd-icon">⛅</div>
+      <div class="wd-temp">25-30°C</div>
+      <div class="wd-desc">多云</div>
+    </div>
+    <div class="weather-day">
+      <div class="wd-label">4/7 周一</div>
+      <div class="wd-icon">⛅</div>
+      <div class="wd-temp">24-30°C</div>
+      <div class="wd-desc">多云</div>
+    </div>
+  </div>
+</div>
+
+<!-- Transport Info -->
+<div class="transport-section">
+  <h3>🚄 推荐车次（深圳→茂名）</h3>
+  
+  <div class="train-card">
+    <div class="train-top">
+      <span class="train-no">G6084 高铁直达</span>
+      <span class="train-tag rec">⭐ 推荐</span>
+    </div>
+    <div class="train-route">
+      <div class="train-station">
+        <div class="ts-time">16:19</div>
+        <div class="ts-name">深圳北</div>
+      </div>
+      <div class="train-line">
+        <div class="tl-dur">3小时07分</div>
+        <div class="tl-bar"></div>
+        <div class="tl-type">途经广州南·江门·阳江</div>
+      </div>
+      <div class="train-station">
+        <div class="ts-time">19:26</div>
+        <div class="ts-name">茂名</div>
+      </div>
+    </div>
+    <div class="train-price">
+      <span>二等座 <em>¥279.5</em></span>
+      <span>一等座 <em>¥415.5</em></span>
+    </div>
+  </div>
+
+  <div class="train-card">
+    <div class="train-top">
+      <span class="train-no">G6056 高铁直达</span>
+      <span class="train-tag">下午出发</span>
+    </div>
+    <div class="train-route">
+      <div class="train-station">
+        <div class="ts-time">13:04</div>
+        <div class="ts-name">深圳北</div>
+      </div>
+      <div class="train-line">
+        <div class="tl-dur">3小时19分</div>
+        <div class="tl-bar"></div>
+        <div class="tl-type">途经广州南·江门·阳江</div>
+      </div>
+      <div class="train-station">
+        <div class="ts-time">16:23</div>
+        <div class="ts-name">茂名</div>
+      </div>
+    </div>
+    <div class="train-price">
+      <span>二等座 <em>¥279.5</em></span>
+      <span>一等座 <em>¥415.5</em></span>
+    </div>
+  </div>
+
+  <div style="color:rgba(255,255,255,0.4);font-size:10px;margin-top:8px;text-align:center">💡 建议提前在12306购票 · 清明假期车票紧张</div>
+</div>
+
+<!-- ========== DAY 1 ========== -->
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-dot d1"></div>
+      <div class="day-title">Day 1 · 出发 + 抵达安顿</div>
+      <div class="day-date">4月4日 周六 · 深圳→茂名</div>
+    </div>
+
+    <div class="card transport">
+      <div class="card-time">13:04 或 16:19 出发</div>
+      <div class="card-name">🚄 深圳北 → 茂名站</div>
+      <div class="card-desc">高铁约3小时直达。建议13:04的G6056（16:23到）或16:19的G6084（19:26到）。到站后打车约35分钟到电白区浪漫海岸/中国第一滩片区。</div>
+      <div class="tags"><span class="tag tag-tip">💡 提前买票</span><span class="tag">二等座¥279.5</span></div>
+    </div>
+
+    <div class="card stay">
+      <div class="card-time">到达后</div>
+      <div class="card-name">🏨 入住酒店 + 海边散步</div>
+      <div class="card-desc">到达后先入住酒店，放下行李。如果到得早（16:23到），可以打车去中国第一滩看日落🌅，海滩免费开放。晚到的话就在酒店附近溜达，感受海风。</div>
+      <div class="tags"><span class="tag tag-free">🆓 免费</span><span class="tag">🌅 日落约18:40</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">19:30-21:00</div>
+      <div class="card-name">🦞 海鲜大排档晚餐</div>
+      <div class="card-desc">茂名电白的海鲜又鲜又便宜！推荐去博贺渔港附近的大排档或浪漫海岸海鲜城。必吃：<strong>椒盐濑尿虾、清蒸石斑鱼、白灼基围虾、蒜蓉粉丝蒸扇贝</strong>。</div>
+      <div class="tags"><span class="tag tag-food">🦐 必吃海鲜</span><span class="tag">💰 人均60-100</span></div>
+    </div>
+  </div>
+
+  <!-- ========== DAY 2 ========== -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-dot d2"></div>
+      <div class="day-title">Day 2 · 浪漫海岸 + 放鸡岛</div>
+      <div class="day-date">4月5日 周日 · 核心游玩日</div>
+    </div>
+
+    <div class="card scenic">
+      <div class="card-time">08:30-12:00</div>
+      <div class="card-name">🏝️ 放鸡岛（半日游）</div>
+      <div class="card-desc">从博贺港乘船约30分钟登岛。放鸡岛被誉为"广东大堡礁"，海水能见度超8米！岛上可以：<strong>浮潜看珊瑚礁、环岛徒步、看鸡头礁石、野菠萝公园</strong>。建议上午去，人少浪小。</div>
+      <div class="tags"><span class="tag tag-hot">🔥 必去</span><span class="tag">🎫 船票¥128</span><span class="tag">🤿 浮潜¥180</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">12:00-13:00</div>
+      <div class="card-name">🍜 岛上/博贺渔港午餐</div>
+      <div class="card-desc">可以在岛上简单吃，也可以回博贺渔港吃更新鲜的。博贺渔港是广东三大渔港之一，渔船刚靠岸的海鲜最鲜！推荐：<strong>香煎马鲛鱼、白灼虾</strong>。</div>
+      <div class="tags"><span class="tag tag-food">🐟 渔港直供</span><span class="tag">💰 人均50-80</span></div>
+    </div>
+
+    <div class="card beach">
+      <div class="card-time">14:30-18:30</div>
+      <div class="card-name">🏖️ 浪漫海岸度假区</div>
+      <div class="card-desc">5.3公里私属海岸线，广东唯一"爱与浪漫"主题景区！必打卡：<strong>水晶教堂⛪、白色秋千、心形鸟巢、无边泳池🏊、灯塔观日落🌅</strong>。傍晚登灯塔看日落是全程最美时刻！</div>
+      <div class="tags"><span class="tag tag-hot">🔥 必去</span><span class="tag">🎫 门票¥68</span><span class="tag">📸 出片率极高</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">19:00-20:30</div>
+      <div class="card-name">🍲 浪漫海岸海景餐厅</div>
+      <div class="card-desc">在景区内的180度海景餐厅享用晚餐，边吃海鲜边听海浪声。必尝：<strong>电白鱼生（刺身级鲜度）、水东芥菜、簸箕炊（当地特色小吃）</strong>。</div>
+      <div class="tags"><span class="tag tag-food">🍽️ 海景晚餐</span><span class="tag">💰 人均80-120</span></div>
+    </div>
+  </div>
+
+  <!-- ========== DAY 3 ========== -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-dot d3"></div>
+      <div class="day-title">Day 3 · 第一滩 + 市区探索</div>
+      <div class="day-date">4月6日 周日 · 休闲慢游日</div>
+    </div>
+
+    <div class="card beach">
+      <div class="card-time">08:00-11:30</div>
+      <div class="card-name">🏖️ 中国第一滩</div>
+      <div class="card-desc">12公里绵延白沙滩，沙质细腻如面粉！全国第一条沿海防护林带就在这里（关山月名画《绿色长城》取材地）。可以：<strong>踩沙踏浪、沙滩排球、骑沙滩车、在滨海绿道骑行</strong>。</div>
+      <div class="tags"><span class="tag tag-free">🆓 免费</span><span class="tag tag-hot">🔥 必去</span><span class="tag">🚲 可租自行车</span></div>
+    </div>
+
+    <div class="card scenic">
+      <div class="card-time">11:30-13:00</div>
+      <div class="card-name">🏔️ 晏镜岭 · 观海栈道</div>
+      <div class="card-desc">茂名人登山望海的圣地！新建的观海栈道是网红打卡点，站在山顶可以俯瞰整个中国第一滩和童子湾的全景。步行约30分钟登顶。</div>
+      <div class="tags"><span class="tag tag-free">🆓 免费</span><span class="tag">📸 绝佳观景台</span><span class="tag tag-tip">👟 穿运动鞋</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">13:00-14:00</div>
+      <div class="card-name">🍜 水东老街午餐</div>
+      <div class="card-desc">去电白水东老街觅食！这里是当地人最爱的美食聚集地。必吃：<strong>水东鸭粥（鲜甜入味）、簸箕炊（米浆蒸制小吃）、糖心糍、椰子冻</strong>。</div>
+      <div class="tags"><span class="tag tag-food">🍜 当地美食</span><span class="tag">💰 人均30-50</span></div>
+    </div>
+
+    <div class="card nature">
+      <div class="card-time">15:00-17:00</div>
+      <div class="card-name">🌿 水东湾海洋公园 / 御水古温泉</div>
+      <div class="card-desc"><strong>方案A</strong>：水东湾海洋公园（免费），有红树林湿地栈道、观鸟屋，适合拍照散步。<br><strong>方案B</strong>：御水古温泉（明朝古温泉♨️），泡温泉放松，消除两天的疲劳。</div>
+      <div class="tags"><span class="tag">🌿 红树林</span><span class="tag">♨️ 温泉可选</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">18:00-20:00</div>
+      <div class="card-name">🍽️ 告别晚餐 · 海鲜火锅</div>
+      <div class="card-desc">最后一晚来一顿海鲜火锅！用最新鲜的海鲜涮锅，配上电白特色的酱料。也可以选择去童子湾渔港吃最后一顿海鲜大排档。</div>
+      <div class="tags"><span class="tag tag-food">🍲 海鲜火锅</span><span class="tag">💰 人均80-100</span></div>
+    </div>
+  </div>
+
+  <!-- ========== DAY 4 ========== -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-dot d4"></div>
+      <div class="day-title">Day 4 · 返程</div>
+      <div class="day-date">4月7日 周一 · 茂名→深圳</div>
+    </div>
+
+    <div class="card nature">
+      <div class="card-time">08:00-10:00</div>
+      <div class="card-name">🌅 海边最后一次漫步</div>
+      <div class="card-desc">早起去海边散步，看看清晨安静的大海。如果住在浪漫海岸附近，可以去沙滩捡贝壳、拍最后一组照片。退房前整理行李。</div>
+      <div class="tags"><span class="tag">🐚 捡贝壳</span><span class="tag">📸 最后打卡</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">10:00-11:00</div>
+      <div class="card-name">🥣 早茶 / 当地早餐</div>
+      <div class="card-desc">去茂名市区吃个当地早茶或粥粉面，最后感受一下茂名的烟火气。推荐水东鸭粥或肠粉。</div>
+      <div class="tags"><span class="tag tag-food">🥣 当地早餐</span></div>
+    </div>
+
+    <div class="card transport">
+      <div class="card-time">下午</div>
+      <div class="card-name">🚄 茂名 → 深圳北</div>
+      <div class="card-desc">建议乘坐下午的高铁返回深圳。可选车次：<br>• <strong>G6048</strong> 10:44→14:05（适合早回）<br>• <strong>G6088</strong> 11:57→15:18<br>• <strong>G6056</strong> 13:04→16:23<br>• <strong>G6084</strong> 16:19→19:26（适合多玩半天）</div>
+      <div class="tags"><span class="tag tag-tip">💡 二等座¥279.5</span><span class="tag">约3小时</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Gallery -->
+<div class="photo-gallery">
+  <h4>📸 茂名必打卡景点</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide"><img src="https://images.unsplash.com/photo-1520942702018-0862200e6873?w=800&h=400&fit=crop" alt="浪漫海岸"><div class="photo-label">🏖️ 浪漫海岸 · 5.3公里私家海岸线</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop" alt="放鸡岛"><div class="photo-label">🏝️ 放鸡岛 · 广东大堡礁</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&h=300&fit=crop" alt="无边泳池"><div class="photo-label">🏊 无边泳池 · 海天一色</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop" alt="第一滩"><div class="photo-label">🏖️ 中国第一滩 · 12公里白沙</div></div>
+    <div class="photo-card"><img src="https://images.unsplash.com/photo-1476673160081-cf065607f449?w=400&h=300&fit=crop" alt="日落"><div class="photo-label">🌅 灯塔日落 · 最美时刻</div></div>
+  </div>
+</div>
+
+<!-- Hotel Recommendations -->
+<div class="hotel-section">
+  <h4>🏨 建议入住位置</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：浪漫海岸温德姆/喜来登酒店</div>
+    <div class="hotel-meta">
+      <span class="hotel-tag">🏖️ 景区内</span>
+      <span class="hotel-tag">♨️ 海景温泉</span>
+      <span class="hotel-tag">⭐ 巴厘岛风情</span>
+    </div>
+    <div class="hotel-desc">景区内五星级酒店，东南亚风格装修。泳池房推开阳台就能跳入泳池！无边泳池、望海温泉、水晶教堂步行可达。含自助早餐+海景。</div>
+    <div class="hotel-price">💰 ¥400-800/晚 · 泳池房¥600起</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 性价比：浪漫海岸/第一滩周边民宿</div>
+    <div class="hotel-meta">
+      <span class="hotel-tag">💰 性价比高</span>
+      <span class="hotel-tag">🏠 海景民宿</span>
+      <span class="hotel-tag">🌊 270°海景</span>
+    </div>
+    <div class="hotel-desc">景区外围有很多海景民宿和公寓，步行10分钟到景区大门。部分带独立阳台可看海，有网友推荐的270°海景房人均仅¥190/晚！</div>
+    <div class="hotel-price">💰 ¥150-350/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 备选：茂名市区酒店</div>
+    <div class="hotel-meta">
+      <span class="hotel-tag">🏙️ 配套成熟</span>
+      <span class="hotel-tag">🍜 美食多</span>
+    </div>
+    <div class="hotel-desc">住市区去各景点打车20-40分钟。商业配套更成熟，适合想逛街购物的人。推荐茂名希尔顿欢朋、亚朵。</div>
+    <div class="hotel-price">💰 ¥200-400/晚</div>
+  </div>
+</div>
+
+<!-- Budget -->
+<div class="budget">
+  <h3>💰 预算参考（人均）</h3>
+  <div class="brow"><span class="bl">🚄 高铁往返</span><span class="br">¥559</span></div>
+  <div class="brow"><span class="bl">🏨 住宿3晚（民宿）</span><span class="br">¥450-900</span></div>
+  <div class="brow"><span class="bl">🎫 门票（放鸡岛+浪漫海岸）</span><span class="br">¥196</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（4天）</span><span class="br">¥300-500</span></div>
+  <div class="brow"><span class="bl">🚕 打车/租车</span><span class="br">¥150-300</span></div>
+  <div class="brow"><span class="bl">🤿 水上项目（可选）</span><span class="br">¥0-300</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥1,200 - 1,800</span></div>
+</div>
+
+<!-- Tips -->
+<div class="tips">
+  <h4>📋 实用贴士</h4>
+  <ul>
+    <li><strong>防晒必备！</strong>4月茂名紫外线已经很强，即使多云也要涂SPF50+防晒霜，戴帽子+墨镜</li>
+    <li><strong>交通建议</strong>：景点分散，建议租车（约¥150/天）或在当地打车。茂名站到电白海边约35分钟车程</li>
+    <li><strong>放鸡岛船票</strong>：建议提前在网上预订，旺季现场可能排队很久。船程约30分钟</li>
+    <li><strong>浪漫海岸</strong>：建议傍晚去，拍日落最美。门票¥68，网上购买更便宜</li>
+    <li><strong>海鲜砍价</strong>：大排档点海鲜先问价，可以适当砍价。博贺渔港的比景区便宜</li>
+    <li><strong>穿着建议</strong>：沙滩鞋/拖鞋必备，带一套可以下水的衣服，晏镜岭穿运动鞋</li>
+    <li><strong>周一返程</strong>：不是节假日高峰，车票相对好买，但建议提前购票</li>
+  </ul>
+</div>
+
+<!-- Packing List -->
+<div class="packing">
+  <h4>🎒 打包清单</h4>
+  <div class="packing-grid">
+    <div class="packing-item">☀️ 防晒霜SPF50+</div>
+    <div class="packing-item">🧢 遮阳帽+墨镜</div>
+    <div class="packing-item">👙 泳衣/沙滩裤</div>
+    <div class="packing-item">🩴 沙滩拖鞋</div>
+    <div class="packing-item">👟 运动鞋（爬山）</div>
+    <div class="packing-item">📱 防水手机袋</div>
+    <div class="packing-item">🧴 晒后修复</div>
+    <div class="packing-item">💊 肠胃药/创可贴</div>
+    <div class="packing-item">🔌 充电宝</div>
+    <div class="packing-item">🧲 自拍杆/三脚架</div>
+  </div>
+</div>
+
+<div class="footer">
+  🏖️ 茂名周末行程规划 · 2026.04.04 生成<br>
+  祝旅途愉快！
+</div>
+
+</div>
+</body>
+</html>
