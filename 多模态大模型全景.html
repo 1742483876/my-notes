@@ -422,6 +422,38 @@ body {
 }
 .arch-arrow { font-size: 1.2rem; color: var(--text-dim); }
 
+/* Timeline */
+.timeline-section { margin: 30px 0; }
+.timeline-section h3 { color: var(--text-bright); margin-bottom: 20px; }
+.tl-track { position: relative; padding-left: 30px; }
+.tl-track::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--primary), var(--secondary), var(--accent)); }
+.tl-node { position:relative; margin-bottom:20px; }
+.tl-node::before { content:''; position:absolute; left:-26px; top:6px; width:12px; height:12px; border-radius:50%; border:2px solid var(--primary); background:var(--bg); z-index:1; }
+.tl-node.milestone::before { background:var(--primary); box-shadow:0 0 8px rgba(108,92,231,0.5); width:14px; height:14px; left:-27px; top:5px; }
+.tl-year { font-size:0.72rem; color:var(--accent2); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+.tl-title { font-size:0.92rem; color:var(--text-bright); font-weight:600; margin-bottom:4px; }
+.tl-title a { color:var(--secondary); text-decoration:none; }
+.tl-title a:hover { text-decoration:underline; }
+.tl-desc { font-size:0.82rem; color:var(--text-dim); line-height:1.6; }
+.tl-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:6px; }
+
+/* Link Buttons */
+.link-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.link-btn { display:inline-flex; align-items:center; gap:5px; padding:5px 12px; border-radius:8px; font-size:0.75rem; font-weight:500; text-decoration:none; transition:all 0.2s; }
+.link-btn:hover { transform:translateY(-1px); }
+.link-btn.arxiv { background:rgba(0,206,201,0.12); color:#00cec9; border:1px solid rgba(0,206,201,0.25); }
+.link-btn.github { background:rgba(85,239,196,0.12); color:#55efc4; border:1px solid rgba(85,239,196,0.25); }
+.link-btn.doc { background:rgba(108,92,231,0.12); color:#a29bfe; border:1px solid rgba(108,92,231,0.25); }
+.link-btn.hf { background:rgba(253,203,110,0.12); color:#fdcb6e; border:1px solid rgba(253,203,110,0.25); }
+.link-btn.demo { background:rgba(253,121,168,0.12); color:#fd79a8; border:1px solid rgba(253,121,168,0.25); }
+
+/* Model Links Card */
+.model-links { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin:20px 0; }
+.model-links h4 { color:var(--text-bright); margin-bottom:14px; font-size:0.95rem; }
+.ml-item { padding:10px 0; border-bottom:1px solid var(--border); }
+.ml-item:last-child { border-bottom:none; }
+.ml-name { font-size:0.88rem; font-weight:600; color:var(--text-bright); margin-bottom:6px; }
+
 /* Footer */
 .footer {
   text-align: center;
@@ -526,6 +558,135 @@ body {
         <strong>2.</strong> MoE架构普及：稀疏激活，降本增效<br>
         <strong>3.</strong> 开源追赶闭源：Qwen3.5、DeepSeek V3.2 媲美顶级闭源<br>
         <strong>4.</strong> 原生多模态：从预训练就融合视觉+文本
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete Technology Timeline -->
+  <div class="timeline-section">
+    <h3>📜 多模态AI技术发展路线（关键里程碑）</h3>
+    <div class="tl-track">
+      <div class="tl-node milestone">
+        <div class="tl-year">2017 · 奠基</div>
+        <div class="tl-title"><a href="https://arxiv.org/abs/1706.03762" target="_blank">Attention Is All You Need</a> — Transformer 架构诞生</div>
+        <div class="tl-desc">Vaswani et al. 提出自注意力机制，用并行计算替代RNN的序列处理，奠定了现代AI的基石。引用 13万+，几乎所有后续模型都基于此。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span><span class="tag new">NeurIPS 2017</span></div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">2018 · 预训练时代开启</div>
+        <div class="tl-title"><a href="https://arxiv.org/abs/1810.04805" target="_blank">BERT</a> (编码器) + <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank">GPT-1</a> (解码器)</div>
+        <div class="tl-desc">BERT用双向Transformer编码器做掩码语言模型，GPT用单向解码器做自回归预测。两条路线分叉：BERT→理解任务，GPT→生成任务。</div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">2019 · 规模初现</div>
+        <div class="tl-title"><a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" target="_blank">GPT-2</a> (1.5B) — "too dangerous to release"</div>
+        <div class="tl-desc">首次展示语言模型的涌现能力——无需微调即可完成翻译、摘要等任务。引发关于AI安全的广泛讨论。</div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2020 · 三大突破</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2005.14165" target="_blank">GPT-3</a> (175B) · 
+          <a href="https://arxiv.org/abs/2006.11239" target="_blank">DDPM</a> · 
+          <a href="https://arxiv.org/abs/2001.08361" target="_blank">Scaling Laws</a>
+        </div>
+        <div class="tl-desc">GPT-3展示few-shot learning；DDPM开创扩散模型时代（引用1.7万+）；Kaplan等人发现模型性能与参数/数据/算力的幂律关系。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span></div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2021 · 多模态觉醒</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2103.00020" target="_blank">CLIP</a> · 
+          <a href="https://arxiv.org/abs/2102.12092" target="_blank">DALL·E</a> · 
+          <a href="https://arxiv.org/abs/2010.11929" target="_blank">ViT</a> · 
+          <a href="https://arxiv.org/abs/2105.05233" target="_blank">Diffusion Beats GANs</a>
+        </div>
+        <div class="tl-desc">CLIP实现文本-图像对齐（引用3万+），DALL·E首次文生图，ViT证明Transformer可以做视觉任务，Dhariwal证明扩散模型超越GAN。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span></div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2022 · 商用爆发</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2112.10752" target="_blank">Stable Diffusion (LDM)</a> · 
+          <a href="https://arxiv.org/abs/2203.02155" target="_blank">InstructGPT/RLHF</a> · 
+          <a href="https://arxiv.org/abs/2204.06125" target="_blank">DALL·E 2</a> · 
+          <a href="https://arxiv.org/abs/2205.11487" target="_blank">Imagen</a>
+        </div>
+        <div class="tl-desc">Stable Diffusion将扩散模型移入潜在空间（引用1.5万+），InstructGPT引入RLHF对齐人类偏好（ChatGPT的基础），DALL·E 2和Imagen推动文生图商用。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span></div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">2023 Q1 · LLM开源浪潮</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2302.13971" target="_blank">LLaMA</a> (Meta) · 
+          <a href="https://arxiv.org/abs/2302.04761" target="_blank">Toolformer</a> · 
+          <a href="https://arxiv.org/abs/2304.08485" target="_blank">LLaVA</a>
+        </div>
+        <div class="tl-desc">LLaMA开源引爆社区，Toolformer教会LLM使用工具，LLaVA用视觉指令微调开创多模态LLM新范式。</div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2023 Q2-Q3 · Agent元年</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a> (ICLR 2023) · 
+          <a href="https://arxiv.org/abs/2305.18290" target="_blank">DPO</a> · 
+          GPT-4V · 
+          <a href="https://arxiv.org/abs/2303.17580" target="_blank">HuggingGPT</a>
+        </div>
+        <div class="tl-desc">ReAct定义Agent的Think→Act→Observe循环（引用5000+），DPO简化对齐训练，GPT-4V开启商用多模态，HuggingGPT展示LLM编排AI工具。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span></div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">2023 Q4 · DiT崛起</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2212.09748" target="_blank">DiT</a> (ICCV 2023) · 
+          <a href="https://arxiv.org/abs/2303.01469" target="_blank">Consistency Models</a> · 
+          SDXL
+        </div>
+        <div class="tl-desc">DiT用Transformer替代U-Net做扩散模型骨干（引用3000+），Consistency Models实现1步生图，SDXL推动高分辨率开源生图。</div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2024 Q1 · 视频生成元年</div>
+        <div class="tl-title">
+          <a href="https://openai.com/sora" target="_blank">Sora</a> (OpenAI) · 
+          <a href="https://arxiv.org/abs/2403.03206" target="_blank">SD3 / Rectified Flow</a> · 
+          Gemini 1.5 Pro (1M上下文)
+        </div>
+        <div class="tl-desc">Sora展示60秒高质量视频生成震惊世界，SD3引入Rectified Flow + MMDiT架构，Gemini 1.5 Pro首次实现1M上下文窗口。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span></div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">2024 Q2-Q4 · MoE + 开源追赶</div>
+        <div class="tl-title">
+          <a href="https://arxiv.org/abs/2401.04088" target="_blank">Mixtral MoE</a> · 
+          <a href="https://github.com/black-forest-labs/flux" target="_blank">Flux</a> · 
+          <a href="https://arxiv.org/abs/2210.02747" target="_blank">Flow Matching</a> · 
+          Claude 3.5 Sonnet
+        </div>
+        <div class="tl-desc">MoE架构普及（大参数小激活），Flux开源DiT+Flow Matching生图，Flow Matching成为新一代生成范式。Claude 3.5 Sonnet成为编码之王。</div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">2024 Q4 · MCP协议诞生</div>
+        <div class="tl-title">
+          <a href="https://modelcontextprotocol.io/" target="_blank">MCP</a> (Anthropic) · 
+          <a href="https://arxiv.org/abs/2501.12948" target="_blank">DeepSeek R1</a> · 
+          CogVideoX
+        </div>
+        <div class="tl-desc">Anthropic发布MCP协议统一Agent工具调用，DeepSeek R1用纯RL训练出强推理能力，CogVideoX推动开源视频生成。</div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2025 · 全模态融合</div>
+        <div class="tl-title">
+          GPT-5 · Gemini 2.5 · Claude 4 · Qwen3-Omni · Sora 2 · Veo 3
+        </div>
+        <div class="tl-desc">GPT Image原生多模态生图颠覆扩散模型，Gemini实现原生多模态，Qwen3-Omni全模态开源，Sora 2和Veo 3音视频同步生成。</div>
+        <div class="tl-tags"><span class="tag hot">🏛️ 里程碑</span></div>
+      </div>
+      <div class="tl-node milestone">
+        <div class="tl-year">2026 · 当前 — 专精化 + Agentic Engineering</div>
+        <div class="tl-title">
+          Qwen3.5 · DeepSeek V3.2 · Claude 4.6 · GPT-5.4 · Gemini 3.1
+        </div>
+        <div class="tl-desc">模型专精化（编码/推理/多模态各有冠军），MoE架构成为标配，开源首次追平闭源，Agentic Engineering成为AI应用主范式。</div>
+        <div class="tl-tags"><span class="tag hot">🔥 当前</span></div>
       </div>
     </div>
   </div>
@@ -639,23 +800,107 @@ body {
       <strong>核心内容：</strong>系统梳理了MLLM的架构（视觉编码器→投影层→LLM）、训练策略（预训练→指令微调→RLHF三阶段）、评估方法，以及多粒度、多模态、多语言扩展。首次全面定义了MLLM领域的研究框架。<br>
       <strong>关键洞察：</strong>① 更高图像分辨率可显著减少幻觉；② 混合文本与多模态数据的SFT效果最佳；③ 数据质量比数量更重要。
     </div>
-  </div>
-
-  <div class="paper-card">
-    <div class="paper-title">📖 Unified Modeling Perspective: Bridging Heterogeneous Architectures</div>
-    <div class="paper-meta">DMML 2025 · 统一建模视角的多模态综述</div>
-    <div class="paper-summary">
-      <strong>核心内容：</strong>将多模态模型分为三类：① 异构桥接（如LLaVA）、② 统一语言建模（如Chameleon）、③ 纯视觉表征。指出异构方案存在"桥接瓶颈"，统一建模是未来方向。<br>
-      <strong>关键洞察：</strong>统一Token序列（文本+视觉token混合输入LLM）能消除模态鸿沟，Qwen3.5-Plus的原生多模态预训练正是这一路线的工程实践。
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2306.13549" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://academic.oup.com/nsr/article/11/12/nwae403/7896414" target="_blank" class="link-btn doc">📖 NSR全文</a>
     </div>
   </div>
 
   <div class="paper-card">
-    <div class="paper-title">📖 All-Angles Bench: 多视图理解新基准</div>
-    <div class="paper-meta">UC伯克利 / 港大 · 2025 · 2100+标注对</div>
+    <div class="paper-title">📖 Visual Instruction Tuning (LLaVA) — 开创视觉指令微调范式</div>
+    <div class="paper-meta">Liu et al. · NeurIPS 2023 · 引用 6000+ · 开源多模态LLM里程碑</div>
     <div class="paper-summary">
-      <strong>核心内容：</strong>首个全面评估MLLM多视图理解能力的基准，涵盖计数、属性识别、相对距离/方向、相机位姿估计6大任务。<br>
-      <strong>关键发现：</strong>① 所有模型（含GPT-4o、Gemini）在相机位姿估计上落后人类50%+；② 开源模型Qwen2.5-VL在方向任务上反超闭源模型；③ 仅靠提示词优化不够，需专门的多视图训练。
+      <strong>核心思想：</strong>首次将"指令微调"从纯文本扩展到多模态。用GPT-4生成视觉指令数据（LLaVA-Instruct-150K），训练一个简单的 Linear Projection 将CLIP视觉特征映射到LLM空间。<br>
+      <strong>为什么重要：</strong>LLaVA证明了"CLIP编码器 + 简单投影层 + LLM"的极简架构就能实现强大的多模态理解。几乎所有后续开源MLLM（MiniGPT-4、InstructBLIP、Qwen-VL等）都沿用这一范式。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2304.08485" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/haotian-liu/LLaVA" target="_blank" class="link-btn github">⭐ GitHub 19K+</a>
+      <a href="https://llava-vl.github.io/" target="_blank" class="link-btn demo">🔗 项目主页</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Learning Transferable Visual Models From Natural Language Supervision (CLIP)</div>
+    <div class="paper-meta">Radford et al. · ICML 2021 · 引用 30000+ · 多模态对齐基石</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>在4亿图文对上用对比学习训练视觉-语言对齐模型。CLIP学到的视觉表征可以零样本迁移到各种视觉任务。<br>
+      <strong>为什么重要：</strong>CLIP是几乎所有多模态模型的视觉编码器基础。LLaVA用CLIP ViT，Stable Diffusion用CLIP文本编码器，它是连接视觉与语言的"桥梁"。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2103.00020" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/openai/CLIP" target="_blank" class="link-btn github">⭐ GitHub 27K+</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Models</div>
+    <div class="paper-meta">Li et al. · ICML 2023 · 引用 5000+ · Q-Former架构</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>提出Q-Former作为视觉-语言桥接模块，通过可学习的query tokens从冻结的视觉编码器中提取语言相关的视觉特征，再输入冻结的LLM。<br>
+      <strong>影响：</strong>Q-Former成为早期多模态LLM的标准组件，InstructBLIP、X-InstructBLIP、MiniGPT-4等都基于此架构。后来被更简单的MLP投影层（LLaVA-1.5）所超越。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2301.12597" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/salesforce/LAVIS/tree/main/projects/blip2" target="_blank" class="link-btn github">⭐ GitHub</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 InternVL3: Exploring Advanced Training Recipes for Open-Source Multimodal Models</div>
+    <div class="paper-meta">上海AI Lab · 2025 · 开源多模态理解SOTA</div>
+    <div class="paper-summary">
+      <strong>核心内容：</strong>InternVL系列是开源多模态理解的标杆之一。InternVL3通过改进训练策略（渐进式分辨率、混合数据配比、高效注意力）在多个基准上达到开源SOTA。<br>
+      <strong>关键创新：</strong>动态分辨率输入、视觉token压缩、多任务联合训练。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2504.10479" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/OpenGVLab/InternVL" target="_blank" class="link-btn github">⭐ GitHub 8K+</a>
+      <a href="https://huggingface.co/OpenGVLab" target="_blank" class="link-btn hf">🤗 HuggingFace</a>
+    </div>
+  </div>
+
+  <!-- Model Documentation & Open Source Links -->
+  <div class="model-links">
+    <h4>🔗 模型文档 & 开源链接</h4>
+    <div class="ml-item">
+      <div class="ml-name">🥇 Qwen3.5-Plus / Qwen3.5-Omni（阿里通义）</div>
+      <div class="link-row">
+        <a href="https://github.com/QwenLM/Qwen3" target="_blank" class="link-btn github">⭐ GitHub</a>
+        <a href="https://huggingface.co/Qwen" target="_blank" class="link-btn hf">🤗 模型权重</a>
+        <a href="https://qwen.readthedocs.io/" target="_blank" class="link-btn doc">📖 文档</a>
+        <a href="https://chat.qwen.ai/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">🥈 DeepSeek V3.2（深度求索）</div>
+      <div class="link-row">
+        <a href="https://github.com/deepseek-ai/DeepSeek-V3" target="_blank" class="link-btn github">⭐ GitHub 25K+</a>
+        <a href="https://huggingface.co/deepseek-ai" target="_blank" class="link-btn hf">🤗 模型权重</a>
+        <a href="https://api-docs.deepseek.com/" target="_blank" class="link-btn doc">📖 API文档</a>
+        <a href="https://chat.deepseek.com/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 Gemini 3.1 Pro（Google）</div>
+      <div class="link-row">
+        <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="link-btn doc">📖 API文档</a>
+        <a href="https://gemini.google.com/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 GPT-5.4 / GPT-4o（OpenAI）</div>
+      <div class="link-row">
+        <a href="https://platform.openai.com/docs" target="_blank" class="link-btn doc">📖 API文档</a>
+        <a href="https://chatgpt.com/" target="_blank" class="link-btn demo">🔗 ChatGPT</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 Claude Opus 4.6（Anthropic）</div>
+      <div class="link-row">
+        <a href="https://docs.anthropic.com/" target="_blank" class="link-btn doc">📖 API文档</a>
+        <a href="https://claude.ai/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+      </div>
     </div>
   </div>
 
@@ -780,21 +1025,115 @@ body {
   <h3 style="color:var(--text-bright);margin:30px 0 16px;">📄 关键技术论文</h3>
 
   <div class="paper-card">
-    <div class="paper-title">📖 Mixture-of-Experts (MoE) 稀疏架构</div>
-    <div class="paper-meta">2024-2026 核心架构趋势</div>
+    <div class="paper-title">📖 Attention Is All You Need — Transformer 架构</div>
+    <div class="paper-meta">Vaswani et al. · NeurIPS 2017 · 引用 130,000+ · 现代AI基石</div>
     <div class="paper-summary">
-      <strong>核心思想：</strong>模型拥有大量参数（如Qwen3.5 397B），但每次推理只激活一小部分"专家"（如22B），大幅降低计算成本。<br>
-      <strong>代表实践：</strong>Qwen3.5 MoE训练成本降90%、部署显存降60%、吞吐提升19倍。DeepSeek V3.2 685B参数但API价格仅$0.14/M input。<br>
-      <strong>为什么重要：</strong>MoE让开源模型首次在性能上追平闭源，同时保持极低的推理成本。
+      <strong>核心思想：</strong>提出自注意力机制（Self-Attention），用并行计算完全替代RNN/LSTM的序列处理。Encoder-Decoder结构+多头注意力+位置编码，成为几乎所有现代AI模型的基础。<br>
+      <strong>影响：</strong>BERT用Encoder，GPT用Decoder，ViT用于视觉，Diffusion Transformer用于生成——万物皆Transformer。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="link-btn arxiv">📄 arXiv</a>
     </div>
   </div>
 
   <div class="paper-card">
-    <div class="paper-title">📖 强化学习对齐（RLHF → DPO → GRPO）</div>
-    <div class="paper-meta">对齐技术演进 · 2023-2026</div>
+    <div class="paper-title">📖 Scaling Laws for Neural Language Models</div>
+    <div class="paper-meta">Kaplan et al. (OpenAI) · 2020 · 引用 5000+ · 指导所有大模型的"圣经"</div>
     <div class="paper-summary">
-      <strong>技术演进：</strong>从RLHF（需训练奖励模型）→ DPO（直接偏好优化，无需奖励模型）→ GRPO（DeepSeek提出的组相对策略优化），对齐技术不断简化且效果提升。<br>
-      <strong>2026新趋势：</strong>Qwen3.5在智能体训练中使用大规模RL框架，纯文本+多模态+多轮对话全覆盖，训练效率提升3-5倍。
+      <strong>核心发现：</strong>模型性能与参数量、数据量、算力之间存在幂律关系（Loss ∝ N^(-α)），跨7个数量级成立。这意味着"大力出奇迹"有数学保证。<br>
+      <strong>影响：</strong>直接指导了GPT-3/4/5的规模选择，后来Chinchilla论文修正为"数据量同样重要"，推动了LLaMA等数据高效训练路线。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2001.08361" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Training Language Models to Follow Instructions (InstructGPT / RLHF)</div>
+    <div class="paper-meta">Ouyang et al. (OpenAI) · NeurIPS 2022 · 引用 8000+ · ChatGPT的基础</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>三阶段训练：① SFT（监督微调）→ ② 训练奖励模型 → ③ PPO强化学习优化。1.3B的InstructGPT比175B的GPT-3更受人类偏好。<br>
+      <strong>影响：</strong>RLHF成为所有商用LLM的标准对齐技术，直接催生了ChatGPT。后来DPO简化了这一流程。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Direct Preference Optimization (DPO)</div>
+    <div class="paper-meta">Rafailov et al. · NeurIPS 2023 · 引用 4000+ · 简化对齐训练</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>无需训练奖励模型和PPO，直接用偏好数据对做分类损失优化。将RLHF三步简化为一步。<br>
+      <strong>影响：</strong>DPO成为开源模型对齐的首选方案（Zephyr、Tulu等），后续演进为GRPO（DeepSeek）、KTO等变体。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Mixture-of-Experts (MoE) — Switch Transformers → Mixtral → DeepSeek MoE</div>
+    <div class="paper-meta">2021-2026 · 核心架构趋势 · 大参数小激活</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>模型拥有大量参数（如Qwen3.5 397B），但每次推理只激活一小部分"专家"（如22B），大幅降低计算成本。<br>
+      <strong>关键论文链：</strong>Switch Transformers (2021, Google) → Mixtral 8x7B (2024, Mistral) → DeepSeek MoE → Qwen3.5 MoE<br>
+      <strong>为什么重要：</strong>MoE让开源模型首次在性能上追平闭源，同时保持极低的推理成本。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2101.03961" target="_blank" class="link-btn arxiv">📄 Switch Transformers</a>
+      <a href="https://arxiv.org/abs/2401.04088" target="_blank" class="link-btn arxiv">📄 Mixtral</a>
+      <a href="https://arxiv.org/abs/2401.06066" target="_blank" class="link-btn arxiv">📄 DeepSeek MoE</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 LoRA: Low-Rank Adaptation of Large Language Models</div>
+    <div class="paper-meta">Hu et al. · ICLR 2022 · 引用 12000+ · 参数高效微调基石</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>在预训练权重旁添加低秩分解矩阵（A×B），只训练这些小矩阵。将微调参数量降低1000倍，显存需求降低3倍。<br>
+      <strong>影响：</strong>LoRA使个人开发者也能微调大模型，催生了QLoRA（4bit量化+LoRA）、DyLoRA、AdaLoRA等变体，成为开源社区的标准微调方案。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2106.09685" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/microsoft/LoRA" target="_blank" class="link-btn github">⭐ GitHub</a>
+      <a href="https://arxiv.org/abs/2305.14314" target="_blank" class="link-btn arxiv">📄 QLoRA</a>
+    </div>
+  </div>
+
+  <!-- LLM Model Links -->
+  <div class="model-links">
+    <h4>🔗 LLM 模型文档 & 开源链接</h4>
+    <div class="ml-item">
+      <div class="ml-name">🥇 Qwen 3.5（阿里通义 · 397B MoE · 开源）</div>
+      <div class="link-row">
+        <a href="https://github.com/QwenLM/Qwen3" target="_blank" class="link-btn github">⭐ GitHub</a>
+        <a href="https://huggingface.co/Qwen" target="_blank" class="link-btn hf">🤗 HuggingFace</a>
+        <a href="https://qwen.readthedocs.io/" target="_blank" class="link-btn doc">📖 文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">🥈 DeepSeek V3.2（深度求索 · 685B MoE · MIT开源）</div>
+      <div class="link-row">
+        <a href="https://github.com/deepseek-ai/DeepSeek-V3" target="_blank" class="link-btn github">⭐ GitHub 25K+</a>
+        <a href="https://huggingface.co/deepseek-ai" target="_blank" class="link-btn hf">🤗 HuggingFace</a>
+        <a href="https://api-docs.deepseek.com/" target="_blank" class="link-btn doc">📖 API文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">🥉 Kimi K2.5（月之暗面 · 1T MoE）</div>
+      <div class="link-row">
+        <a href="https://github.com/MoonshotAI/Kimi-K2" target="_blank" class="link-btn github">⭐ GitHub</a>
+        <a href="https://platform.moonshot.cn/docs" target="_blank" class="link-btn doc">📖 API文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 LLaMA 3.3（Meta · 开源基座）</div>
+      <div class="link-row">
+        <a href="https://github.com/meta-llama/llama3" target="_blank" class="link-btn github">⭐ GitHub 30K+</a>
+        <a href="https://huggingface.co/meta-llama" target="_blank" class="link-btn hf">🤗 HuggingFace</a>
+        <a href="https://llama.meta.com/" target="_blank" class="link-btn doc">📖 官网</a>
+      </div>
     </div>
   </div>
 
@@ -923,29 +1262,94 @@ body {
   <h3 style="color:var(--text-bright);margin:30px 0 16px;">📄 关键技术论文</h3>
 
   <div class="paper-card">
-    <div class="paper-title">📖 Diffusion Transformer (DiT)：图像生成的新范式</div>
-    <div class="paper-meta">Peebles & Xie · ICCV 2023 · 引用 3000+</div>
+    <div class="paper-title">📖 Denoising Diffusion Probabilistic Models (DDPM)</div>
+    <div class="paper-meta">Ho et al. (UC Berkeley) · NeurIPS 2020 · 引用 17,000+ · 扩散模型奠基</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>定义了前向加噪+反向去噪的扩散框架，通过预测噪声来生成图像。DDPM建立了现代扩散模型的标准范式。<br>
+      <strong>影响：</strong>所有后续扩散模型（Stable Diffusion、DALL·E 2、Imagen等）都基于DDPM的数学框架。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2006.11239" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/hojonathanho/diffusion" target="_blank" class="link-btn github">⭐ GitHub</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)</div>
+    <div class="paper-meta">Rombach et al. (LMU Munich) · CVPR 2022 · 引用 15,000+ · 里程碑</div>
+    <div class="paper-summary">
+      <strong>核心突破：</strong>将扩散过程从像素空间移到潜在空间（Latent Space），通过VAE编码器压缩图像，在低维空间做扩散，大幅降低计算成本。引入Cross-Attention做文本条件控制。<br>
+      <strong>影响：</strong>催生了整个Stable Diffusion生态，SD 1.5→SDXL→SD3，以及ComfyUI、ControlNet等下游工具链。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2112.10752" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/CompVis/latent-diffusion" target="_blank" class="link-btn github">⭐ GitHub 12K+</a>
+      <a href="https://huggingface.co/stabilityai" target="_blank" class="link-btn hf">🤗 模型权重</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Scalable Diffusion Models with Transformers (DiT)</div>
+    <div class="paper-meta">Peebles & Xie · ICCV 2023 · 引用 3000+ · 图像生成新范式</div>
     <div class="paper-summary">
       <strong>核心思想：</strong>用Transformer替代U-Net作为扩散模型的骨干网络。DiT在ImageNet上首次展示Transformer架构在图像生成上的Scaling Law——模型越大、计算越多，生成质量越好。<br>
       <strong>影响：</strong>SD3、Flux、Z-Image、Hunyuan Image 全部基于DiT架构。开启了图像生成的"大力出奇迹"时代。
     </div>
-  </div>
-
-  <div class="paper-card">
-    <div class="paper-title">📖 Flow Matching：比DDPM更优雅的生成范式</div>
-    <div class="paper-meta">Lipman et al. · ICLR 2023 · Flux/Kandinsky核心技术</div>
-    <div class="paper-summary">
-      <strong>核心思想：</strong>Flow Matching将生成过程建模为从噪声到数据的连续流（ODE），比传统DDPM的离散去噪步骤更高效。支持更少的采样步数（8-16步 vs 50步）。<br>
-      <strong>代表实践：</strong>Z-Image Turbo仅需8步采样即可出图，Kandinsky 5.0使用16步生成。
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2212.09748" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/facebookresearch/DiT" target="_blank" class="link-btn github">⭐ GitHub 6K+</a>
     </div>
   </div>
 
   <div class="paper-card">
-    <div class="paper-title">📖 原生多模态生图：GPT Image的Transformer路线</div>
-    <div class="paper-meta">OpenAI · 2025-2026 · 非扩散模型的图像生成</div>
+    <div class="paper-title">📖 Flow Matching for Generative Modeling</div>
+    <div class="paper-meta">Lipman et al. · ICLR 2023 · Flux/SD3/Kandinsky核心技术</div>
     <div class="paper-summary">
-      <strong>核心突破：</strong>GPT Image不使用扩散模型，而是在GPT-5的统一Transformer框架内直接生成图像token。这使得模型能以"理解语言"同样的深度来"理解图像指令"。<br>
-      <strong>为什么重要：</strong>这解释了为什么GPT Image 1.5的文字渲染和提示词遵循远超扩散模型——它本质上是在"写"图像，而不是"去噪"图像。
+      <strong>核心思想：</strong>Flow Matching将生成过程建模为从噪声到数据的连续流（ODE），比传统DDPM的离散去噪步骤更高效。支持更少的采样步数（8-16步 vs 50步）。<br>
+      <strong>代表实践：</strong>Z-Image Turbo仅需8步采样即可出图，Flux使用Rectified Flow实现高质量生成。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2210.02747" target="_blank" class="link-btn arxiv">📄 Flow Matching</a>
+      <a href="https://arxiv.org/abs/2403.03206" target="_blank" class="link-btn arxiv">📄 Rectified Flow (SD3)</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Adding Conditional Control to Text-to-Image Diffusion Models (ControlNet)</div>
+    <div class="paper-meta">Zhang et al. (Stanford) · ICCV 2023 · 引用 5000+ · 可控生成</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>在预训练扩散模型上添加可训练的控制分支，支持边缘图、深度图、姿态等多种条件控制。零样本泛化到新条件。<br>
+      <strong>影响：</strong>ControlNet让图像生成从"随机"变为"可控"，成为专业设计工作流的标配。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2302.05543" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/lllyasviel/ControlNet" target="_blank" class="link-btn github">⭐ GitHub 32K+</a>
+    </div>
+  </div>
+
+  <!-- Image Gen Model Links -->
+  <div class="model-links">
+    <h4>🔗 图像生成模型 & 开源链接</h4>
+    <div class="ml-item">
+      <div class="ml-name">🥇 Flux 2 Dev（Black Forest Labs · 开源）</div>
+      <div class="link-row">
+        <a href="https://github.com/black-forest-labs/flux" target="_blank" class="link-btn github">⭐ GitHub 20K+</a>
+        <a href="https://huggingface.co/black-forest-labs/FLUX.1-dev" target="_blank" class="link-btn hf">🤗 模型权重</a>
+        <a href="https://blackforestlabs.ai/" target="_blank" class="link-btn doc">📖 官网</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">🥈 Stable Diffusion 3.5（Stability AI · 开源）</div>
+      <div class="link-row">
+        <a href="https://huggingface.co/stabilityai/stable-diffusion-3.5-large" target="_blank" class="link-btn hf">🤗 模型权重</a>
+        <a href="https://stability.ai/" target="_blank" class="link-btn doc">📖 官网</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 ComfyUI（开源工作流引擎）</div>
+      <div class="link-row">
+        <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" class="link-btn github">⭐ GitHub 70K+</a>
+      </div>
     </div>
   </div>
 
@@ -1074,22 +1478,94 @@ body {
   <h3 style="color:var(--text-bright);margin:30px 0 16px;">📄 关键技术论文</h3>
 
   <div class="paper-card">
-    <div class="paper-title">📖 Video Diffusion Transformer (Video DiT)</div>
-    <div class="paper-meta">核心架构 · 2024-2026</div>
+    <div class="paper-title">📖 Video Generation Models as World Simulators (Sora Technical Report)</div>
+    <div class="paper-meta">OpenAI · 2024.02 · 视频生成里程碑</div>
     <div class="paper-summary">
-      <strong>核心思想：</strong>将DiT从2D图像扩展到3D视频。通过3D VAE将视频编码为时空潜在表示，再用Transformer进行去噪生成。<br>
-      <strong>关键创新：</strong>① 3D因果VAE实现时间维度压缩；② 时空注意力机制保证帧间一致性；③ 条件注入（文本/图像/音频）实现多模态控制。<br>
-      <strong>代表模型：</strong>Sora（OpenAI）、Kling（快手DiT+3D VAE）、Wan系列（阿里）。
+      <strong>核心思想：</strong>将视频视为"世界模拟器"，使用Spacetime Patches将视频编码为时空token序列，用DiT在潜在空间进行去噪生成。支持可变分辨率、可变时长、可变宽高比。<br>
+      <strong>关键创新：</strong>① 3D VAE时空压缩；② 无需固定分辨率训练；③ 展示了涌现的3D一致性和物理规律理解。
+    </div>
+    <div class="link-row">
+      <a href="https://openai.com/index/video-generation-models-as-world-simulators/" target="_blank" class="link-btn doc">📖 技术报告</a>
+      <a href="https://sora.com/" target="_blank" class="link-btn demo">🔗 Sora</a>
     </div>
   </div>
 
   <div class="paper-card">
-    <div class="paper-title">📖 音视频同步生成：从后期配音到原生同步</div>
-    <div class="paper-meta">2025-2026 突破性进展</div>
+    <div class="paper-title">📖 CogVideoX: Text-to-Video Diffusion Models with An Expert Transformer</div>
+    <div class="paper-meta">Tsinghua/Zhipu · 2024 · 引用 500+ · 开源视频生成标杆</div>
     <div class="paper-summary">
-      <strong>问题：</strong>传统AI视频是"哑巴"的——生成画面后需要手动配音/配乐。<br>
-      <strong>突破：</strong>Kling 2.6首创"同时音视频生成"，在单次推理中同时输出画面、音效、环境音、甚至对话。Sora 2和Veo 3.1随后跟进。<br>
-      <strong>意义：</strong>消除了后期配音环节，使AI视频可直接用于短视频创作和广告制作。
+      <strong>核心思想：</strong>使用Expert Transformer（3D Full Attention）替代传统的时空分离注意力，实现更好的时间一致性。3D因果VAE实现4×8×8的时空压缩比。<br>
+      <strong>影响：</strong>CogVideoX系列是开源视频生成的重要基线，后续Wan系列、HunyuanVideo都借鉴了其架构设计。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2408.06072" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/THUDM/CogVideo" target="_blank" class="link-btn github">⭐ GitHub 12K+</a>
+      <a href="https://huggingface.co/THUDM/CogVideoX-5b" target="_blank" class="link-btn hf">🤗 模型权重</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Make-A-Video: Text-to-Video Generation without Text-Video Data</div>
+    <div class="paper-meta">Singer et al. (Meta) · ICLR 2023 · 引用 2000+ · 早期开创者</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>无需文本-视频配对数据！利用文生图模型的先验知识，通过添加时间维度的注意力层将图像生成扩展为视频生成。<br>
+      <strong>影响：</strong>证明了"图像先验+时间扩展"的可行路线，后续Imagen Video、AnimateDiff等都沿用此思路。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2209.14792" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Wan: Open and Advanced Large-Scale Video Generative Models</div>
+    <div class="paper-meta">阿里通义 · 2025 · 开源视频生成SOTA</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>Wan系列采用全注意力DiT架构 + 3D因果VAE + T5文本编码器。支持文生视频、图生视频、视频编辑、音视频同步等多种任务。<br>
+      <strong>开源亮点：</strong>Wan2.1 14B模型完全开源，在VBench等基准上超越闭源模型。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2503.20314" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/Wan-Video/Wan2.1" target="_blank" class="link-btn github">⭐ GitHub 8K+</a>
+      <a href="https://huggingface.co/Wan-AI" target="_blank" class="link-btn hf">🤗 模型权重</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 HunyuanVideo: A Systematic Framework For Large Video Generation Model</div>
+    <div class="paper-meta">腾讯混元 · 2024 · 开源视频生成</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>统一的图像-视频生成框架，采用"Dual-stream to Single-stream"的混合Transformer架构。13B参数模型在多个基准上接近闭源水平。<br>
+      <strong>特色：</strong>支持图生视频、视频编辑、可控生成，社区LoRA生态活跃。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2412.03603" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/Tencent/HunyuanVideo" target="_blank" class="link-btn github">⭐ GitHub 5K+</a>
+      <a href="https://huggingface.co/tencent/HunyuanVideo" target="_blank" class="link-btn hf">🤗 模型权重</a>
+    </div>
+  </div>
+
+  <!-- Video Gen Model Links -->
+  <div class="model-links">
+    <h4>🔗 视频生成模型 & 开源链接</h4>
+    <div class="ml-item">
+      <div class="ml-name">📌 Kling 3.0（快手 · 闭源）</div>
+      <div class="link-row">
+        <a href="https://kling.kuaishou.com/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+        <a href="https://docs.qingque.cn/d/home/eZQAz9yYfMmXq4Fy5nJeIAkFa" target="_blank" class="link-btn doc">📖 API文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 Runway Gen-4（Runway · 闭源）</div>
+      <div class="link-row">
+        <a href="https://runwayml.com/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+        <a href="https://docs.runwayml.com/" target="_blank" class="link-btn doc">📖 API文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 Pika 2.5（Pika Labs · 闭源）</div>
+      <div class="link-row">
+        <a href="https://pika.art/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+      </div>
     </div>
   </div>
 
@@ -1229,15 +1705,61 @@ body {
       <strong>核心设计：</strong>Server（工具提供方）暴露标准化的Tool/Resource/Prompt，Client（Agent）通过统一接口调用。支持stdio和HTTP两种传输方式。<br>
       <strong>影响：</strong>已被OpenAI、Google、LangChain、Cursor等主流平台采纳，正在成为Agent生态的事实标准。
     </div>
+    <div class="link-row">
+      <a href="https://modelcontextprotocol.io/" target="_blank" class="link-btn doc">📖 MCP官方文档</a>
+      <a href="https://github.com/modelcontextprotocol" target="_blank" class="link-btn github">⭐ GitHub Org</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" class="link-btn github">⭐ MCP Servers</a>
+    </div>
   </div>
 
   <div class="paper-card">
-    <div class="paper-title">📖 ReAct：推理与行动的交织循环</div>
-    <div class="paper-meta">Yao et al. · ICLR 2023 · Agent核心范式</div>
+    <div class="paper-title">📖 ReAct: Synergizing Reasoning and Acting in Language Models</div>
+    <div class="paper-meta">Yao et al. (Princeton/Google) · ICLR 2023 · 引用 5000+ · Agent核心范式</div>
     <div class="paper-summary">
       <strong>核心思想：</strong>Agent不是"想完再做"或"做完再想"，而是<strong>Think → Act → Observe</strong>循环交替——每一步推理后立即执行，观察结果后再推理下一步。<br>
       <strong>为什么重要：</strong>ReAct是几乎所有现代Agent框架的底层执行范式。LangGraph、AutoGen、CrewAI的核心循环都是ReAct的变体。<br>
       <strong>2026演进：</strong>从单步ReAct → 多Agent并行ReAct → 自我反思+自我修复的增强ReAct。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2210.03629" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://react-lm.github.io/" target="_blank" class="link-btn demo">🔗 项目主页</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 Toolformer: Language Models Can Teach Themselves to Use Tools</div>
+    <div class="paper-meta">Schick et al. (Meta) · NeurIPS 2023 · 引用 2000+ · LLM工具使用先驱</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>让LLM通过自监督方式学习何时、如何调用外部工具（计算器、搜索引擎、翻译API等）。模型自己决定在文本中插入API调用。<br>
+      <strong>影响：</strong>证明了LLM可以自主学习工具使用，为后续ChatGPT Plugins、Function Calling、MCP等奠定理论基础。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2302.04761" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in Hugging Face</div>
+    <div class="paper-meta">Shen et al. (Zhejiang/MSRA) · NeurIPS 2023 · 引用 1500+ · LLM编排AI</div>
+    <div class="paper-summary">
+      <strong>核心思想：</strong>用ChatGPT作为"控制器"，根据用户请求规划任务、选择Hugging Face上的专业模型执行、整合结果。<br>
+      <strong>影响：</strong>首次展示了"LLM作为AI任务编排器"的范式，启发了后续的AutoGPT、MetaGPT等项目。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2303.17580" target="_blank" class="link-btn arxiv">📄 arXiv</a>
+      <a href="https://github.com/microsoft/JARVIS" target="_blank" class="link-btn github">⭐ GitHub 24K+</a>
+    </div>
+  </div>
+
+  <div class="paper-card">
+    <div class="paper-title">📖 The Landscape of Emerging AI Agent Architectures (Survey)</div>
+    <div class="paper-meta">Masterman et al. · 2024 · Agent架构全景综述</div>
+    <div class="paper-summary">
+      <strong>核心内容：</strong>系统梳理了单Agent、多Agent、层级Agent的架构模式，对比了LangGraph、AutoGen、CrewAI等主流框架的设计理念。<br>
+      <strong>关键洞察：</strong>① 可靠性比自主性更重要；② 人机协作（HITL）是企业落地的关键；③ 标准化协议（MCP/A2A）正在统一生态。
+    </div>
+    <div class="link-row">
+      <a href="https://arxiv.org/abs/2404.11584" target="_blank" class="link-btn arxiv">📄 arXiv</a>
     </div>
   </div>
 
@@ -1248,6 +1770,53 @@ body {
       <strong>核心趋势：</strong>企业从单Agent试点扩展到数十个协调Agent系统。Salesforce和Google推动A2A标准，实现Agent间的任务委派和协作。<br>
       <strong>典型模式：</strong>① 层级式（Manager → Worker Agents）；② 对话式（Agent间对话协商）；③ 事件驱动（异步消息传递）。<br>
       <strong>代表实践：</strong>Kimi K2.5支持100个并行Agent、AutoGen的多Agent对话框架、CrewAI的角色扮演编排。
+    </div>
+  </div>
+
+  <!-- Agent Framework Links -->
+  <div class="model-links">
+    <h4>🔗 Agent 框架 & 工具链接</h4>
+    <div class="ml-item">
+      <div class="ml-name">🥇 LangGraph（LangChain · 状态机Agent框架）</div>
+      <div class="link-row">
+        <a href="https://github.com/langchain-ai/langgraph" target="_blank" class="link-btn github">⭐ GitHub 10K+</a>
+        <a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="link-btn doc">📖 文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">🥈 AutoGen（Microsoft · 多Agent对话框架）</div>
+      <div class="link-row">
+        <a href="https://github.com/microsoft/autogen" target="_blank" class="link-btn github">⭐ GitHub 40K+</a>
+        <a href="https://microsoft.github.io/autogen/" target="_blank" class="link-btn doc">📖 文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">🥉 CrewAI（角色扮演多Agent编排）</div>
+      <div class="link-row">
+        <a href="https://github.com/crewAIInc/crewAI" target="_blank" class="link-btn github">⭐ GitHub 25K+</a>
+        <a href="https://docs.crewai.com/" target="_blank" class="link-btn doc">📖 文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 OpenAI Agents SDK（官方Agent开发套件）</div>
+      <div class="link-row">
+        <a href="https://github.com/openai/openai-agents-python" target="_blank" class="link-btn github">⭐ GitHub</a>
+        <a href="https://platform.openai.com/docs/guides/agents" target="_blank" class="link-btn doc">📖 文档</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 Dify（开源LLMOps平台 · 可视化Agent）</div>
+      <div class="link-row">
+        <a href="https://github.com/langgenius/dify" target="_blank" class="link-btn github">⭐ GitHub 60K+</a>
+        <a href="https://docs.dify.ai/" target="_blank" class="link-btn doc">📖 文档</a>
+        <a href="https://dify.ai/" target="_blank" class="link-btn demo">🔗 在线体验</a>
+      </div>
+    </div>
+    <div class="ml-item">
+      <div class="ml-name">📌 Claude Code（Anthropic · 编码Agent）</div>
+      <div class="link-row">
+        <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" class="link-btn doc">📖 文档</a>
+      </div>
     </div>
   </div>
 
