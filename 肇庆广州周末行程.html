@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>肇庆+广州周末行程 · 4.5-4.6</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh;padding:20px 12px;color:#333}
+.container{max-width:480px;margin:0 auto}
+
+/* Hero */
+.hero{position:relative;border-radius:20px;overflow:hidden;margin-bottom:20px;height:210px;box-shadow:0 10px 40px rgba(0,0,0,0.4);display:flex;align-items:flex-end}
+.hero img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{padding:16px;width:100%;background:linear-gradient(to top,rgba(0,0,0,0.88)0%,rgba(0,0,0,0.3)55%,transparent 100%);position:relative;z-index:1}
+.hero-overlay h1{color:#fff;font-size:21px;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+.hero-overlay p{color:rgba(255,255,255,0.85);font-size:12px;margin-top:4px}
+.hero-emoji{position:absolute;top:16px;right:16px;font-size:48px;opacity:.25;z-index:1}
+
+/* Route */
+.route-overview{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.1)}
+.route-cities{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.route-city{color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.12)}
+.route-arrow{color:rgba(255,255,255,0.5);font-size:14px}
+.route-meta{display:flex;justify-content:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+.route-meta span{color:rgba(255,255,255,0.6);font-size:11px}
+.route-meta span em{font-style:normal;color:#ffd700;font-weight:700}
+
+/* Weather */
+.weather-section{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:16px;padding:14px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.1)}
+.weather-section h3{color:#fff;font-size:14px;font-weight:700;margin-bottom:10px}
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.weather-day{text-align:center;padding:10px 6px;border-radius:12px;background:rgba(255,255,255,0.05)}
+.weather-day .wd-label{color:rgba(255,255,255,0.5);font-size:10px;margin-bottom:4px}
+.weather-day .wd-icon{font-size:24px;margin:4px 0}
+.weather-day .wd-temp{color:#fff;font-size:12px;font-weight:600}
+.weather-day .wd-desc{color:rgba(255,255,255,0.4);font-size:10px;margin-top:2px}
+.weather-day .wd-detail{color:rgba(255,255,255,0.35);font-size:9px;margin-top:3px;line-height:1.4}
+.weather-day.rain{border:1px solid rgba(244,67,54,0.2);background:rgba(244,67,54,0.06)}
+.weather-day.good{border:1px solid rgba(76,175,80,0.2);background:rgba(76,175,80,0.06)}
+
+/* Alert */
+.alert{background:rgba(255,152,0,0.12);border:1px solid rgba(255,152,0,0.25);border-radius:14px;padding:12px;margin-bottom:16px}
+.alert h4{color:#ffb74d;font-size:13px;font-weight:700;margin-bottom:6px}
+.alert p{color:rgba(255,255,255,0.65);font-size:11px;line-height:1.6}
+.alert strong{color:#ffd54f}
+
+/* Transport */
+.transport-section{background:rgba(156,39,176,0.1);border:1px solid rgba(156,39,176,0.2);border-radius:16px;padding:14px;margin-bottom:16px}
+.transport-section h3{color:#ce93d8;font-size:14px;font-weight:700;margin-bottom:10px}
+.train-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.08)}
+.train-card:last-child{margin-bottom:0}
+.train-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.train-no{color:#ce93d8;font-size:13px;font-weight:700}
+.train-tag{font-size:9px;padding:2px 7px;border-radius:8px;background:rgba(76,175,80,0.2);color:#81c784}
+.train-tag.rec{background:rgba(255,193,7,0.2);color:#ffd54f}
+.train-route{display:flex;align-items:center;justify-content:space-between}
+.train-station{text-align:center}
+.train-station .ts-time{color:#fff;font-size:16px;font-weight:700}
+.train-station .ts-name{color:rgba(255,255,255,0.5);font-size:10px;margin-top:2px}
+.train-line{flex:1;text-align:center;padding:0 10px}
+.train-line .tl-dur{color:rgba(255,255,255,0.4);font-size:10px}
+.train-line .tl-bar{height:2px;background:linear-gradient(to right,#ce93d8,rgba(255,255,255,0.2));border-radius:2px;margin:4px 0}
+.train-line .tl-type{color:rgba(255,255,255,0.3);font-size:9px}
+.train-price{display:flex;justify-content:center;gap:12px;margin-top:8px}
+.train-price span{color:rgba(255,255,255,0.5);font-size:10px}
+.train-price span em{font-style:normal;color:#ffd700;font-weight:600}
+
+/* Timeline */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),rgba(255,255,255,0.05))}
+.day-section{margin-bottom:24px}
+.day-header{position:relative;margin-bottom:12px}
+.day-dot{position:absolute;left:-24px;top:4px;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.3)}
+.day-dot.d1{background:linear-gradient(135deg,#667eea,#764ba2)}
+.day-dot.d2{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.day-title{color:#fff;font-size:17px;font-weight:800}
+.day-date{color:rgba(255,255,255,0.5);font-size:11px;margin-top:2px}
+
+/* Cards */
+.card{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px}
+.card.transport::before{background:linear-gradient(to bottom,#9C27B0,#CE93D8)}
+.card.scenic::before{background:linear-gradient(to bottom,#2196F3,#64B5F6)}
+.card.food::before{background:linear-gradient(to bottom,#FF9800,#FFB74D)}
+.card.nature::before{background:linear-gradient(to bottom,#4CAF50,#81C784)}
+.card.stay::before{background:linear-gradient(to bottom,#E91E63,#F48FB1)}
+.card.rain::before{background:linear-gradient(to bottom,#607D8B,#90A4AE)}
+.card.culture::before{background:linear-gradient(to bottom,#FF5722,#FF8A65)}
+.card.city::before{background:linear-gradient(to bottom,#00BCD4,#80DEEA)}
+.card-time{color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;margin-bottom:4px}
+.card-name{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px}
+.card-desc{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.6}
+.tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5)}
+.tag-free{background:rgba(76,175,80,0.2);color:#81c784}
+.tag-hot{background:rgba(244,67,54,0.2);color:#ef9a9a}
+.tag-tip{background:rgba(33,150,243,0.2);color:#64b5f6}
+.tag-food{background:rgba(255,152,0,0.2);color:#ffb74d}
+.tag-rec{background:rgba(255,193,7,0.2);color:#ffd54f}
+.tag-rain{background:rgba(96,125,139,0.2);color:#b0bec5}
+
+/* Option Box */
+.option-box{background:rgba(0,188,212,0.08);border:1px solid rgba(0,188,212,0.15);border-radius:14px;padding:14px;margin-bottom:10px}
+.option-box h4{color:#80deea;font-size:13px;font-weight:700;margin-bottom:8px}
+.option-item{background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.06)}
+.option-item:last-child{margin-bottom:0}
+.option-label{color:#4dd0e1;font-size:12px;font-weight:700;margin-bottom:3px}
+.option-desc{color:rgba(255,255,255,0.55);font-size:11px;line-height:1.5}
+
+/* Photo Gallery */
+.photo-gallery{margin:16px 0}
+.photo-gallery h4{color:#ffd54f;font-size:13px;font-weight:700;margin-bottom:10px}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photo-card{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.photo-card:hover img{transform:scale(1.05)}
+.photo-card .photo-label{position:absolute;bottom:0;left:0;right:0;padding:6px 10px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);color:#fff;font-size:11px;font-weight:600}
+.photo-card.wide{grid-column:span 2;aspect-ratio:16/9}
+
+/* Hotel */
+.hotel-section{background:rgba(233,30,99,0.08);border:1px solid rgba(233,30,99,0.15);border-radius:14px;padding:14px;margin-top:16px}
+.hotel-section h4{color:#f48fb1;font-size:13px;font-weight:700;margin-bottom:10px}
+.hotel-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.08)}
+.hotel-card:last-child{margin-bottom:0}
+.hotel-name{color:#fff;font-size:13px;font-weight:700;margin-bottom:4px}
+.hotel-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.hotel-tag{font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(233,30,99,0.15);color:#f48fb1}
+.hotel-desc{color:rgba(255,255,255,0.5);font-size:11px;line-height:1.5}
+.hotel-price{color:#ffd700;font-size:12px;font-weight:700;margin-top:4px}
+
+/* Budget */
+.budget{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-top:16px;border:1px solid rgba(255,255,255,0.1)}
+.budget h3{color:#fff;font-size:15px;font-weight:700;margin-bottom:12px}
+.brow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.brow:last-child{border-bottom:none}
+.brow .bl{color:rgba(255,255,255,0.6);font-size:12px}
+.brow .br{color:#ffd700;font-size:12px;font-weight:700}
+.btotal{display:flex;justify-content:space-between;padding-top:8px;margin-top:6px;border-top:1px solid rgba(255,255,255,0.15)}
+.btotal .bl{color:#fff;font-weight:700;font-size:13px}
+.btotal .br{font-size:15px;color:#ffd700;font-weight:800}
+
+/* Tips */
+.tips{background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.2);border-radius:14px;padding:14px;margin-top:16px}
+.tips h4{color:#64b5f6;font-size:13px;font-weight:700;margin-bottom:8px}
+.tips ul{list-style:none}
+.tips li{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.6;padding-left:14px;position:relative;margin-bottom:3px}
+.tips li::before{content:'•';position:absolute;left:0;color:#64b5f6}
+
+.footer{text-align:center;color:rgba(255,255,255,0.2);font-size:10px;margin-top:30px;padding-bottom:20px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1580619305218-8423a7ef79b4?w=800&h=420&fit=crop" alt="肇庆七星岩">
+  <div class="hero-emoji">⛰️</div>
+  <div class="hero-overlay">
+    <h1>肇庆+广州 周末轻旅行</h1>
+    <p>4月5日(周六) → 4月6日(周日) · 深圳出发</p>
+    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;border-radius:10px;margin-top:6px;font-weight:600;background:rgba(255,152,0,0.3);color:#ffd54f">⚡ 雨天+晴天双模式行程</span>
+  </div>
+</div>
+
+<!-- Route -->
+<div class="route-overview">
+  <div class="route-cities">
+    <span class="route-city">🏙️ 深圳</span>
+    <span class="route-arrow">🚄→</span>
+    <span class="route-city">⛰️ 肇庆</span>
+    <span class="route-arrow">🚄→</span>
+    <span class="route-city">🏛️ 广州</span>
+    <span class="route-arrow">🚄→</span>
+    <span class="route-city">🏙️ 深圳</span>
+  </div>
+  <div class="route-meta">
+    <span>🗓️ <em>1晚2天</em></span>
+    <span>🚄 深→肇 <em>约1h15min</em></span>
+    <span>💰 人均 <em>¥500-800</em></span>
+  </div>
+</div>
+
+<!-- Weather -->
+<div class="weather-section">
+  <h3>🌤️ 天气预报</h3>
+  <div class="weather-grid">
+    <div class="weather-day rain">
+      <div class="wd-label">4/5 周六 · 肇庆</div>
+      <div class="wd-icon">⛈️</div>
+      <div class="wd-temp">22-27°C</div>
+      <div class="wd-desc">大雨转雷阵雨</div>
+      <div class="wd-detail">⚠️ 下午5点前大雨<br>傍晚起转小雨→阴</div>
+    </div>
+    <div class="weather-day good">
+      <div class="wd-label">4/6 周日 · 肇庆</div>
+      <div class="wd-icon">⛅</div>
+      <div class="wd-temp">22-31°C</div>
+      <div class="wd-desc">雷阵雨转多云</div>
+      <div class="wd-detail">✅ 白天以多云为主<br>适合户外游玩</div>
+    </div>
+  </div>
+</div>
+
+<!-- Rain Strategy Alert -->
+<div class="alert">
+  <h4>⚡ 核心策略：巧避大雨！</h4>
+  <p>4/5下午到肇庆正好是<strong>大雨时段</strong>，所以安排<strong>室内/美食/古城</strong>活动；<br>4/6白天天气转好，<strong>集中安排七星岩+鼎湖山户外景点</strong>；<br>下午从肇庆出发经<strong>广州逛2-3小时</strong>，晚上7点前回深圳。</p>
+</div>
+
+<!-- Transport: Go -->
+<div class="transport-section">
+  <h3>🚄 去程 · 深圳→肇庆（4/5 周六）</h3>
+  <div class="train-card">
+    <div class="train-top">
+      <span class="train-no">G2976 / G2904</span>
+      <span class="train-tag rec">⭐ 推荐</span>
+    </div>
+    <div class="train-route">
+      <div class="train-station">
+        <div class="ts-time">11:14</div>
+        <div class="ts-name">深圳北</div>
+      </div>
+      <div class="train-line">
+        <div class="tl-dur">约1h13min</div>
+        <div class="tl-bar"></div>
+        <div class="tl-type">经广州南→肇庆东</div>
+      </div>
+      <div class="train-station">
+        <div class="ts-time">12:27</div>
+        <div class="ts-name">肇庆东</div>
+      </div>
+    </div>
+    <div class="train-price">
+      <span>二等座 <em>¥108.5</em></span>
+      <span>一等座 <em>¥153.5</em></span>
+    </div>
+  </div>
+  <div class="train-card">
+    <div class="train-top">
+      <span class="train-no">G6212</span>
+      <span class="train-tag">备选</span>
+    </div>
+    <div class="train-route">
+      <div class="train-station">
+        <div class="ts-time">11:50</div>
+        <div class="ts-name">深圳北</div>
+      </div>
+      <div class="train-line">
+        <div class="tl-dur">约1h35min</div>
+        <div class="tl-bar"></div>
+        <div class="tl-type">经广州南→佛山西→肇庆东</div>
+      </div>
+      <div class="train-station">
+        <div class="ts-time">13:25</div>
+        <div class="ts-name">肇庆东</div>
+      </div>
+    </div>
+    <div class="train-price">
+      <span>二等座 <em>¥108.5</em></span>
+      <span>一等座 <em>¥153.5</em></span>
+    </div>
+  </div>
+  <div style="color:rgba(255,255,255,0.4);font-size:10px;margin-top:6px;text-align:center">💡 清明假期车票紧张 · 建议立即在12306抢票</div>
+</div>
+
+<!-- ========== DAY 1 ========== -->
+<div class="timeline">
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-dot d1"></div>
+      <div class="day-title">Day 1 · 到达 + 雨天室内游</div>
+      <div class="day-date">4月5日 周六 · 深圳→肇庆 🌧️</div>
+    </div>
+
+    <div class="card transport">
+      <div class="card-time">11:14 出发</div>
+      <div class="card-name">🚄 深圳北 → 肇庆东</div>
+      <div class="card-desc">高铁约1h13min直达。到达肇庆东站后打车约20分钟到七星岩/端州区市区（约¥30）。</div>
+      <div class="tags"><span class="tag tag-tip">💡 提前买票</span><span class="tag">二等座¥108.5</span></div>
+    </div>
+
+    <div class="card stay">
+      <div class="card-time">12:30-13:30</div>
+      <div class="card-name">🏨 入住酒店 + 午餐</div>
+      <div class="card-desc">先到酒店放行李。午餐推荐去<strong>牌坊广场</strong>附近觅食，这里是肇庆美食聚集地。必吃：<strong>裹蒸粽</strong>（肇庆特色，比普通粽子大3倍！用冬叶包裹）、<strong>肠粉</strong>。</div>
+      <div class="tags"><span class="tag tag-food">🍜 裹蒸粽</span><span class="tag tag-food">🥣 肠粉</span><span class="tag">💰 人均30-50</span></div>
+    </div>
+
+    <div class="card rain">
+      <div class="card-time">14:00-16:30 🌧️ 大雨时段</div>
+      <div class="card-name">🏛️ 雨天室内活动（二选一）</div>
+      <div class="card-desc">外面大雨，正好安排室内活动！</div>
+    </div>
+
+    <div class="option-box">
+      <h4>🔀 雨天方案二选一</h4>
+      <div class="option-item">
+        <div class="option-label">方案A：肇庆古城墙 + 披云楼 🏯</div>
+        <div class="option-desc">全国保存最完整的宋代古城墙之一，周长2800米。<strong>披云楼</strong>可以登楼远眺（有遮雨），了解肇庆千年历史。城墙内有展览馆，雨天也能逛。城墙下就是端州路商业区，可以顺便逛逛。</div>
+        <div class="tags" style="margin-top:6px"><span class="tag tag-free">🆓 免费</span><span class="tag">🏯 千年古城</span><span class="tag tag-tip">🌧️ 有遮挡</span></div>
+      </div>
+      <div class="option-item">
+        <div class="option-label">方案B：端砚文化村 + 品茶 🖌️</div>
+        <div class="option-desc">肇庆是"端砚之都"，端砚是中国四大名砚之首。去<strong>白石村端砚文化村</strong>参观端砚制作工艺，看匠人雕刻。或者找一家茶馆品茶发呆，享受雨天的悠闲。</div>
+        <div class="tags" style="margin-top:6px"><span class="tag">🖌️ 非遗体验</span><span class="tag">🍵 品茶</span><span class="tag tag-tip">🌧️ 室内活动</span></div>
+      </div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">17:00-18:00 🌧️→🌥️ 雨渐停</div>
+      <div class="card-name">🍲 岩前村觅食 + 散步</div>
+      <div class="card-desc">傍晚雨势减弱，去<strong>岩前村</strong>！这是肇庆最火的网红美食村，200+商户聚集，紧邻七星岩。必吃：<strong>荔枝柴烧鹅</strong>（肇庆一绝！）、<strong>竹筒饭、煲仔饭</strong>。村里有很多特色咖啡馆和餐吧，氛围超好。</div>
+      <div class="tags"><span class="tag tag-hot">🔥 网红美食村</span><span class="tag tag-food">🦆 荔枝柴烧鹅</span><span class="tag">💰 人均50-80</span></div>
+    </div>
+
+    <div class="card scenic">
+      <div class="card-time">18:30-20:00 🌥️ 雨停</div>
+      <div class="card-name">🌆 七星岩牌坊广场 + 音乐喷泉</div>
+      <div class="card-desc">雨停了出来散步！<strong>七星岩牌坊</strong>是肇庆地标（朱德题字），广场上有大型音乐喷泉（周末晚上通常有表演）。沿着星湖大道走走，雨后的星湖特别美，烟雨朦胧。</div>
+      <div class="tags"><span class="tag tag-free">🆓 免费</span><span class="tag">🌅 雨后星湖</span><span class="tag">⛲ 音乐喷泉</span></div>
+    </div>
+  </div>
+
+  <!-- ========== DAY 2 ========== -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-dot d2"></div>
+      <div class="day-title">Day 2 · 七星岩 + 广州半日</div>
+      <div class="day-date">4月6日 周日 · 肇庆→广州→深圳 ⛅</div>
+    </div>
+
+    <div class="card scenic">
+      <div class="card-time">07:30-11:30 ⛅ 天气转好</div>
+      <div class="card-name">⛰️ 七星岩景区（核心游玩！）</div>
+      <div class="card-desc">趁天气好，一早就去七星岩！被誉为"<strong>岭南第一奇观</strong>"，七座山峰如北斗七星排列在碧湖之上。推荐路线（北门进）：<br><br>
+      ① <strong>落羽杉林</strong> → 人造雾开启时宛如仙境 💨<br>
+      ② <strong>双源洞</strong> → 乘船游地下河（¥20），86版西游记水帘洞取景地<br>
+      ③ <strong>天柱岩</strong> → 登顶摘星亭俯瞰星湖全景（约40分钟登顶）<br>
+      ④ <strong>千年诗廊</strong> → 531题摩崖石刻，含唐代李邕真迹<br>
+      ⑤ <strong>五龙亭</strong> → "水月岩云"经典机位 📸</div>
+      <div class="tags"><span class="tag tag-hot">🔥 必去</span><span class="tag">🎫 ¥70（年卡¥100含鼎湖山）</span><span class="tag tag-tip">⏰ 约4小时</span></div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">11:30-12:15</div>
+      <div class="card-name">🍜 快速午餐</div>
+      <div class="card-desc">在七星岩牌坊广场附近快速解决午餐。推荐：<strong>肇庆豆腐花</strong>（滑嫩鲜甜）、<strong>簸箕炊</strong>（米浆蒸制小吃）、或者直接一碗云吞面。赶时间可以打包岩前村的竹筒饭。</div>
+      <div class="tags"><span class="tag tag-food">🍜 快速解决</span><span class="tag">💰 人均20-40</span></div>
+    </div>
+
+    <div class="card transport">
+      <div class="card-time">12:30-13:15</div>
+      <div class="card-name">🚄 肇庆东 → 广州南</div>
+      <div class="card-desc">打车回肇庆东站（约20分钟），乘高铁去广州。肇庆东到广州南车次超多（每天100+班），<strong>随到随买</strong>，约35-50分钟直达！<br>推荐车次：12:45-13:30区间有多趟D/G车次可选。</div>
+      <div class="tags"><span class="tag tag-tip">💡 二等座¥28-34</span><span class="tag">约40分钟</span><span class="tag">车次超多</span></div>
+    </div>
+
+    <div class="card city">
+      <div class="card-time">13:30-17:00 · 广州半日游</div>
+      <div class="card-name">🏛️ 广州经典打卡（3小时精华版）</div>
+      <div class="card-desc">到广州南站后坐地铁开逛！以下路线已按地铁顺序优化：</div>
+    </div>
+
+    <div class="option-box">
+      <h4>🗺️ 广州3小时精华路线（二选一）</h4>
+      <div class="option-item">
+        <div class="option-label">路线A：西关文化线 🏘️（推荐！）</div>
+        <div class="option-desc">
+          <strong>13:40</strong> 广州南→地铁2号线→1号线→<strong>陈家祠</strong>（约35min）<br>
+          <strong>14:15-15:00</strong> 🏯 <strong>陈家祠</strong>（门票¥10）— 岭南建筑瑰宝，三雕两塑一铸，极其精美<br>
+          <strong>15:15-16:00</strong> 🏘️ <strong>永庆坊</strong>（步行10min）— 西关历史街区，李小龙祖居、粤剧博物馆、月亮桥<br>
+          <strong>16:00-16:30</strong> 🌴 <strong>沙面</strong>（步行15min）— 欧陆风情建筑群，超出片！<br>
+          <strong>16:40</strong> 地铁6号线→2号线→广州南站
+        </div>
+      </div>
+      <div class="option-item">
+        <div class="option-label">路线B：都市地标线 🏙️</div>
+        <div class="option-desc">
+          <strong>13:40</strong> 广州南→地铁2号线→APM线→<strong>花城广场</strong>（约40min）<br>
+          <strong>14:20-15:00</strong> 🌆 <strong>花城广场</strong> — 城市客厅，远眺广州塔（小蛮腰）<br>
+          <strong>15:00-16:00</strong> 🏛️ <strong>广东省博物馆</strong>（免费，需预约）— 潮州木雕、端砚展<br>
+          <strong>16:00-16:30</strong> 📸 <strong>海心沙</strong> 拍广州塔全景<br>
+          <strong>16:40</strong> 地铁APM线→2号线→广州南站
+        </div>
+      </div>
+    </div>
+
+    <div class="card food">
+      <div class="card-time">穿插在广州游玩中</div>
+      <div class="card-name">🍲 广州美食不能错过</div>
+      <div class="card-desc">食在广州！逛到哪吃到哪：<br>
+      • 陈家祠附近：<strong>银记肠粉</strong>（老字号）<br>
+      • 永庆坊/沙面：<strong>顺记冰室</strong>（椰子雪糕）、<strong>陈添记鱼皮</strong><br>
+      • 花城广场：花城汇地下美食广场<br>
+      • 随手买：<strong>凉茶、双皮奶、叉烧包</strong></div>
+      <div class="tags"><span class="tag tag-food">🥟 肠粉</span><span class="tag tag-food">🍧 双皮奶</span><span class="tag tag-food">🍗 叉烧包</span></div>
+    </div>
+
+    <div class="card transport">
+      <div class="card-time">17:00-18:00</div>
+      <div class="card-name">🚄 广州南 → 深圳北</div>
+      <div class="card-desc">广州南到深圳北的高铁<strong>平均5分钟一班</strong>，完全不用提前买票。约30分钟直达，二等座¥74.5。<br>赶在<strong>19:00前</strong>回到深圳，完美收工！</div>
+      <div class="tags"><span class="tag tag-tip">💡 二等座¥74.5</span><span class="tag">约30分钟</span><span class="tag tag-rec">⭐ 随到随走</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Gallery -->
+<div class="photo-gallery">
+  <h4>📸 景点预览</h4>
+  <div class="photo-grid">
+    <div class="photo-card wide">
+      <img src="https://images.unsplash.com/photo-1580619305218-8423a7ef79b4?w=800&h=400&fit=crop" alt="七星岩">
+      <div class="photo-label">⛰️ 七星岩 · 岭南第一奇观</div>
+    </div>
+    <div class="photo-card">
+      <img src="https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop" alt="古城墙">
+      <div class="photo-label">🏯 肇庆宋代古城墙</div>
+    </div>
+    <div class="photo-card">
+      <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=400&h=300&fit=crop" alt="陈家祠">
+      <div class="photo-label">🏛️ 广州陈家祠</div>
+    </div>
+    <div class="photo-card">
+      <img src="https://images.unsplash.com/photo-1536599018102-9f803c979981?w=400&h=300&fit=crop" alt="沙面">
+      <div class="photo-label">🌴 广州沙面 · 欧陆风情</div>
+    </div>
+    <div class="photo-card">
+      <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=300&fit=crop" alt="广州塔">
+      <div class="photo-label">🗼 广州塔 · 小蛮腰</div>
+    </div>
+  </div>
+</div>
+
+<!-- Hotel -->
+<div class="hotel-section">
+  <h4>🏨 肇庆住宿推荐（住1晚）</h4>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 首选：岩前村民宿</div>
+    <div class="hotel-meta">
+      <span class="hotel-tag">🏞️ 紧邻七星岩</span>
+      <span class="hotel-tag">🍜 美食聚集</span>
+      <span class="hotel-tag">📸 湖景</span>
+    </div>
+    <div class="hotel-desc">紧邻七星岩景区，步行5分钟到北门。200+商户的美食村就在楼下，晚上吃完直接回房。部分民宿有湖景阳台，可以看到天柱岩倒影。第二天一早进景区超方便！</div>
+    <div class="hotel-price">💰 ¥200-400/晚</div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-name">📍 备选：牌坊广场附近酒店</div>
+    <div class="hotel-meta">
+      <span class="hotel-tag">🏙️ 市中心</span>
+      <span class="hotel-tag">🛒 配套全</span>
+      <span class="hotel-tag">🚌 交通便利</span>
+    </div>
+    <div class="hotel-desc">七星岩牌坊广场商圈，如家、亚朵、全季等连锁酒店可选。附近有大润发、沃尔玛，吃饭购物方便。到七星岩景区步行约15分钟。</div>
+    <div class="hotel-price">💰 ¥150-300/晚</div>
+  </div>
+</div>
+
+<!-- Budget -->
+<div class="budget">
+  <h3>💰 预算参考（人均）</h3>
+  <div class="brow"><span class="bl">🚄 深圳→肇庆</span><span class="br">¥108.5</span></div>
+  <div class="brow"><span class="bl">🚄 肇庆→广州</span><span class="br">¥28-34</span></div>
+  <div class="brow"><span class="bl">🚄 广州→深圳</span><span class="br">¥74.5</span></div>
+  <div class="brow"><span class="bl">🏨 住宿1晚</span><span class="br">¥100-200（拼房）</span></div>
+  <div class="brow"><span class="bl">🎫 门票（七星岩+陈家祠）</span><span class="br">¥80</span></div>
+  <div class="brow"><span class="bl">🍽️ 餐饮（4-5顿）</span><span class="br">¥150-250</span></div>
+  <div class="brow"><span class="bl">🚕 打车/交通</span><span class="br">¥60-100</span></div>
+  <div class="btotal"><span class="bl">合计</span><span class="br">¥500 - 800</span></div>
+</div>
+
+<!-- Tips -->
+<div class="tips">
+  <h4>📋 实用贴士</h4>
+  <ul>
+    <li><strong>车票！</strong>清明假期深圳→肇庆车票紧张，11点多的G2976/G2904建议立即购买</li>
+    <li><strong>雨具必备</strong>：4/5下午肇庆大雨，带好雨伞/雨衣。穿防水鞋或带备用鞋</li>
+    <li><strong>七星岩省钱</strong>：关注"微星湖"公众号买¥100年卡（含七星岩+鼎湖山+湿地公园），比单次票¥70划算</li>
+    <li><strong>七星岩早起</strong>：建议7:30前到，人少景美。落羽杉林的人造雾时间通常是10:00-11:30</li>
+    <li><strong>双源洞船票</strong>：景区内¥20，建议去坐，86版西游记水帘洞取景地</li>
+    <li><strong>肇庆→广州</strong>：肇庆东到广州南每天100+班动车，¥28起，不用提前买，到站随买</li>
+    <li><strong>广州南→深圳</strong>：同样5分钟一班，¥74.5，完全不担心</li>
+    <li><strong>陈家祠</strong>：需在公众号提前预约！门票仅¥10，超值</li>
+    <li><strong>广东省博物馆</strong>：免费但需提前7天在公众号预约，很难约，尽早操作</li>
+  </ul>
+</div>
+
+<!-- Quick Timeline -->
+<div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:16px;margin-top:16px;border:1px solid rgba(255,255,255,0.1)">
+  <h3 style="color:#fff;font-size:14px;font-weight:700;margin-bottom:10px">⏱️ 时间线速览</h3>
+  <div style="color:rgba(255,255,255,0.55);font-size:11px;line-height:2">
+    <div>🚄 <strong style="color:#ce93d8">11:14</strong> 深圳北出发</div>
+    <div>📍 <strong style="color:#ce93d8">12:27</strong> 到达肇庆东 → 入住+午餐</div>
+    <div>🏛️ <strong style="color:#90a4ae">14:00</strong> 古城墙/端砚（雨天室内）</div>
+    <div>🍽️ <strong style="color:#ffb74d">17:00</strong> 岩前村觅食</div>
+    <div>🌆 <strong style="color:#64b5f6">18:30</strong> 牌坊广场+音乐喷泉</div>
+    <div>😴 <strong style="color:#f48fb1">21:00</strong> 早睡早起</div>
+    <div style="margin-top:4px;border-top:1px solid rgba(255,255,255,0.08);padding-top:4px">
+    <div>⛰️ <strong style="color:#81c784">07:30</strong> 七星岩景区（4小时）</div>
+    <div>🍜 <strong style="color:#ffb74d">11:30</strong> 快速午餐</div>
+    <div>🚄 <strong style="color:#ce93d8">12:30</strong> 肇庆东→广州南</div>
+    <div>🏛️ <strong style="color:#80deea">13:30</strong> 广州半日游（3小时）</div>
+    <div>🚄 <strong style="color:#ce93d8">17:00</strong> 广州南→深圳北</div>
+    <div>🏠 <strong style="color:#81c784">17:30</strong> 到家！</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  ⛰️ 肇庆+广州周末行程规划 · 2026.04.04 生成<br>
+  祝旅途愉快！🎉
+</div>
+
+</div>
+</body>
+</html>
