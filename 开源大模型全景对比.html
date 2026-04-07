@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 主流开源大模型全景对比</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f0f23;--card:#1a1a2e;--card2:#16213e;--border:#2a2a4a;--text:#e0e0e0;--text2:#a0a0c0;--accent:#818cf8;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--blue:#3b82f6;--purple:#a78bfa;--orange:#f97316;--pink:#ec4899;--cyan:#06b6d4;--teal:#14b8a6}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.7;min-height:100vh}
+.container{max-width:1400px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border-bottom:2px solid var(--accent);margin-bottom:30px}
+header h1{font-size:2.2rem;background:linear-gradient(135deg,#818cf8,#a78bfa,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+header p{color:var(--text2);font-size:1rem}
+header .update-time{color:var(--accent);font-size:0.85rem;margin-top:6px}
+
+/* Tab Navigation */
+.tab-nav{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;padding:0 10px}
+.tab-btn{padding:10px 20px;border:1px solid var(--border);background:var(--card);color:var(--text2);border-radius:8px;cursor:pointer;font-size:0.9rem;transition:all .3s}
+.tab-btn:hover{border-color:var(--accent);color:var(--text)}
+.tab-btn.active{background:linear-gradient(135deg,rgba(129,140,248,.2),rgba(167,139,250,.2));border-color:var(--accent);color:#fff;font-weight:600}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* Cards */
+.model-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;transition:transform .2s,box-shadow .2s}
+.model-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.model-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.model-logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;flex-shrink:0}
+.model-title h2{font-size:1.5rem;color:#fff;margin-bottom:2px}
+.model-title .org{color:var(--text2);font-size:0.85rem}
+.model-badges{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.badge{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;white-space:nowrap}
+.badge-mit{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge-apache{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.3)}
+.badge-llama{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.3)}
+.badge-moe{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+.badge-dense{background:rgba(6,182,212,.15);color:var(--cyan);border:1px solid rgba(6,182,212,.3)}
+.badge-multimodal{background:rgba(236,72,153,.15);color:var(--pink);border:1px solid rgba(236,72,153,.3)}
+.badge-huawei{background:rgba(234,179,8,.15);color:var(--yellow);border:1px solid rgba(234,179,8,.3)}
+
+/* Spec Grid */
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.spec-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.spec-item .label{font-size:0.75rem;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.spec-item .value{font-size:1.2rem;font-weight:700;color:#fff}
+.spec-item .value.highlight{color:var(--accent)}
+.spec-item .sub{font-size:0.7rem;color:var(--text2);margin-top:2px}
+
+/* GPU Requirements */
+.gpu-section{margin-top:16px}
+.gpu-section h3{font-size:1.1rem;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.gpu-table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.gpu-table th{background:rgba(129,140,248,.1);color:var(--accent);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);font-weight:600}
+.gpu-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text)}
+.gpu-table tr:hover td{background:rgba(255,255,255,.02)}
+.gpu-table .rec{color:var(--green);font-weight:600}
+
+/* Comparison Table */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:16px;overflow-x:auto;display:block}
+.compare-table th{background:rgba(129,140,248,.12);color:var(--accent);padding:12px;text-align:center;border:1px solid var(--border);position:sticky;top:0;font-weight:600;white-space:nowrap}
+.compare-table td{padding:10px 12px;border:1px solid var(--border);text-align:center;color:var(--text);white-space:nowrap}
+.compare-table td:first-child{text-align:left;font-weight:600;color:#fff;background:rgba(255,255,255,.02);white-space:normal}
+.compare-table tr:hover td{background:rgba(129,140,248,.05)}
+.best{color:var(--green);font-weight:700}
+.good{color:var(--yellow)}
+.warn{color:var(--orange)}
+
+/* Collapsible */
+.collapsible{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.collapsible-header{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.collapsible-header:hover{background:rgba(129,140,248,.05)}
+.collapsible-header h3{font-size:1rem;color:#fff}
+.collapsible-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.collapsible-body.open{max-height:5000px}
+.collapsible-content{padding:0 18px 18px}
+.arrow{color:var(--accent);transition:transform .3s;font-size:0.8rem}
+.arrow.rotated{transform:rotate(180deg)}
+
+/* Info Box */
+.info-box{padding:14px 18px;border-radius:10px;margin:12px 0;font-size:0.88rem;line-height:1.6}
+.info-box.blue{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#93c5fd}
+.info-box.green{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#86efac}
+.info-box.yellow{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:#fde047}
+.info-box.purple{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:#c4b5fd}
+
+/* Responsive */
+@media(max-width:768px){
+  header h1{font-size:1.5rem}
+  .spec-grid{grid-template-columns:repeat(2,1fr)}
+  .model-header{flex-direction:column;align-items:flex-start}
+  .model-badges{margin-left:0}
+  .tab-btn{padding:8px 12px;font-size:0.8rem}
+}
+.section-desc{color:var(--text2);margin-bottom:20px;font-size:0.92rem;line-height:1.7}
+ul{padding-left:20px;margin:8px 0}
+li{margin-bottom:4px;color:var(--text)}
+strong{color:#fff}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin:20px 0}
+.toc-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 16px;cursor:pointer;transition:all .2s}
+.toc-item:hover{border-color:var(--accent);background:rgba(129,140,248,.05)}
+.toc-item .toc-name{font-weight:600;color:#fff;font-size:0.95rem}
+.toc-item .toc-desc{color:var(--text2);font-size:0.8rem;margin-top:4px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🤖 2026 主流开源大模型全景对比</h1>
+  <p>训练资源 · 部署需求 · 架构差异 · 性能基准 — 一站式速查</p>
+  <div class="update-time">最后更新：2026-04-07 | 数据来源：官方技术报告 & HuggingFace & 社区实测</div>
+</header>
+
+<div class="container">
+
+<!-- Tab Navigation -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('overview')">📊 总览对比</button>
+  <button class="tab-btn" onclick="switchTab('glm5')">🇨🇳 GLM-5</button>
+  <button class="tab-btn" onclick="switchTab('deepseek')">🔬 DeepSeek</button>
+  <button class="tab-btn" onclick="switchTab('qwen')">☁️ Qwen 3.5</button>
+  <button class="tab-btn" onclick="switchTab('kimi')">🌙 Kimi K2</button>
+  <button class="tab-btn" onclick="switchTab('llama')">🦙 Llama 4</button>
+  <button class="tab-btn" onclick="switchTab('mistral')">🇫🇷 Mistral 3</button>
+  <button class="tab-btn" onclick="switchTab('deploy')">🚀 部署实战</button>
+</div>
+
+<!-- ==================== 总览对比 ==================== -->
+<div id="overview" class="tab-content active">
+  <h2 style="color:#fff;font-size:1.4rem;margin-bottom:16px">📊 旗舰模型核心参数对比</h2>
+
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr>
+      <th>模型</th>
+      <th>厂商</th>
+      <th>总参数</th>
+      <th>激活参数</th>
+      <th>架构</th>
+      <th>上下文</th>
+      <th>训练数据</th>
+      <th>许可证</th>
+      <th>发布时间</th>
+    </tr>
+    <tr>
+      <td>GLM-5</td><td>智谱 Z.ai</td>
+      <td class="best">744B</td><td>40B</td><td>MoE (256E/8A)</td>
+      <td>200K</td><td>28.5T tokens</td>
+      <td><span class="best">MIT</span></td><td>2026.02</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-V3.2</td><td>DeepSeek</td>
+      <td>685B</td><td>37B</td><td>MoE (256E/8A)</td>
+      <td>128K</td><td>14.8T tokens</td>
+      <td><span class="best">MIT</span></td><td>2025.11</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-R2</td><td>DeepSeek</td>
+      <td>~685B*</td><td>~37B*</td><td>MoE + MLA</td>
+      <td>128K*</td><td>—</td>
+      <td><span class="best">MIT</span></td><td>2026.03</td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-397B</td><td>阿里 Qwen</td>
+      <td>397B</td><td class="best">17B</td><td>MoE (512E/10+1A) + GDN</td>
+      <td class="best">262K (ext 1M)</td><td>—</td>
+      <td><span class="best">Apache 2.0</span></td><td>2026.02</td>
+    </tr>
+    <tr>
+      <td>Kimi K2</td><td>Moonshot</td>
+      <td class="best">1T</td><td>32B</td><td>MoE (384E)</td>
+      <td>128K</td><td>15.5T tokens</td>
+      <td>Modified MIT</td><td>2025.07</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Maverick</td><td>Meta</td>
+      <td>400B</td><td class="best">17B</td><td>MoE (128E)</td>
+      <td>1M</td><td>30T+ tokens</td>
+      <td><span class="warn">Llama 4</span></td><td>2025.04</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Scout</td><td>Meta</td>
+      <td>109B</td><td class="best">17B</td><td>MoE (16E)</td>
+      <td class="best">10M</td><td>30T+ tokens</td>
+      <td><span class="warn">Llama 4</span></td><td>2025.04</td>
+    </tr>
+    <tr>
+      <td>Mistral Large 3</td><td>Mistral AI</td>
+      <td>675B</td><td>41B</td><td>MoE (16E/2A)</td>
+      <td>256K</td><td>—</td>
+      <td><span class="best">Apache 2.0</span></td><td>2025.12</td>
+    </tr>
+  </table>
+  </div>
+  <p style="color:var(--text2);font-size:0.78rem;margin-top:6px">* DeepSeek R2 数据为预发布信息，待官方技术报告确认。E=总专家数，A=每token激活专家数。</p>
+
+  <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">🖥️ 训练资源对比</h2>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr>
+      <th>模型</th>
+      <th>训练硬件</th>
+      <th>GPU数量</th>
+      <th>GPU时长</th>
+      <th>估算成本</th>
+      <th>训练精度</th>
+      <th>关键技术</th>
+    </tr>
+    <tr>
+      <td>GLM-5</td><td class="good">华为 Ascend 910B</td>
+      <td class="best">100,000</td><td>—</td><td>—</td>
+      <td>—</td><td>MindSpore框架，全国产芯片</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-V3</td><td>NVIDIA H800</td>
+      <td>2,048</td><td class="best">2.788M h</td><td class="best">~$5.6M</td>
+      <td>FP8</td><td>DualPipe并行，MLA，FP8原生训练</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-V3.2</td><td>NVIDIA H800</td>
+      <td>2,048</td><td>—</td><td>—</td>
+      <td>FP8</td><td>DSA稀疏注意力，GRPO强化学习</td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-397B</td><td>NVIDIA (未公开型号)</td>
+      <td>—</td><td>—</td><td>—</td>
+      <td>—</td><td>GDN混合架构，多token预测，RL缩放</td>
+    </tr>
+    <tr>
+      <td>Kimi K2</td><td>NVIDIA H800</td>
+      <td>集群(每节点8卡)</td><td>—</td><td>~$4.6M*</td>
+      <td>—</td><td>MuonClip优化器，QAT量化感知训练</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Scout</td><td>NVIDIA H100</td>
+      <td>—</td><td>5.0M h</td><td>—</td>
+      <td>FP8</td><td>iRoPE，10M长上下文泛化</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Maverick</td><td>NVIDIA H100</td>
+      <td>—</td><td>2.38M h</td><td>—</td>
+      <td>FP8</td><td>MoE 128专家，异步在线RL</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Behemoth</td><td>NVIDIA H100</td>
+      <td class="best">32,000</td><td>—</td><td>—</td>
+      <td>FP8</td><td>2T参数教师模型，390 TFLOPS/GPU</td>
+    </tr>
+    <tr>
+      <td>Mistral Large 3</td><td>NVIDIA H200</td>
+      <td>3,000</td><td>—</td><td>—</td>
+      <td>—</td><td>从零训练，NVFP4量化，Blackwell优化</td>
+    </tr>
+  </table>
+  </div>
+  <p style="color:var(--text2);font-size:0.78rem;margin-top:6px">* Kimi K2 成本为非官方估计。Scout+Maverick合计7.38M GPU时。</p>
+
+  <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">🚀 部署硬件需求对比</h2>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr>
+      <th>模型</th>
+      <th>BF16/FP16 显存</th>
+      <th>FP8 显存</th>
+      <th>INT4 显存</th>
+      <th>最低部署方案</th>
+      <th>推荐生产方案</th>
+    </tr>
+    <tr>
+      <td>GLM-5 (744B)</td><td>~1.5TB</td><td>~756GB</td><td>~241GB (2bit GGUF)</td>
+      <td>8× H200 (FP8)</td><td>8× H200/B200 (FP8)</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-V3.2 (685B)</td><td>~1.4TB</td><td>~690GB</td><td>—</td>
+      <td>8× H100 (FP8)</td><td>8× H200 (FP8)</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-R2 (~685B)</td><td>~1.4TB</td><td>~685GB</td><td>—</td>
+      <td>8× H100 (FP8)</td><td>8× H200 / 4× H200 (FP8)</td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-397B</td><td>~794GB</td><td>~397GB</td><td>~199GB</td>
+      <td class="best">4× H100 (INT4)</td><td>8× H100 (FP8)</td>
+    </tr>
+    <tr>
+      <td>Kimi K2 (1T)</td><td>~2.4TB</td><td>~1.1TB</td><td>~600GB (INT4 QAT)</td>
+      <td>8× H200 (INT4)</td><td>16× H800 (128K ctx)</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Maverick (400B)</td><td>~800GB</td><td>~400GB</td><td>~200GB</td>
+      <td>3× H100 (INT4)</td><td>8× H200 (FP8)</td>
+    </tr>
+    <tr>
+      <td>Llama 4 Scout (109B)</td><td>~216GB</td><td>~109GB</td><td>~55GB</td>
+      <td class="best">1× H100 (INT4)</td><td>4-8× H100 (200K ctx)</td>
+    </tr>
+    <tr>
+      <td>Mistral Large 3 (675B)</td><td>~1.4TB</td><td>~675GB</td><td>~96GB (Q4 GGUF)</td>
+      <td>4× RTX 4090 (Q4)</td><td>8× H100 (NVFP4) / 8× H200 (FP8)</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="info-box blue" style="margin-top:20px">
+    <strong>💡 部署经验法则：</strong>MoE模型虽然每token仅激活少量参数，但<strong>所有专家权重必须常驻显存</strong>。规划硬件时应按<strong>总参数量</strong>计算，而非激活参数量。FP8是当前性价比最优的生产精度。
+  </div>
+
+  <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">⚡ 架构创新亮点</h2>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr>
+      <th>模型</th>
+      <th>注意力机制</th>
+      <th>专家路由</th>
+      <th>特色创新</th>
+      <th>多模态</th>
+    </tr>
+    <tr>
+      <td>GLM-5</td><td>标准MHA</td><td>256E/8A per token</td>
+      <td>Slime RL（幻觉率90%→34%），全华为芯片训练</td><td>❌ 纯文本</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-V3.2</td><td>MLA + DSA稀疏注意力</td><td>256E/8A，无辅助损失负载均衡</td>
+      <td>DSA降低50%长上下文计算，GRPO强化学习</td><td>❌ 纯文本</td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-397B</td><td>GDN (75%) + GQA (25%)</td><td>512E/10+1A</td>
+      <td>Gated DeltaNet替代75%注意力层，多token预测</td><td>✅ 文本+图像+视频</td>
+    </tr>
+    <tr>
+      <td>Kimi K2</td><td>标准MHA</td><td>384E，MuonClip优化器</td>
+      <td>原生INT4 QAT量化，2×推理速度</td><td>❌ 纯文本</td>
+    </tr>
+    <tr>
+      <td>Llama 4</td><td>iRoPE交错注意力</td><td>Scout 16E / Maverick 128E</td>
+      <td>10M超长上下文，原生多模态预训练</td><td>✅ 文本+图像</td>
+    </tr>
+    <tr>
+      <td>Mistral Large 3</td><td>MHA</td><td>16E/2A 细粒度MoE</td>
+      <td>2.5B视觉编码器，NVFP4 Blackwell优化</td><td>✅ 文本+图像</td>
+    </tr>
+  </table>
+  </div>
+
+  <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">💰 API 定价对比 (每百万tokens)</h2>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr><th>模型</th><th>输入价格</th><th>输出价格</th><th>对比 GPT-5.2</th></tr>
+    <tr><td>GLM-5</td><td class="best">~$1.00</td><td class="best">~$3.20</td><td>5-6× 更便宜</td></tr>
+    <tr><td>DeepSeek-V3.2</td><td class="best">~$0.27</td><td class="best">~$1.10</td><td>10× 更便宜</td></tr>
+    <tr><td>Qwen3.5-397B</td><td class="best">~$0.40</td><td>~$1.20</td><td>5-8× 更便宜</td></tr>
+    <tr><td>Kimi K2</td><td>~$0.60</td><td>~$2.00</td><td>3-5× 更便宜</td></tr>
+    <tr><td>Llama 4 Maverick</td><td>~$0.20</td><td>~$0.85</td><td>自部署免费</td></tr>
+    <tr><td>Mistral Large 3</td><td class="best">~$0.50</td><td>~$1.50</td><td>3-5× 更便宜</td></tr>
+    <tr><td style="color:var(--text2)">GPT-5.2 (参考)</td><td>~$1.75-5</td><td>~$14-25</td><td>—</td></tr>
+    <tr><td style="color:var(--text2)">Claude Opus 4.6 (参考)</td><td>~$5-10</td><td>~$25-37.5</td><td>—</td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- ==================== GLM-5 ==================== -->
+<div id="glm5" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff">G5</div>
+      <div class="model-title">
+        <h2>GLM-5</h2>
+        <span class="org">智谱 AI (Z.ai) — 2026年2月发布</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-mit">MIT License</span>
+        <span class="badge badge-moe">MoE 744B</span>
+        <span class="badge badge-huawei">🇨🇳 华为芯片</span>
+      </div>
+    </div>
+
+    <div class="info-box purple">
+      <strong>🏆 历史意义：</strong>首个完全在中国国产芯片（10万块华为昇腾910B）上训练的前沿级大模型，证明了在美国芯片出口管制下，国产算力栈可以支撑前沿AI研发。
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-item"><div class="label">总参数</div><div class="value">744B</div><div class="sub">256专家，8激活/token</div></div>
+      <div class="spec-item"><div class="label">激活参数</div><div class="value highlight">40B</div><div class="sub">每token</div></div>
+      <div class="spec-item"><div class="label">上下文窗口</div><div class="value">200K</div><div class="sub">最大输出128K</div></div>
+      <div class="spec-item"><div class="label">训练数据</div><div class="value">28.5T</div><div class="sub">tokens</div></div>
+      <div class="spec-item"><div class="label">训练芯片</div><div class="value highlight">昇腾910B</div><div class="sub">100,000块</div></div>
+      <div class="spec-item"><div class="label">训练框架</div><div class="value">MindSpore</div><div class="sub">零NVIDIA依赖</div></div>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🖥️ 训练资源</h3>
+      <table class="gpu-table">
+        <tr><th>项目</th><th>详情</th></tr>
+        <tr><td>训练硬件</td><td><strong>100,000 块华为昇腾 910B</strong>（全球最大非NVIDIA训练集群）</td></tr>
+        <tr><td>训练框架</td><td>MindSpore（华为自研深度学习框架）</td></tr>
+        <tr><td>训练阶段</td><td>通用预训练（~27T tokens）+ 中期训练（长上下文 + Agent数据）</td></tr>
+        <tr><td>训练精度</td><td>未公开具体GPU时长和能耗（透明度评分 4/10）</td></tr>
+        <tr><td>硬件对比</td><td>昇腾910B约为H100训练效率的60-80%，通过软件优化和更大集群规模补偿</td></tr>
+      </table>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🚀 部署需求</h3>
+      <table class="gpu-table">
+        <tr><th>精度</th><th>显存需求</th><th>推荐配置</th><th>推理速度</th></tr>
+        <tr><td>BF16</td><td>~1,490 GB</td><td>16× H100 80GB / 12× H200</td><td>—</td></tr>
+        <tr><td class="rec">FP8（推荐）</td><td>~756 GB</td><td class="rec">8× H200 141GB / 8× H20</td><td>~17-19 tok/s</td></tr>
+        <tr><td>2-bit GGUF</td><td>~241 GB</td><td>2× Mac Studio M3 Ultra 512GB</td><td>极慢（实验性）</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible" style="margin-top:16px">
+      <div class="collapsible-header" onclick="toggleCollapsible(this)">
+        <h3>📋 核心技术创新</h3><span class="arrow">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-content">
+          <h4 style="color:var(--accent);margin:12px 0 8px">Slime RL 框架（已开源）</h4>
+          <ul>
+            <li>异步强化学习框架，专门用于减少幻觉</li>
+            <li>幻觉率从GLM-4.7的90%降至<strong>34%</strong>，超越Claude Sonnet 4.5的~42%</li>
+            <li>在Artificial Analysis Omniscience Index上排名第一</li>
+          </ul>
+          <h4 style="color:var(--accent);margin:12px 0 8px">三种思维模式</h4>
+          <ul>
+            <li><strong>标准模式：</strong>快速响应，适合简单任务</li>
+            <li><strong>深度思考模式：</strong>类似o1的推理链，适合复杂问题</li>
+            <li><strong>Agent模式：</strong>支持网页搜索和多步工具调用</li>
+          </ul>
+          <h4 style="color:var(--accent);margin:12px 0 8px">关键基准</h4>
+          <ul>
+            <li>Humanity's Last Exam: <strong>50.4%</strong>（超越Claude Opus 4.5）</li>
+            <li>SWE-bench Verified: <strong>77.8%</strong></li>
+            <li>Intelligence Index: <strong>50分</strong></li>
+          </ul>
+          <h4 style="color:var(--accent);margin:12px 0 8px">局限性</h4>
+          <ul>
+            <li>推理速度较慢（~17-19 tok/s），因华为芯片性能差距</li>
+            <li>纯文本模型，不支持图像/视频输入</li>
+            <li>Terminal-Bench 2.0 与顶级闭源模型有9分差距</li>
+            <li>自部署门槛高（至少8× H200）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DeepSeek ==================== -->
+<div id="deepseek" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#059669,#10b981);color:#fff">DS</div>
+      <div class="model-title">
+        <h2>DeepSeek V3 / V3.2 / R2</h2>
+        <span class="org">DeepSeek — V3: 2024.12 / V3.2: 2025.11 / R2: 2026.03</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-mit">MIT License</span>
+        <span class="badge badge-moe">MoE 671-685B</span>
+      </div>
+    </div>
+
+    <div class="info-box green">
+      <strong>💡 最高性价比：</strong>DeepSeek V3 仅用 2,048 块 H800 GPU、2.788M GPU时（约$5.6M）完成训练，是 Llama 3.1 405B 训练成本的 1/11，开创了"低成本前沿模型"范式。
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">DeepSeek V3（基础版）</h3>
+    <div class="spec-grid">
+      <div class="spec-item"><div class="label">总参数</div><div class="value">671B</div><div class="sub">+14B MTP模块 = 685B</div></div>
+      <div class="spec-item"><div class="label">激活参数</div><div class="value highlight">37B</div><div class="sub">每token</div></div>
+      <div class="spec-item"><div class="label">训练数据</div><div class="value">14.8T</div><div class="sub">tokens</div></div>
+      <div class="spec-item"><div class="label">上下文</div><div class="value">128K</div><div class="sub">4K→32K→128K 渐进扩展</div></div>
+      <div class="spec-item"><div class="label">训练GPU</div><div class="value highlight">2,048</div><div class="sub">NVIDIA H800</div></div>
+      <div class="spec-item"><div class="label">训练成本</div><div class="value highlight">$5.6M</div><div class="sub">2.788M GPU时</div></div>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🖥️ 训练资源详情（V3）</h3>
+      <table class="gpu-table">
+        <tr><th>阶段</th><th>GPU时长</th><th>成本（@$2/h）</th><th>说明</th></tr>
+        <tr><td>预训练</td><td>2,664K h</td><td>$5.328M</td><td>每万亿token仅需180K GPU时，3.7天/T</td></tr>
+        <tr><td>上下文扩展</td><td>119K h</td><td>$0.238M</td><td>4K→32K→128K</td></tr>
+        <tr><td>后训练（SFT+RL）</td><td>5K h</td><td>$0.01M</td><td>包含R1知识蒸馏</td></tr>
+        <tr><td class="rec"><strong>总计</strong></td><td class="rec"><strong>2,788K h</strong></td><td class="rec"><strong>$5.576M</strong></td><td>对比Llama 3.1: 30.84M h（11倍）</td></tr>
+      </table>
+      <div class="info-box yellow" style="margin-top:10px">
+        <strong>⚠️ 注意：</strong>$5.6M仅为正式训练成本，不包括前期架构探索、算法研究和消融实验。实际总投入估计为报告数字的2-4倍。集群配置：256节点 × 8 GPU/节点，NVLink+NVSwitch节点内互联，InfiniBand节点间互联。
+      </div>
+    </div>
+
+    <h3 style="color:var(--accent);margin:20px 0 10px">DeepSeek V3.2 / V3.2 Speciale</h3>
+    <ul>
+      <li><strong>DSA（DeepSeek Sparse Attention）：</strong>细粒度稀疏注意力，长上下文计算降低50%，内存降低30-40%，训练吞吐提升50%</li>
+      <li><strong>V3.2 Speciale：</strong>高计算后训练变体，在2025 IMO和IOI获得金牌水平，推理能力对标GPT-5</li>
+      <li><strong>大规模Agent任务合成：</strong>1,800+环境、85,000+复杂prompt，支持"thinking with tools"</li>
+    </ul>
+
+    <h3 style="color:var(--accent);margin:20px 0 10px">DeepSeek R2（推理专精）</h3>
+    <ul>
+      <li><strong>定位：</strong>R系列专注推理，生成20,000-40,000 thinking tokens后再回答</li>
+      <li><strong>改进MLA：</strong>KV压缩更高效，30K token推理链仅需~2.1GB KV缓存</li>
+      <li><strong>更深专家路由：</strong>针对结构化证明、数学符号、逻辑链的专家特化</li>
+    </ul>
+
+    <div class="gpu-section">
+      <h3>🚀 部署需求</h3>
+      <table class="gpu-table">
+        <tr><th>模型</th><th>精度</th><th>显存</th><th>推荐配置</th></tr>
+        <tr><td>V3.2 / R2</td><td>FP16</td><td>~1.4TB</td><td>16× H100 80GB</td></tr>
+        <tr><td class="rec">V3.2 / R2</td><td class="rec">FP8（推荐）</td><td>~690GB</td><td class="rec">8× H100 80GB（最低）/ 8× H200（推荐）</td></tr>
+        <tr><td>V3.2 Speciale</td><td>FP8</td><td>~690GB</td><td>8× H100 SXM（仅支持Hopper/Blackwell）</td></tr>
+        <tr><td>R2</td><td>FP8</td><td>~685GB + KV</td><td>8× H100（低并发）/ 4× H200（推荐）</td></tr>
+        <tr><td>KTransformers</td><td>混合</td><td>~10GB GPU + CPU</td><td>消费级GPU + 大内存（~20 tok/s）</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible" style="margin-top:16px">
+      <div class="collapsible-header" onclick="toggleCollapsible(this)">
+        <h3>🔑 DeepSeek 关键技术栈</h3><span class="arrow">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-content">
+          <ul>
+            <li><strong>Multi-head Latent Attention (MLA)：</strong>KV缓存仅70KB/token（vs LLaMA-3.1 405B的516KB），大幅降低推理内存</li>
+            <li><strong>FP8混合精度训练：</strong>原生FP8训练，无需后量化，H800上最大化计算效率</li>
+            <li><strong>DualPipe并行：</strong>自研流水线并行算法，2048 GPU上接近零空闲时间</li>
+            <li><strong>无辅助损失负载均衡：</strong>通过偏置项路由实现自然负载均衡，不牺牲模型质量</li>
+            <li><strong>Multi-Token Prediction (MTP)：</strong>训练时预测多个token，增强内部表示</li>
+            <li><strong>DeepGEMM：</strong>高性能矩阵运算自定义CUDA核</li>
+            <li><strong>FlashMLA：</strong>专门的稀疏注意力CUDA核</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Qwen 3.5 ==================== -->
+<div id="qwen" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff">Q</div>
+      <div class="model-title">
+        <h2>Qwen 3.5 系列</h2>
+        <span class="org">阿里巴巴 Qwen 团队 — 2026年2月发布</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-apache">Apache 2.0</span>
+        <span class="badge badge-moe">MoE + Dense</span>
+        <span class="badge badge-multimodal">原生多模态</span>
+      </div>
+    </div>
+
+    <div class="info-box blue">
+      <strong>🌟 最完整开源家族：</strong>8个模型覆盖0.8B到397B，从手机到数据中心全场景。旗舰397B仅激活17B参数，推理成本约等于20B模型。原生支持文本+图像+视频，201种语言。
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">全系列一览</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>模型</th><th>参数</th><th>架构</th><th>上下文</th><th>推荐GPU</th><th>最低显存</th></tr>
+      <tr><td>Qwen3.5-0.8B</td><td>0.8B</td><td>Dense</td><td>262K</td><td>CPU即可</td><td>2GB</td></tr>
+      <tr><td>Qwen3.5-2B</td><td>2B</td><td>Dense</td><td>262K</td><td>CPU即可</td><td>4GB</td></tr>
+      <tr><td>Qwen3.5-4B</td><td>4B</td><td>Dense</td><td>262K</td><td>RTX 3060 (8GB)</td><td>6GB</td></tr>
+      <tr><td class="rec">Qwen3.5-9B ⭐</td><td>9B</td><td>Dense</td><td>262K</td><td class="rec">RTX 3090/4090 (16GB)</td><td>8GB</td></tr>
+      <tr><td>Qwen3.5-27B</td><td>27B</td><td>Dense</td><td>262K</td><td>1× H100 (FP8)</td><td>20GB (Q4)</td></tr>
+      <tr><td>Qwen3.5-35B-A3B</td><td>35B/3B激活</td><td>MoE</td><td>262K</td><td>1× H100 (FP8)</td><td>8GB (极低延迟)</td></tr>
+      <tr><td>Qwen3.5-122B-A10B</td><td>122B/10B激活</td><td>MoE</td><td>262K</td><td>2× H100 (FP8)</td><td>~40GB</td></tr>
+      <tr><td class="rec">Qwen3.5-397B-A17B 🏆</td><td>397B/17B激活</td><td>MoE</td><td class="rec">262K (ext 1M)</td><td class="rec">8× H100 (FP8)</td><td>~214GB (Q4)</td></tr>
+    </table>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🚀 旗舰 397B 部署方案</h3>
+      <table class="gpu-table">
+        <tr><th>配置</th><th>硬件</th><th>存储</th><th>说明</th></tr>
+        <tr><td>Full BF16</td><td>8× H100 80GB（16×推荐）</td><td>~794GB</td><td>最高质量，需大量显存</td></tr>
+        <tr><td class="rec">FP8（推荐）</td><td class="rec">8× H100 80GB</td><td>~397GB</td><td class="rec">H100原生FP8 Tensor Core，质量损失极小</td></tr>
+        <tr><td>AWQ INT4</td><td>4× H100 80GB</td><td>~200GB</td><td>成本减半，有少量质量损失</td></tr>
+        <tr><td>Q4_K_M GGUF</td><td>256GB M3 Ultra / 多GPU</td><td>~199GB</td><td>消费级可运行，25+ tok/s</td></tr>
+        <tr><td>1M 长上下文</td><td>16× H100/H200</td><td>~794GB</td><td>需要大量KV缓存空间</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible" style="margin-top:16px">
+      <div class="collapsible-header" onclick="toggleCollapsible(this)">
+        <h3>🧬 架构创新：Gated DeltaNet (GDN)</h3><span class="arrow">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-content">
+          <ul>
+            <li><strong>混合架构：</strong>75%层使用Gated DeltaNet替代传统注意力，25%保留Gated Attention</li>
+            <li><strong>模式：</strong>8×(3×DeltaNet→FFN→1×Attention→FFN)</li>
+            <li><strong>优势：</strong>更高推理吞吐、更低KV缓存开销、更好的长上下文处理</li>
+            <li><strong>多token预测：</strong>训练时预测多个后续token，增强表示质量</li>
+            <li><strong>早期融合多模态：</strong>图文理解能力与专用视觉语言模型持平</li>
+            <li><strong>百万级Agent环境RL：</strong>在百万级Agent环境中进行强化学习，大幅提升复杂推理和代码生成</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Kimi K2 ==================== -->
+<div id="kimi" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff">K2</div>
+      <div class="model-title">
+        <h2>Kimi K2 / K2 Thinking</h2>
+        <span class="org">Moonshot AI — 2025年7月 / 2025年11月</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-mit">Modified MIT</span>
+        <span class="badge badge-moe">MoE 1T</span>
+      </div>
+    </div>
+
+    <div class="info-box yellow">
+      <strong>🔥 最大开源模型：</strong>1万亿参数（1T），384个专家，每token激活32B参数。K2 Thinking 可以链式调用200-300次工具，是当前最强的Agent模型之一。
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-item"><div class="label">总参数</div><div class="value highlight">1T</div><div class="sub">384专家</div></div>
+      <div class="spec-item"><div class="label">激活参数</div><div class="value">32B</div><div class="sub">每token</div></div>
+      <div class="spec-item"><div class="label">上下文</div><div class="value">128K</div></div>
+      <div class="spec-item"><div class="label">训练数据</div><div class="value">15.5T</div><div class="sub">tokens</div></div>
+      <div class="spec-item"><div class="label">训练GPU</div><div class="value">H800</div><div class="sub">大规模集群</div></div>
+      <div class="spec-item"><div class="label">估算成本</div><div class="value">~$4.6M*</div><div class="sub">非官方</div></div>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🚀 部署需求</h3>
+      <table class="gpu-table">
+        <tr><th>GPU</th><th>数量</th><th>量化</th><th>磁盘</th><th>最低显存</th><th>推理速度</th></tr>
+        <tr><td>NVIDIA H200</td><td>8×</td><td>INT4 (QAT)</td><td>~600GB</td><td>1.1+ TB</td><td>30-45 tok/s</td></tr>
+        <tr><td>NVIDIA H100</td><td>12-16×</td><td>FP8</td><td>~1.1TB</td><td>1.3+ TB</td><td>15-20 tok/s</td></tr>
+        <tr><td>NVIDIA H800</td><td>16×</td><td>FP8</td><td>~1.1TB</td><td>1.3+ TB</td><td>128K上下文</td></tr>
+        <tr><td>消费级</td><td>1× 24GB GPU</td><td>1.8-bit GGUF</td><td>~230GB</td><td>247GB RAM+VRAM</td><td>~1-2 tok/s</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible" style="margin-top:16px">
+      <div class="collapsible-header" onclick="toggleCollapsible(this)">
+        <h3>⚡ 核心技术</h3><span class="arrow">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-content">
+          <ul>
+            <li><strong>MuonClip优化器：</strong>训练稳定性优化，支持32节点倍数的灵活并行</li>
+            <li><strong>原生INT4 QAT：</strong>量化感知训练，推理速度提升~2×，内存减半，质量几乎无损</li>
+            <li><strong>K2 Thinking：</strong>Humanity's Last Exam 44.9%，可链式200-300次工具调用</li>
+            <li><strong>许可证注意：</strong>Modified MIT — 超过1亿MAU或$2000万月收入需在UI显著展示"Kimi K2"</li>
+            <li><strong>训练集群：</strong>每节点8 GPU（NVLink+NVSwitch），8×400 Gbps RoCE跨节点</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Llama 4 ==================== -->
+<div id="llama" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#9333ea,#c084fc);color:#fff">L4</div>
+      <div class="model-title">
+        <h2>Llama 4 Scout / Maverick / Behemoth</h2>
+        <span class="org">Meta — 2025年4月发布</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-llama">Llama 4 License</span>
+        <span class="badge badge-moe">MoE</span>
+        <span class="badge badge-multimodal">原生多模态</span>
+      </div>
+    </div>
+
+    <div class="info-box purple">
+      <strong>🦙 开源先驱的MoE转型：</strong>Llama首次采用MoE架构。Scout单卡H100可运行 + 10M超长上下文；Maverick 128专家旗舰；Behemoth 2T参数教师模型（32K GPU训练）。
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">三款模型对比</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>模型</th><th>总参数</th><th>激活参数</th><th>专家数</th><th>上下文</th><th>训练GPU时</th><th>碳排放</th></tr>
+      <tr><td class="rec">Scout ⭐</td><td>109B</td><td>17B</td><td>16</td><td class="rec">10M</td><td>5.0M h (H100)</td><td>~1,999t CO2</td></tr>
+      <tr><td>Maverick</td><td>400B</td><td>17B</td><td>128</td><td>1M</td><td>2.38M h (H100)</td><td>645t CO2</td></tr>
+      <tr><td>Behemoth（教师）</td><td>~2T</td><td>288B</td><td>16</td><td>—</td><td>32K GPU (FP8)</td><td>—</td></tr>
+    </table>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🚀 部署需求</h3>
+      <table class="gpu-table">
+        <tr><th>模型</th><th>量化</th><th>显存</th><th>推荐配置</th></tr>
+        <tr><td>Scout</td><td>Full BF16</td><td>216GB + 16GB KV</td><td>4× H100</td></tr>
+        <tr><td>Scout</td><td>8-bit</td><td>109GB + 8GB KV</td><td>2× H100</td></tr>
+        <tr><td class="rec">Scout</td><td class="rec">INT4</td><td class="rec">~55GB</td><td class="rec">1× H100（单卡！）</td></tr>
+        <tr><td>Scout</td><td>1.78-bit GGUF</td><td>~34GB</td><td>1× RTX 4090 (~20 tok/s)</td></tr>
+        <tr><td>Maverick</td><td>Full BF16</td><td>800GB + 16GB KV</td><td>7× H200</td></tr>
+        <tr><td class="rec">Maverick</td><td class="rec">FP8</td><td>~400GB</td><td class="rec">8× H100 DGX（单节点）</td></tr>
+        <tr><td>Maverick</td><td>INT4</td><td>~200GB</td><td>3× H100</td></tr>
+        <tr><td>Maverick</td><td>1.78-bit GGUF</td><td>~122GB</td><td>2× RTX 4090 (~40 tok/s)</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible" style="margin-top:16px">
+      <div class="collapsible-header" onclick="toggleCollapsible(this)">
+        <h3>🔑 关键特性</h3><span class="arrow">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-content">
+          <ul>
+            <li><strong>iRoPE交错注意力：</strong>增强长序列泛化能力，Scout在10M tokens上保持稳定</li>
+            <li><strong>原生多模态：</strong>文本+图像输入（训练时支持48张图/prompt）</li>
+            <li><strong>30T+ 训练数据：</strong>是Llama 3的2倍以上，包含多样化文本、图像、视频数据</li>
+            <li><strong>异步在线RL：</strong>训练效率提升~10×，支持多模型灵活分配到不同GPU</li>
+            <li><strong>许可证：</strong>Llama 4 Community License（非标准开源，商用有条件限制）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Mistral 3 ==================== -->
+<div id="mistral" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#dc2626,#f97316);color:#fff">M3</div>
+      <div class="model-title">
+        <h2>Mistral Large 3 + Ministral 3</h2>
+        <span class="org">Mistral AI (法国) — 2025年12月发布</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-apache">Apache 2.0</span>
+        <span class="badge badge-moe">MoE 675B</span>
+        <span class="badge badge-multimodal">原生多模态</span>
+      </div>
+    </div>
+
+    <div class="info-box blue">
+      <strong>🇫🇷 欧洲最强开源模型：</strong>675B总参数/41B激活，3000块H200从零训练。Apache 2.0完全开放，NVFP4量化可在8×A100上运行。LMArena非推理排行榜开源第二。
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-item"><div class="label">总参数</div><div class="value">675B</div><div class="sub">16专家，2激活/token</div></div>
+      <div class="spec-item"><div class="label">激活参数</div><div class="value highlight">41B</div><div class="sub">+ 2.5B视觉编码器</div></div>
+      <div class="spec-item"><div class="label">上下文</div><div class="value">256K</div></div>
+      <div class="spec-item"><div class="label">训练GPU</div><div class="value highlight">3,000</div><div class="sub">NVIDIA H200</div></div>
+      <div class="spec-item"><div class="label">语言</div><div class="value">40+</div><div class="sub">非英中语言最强</div></div>
+      <div class="spec-item"><div class="label">API价格</div><div class="value">~$0.5/M</div><div class="sub">输入</div></div>
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">全系列</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>模型</th><th>参数</th><th>架构</th><th>推荐GPU</th><th>最低显存</th></tr>
+      <tr><td class="rec">Large 3 675B 🏆</td><td>675B/41B激活</td><td>MoE</td><td class="rec">8× H100 (NVFP4) / 8× H200 (FP8)</td><td>96GB (Q4 GGUF)</td></tr>
+      <tr><td>Ministral 3 14B</td><td>14B</td><td>Dense</td><td>RTX 4090 (24GB)</td><td>24GB</td></tr>
+      <tr><td>Ministral 3 8B</td><td>8B</td><td>Dense</td><td>RTX 3060 (12GB)</td><td>12GB</td></tr>
+      <tr><td>Ministral 3 3B</td><td>3B</td><td>Dense</td><td>任意GPU / Jetson</td><td>8GB</td></tr>
+    </table>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🚀 Large 3 部署方案</h3>
+      <table class="gpu-table">
+        <tr><th>配置</th><th>硬件</th><th>显存</th><th>说明</th></tr>
+        <tr><td>Q4 GGUF（预算方案）</td><td>4× RTX 4090</td><td>96GB</td><td>~$2-8/天（云），Ollama运行</td></tr>
+        <tr><td class="rec">NVFP4（生产推荐）</td><td class="rec">8× A100 80GB / 8× H100</td><td>640GB</td><td class="rec">vLLM，完整上下文</td></tr>
+        <tr><td>FP8（最高性能）</td><td>8× H200 141GB</td><td>1.1TB</td><td>完整256K上下文</td></tr>
+        <tr><td>Blackwell优化</td><td>GB200 NVL72</td><td>—</td><td>10× H200性能，5M+ tok/s/MW</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 部署实战 ==================== -->
+<div id="deploy" class="tab-content">
+  <h2 style="color:#fff;font-size:1.4rem;margin-bottom:16px">🚀 部署实战指南</h2>
+
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>💡 选型决策树</h3><span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body open">
+      <div class="collapsible-content">
+        <div class="info-box green">
+<strong>🎯 按预算选模型：</strong><br>
+• <strong>无GPU / CPU only：</strong>Qwen3.5-0.8B/2B（llama.cpp）<br>
+• <strong>单卡 8-24GB（RTX 3060/4090）：</strong>Qwen3.5-4B/9B, Ministral 3B/8B/14B<br>
+• <strong>单卡 80GB（1× H100）：</strong>Qwen3.5-27B, Llama 4 Scout (INT4), Qwen3.5-35B-A3B<br>
+• <strong>单节点 8×H100：</strong>Qwen3.5-397B, DeepSeek-V3.2, Llama 4 Maverick, Mistral Large 3<br>
+• <strong>单节点 8×H200：</strong>GLM-5, Kimi K2, 上述所有模型（更大KV缓存）<br>
+• <strong>多节点集群：</strong>Kimi K2 (16× H800 for 128K), Llama 4 Behemoth
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>📐 显存计算公式</h3><span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p><strong>模型权重显存 = 总参数 × 每参数字节数</strong></p>
+        <table class="gpu-table">
+          <tr><th>精度</th><th>每参数字节</th><th>671B模型示例</th></tr>
+          <tr><td>BF16/FP16</td><td>2 bytes</td><td>~1,342 GB</td></tr>
+          <tr><td>FP8</td><td>1 byte</td><td>~671 GB</td></tr>
+          <tr><td>INT4</td><td>0.5 bytes</td><td>~336 GB</td></tr>
+          <tr><td>2-bit</td><td>0.25 bytes</td><td>~168 GB</td></tr>
+        </table>
+        <p style="margin-top:10px"><strong>总显存 = 权重 × 1.15（激活/框架开销）+ KV缓存预算</strong></p>
+        <div class="info-box yellow">
+          <strong>⚠️ MoE模型注意：</strong>虽然每token仅激活少量参数（如37B），但<strong>所有专家权重必须常驻显存</strong>。路由器会为每个token选择不同专家，延迟加载会导致严重性能问题。规划硬件时<strong>必须按总参数量计算</strong>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔧 主流推理框架对比</h3><span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <table class="gpu-table">
+          <tr><th>框架</th><th>特点</th><th>适用场景</th><th>支持模型</th></tr>
+          <tr><td class="rec"><strong>vLLM</strong></td><td>PagedAttention，连续批处理，高吞吐</td><td>生产级GPU部署</td><td>全部</td></tr>
+          <tr><td><strong>SGLang</strong></td><td>快速serving，RadixAttention</td><td>高吞吐生产</td><td>全部</td></tr>
+          <tr><td><strong>llama.cpp</strong></td><td>CPU+GPU混合，GGUF格式</td><td>消费级/边缘部署</td><td>全部（GGUF）</td></tr>
+          <tr><td><strong>Ollama</strong></td><td>一键安装，自动检测硬件</td><td>个人使用</td><td>大部分</td></tr>
+          <tr><td><strong>KTransformers</strong></td><td>消费级GPU+大内存</td><td>单用户本地部署</td><td>DeepSeek系列</td></tr>
+          <tr><td><strong>TensorRT-LLM</strong></td><td>NVIDIA深度优化</td><td>极致性能</td><td>全部</td></tr>
+          <tr><td><strong>MLX</strong></td><td>Apple Silicon优化</td><td>Mac本地部署</td><td>全部（MLX格式）</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>⚡ 快速启动命令</h3><span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+<pre style="background:rgba(0,0,0,.3);padding:16px;border-radius:8px;overflow-x:auto;font-size:0.82rem;color:#a0ffa0;line-height:1.5">
+<span style="color:#888"># === Ollama（最简单）===</span>
+ollama run qwen3.5:9b                    <span style="color:#888"># 16GB GPU</span>
+ollama run qwen3.5:27b                   <span style="color:#888"># 24GB+ GPU</span>
+ollama run mistral3:14b                  <span style="color:#888"># 24GB GPU</span>
+
+<span style="color:#888"># === vLLM（生产级）===</span>
+<span style="color:#888"># Qwen3.5-397B on 8× H100</span>
+vllm serve Qwen/Qwen3.5-397B-A17B \
+  --tensor-parallel-size 8 --quantization fp8 \
+  --max-model-len 32768 --port 8000
+
+<span style="color:#888"># DeepSeek-V3.2 on 8× H100</span>
+vllm serve deepseek-ai/DeepSeek-V3.2 \
+  --tensor-parallel-size 8 --dtype fp8 \
+  --max-model-len 32768 --port 8000
+
+<span style="color:#888"># GLM-5 on 8× H200</span>
+vllm serve zai-org/GLM-5-FP8 \
+  --tensor-parallel-size 8 \
+  --max-model-len 200000 --port 8000
+
+<span style="color:#888"># Llama 4 Maverick on 8× H200</span>
+vllm serve meta-llama/Llama-4-Maverick-17B-128E-Instruct \
+  --tensor-parallel-size 8 --max-model-len 100000 \
+  --override-generation-config='{"attn_temperature_tuning": true}'
+
+<span style="color:#888"># Mistral Large 3 NVFP4 on 8× H100</span>
+vllm serve mistralai/Mistral-Large-3-675B-Instruct-2512-NVFP4 \
+  --tensor-parallel-size 8 --tokenizer-mode mistral \
+  --config-format mistral --load-format mistral \
+  --max-model-len 65536 --port 8000
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🏠 消费级硬件方案（$5K预算）</h3><span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <table class="gpu-table">
+          <tr><th>方案</th><th>硬件</th><th>可运行模型</th><th>体验</th></tr>
+          <tr><td>Mac方案</td><td>M4 Pro Max 128GB</td><td>Qwen3.5-27B, 70B级模型</td><td>⭐⭐⭐ 安静高效</td></tr>
+          <tr><td>单卡方案</td><td>RTX 4090 24GB</td><td>Qwen3.5-9B, Ministral 14B</td><td>⭐⭐⭐⭐ 快速</td></tr>
+          <tr><td>双卡方案</td><td>2× RTX 4090</td><td>Llama 4 Maverick (1.78-bit)</td><td>⭐⭐⭐ 可用</td></tr>
+          <tr><td>多卡方案</td><td>4× RTX 3090 (96GB)</td><td>Mistral Large 3 (Q4 GGUF)</td><td>⭐⭐ 较慢</td></tr>
+          <tr><td>大内存方案</td><td>Strix Halo 128GB</td><td>Llama 4 Scout, 70B级模型</td><td>⭐⭐⭐ 安静</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer style="text-align:center;padding:30px;color:var(--text2);font-size:0.8rem;border-top:1px solid var(--border);margin-top:40px">
+  <p>数据来源：各模型官方技术报告、HuggingFace Model Cards、NVIDIA部署指南、社区实测</p>
+  <p style="margin-top:4px">⚠️ 部分数据为预发布/社区估算，以官方技术报告为准 | 最后更新：2026-04-07</p>
+</footer>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleCollapsible(el){
+  const body=el.nextElementSibling;
+  const arrow=el.querySelector('.arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('rotated');
+}
+</script>
+</body>
+</html>
