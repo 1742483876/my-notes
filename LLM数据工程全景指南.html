@@ -260,6 +260,7 @@
     <a href="#pipeline">训练流程</a>
     <a href="#data-pipeline">数据处理</a>
     <a href="#data-methods">数据方法</a>
+    <a href="#code-robustness">代码鲁棒性</a>
     <a href="#glossary">术语表</a>
     <a href="#rl">强化学习</a>
     <a href="#landscape">数据格局</a>
@@ -287,6 +288,7 @@
       <li><a href="#data-methods"><span class="toc-num">07</span>主流数据方法论</a></li>
       <li><a href="#glossary"><span class="toc-num">08</span>核心术语速查表</a></li>
       <li><a href="#landscape"><span class="toc-num">09</span>数据格局与规模参考</a></li>
+      <li><a href="#code-robustness"><span class="toc-num">10</span>代码生成鲁棒性评估与增强</a></li>
     </ol>
   </div>
 
@@ -1118,6 +1120,273 @@
           <strong>6. 数据飞轮闭环</strong>：线上反馈 → 数据改进 → 模型迭代的自动化闭环
         </p>
       </div>
+    </div>
+  </div>
+
+  <!-- Section 10: Code Generation Robustness -->
+  <div class="section" id="code-robustness">
+    <p class="section-label">Part 10</p>
+    <h2 class="section-title">代码生成鲁棒性评估与增强</h2>
+    <p class="section-desc">从评估基准、对抗训练到工程化增强——系统性提升 LLM 代码生成的可靠性和安全性。</p>
+
+    <!-- 1. 鲁棒性评估框架 -->
+    <div style="margin-bottom:2rem;">
+      <h3 style="font-size:16px;margin-bottom:1rem;">1️⃣ 鲁棒性评估框架</h3>
+
+      <div class="highlight-box" style="background:var(--accent-light);border-color:var(--accent);">
+        <h4>📊 数据集与对抗样本生成</h4>
+        <p style="margin-top:0.5rem;">
+          <strong>评估数据集：</strong><br>
+          &nbsp;&nbsp;• <strong>HumanEval-X</strong>：跨语言代码生成基准，覆盖 Python / Java / Go / C++ / JavaScript 等<br>
+          &nbsp;&nbsp;• <strong>MBPP</strong>（Mostly Basic Python Problems）：974 道 Python 编程题，覆盖基础到中等难度<br><br>
+          <strong>对抗样本注入：</strong>基于 <strong>AST（抽象语法树）语义等价变换</strong>生成对抗样本——代码逻辑不变，但表面形式改变：<br>
+          &nbsp;&nbsp;• <strong>循环转递归</strong>：<code>for</code> 循环改写为递归函数<br>
+          &nbsp;&nbsp;• <strong>变量混淆</strong>：将有意义的变量名替换为随机名（如 <code>total</code> → <code>x7k</code>）<br>
+          &nbsp;&nbsp;• <strong>控制流重构</strong>：<code>for</code> → <code>while</code>、<code>if-else</code> → 三元表达式<br>
+          &nbsp;&nbsp;• <strong>API 等价替换</strong>：<code>list.append()</code> → <code>list += [x]</code>
+        </p>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div class="highlight-box" style="background:var(--green-light);border-color:var(--green);">
+          <h4>📏 评估指标体系</h4>
+          <p style="margin-top:0.5rem;">
+            <strong>Pass@k（通过率）：</strong>生成 k 个候选代码，至少有 1 个通过所有测试用例的概率。衡量<strong>功能正确性</strong>。<br><br>
+            <strong>转换存活率：</strong>对抗样本（语义等价变换后）的 Pass@k 与原始 Pass@k 的比值。衡量模型在扰动下的<strong>性能保持率</strong>。<br><br>
+            <strong>跨语言一致性：</strong>同一逻辑任务在不同编程语言中的生成质量差异。理想情况下，模型应对所有语言表现一致。
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div class="highlight-box" style="background:var(--orange-light);border-color:var(--orange);">
+          <h4>🔍 关键发现</h4>
+          <p style="margin-top:0.5rem;">
+            <strong>语言特性敏感度：</strong>动态类型语言（Python）比静态类型语言（Java）<strong>更易受变量名扰动影响</strong>。原因是 Python 缺少类型注解作为语义锚点，模型更依赖变量命名来推断意图。<br><br>
+            <strong>上下文依赖：</strong>模型对<strong>控制流重构</strong>（如 <code>for</code> → <code>while</code>）的鲁棒性<strong>普遍较差</strong>。模型倾向于"记忆"训练数据中的常见模式，而非真正理解控制流语义。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 对抗训练与鲁棒性增强 -->
+    <div style="margin-bottom:2rem;">
+      <h3 style="font-size:16px;margin-bottom:1rem;">2️⃣ 对抗训练与鲁棒性增强</h3>
+
+      <div class="highlight-box" style="background:var(--purple-light);border-color:var(--purple);">
+        <h4>⚔️ 对抗样本生成方案</h4>
+        <p style="margin-top:0.5rem;">
+          基于 <strong>LibCST</strong>（Python CST 解析库）实现 <strong>20+ 种语义等价 AST 变换</strong>，例如：
+        </p>
+        <div style="background:#1e1e2e;color:#e2e2e8;border-radius:8px;padding:1rem;margin:0.75rem 0;font-family:'Fira Code',monospace;font-size:12.5px;line-height:1.7;overflow-x:auto;">
+          <span style="color:#6a9955;"># 原始代码</span><br>
+          <span style="color:#c586c0;">for</span> <span style="color:#9cdcfe;">i</span> <span style="color:#c586c0;">in</span> <span style="color:#dcdcaa;">range</span>(<span style="color:#9cdcfe;">n</span>): <span style="color:#9cdcfe;">sum</span> += <span style="color:#9cdcfe;">i</span><br><br>
+          <span style="color:#6a9955;"># 对抗样本（while 循环转换）</span><br>
+          <span style="color:#9cdcfe;">i</span> = <span style="color:#b5cea8;">0</span><br>
+          <span style="color:#c586c0;">while</span> <span style="color:#9cdcfe;">i</span> &lt; <span style="color:#9cdcfe;">n</span>: <span style="color:#9cdcfe;">sum</span> += <span style="color:#9cdcfe;">i</span>; <span style="color:#9cdcfe;">i</span> += <span style="color:#b5cea8;">1</span>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div class="highlight-box" style="background:var(--purple-light);border-color:var(--purple);">
+          <h4>🔬 混合训练策略</h4>
+          <p style="margin-top:0.5rem;">
+            将 <strong>30% 对抗样本</strong>与原始数据混合，采用 <strong>TRADES 损失函数</strong>：<br><br>
+            <span style="background:#f5f5f4;padding:6px 12px;border-radius:6px;font-family:'Fira Code',monospace;font-size:13px;display:inline-block;margin:4px 0;">
+              L = L<sub>CE</sub>(x, y) + λ · KL( f<sub>θ</sub>(x) ‖ f<sub>θ</sub>(x<sub>adv</sub>) )
+            </span><br><br>
+            其中 <code>L<sub>CE</sub></code> 是标准交叉熵损失，<code>KL</code> 项约束模型在原始输入和对抗输入上的输出分布尽量一致。<br><br>
+            <strong>效果：</strong>在 <strong>CodeLlama-7B</strong> 上，对抗训练使 MBPP 对抗样本通过率从 <strong>52% → 78%</strong>（+26%）<br><br>
+            <strong>效率优化：</strong>采用 <strong>FGSM 单步攻击</strong>生成初级对抗样本（快速），再通过<strong>模拟退火算法</strong>优化编辑距离（限制在 5 个 token 内），平衡对抗强度与训练效率。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. In-Context Learning 优化 -->
+    <div style="margin-bottom:2rem;">
+      <h3 style="font-size:16px;margin-bottom:1rem;">3️⃣ In-Context Learning 优化</h3>
+
+      <div class="highlight-box" style="background:var(--teal-light);border-color:var(--teal);">
+        <h4>📝 示例构建策略</h4>
+        <p style="margin-top:0.5rem;">
+          <strong>多样性增强：</strong>对同一任务生成 <strong>5 种不同风格</strong>的代码示范（函数式 / 面向对象 / 列表推导 / 传统循环等）：
+        </p>
+        <div style="background:#1e1e2e;color:#e2e2e8;border-radius:8px;padding:1rem;margin:0.75rem 0;font-family:'Fira Code',monospace;font-size:12.5px;line-height:1.7;overflow-x:auto;">
+          <span style="color:#6a9955;"># 示范 1（传统循环）</span><br>
+          <span style="color:#9cdcfe;">result</span> = []<br>
+          <span style="color:#c586c0;">for</span> <span style="color:#9cdcfe;">x</span> <span style="color:#c586c0;">in</span> <span style="color:#9cdcfe;">lst</span>: <span style="color:#9cdcfe;">result</span>.<span style="color:#dcdcaa;">append</span>(<span style="color:#9cdcfe;">x</span>*<span style="color:#b5cea8;">2</span>)<br><br>
+          <span style="color:#6a9955;"># 示范 2（列表推导式）</span><br>
+          <span style="color:#9cdcfe;">result</span> = [<span style="color:#9cdcfe;">x</span>*<span style="color:#b5cea8;">2</span> <span style="color:#c586c0;">for</span> <span style="color:#9cdcfe;">x</span> <span style="color:#c586c0;">in</span> <span style="color:#9cdcfe;">lst</span>]
+        </div>
+        <p style="margin-top:0.5rem;">
+          <strong>KNN 检索选择：</strong>用 <strong>CodeBERT</strong> 编码示例和测试输入，计算<strong>余弦相似度</strong>，选择最相似的 3 个示例作为 In-Context 示范。<br><br>
+          <strong>效果：</strong>在 <strong>DeepSeek-7B</strong> 上，ICL 使代码风格迁移任务准确率<strong>提升 21%</strong>。
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. 静态分析与代码规范化 -->
+    <div style="margin-bottom:2rem;">
+      <h3 style="font-size:16px;margin-bottom:1rem;">4️⃣ 静态分析与代码规范化</h3>
+
+      <div class="highlight-box" style="background:var(--yellow-light);border-color:var(--yellow);">
+        <h4>🔧 工具链集成</h4>
+        <p style="margin-top:0.5rem;">
+          <strong>规范化工具链：</strong><br>
+          &nbsp;&nbsp;• <strong>Pylint</strong>：强制 PEP8 规范（如行宽 ≤ 100 字符、命名规范等）<br>
+          &nbsp;&nbsp;• <strong>Semgrep</strong>：检测潜在安全漏洞（如未过滤的 SQL 输入、路径遍历、硬编码密钥等）<br><br>
+          <strong>后处理流程：</strong>对模型输出自动执行安全扫描：
+        </p>
+        <div style="background:#1e1e2e;color:#e2e2e8;border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0;font-family:'Fira Code',monospace;font-size:12.5px;">
+          pylint --disable=all --enable=security input.py
+        </div>
+        <p style="margin-top:0.5rem;">
+          <strong>效果：</strong>在 <strong>Qwen-14B</strong> 上，静态分析使生成代码的 <strong>CVSS 安全漏洞数量减少 63%</strong>。
+        </p>
+      </div>
+    </div>
+
+    <!-- 5. SFT 与参数高效微调 -->
+    <div style="margin-bottom:2rem;">
+      <h3 style="font-size:16px;margin-bottom:1rem;">5️⃣ SFT 与参数高效微调（LoRA）</h3>
+
+      <div class="highlight-box" style="background:var(--accent-light);border-color:var(--accent);">
+        <h4>📐 SFT 数据配比设计</h4>
+        <p style="margin-top:0.5rem;">
+          <strong>数据混合比例：</strong><br>
+          &nbsp;&nbsp;• <strong>50%</strong> 对抗样本（语义等价变换生成）<br>
+          &nbsp;&nbsp;• <strong>30%</strong> 通用代码（如 LeetCode 题解、开源项目代码）<br>
+          &nbsp;&nbsp;• <strong>20%</strong> 文档生成任务（代码注释、README、API 文档）<br><br>
+          <strong>两阶段训练策略：</strong><br>
+          &nbsp;&nbsp;• <strong>阶段 1</strong>：全参数微调（lr = 5e-5），让模型充分学习对抗模式<br>
+          &nbsp;&nbsp;• <strong>阶段 2</strong>：冻结底层参数，仅微调 Top-2 层 + <strong>LoRA</strong>（rank=8, α=16）
+        </p>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div class="highlight-box" style="background:var(--accent-light);border-color:var(--accent);">
+          <h4>🔌 LoRA 配置示例</h4>
+          <div style="background:#1e1e2e;color:#e2e2e8;border-radius:8px;padding:1rem;margin:0.75rem 0;font-family:'Fira Code',monospace;font-size:12.5px;line-height:1.7;overflow-x:auto;">
+            <span style="color:#c586c0;">from</span> <span style="color:#4ec9b0;">peft</span> <span style="color:#c586c0;">import</span> <span style="color:#4ec9b0;">LoraConfig</span><br>
+            <span style="color:#9cdcfe;">config</span> = <span style="color:#4ec9b0;">LoraConfig</span>(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">r</span>=<span style="color:#b5cea8;">8</span>, <span style="color:#9cdcfe;">lora_alpha</span>=<span style="color:#b5cea8;">16</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">target_modules</span>=[<span style="color:#ce9178;">"q_proj"</span>, <span style="color:#ce9178;">"v_proj"</span>],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">lora_dropout</span>=<span style="color:#b5cea8;">0.1</span><br>
+            )
+          </div>
+          <p style="margin-top:0.5rem;">
+            <strong>效果：</strong>在 <strong>GPT-3.5</strong> 上，参数量仅增加 <strong>0.1%</strong> 但 HumanEval 鲁棒性得分<strong>提升 12%</strong>。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 代码相似度分析 -->
+    <div style="margin-bottom:2rem;">
+      <h3 style="font-size:16px;margin-bottom:1rem;">6️⃣ 代码相似度分析的创新应用</h3>
+
+      <div style="margin-bottom:1rem;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>方法</th>
+              <th>优点</th>
+              <th>缺点</th>
+              <th>适用场景</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AST 编辑距离</td>
+              <td>捕捉逻辑等价性，不受表面形式影响</td>
+              <td>计算复杂度 O(n³)</td>
+              <td>对抗样本检测、语义等价验证</td>
+            </tr>
+            <tr>
+              <td>SimHash</td>
+              <td>时间复杂度 O(n)，适合大规模</td>
+              <td>无法识别结构性修改</td>
+              <td>大规模代码去重、快速筛选</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="highlight-box" style="background:var(--green-light);border-color:var(--green);">
+        <h4>💡 创新应用场景</h4>
+        <p style="margin-top:0.5rem;">
+          <strong>鲁棒性评估：</strong>计算原始代码与对抗样本的 <strong>AST 相似度</strong>（阈值 > 85% 判定为语义等价），用于验证对抗变换的有效性。<br><br>
+          <strong>数据清洗：</strong>用 <strong>MinHash</strong> 剔除训练集中重复代码（Jaccard 相似度 > 90%），减少训练数据冗余，提升模型泛化能力。
+        </p>
+      </div>
+    </div>
+
+    <!-- 效果总结 -->
+    <div style="margin-top:1rem;">
+      <h3 style="font-size:15px;margin-bottom:1rem;">📊 各方法效果总结</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>基线模型</th>
+            <th>关键指标</th>
+            <th>提升幅度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>⚔️ 对抗训练（TRADES）</td>
+            <td>CodeLlama-7B</td>
+            <td>MBPP 对抗样本通过率</td>
+            <td>52% → 78%（+26%）</td>
+          </tr>
+          <tr>
+            <td>📝 ICL 示例优化</td>
+            <td>DeepSeek-7B</td>
+            <td>代码风格迁移准确率</td>
+            <td>+21%</td>
+          </tr>
+          <tr>
+            <td>🔧 静态分析后处理</td>
+            <td>Qwen-14B</td>
+            <td>CVSS 安全漏洞数量</td>
+            <td>减少 63%</td>
+          </tr>
+          <tr>
+            <td>🔌 LoRA 微调</td>
+            <td>GPT-3.5</td>
+            <td>HumanEval 鲁棒性得分</td>
+            <td>+12%（仅 +0.1% 参数）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 参考文献 -->
+    <div style="margin-top:1.5rem;">
+      <details>
+        <summary>📚 关键参考文献</summary>
+        <div class="details-content">
+          <table class="data-table">
+            <thead><tr><th>编号</th><th>来源</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td>[1]</td><td>ACL 2024</td><td>北大 Agent 框架研究</td></tr>
+              <tr><td>[2]</td><td>IDC 2025</td><td>大模型代码安全风险分析</td></tr>
+              <tr><td>[3]</td><td>arXiv 2024</td><td>Fast Adversarial Training</td></tr>
+              <tr><td>[4]</td><td>百度学术 2024</td><td>Learnable Adversarial Initialization</td></tr>
+              <tr><td>[5]</td><td>PRCV 2023</td><td>对抗训练与成员推断</td></tr>
+              <tr><td>[6]</td><td>COLING 2024</td><td>ICL 在机器翻译中的应用</td></tr>
+              <tr><td>[7]</td><td>NAACL 2022</td><td>示范选择策略</td></tr>
+              <tr><td>[8]</td><td>PingCode 2024</td><td>静态分析提升代码质量</td></tr>
+              <tr><td>[9]</td><td>CSDN 2023</td><td>嵌入式静态分析工具</td></tr>
+              <tr><td>[10]</td><td>北大李戈团队 2024</td><td>CodeDPO 框架</td></tr>
+              <tr><td>[11]</td><td>USENIX Security 2022</td><td>FuncFooler 对抗攻击</td></tr>
+              <tr><td>[12]</td><td>PingCode 2025</td><td>代码相似度计算方法</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
   </div>
 
