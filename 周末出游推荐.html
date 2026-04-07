@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🏖️ 周末出游推荐 · 深圳宝安</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;background:#0a0a14;color:#e0e0e0;overflow-x:hidden;min-height:100vh}
+.hero{padding:40px 20px 20px;text-align:center;background:linear-gradient(135deg,#0d1b2a 0%,#1a2744 50%,#0f2027 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(59,130,246,0.06) 0%,transparent 50%),radial-gradient(ellipse at 70% 30%,rgba(168,85,247,0.05) 0%,transparent 50%);animation:heroFloat 20s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-2%,2%)}}
+.hero h1{font-size:clamp(1.6rem,4vw,2.8rem);font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .sub{font-size:.9rem;color:#64748b;margin-top:8px;position:relative;z-index:1}
+.hero .stats{display:flex;justify-content:center;gap:16px;margin-top:16px;position:relative;z-index:1;flex-wrap:wrap}
+.hero .stat{padding:6px 14px;border-radius:12px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);font-size:.8rem;color:#818cf8}
+
+/* 筛选栏 */
+.filters{display:flex;gap:8px;padding:14px 16px;overflow-x:auto;background:#0f0f1e;position:sticky;top:0;z-index:100;border-bottom:1px solid #1e1e35;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.fbtn{padding:6px 14px;border-radius:20px;background:#1a1a2e;color:#94a3b8;border:1px solid #2a2a40;font-size:.8rem;white-space:nowrap;cursor:pointer;transition:all .3s;flex-shrink:0}
+.fbtn.active,.fbtn:hover{background:rgba(99,102,241,0.15);color:#818cf8;border-color:rgba(99,102,241,0.4)}
+
+/* 卡片容器 - 横向滑动 */
+.swiper-wrap{position:relative;padding:20px 0}
+.swiper{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding:0 20px 20px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.swiper::-webkit-scrollbar{height:4px}
+.swiper::-webkit-scrollbar-track{background:#1a1a2e;border-radius:4px}
+.swiper::-webkit-scrollbar-thumb{background:#3b3b5c;border-radius:4px}
+.swiper-hint{text-align:center;color:#4a4a6a;font-size:.75rem;padding:4px 0 8px;animation:hintPulse 2s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* 单张卡片 */
+.trip-card{scroll-snap-align:center;flex-shrink:0;width:calc(100vw - 56px);max-width:380px;background:#12122a;border-radius:20px;border:1px solid #1e1e38;overflow:hidden;transition:transform .3s,box-shadow .3s;position:relative}
+.trip-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.trip-card.fav{border-color:rgba(251,191,36,.4)}
+.card-header{padding:20px 20px 14px;position:relative}
+.card-cat{display:inline-block;padding:3px 10px;border-radius:10px;font-size:.72rem;font-weight:600;margin-bottom:10px}
+.cat-day1{background:rgba(34,197,94,.12);color:#22c55e}
+.cat-day2{background:rgba(59,130,246,.12);color:#60a5fa}
+.cat-fly{background:rgba(168,85,247,.12);color:#a78bfa}
+.cat-event{background:rgba(251,146,60,.12);color:#fb923c}
+.cat-food{background:rgba(236,72,153,.12);color:#ec4899}
+.cat-nature{background:rgba(20,184,166,.12);color:#14b8a6}
+.card-name{font-size:1.15rem;font-weight:700;color:#f0f0f0;margin-bottom:4px}
+.card-loc{font-size:.8rem;color:#64748b;margin-bottom:10px}
+.card-reason{font-size:.85rem;color:#a0aec0;line-height:1.65;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.card-reason.expanded{-webkit-line-clamp:unset}
+.expand-btn{color:#818cf8;font-size:.78rem;cursor:pointer;margin-bottom:10px;display:inline-block}
+
+/* 信息网格 */
+.card-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.info-item{padding:8px 10px;border-radius:10px;background:#0e0e20}
+.info-label{font-size:.68rem;color:#64748b;margin-bottom:2px}
+.info-val{font-size:.85rem;font-weight:600;color:#e0e0e0}
+
+/* 标签 */
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ctag{padding:2px 8px;border-radius:6px;background:#1a1a30;font-size:.72rem;color:#94a3b8}
+
+/* 底部操作 */
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid #1e1e35;background:#0e0e22}
+.fav-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;transition:transform .2s}
+.fav-btn:hover{transform:scale(1.2)}
+.card-idx{font-size:.72rem;color:#4a4a6a}
+
+/* 添加按钮 */
+.add-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;font-size:1.6rem;cursor:pointer;box-shadow:0 6px 24px rgba(99,102,241,.4);z-index:200;transition:transform .2s}
+.add-float:hover{transform:scale(1.1)}
+
+/* 模态框 */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#16162e;border-radius:20px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;padding:24px;border:1px solid #2a2a45}
+.modal h2{font-size:1.2rem;font-weight:700;color:#f0f0f0;margin-bottom:16px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:.8rem;color:#94a3b8;margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border-radius:10px;background:#0e0e20;border:1px solid #2a2a40;color:#e0e0e0;font-size:.88rem;outline:none;transition:border-color .3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#6366f1}
+.form-group textarea{height:80px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-btns{display:flex;gap:10px;margin-top:16px}
+.btn-cancel{flex:1;padding:10px;border-radius:12px;background:#1e1e35;border:1px solid #2a2a45;color:#94a3b8;cursor:pointer;font-size:.88rem}
+.btn-save{flex:1;padding:10px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;cursor:pointer;font-size:.88rem;font-weight:600}
+
+/* 计数器 */
+.counter{text-align:center;padding:8px 0 4px;font-size:.78rem;color:#4a4a6a}
+
+/* 空状态 */
+.empty{text-align:center;padding:60px 20px;color:#4a4a6a}
+.empty .icon{font-size:3rem;margin-bottom:12px}
+
+footer{text-align:center;padding:30px 20px;color:#3a3a5a;font-size:.75rem}
+
+@media(min-width:768px){
+  .swiper{justify-content:center}
+  .trip-card{width:360px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🏖️ 周末出游推荐</h1>
+  <div class="sub">📍 深圳宝安企鹅岛出发 · 周五晚出发 周六/周日回</div>
+  <div class="stats">
+    <span class="stat" id="statTotal">📋 加载中...</span>
+    <span class="stat" id="statFav">❤️ 收藏 0</span>
+    <span class="stat" id="statBudget">💰 人均 ¥0~∞</span>
+  </div>
+</div>
+
+<div class="filters" id="filters">
+  <div class="fbtn active" data-f="all">🎯 全部</div>
+  <div class="fbtn" data-f="day1">☀️ 一日游</div>
+  <div class="fbtn" data-f="day2">🌙 两日游</div>
+  <div class="fbtn" data-f="fly">✈️ 飞机游</div>
+  <div class="fbtn" data-f="nature">🌿 自然风光</div>
+  <div class="fbtn" data-f="food">🍜 美食之旅</div>
+  <div class="fbtn" data-f="event">🎪 特色活动</div>
+  <div class="fbtn" data-f="fav">❤️ 我的收藏</div>
+</div>
+
+<div class="swiper-hint">👈 左右滑动浏览 · 点击 ❤️ 收藏</div>
+<div class="counter" id="counter"></div>
+<div class="swiper-wrap">
+  <div class="swiper" id="swiper"></div>
+</div>
+<div class="empty" id="empty" style="display:none">
+  <div class="icon">🏝️</div>
+  <p>没有找到匹配的活动～<br>试试其他分类或添加新活动吧</p>
+</div>
+
+<button class="add-float" onclick="openModal()" title="添加活动">＋</button>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h2>✨ 添加新活动</h2>
+    <div class="form-group"><label>活动名称 *</label><input id="fName" placeholder="如：清远漂流"></div>
+    <div class="form-group"><label>目的地</label><input id="fLoc" placeholder="如：清远市清城区"></div>
+    <div class="form-row">
+      <div class="form-group"><label>类型</label>
+        <select id="fCat"><option value="day1">☀️ 一日游</option><option value="day2">🌙 两日游</option><option value="fly">✈️ 飞机游</option><option value="event">🎪 特色活动</option><option value="food">🍜 美食之旅</option><option value="nature">🌿 自然风光</option></select>
+      </div>
+      <div class="form-group"><label>天数</label><input id="fDays" type="text" placeholder="如：1.5天"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>预计花费(元)</label><input id="fCost" type="text" placeholder="如：500~800"></div>
+      <div class="form-group"><label>最佳时间</label><input id="fBest" placeholder="如：5~9月"></div>
+    </div>
+    <div class="form-group"><label>交通方式</label><input id="fTrans" placeholder="如：自驾2h / 飞机1.5h"></div>
+    <div class="form-group"><label>推荐理由 *</label><textarea id="fReason" placeholder="为什么推荐这个活动？"></textarea></div>
+    <div class="form-group"><label>标签（逗号分隔）</label><input id="fTags" placeholder="如：刺激,夏天,亲水"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn-save" onclick="saveTrip()">保存</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>🏖️ 周末出游推荐 · 深圳宝安企鹅岛出发 · Kira 为老板精心整理</p>
+  <p style="margin-top:6px">油车按0.8元/公里估算 · 打车费按实际距离估算 · 2026年4月更新</p>
+</footer>
+
+<script>
+// ==================== 100+ 活动数据 ====================
+const TRIPS = [
+// ===== 一日游 (day1) =====
+{id:1,name:"清远漂流·古龙峡",loc:"清远市清城区",cat:"day1",days:"1天",cost:"400~600",best:"5~9月",trans:"自驾2.5h（油费约160元）",reason:"华南第一漂！全程6.1公里落差263米，刺激程度全广东排名第一。周五晚10点出发打车到清远住一晚（约200），周六玩一天，傍晚回。夏天去超爽，水花四溅降温神器。旁边还有玻璃大峡谷可以一起玩。",tags:["刺激","夏天","亲水","网红"],fav:false},
+{id:2,name:"万绿湖钓鱼·湖畔野餐",loc:"河源市东源县",cat:"day1",days:"1天（赶）/ 1.5天舒适",cost:"300~500",best:"3~5月 / 9~11月",trans:"自驾2.5h（油费约160元）",reason:"华南最大人工湖，水质达到国家一类标准！湖面370平方公里，360+个岛屿。钓鱼爱好者天堂，翘嘴、鳜鱼、大头鱼都有。建议周五晚出发住河源市区，周六一早上船钓鱼，下午回。也可以环湖骑行。",tags:["钓鱼","自然","安静","湖景"],fav:false},
+{id:3,name:"南澳西冲·海边露营看日出",loc:"深圳大鹏新区",cat:"day1",days:"1天",cost:"150~300",best:"10~12月 / 3~4月",trans:"自驾1.5h（油费约96元）",reason:"深圳最长最美沙滩！全长4.5公里，沙细水清。周五晚出发扎帐篷，看星空，早起看日出，上午玩水拍照，中午回。秋冬去人少景美，夏天太晒不推荐白天去。",tags:["露营","看海","日出","浪漫"],fav:false},
+{id:4,name:"东莞松山湖·骑行+科技游",loc:"东莞市松山湖",cat:"day1",days:"1天",cost:"100~200",best:"10~4月",trans:"自驾50min（油费约32元）",reason:"8平方公里湖面+6000亩湿地，42公里环湖绿道骑行超爽！沿途经过华为欧洲小镇（12个欧洲建筑风格组团），随手拍都像在国外。午饭吃松山湖附近的东莞烧鹅，性价比超高。",tags:["骑行","科技","拍照","免费"],fav:false},
+{id:5,name:"中山詹园·岭南园林",loc:"中山市南区",cat:"day1",days:"1天",cost:"200~350",best:"全年（春秋最佳）",trans:"自驾1.5h（油费约96元）",reason:"岭南最大私家庭园！占地百亩，亭台楼阁、小桥流水，穿汉服拍照超出片。门票60元。中午去石岐吃乳鸽（石岐佬乳鸽），晚上逛兴中道步行街，周六下午回。",tags:["园林","拍照","汉服","美食"],fav:false},
+{id:6,name:"珠海长隆海洋王国",loc:"珠海市横琴",cat:"day1",days:"1天（紧凑）",cost:"500~700",best:"全年",trans:"自驾2h（油费约128元）",reason:"全球最大海洋主题乐园！鲸鲨馆5D城堡影院、海洋大街花车巡游、烟花幻彩横琴海。建议周六一早出发，玩到晚上看完烟花回。门票约395元，提前网购更便宜。赶的话一天能玩完主要项目。",tags:["乐园","亲子","海洋","烟花"],fav:false},
+{id:7,name:"惠州盐洲岛·小众海岛",loc:"惠州惠东县",cat:"day1",days:"1天",cost:"200~350",best:"10~3月",trans:"自驾2h（油费约128元）",reason:"广东最后的净土！原生态渔村，白鹭成群，滩涂日落绝美。冬天可以看候鸟、拍白鹭。杨屋村的玄武岩海滩是天然地质奇观。人少、安静、出片率极高。吃渔民自家海鲜，新鲜又便宜。",tags:["小众","摄影","海岛","安静"],fav:false},
+{id:8,name:"佛山顺德·美食一日游",loc:"佛山市顺德区",cat:"day1",days:"1天",cost:"200~400",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"联合国认证的"世界美食之都"！一天吃遍：民信老铺双皮奶→大头华烧鹅→细妹五香牛杂→欢姐伦教糕→仁信甜品。逛清晖园（岭南四大名园），华盖路步行街。周六早出发，吃到撑回来。",tags:["美食","顺德","甜品","老字号"],fav:false},
+{id:9,name:"广州长隆欢乐世界",loc:"广州番禺区",cat:"day1",days:"1天",cost:"400~600",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"华南最大游乐园！垂直过山车、十环过山车、大摆锤、U型滑板…刺激项目全广东最多。门票约280元。建议周六一早出发，玩到晚上看马戏（另购票）。秋冬去不热不晒体验最好。",tags:["游乐园","刺激","过山车"],fav:false},
+{id:10,name:"深圳东部华侨城·茶溪谷",loc:"深圳盐田区",cat:"day1",days:"1天",cost:"250~400",best:"3~5月 / 10~12月",trans:"自驾1h（油费约64元）",reason:"深圳最美生态度假区！茶溪谷有瑞士风情小镇、茶翁古镇、湿地花园。春天看花海，秋天赏红叶。门票约180元。还可以坐森林小火车穿越山谷，拍照超好看。",tags:["度假","拍照","花海","小火车"],fav:false},
+{id:11,name:"惠州西湖·苏东坡文化游",loc:"惠州市惠城区",cat:"day1",days:"1天",cost:"150~250",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"苏东坡被贬惠州时写下"日啖荔枝三百颗"的地方！免费的5A景区，泗洲塔、九曲桥、苏堤、丰湖书院都值得逛。中午吃梅菜扣肉+东江盐焗鸡，正宗客家味。",tags:["文化","免费","5A景区","美食"],fav:false},
+{id:12,name:"深圳梧桐山·登顶挑战",loc:"深圳盐田区",cat:"day1",days:"半天~1天",cost:"50~100",best:"3~4月 / 10~12月",trans:"自驾1h（油费约64元）",reason:"深圳最高峰943.7米！从泰山涧上去约2.5小时，登顶俯瞰整个深圳+香港。3月有杜鹃花会，漫山遍野粉红色。建议下午2点出发，5点登顶看日落，7点下山。你在减脂期，爬山消耗大！",tags:["登山","免费","减脂","日落"],fav:false},
+{id:13,name:"南山蛇口·文艺半日游",loc:"深圳南山区",cat:"day1",days:"半天",cost:"100~200",best:"全年",trans:"地铁2号线蛇口港站",reason:"海上世界+南海意库+蛇口价值工厂，深圳最文艺的片区。看展览、喝咖啡、逛独立书店、海边散步。晚上海上世界灯光秀，吃个日料或泰国菜。周六下午6点后出发，打车免费哦！",tags:["文艺","展览","咖啡","夜景"],fav:false},
+{id:14,name:"东莞可园·岭南四大名园",loc:"东莞市莞城区",cat:"day1",days:"半天~1天",cost:"100~200",best:"全年",trans:"自驾50min（油费约32元）",reason:"岭南四大名园之一！门票仅8元，性价比逆天。2204平方米浓缩了岭南园林精华，亭台楼阁错落有致。旁边就是东莞老城区，吃碗仔翅+烧鹅濑粉。",tags:["园林","便宜","文化","拍照"],fav:false},
+{id:15,name:"深圳湾公园·日落骑行",loc:"深圳南山区",cat:"day1",days:"半天",cost:"50~80",best:"10~3月",trans:"地铁9号线深圳湾公园站",reason:"深圳看日落TOP1！15公里海滨绿道，骑行看海吹风。冬天还能看到成群候鸟。建议下午4点出发，骑到日落时分，拍一组绝美照片。周六下午6点后打车去，免费！",tags:["骑行","日落","免费","候鸟"],fav:false},
+{id:16,name:"广州白云山·蹦极",loc:"广州白云区",cat:"day1",days:"1天",cost:"300~500",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"白云山蹦极高度45米，是广东最热门的蹦极点！门票5元+蹦极200元。上午蹦极，下午逛白云山，晚上去北京路步行街吃广州小吃（肠粉、虾饺、艇仔粥）。",tags:["蹦极","刺激","广州","美食"],fav:false},
+{id:17,name:"大亚湾·赶海拾贝",loc:"惠州大亚湾",cat:"day1",days:"1天",cost:"150~250",best:"退潮时（查潮汐表）",trans:"自驾1.5h（油费约96元）",reason:"带个小桶去赶海！退潮时礁石上满是螃蟹、海螺、生蚝、海胆。霞涌黄金海岸沙滩也不错。中午吃海鲜大排档，人均80就能吃到撑。记得查好潮汐时间再去！",tags:["赶海","亲子","海鲜","自然"],fav:false},
+{id:18,name:"深圳光明农场·滑草+烤全羊",loc:"深圳光明区",cat:"day1",days:"1天",cost:"200~350",best:"全年（秋冬最佳）",trans:"自驾40min（油费约26元）",reason:"光明农场大观园+滑草场！滑草50元/次，像滑雪一样从山坡冲下来。还可以挤牛奶、喂小动物。中午必吃光明招牌——光明乳鸽和烤全羊（提前预约），味道一绝。",tags:["滑草","美食","乳鸽","亲子"],fav:false},
+{id:19,name:"东莞观音山·森林氧吧",loc:"东莞市樟木头",cat:"day1",days:"1天",cost:"100~200",best:"全年",trans:"自驾1h（油费约64元）",reason:"国家4A级森林公园！18平方公里原始次生林，负氧离子含量极高。有6公里健身步道+观音广场+冰雪城。门票45元。空气好到离谱，登顶可以看到东莞全景。适合减脂徒步！",tags:["森林","徒步","氧吧","减脂"],fav:false},
+{id:20,name:"中山影视城·穿越民国",loc:"中山市翠亨村",cat:"day1",days:"1天",cost:"150~250",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"中山影视城+孙中山故居一条线。影视城有民国街、南洋街、英雄广场，穿旗袍拍照超有feel。旁边孙中山故居免费参观。中午吃石岐乳鸽+杏仁饼。",tags:["拍照","民国","文化","免费景点"],fav:false},
+// ===== 两日游 (day2) =====
+{id:21,name:"清远英西峰林·广东小桂林",loc:"清远英德市",cat:"day2",days:"2天",cost:"600~900",best:"9~11月",trans:"自驾3h（油费约192元）",reason:"数万座喀斯特山峰，田园风光如画！Day1周五晚出发住英德市区，Day2骑行穿越峰林+洞天仙境溶洞+九龙小镇玻璃桥，周日中午回。吃清远鸡+九龙豆腐。秋天稻田金黄配峰林，绝美！",tags:["峰林","骑行","溶洞","摄影"],fav:false},
+{id:22,name:"惠州双月湾·看海发呆",loc:"惠州惠东县",cat:"day2",days:"2天",cost:"500~800",best:"5~6月 / 9~10月",trans:"自驾2h（油费约128元）",reason:"广东芭提雅！Day1周五晚到住海景民宿，Day2大星山顶看双月湾全景（免费！），沙滩玩水+出海捕鱼（约150/人），逛平海古城。周日中午回。海鲜大排档人均100就能吃到撑。",tags:["海滩","海鲜","日出","出海"],fav:false},
+{id:23,name:"韶关丹霞山·看日出",loc:"韶关市仁化县",cat:"day2",days:"2天",cost:"600~900",best:"10~12月 / 3~4月",trans:"自驾4h（油费约256元）",reason:"世界自然遗产！600多座红色石峰。Day1周五晚出发住丹霞山脚，Day2凌晨5点登长老峰看日出（绝美！），上午游阳元石+翔龙湖，下午坐锦江游船。周日中午回。门票120元含48小时。",tags:["世界遗产","日出","丹霞","地质"],fav:false},
+{id:24,name:"阳江海陵岛·十里银滩",loc:"阳江市海陵岛",cat:"day2",days:"2天",cost:"600~1000",best:"5~10月",trans:"自驾4h（油费约256元）/ 周五晚打车到广州南站高铁",reason:"中国十大最美海岛！十里银滩长9.7公里，沙白水清。Day1周五晚到住闸坡镇，Day2冲浪+帆船+海鲜大餐+大角湾水上乐园。还有南海一号博物馆（沉船打捞遗址）。周日中午回。",tags:["海岛","冲浪","十里银滩","海鲜"],fav:false},
+{id:25,name:"肇庆七星岩+鼎湖山",loc:"肇庆市",cat:"day2",days:"2天",cost:"500~750",best:"全年（秋冬最佳）",trans:"自驾2.5h（油费约160元）",reason:"岭南第一奇观！Day1周五晚到住七星岩附近，Day2上午游七星岩（五湖六岗七岩八洞），下午鼎湖山天然氧吧+庆云寺祈福。七星岩78元+鼎湖山60元。吃裹蒸粽+文𪡏鲤鱼。周日中午回。",tags:["山水","祈福","氧吧","岭南"],fav:false},
+{id:26,name:"惠州南昆山·森林避暑",loc:"惠州龙门县",cat:"day2",days:"2天",cost:"500~800",best:"6~9月",trans:"自驾2.5h（油费约160元）",reason:"北回归线上的天然氧吧！山上比深圳低5~8°C。Day1周五晚到住山间民宿，Day2观音潭戏水+天堂顶登山+石河奇观+川龙瀑布。吃客家豆腐+三黄胡须鸡。还可以顺路泡云顶温泉。夏天避暑首选！",tags:["避暑","森林","温泉","客家菜"],fav:false},
+{id:27,name:"汕头·美食朝圣两日游",loc:"汕头市",cat:"day2",days:"2天",cost:"600~1000",best:"全年",trans:"自驾4h（油费约256元）/ 高铁2.5h约200元",reason:"中国美食之都！Day1周五晚到住老城区，Day2暴走老城：老妈宫粽球→飘香小食店→长平老姿娘粿汁→福合埕牛肉火锅→广场老牌豆花。逛小公园开埠区+老骑楼。周日中午回。牛肉火锅必吃！",tags:["美食","牛肉火锅","老城","骑楼"],fav:false},
+{id:28,name:"江门开平碉楼·世界遗产",loc:"江门开平市",cat:"day2",days:"2天",cost:"500~750",best:"10~12月 / 3~5月",trans:"自驾2.5h（油费约160元）",reason:"世界文化遗产！中西合璧碉楼群散布在稻田竹林间。Day1周五晚到住赤坎古镇，Day2自力村+立园+马降龙碉楼群。秋天稻田金黄配碉楼超有feel。吃黄鳝饭+恩平烧饼。周日中午回。",tags:["世界遗产","碉楼","古镇","摄影"],fav:false},
+{id:29,name:"珠海东澳岛·潜水浮潜",loc:"珠海万山群岛",cat:"day2",days:"2天",cost:"700~1200",best:"5~10月",trans:"自驾2h到珠海香洲港+快船1h",reason:"广东最适合潜水的海岛之一！水质清澈见底，珊瑚礁丰富。Day1周六早出发坐船上岛，浮潜+沙滩。Day2环岛徒步+看日出。吃海岛海鲜。周日下午回。提前预约潜水体验约300元/人。",tags:["潜水","海岛","浮潜","小众"],fav:false},
+{id:30,name:"梅州客家围屋·文化之旅",loc:"梅州市梅县区",cat:"day2",days:"2天",cost:"500~800",best:"全年（秋冬最佳）",trans:"自驾4h（油费约256元）/ 高铁3h约200元",reason:"世界客家之都！Day1周五晚到住梅城，Day2南口镇侨乡村看围龙屋群+叶剑英故居+客天下景区。吃盐焗鸡+酿豆腐+梅菜扣肉，正宗客家三件套。文化底蕴深厚。周日中午回。",tags:["客家","围屋","文化","美食"],fav:false},
+{id:31,name:"从化碧水湾温泉+溪头村",loc:"广州从化区",cat:"day2",days:"2天",cost:"600~900",best:"11~3月（温泉）/ 6~9月（溯溪）",trans:"自驾2h（油费约128元）",reason:"Day1周五晚到住碧水湾温泉度假村（含温泉），Day2溪头村溯溪+星溪线徒步（广东版小九寨沟）。冬天泡温泉，夏天溯溪，四季皆宜。吃从化走地鸡+吕田焖大肉。周日中午回。",tags:["温泉","溯溪","度假","四季"],fav:false},
+{id:32,name:"潮州古城·功夫茶文化",loc:"潮州市湘桥区",cat:"day2",days:"2天",cost:"600~1000",best:"全年（秋冬最佳）",trans:"自驾4.5h（油费约288元）/ 高铁2.5h约200元",reason:"千年古城！Day1周五晚到住古城内民宿，Day2广济桥+开元寺+牌坊街+韩文公祠。必吃：潮州牛肉丸+蚝烙+春卷+功夫茶。晚上广济桥灯光秀超震撼。周日中午回。建议高铁去更轻松。",tags:["古城","功夫茶","美食","灯光秀"],fav:false},
+{id:33,name:"河源万绿湖+恐龙博物馆",loc:"河源市",cat:"day2",days:"2天",cost:"500~800",best:"3~5月 / 9~11月",trans:"自驾2.5h（油费约160元）",reason:"Day1周五晚到住河源市区，Day2上午万绿湖坐船游湖（门票+船票约120元），下午河源恐龙博物馆（全球馆藏恐龙蛋化石最多！免费）。吃万绿湖鱼头汤+客家酿豆腐。周日中午回。",tags:["湖景","恐龙","博物馆","钓鱼"],fav:false},
+{id:34,name:"佛山西樵山+南海影视城",loc:"佛山市南海区",cat:"day2",days:"2天",cost:"400~650",best:"全年（春秋最佳）",trans:"自驾1.5h（油费约96元）",reason:"Day1周五晚到住西樵山脚，Day2上午登西樵山看南海观音（61.9米高！）+天湖+云泉仙馆。下午南海影视城看武术表演。吃佛山盲公饼+均安蒸猪+柱侯鸡。周日中午回。",tags:["名山","观音","武术","美食"],fav:false},
+{id:35,name:"惠州巽寮湾·出海捕鱼",loc:"惠州惠东县",cat:"day2",days:"2天",cost:"500~800",best:"5~6月 / 9~10月",trans:"自驾2h（油费约128元）",reason:"深圳最近的优质海湾！Day1周五晚到住海边酒店，Day2出海捕鱼（约150/人）+水上摩托+沙滩排球。三角洲岛有"中国马尔代夫"之称。吃海鲜大餐，窑鸡也是一绝。周日中午回。",tags:["海滩","出海","水上运动","海鲜"],fav:false},
+{id:36,name:"清远连州地下河+湟川三峡",loc:"清远连州市",cat:"day2",days:"2天",cost:"600~900",best:"全年",trans:"自驾4h（油费约256元）",reason:"亚洲最神秘的地下河！坐船穿越2公里溶洞，钟乳石千姿百态。Day1周五晚出发住连州，Day2上午地下河（门票150元），下午湟川三峡游船。吃连州东坡水角+星子扣肉。周日中午回。",tags:["溶洞","地下河","三峡","奇观"],fav:false},
+{id:37,name:"珠海外伶仃岛·海岛度假",loc:"珠海万山群岛",cat:"day2",days:"2天",cost:"600~1000",best:"5~10月",trans:"自驾2h到珠海香洲港+快船1.5h",reason:"伶仃洋上的明珠！文天祥"零丁洋里叹零丁"的地方。Day1周六早出发上岛，爬伶仃峰看日落+海鲜大餐。Day2环岛徒步+沙滩+拱桥渡水。周日下午回。岛上住宿提前订！",tags:["海岛","历史","日落","度假"],fav:false},
+{id:38,name:"乳源大峡谷·徒步探险",loc:"韶关乳源县",cat:"day2",days:"2天",cost:"500~800",best:"9~12月 / 3~5月",trans:"自驾3.5h（油费约224元）",reason:"广东最大峡谷！全长15公里，深300多米。Day1周五晚出发住乳源县城，Day2徒步大峡谷（门票65元），全程约4小时，有瀑布、深潭、原始森林。体力消耗大，减脂效果拉满！周日中午回。",tags:["峡谷","徒步","瀑布","减脂"],fav:false},
+{id:39,name:"台山上下川岛·渔村风情",loc:"江门台山市",cat:"day2",days:"2天",cost:"600~1000",best:"5~10月",trans:"自驾3h到山咀港+船45min",reason:"广东最美海岛之一！上川岛飞沙滩长5公里，沙白水蓝。Day1周六早出发上岛，下午沙滩+日落。Day2环岛游+渔村体验+海鲜。周日下午回。下川岛更小众安静，适合发呆。",tags:["海岛","沙滩","渔村","小众"],fav:false},
+{id:40,name:"广州从化·泡温泉+摘荔枝",loc:"广州从化区",cat:"day2",days:"2天",cost:"500~800",best:"6~7月（荔枝季）/ 11~2月（温泉季）",trans:"自驾2h（油费约128元）",reason:"从化温泉是广东四大温泉之一！Day1周五晚到泡温泉住度假村，Day2从化荔枝季可以入园采摘（6~7月），其他季节可以去石门国家森林公园徒步。吃从化流溪大鱼头+走地鸡。周日中午回。",tags:["温泉","荔枝","度假","森林"],fav:false},
+// ===== 飞机游 (fly) =====
+{id:41,name:"厦门·鼓浪屿+土楼两日游",loc:"福建厦门市",cat:"fly",days:"2天",cost:"1500~2500",best:"3~5月 / 10~12月",trans:"飞机1.5h（提前订约300~500往返）",reason:"从宝安机场飞厦门超方便！Day1周五晚飞到住中山路附近，Day2鼓浪屿半天（提前订船票！）+曾厝垵+厦门大学。吃沙茶面+海蛎煎+姜母鸭。可以加一天去南靖土楼。周日中午飞回。",tags:["鼓浪屿","文艺","土楼","美食"],fav:false},
+{id:42,name:"桂林·漓江竹筏+阳朔西街",loc:"广西桂林市",cat:"fly",days:"2天",cost:"1500~2500",best:"4~10月",trans:"飞机1.5h（提前订约200~400往返）",reason:"桂林山水甲天下！Day1周五晚飞到住桂林市区，Day2漓江竹筏漂流（兴坪段最美，20元人民币背景！）+阳朔西街+遇龙河。吃桂林米粉+啤酒鱼。周日中午飞回。提前订机票经常有特价！",tags:["山水","漓江","竹筏","米粉"],fav:false},
+{id:43,name:"长沙·橘子洲+茶颜悦色暴走",loc:"湖南长沙市",cat:"fly",days:"2天",cost:"1200~2000",best:"全年（秋冬最佳）",trans:"飞机1.5h（提前订约200~400往返）",reason:"网红城市！Day1周五晚飞到住五一广场附近，Day2橘子洲头+岳麓山+太平街+坡子街。吃茶颜悦色+文和友小龙虾+费大厨辣椒炒肉+糖油粑粑。你是湖南人回去吃家乡味！周日中午飞回。",tags:["网红","美食","湖南老乡","茶颜"],fav:false},
+{id:44,name:"成都·熊猫基地+火锅之旅",loc:"四川成都市",cat:"fly",days:"2天",cost:"1800~3000",best:"全年（春秋最佳）",trans:"飞机2.5h（提前订约400~700往返）",reason:"天府之国！Day1周五晚飞到住春熙路，Day2大熊猫基地（早上去看熊猫吃早餐！）+宽窄巷子+锦里。吃火锅+串串+兔头+冰粉。成都美食和深圳完全不同，辣得过瘾！周日中午飞回。",tags:["熊猫","火锅","休闲","美食"],fav:false},
+{id:45,name:"重庆·洪崖洞+轻轨穿楼",loc:"重庆市",cat:"fly",days:"2天",cost:"1500~2500",best:"全年（秋冬最佳）",trans:"飞机2.5h（提前订约400~700往返）",reason:"8D魔幻城市！Day1周五晚飞到住解放碑，夜游洪崖洞。Day2磁器口古镇+李子坝轻轨穿楼+长江索道+鹅岭二厂。吃火锅+小面+酸辣粉。重庆夜景全国最美！周日中午飞回。",tags:["魔幻","夜景","火锅","网红"],fav:false},
+{id:46,name:"西安·兵马俑+回民街",loc:"陕西西安市",cat:"fly",days:"2天",cost:"1800~3000",best:"3~5月 / 9~11月",trans:"飞机2.5h（提前订约400~800往返）",reason:"十三朝古都！Day1周五晚飞到住钟楼附近，Day2兵马俑+华清宫（半天），下午回民街+大雁塔+城墙骑行。吃肉夹馍+biangbiang面+羊肉泡馍。历史文化震撼！周日中午飞回。",tags:["历史","兵马俑","美食","古都"],fav:false},
+{id:47,name:"三亚·亚龙湾+免税店",loc:"海南三亚市",cat:"fly",days:"2天",cost:"2000~3500",best:"11~3月",trans:"飞机1.5h（提前订约300~600往返）",reason:"冬天去三亚！Day1周五晚飞到住亚龙湾，Day2亚龙湾沙滩+蜈支洲岛（潜水天堂）或南山寺。逛海棠湾免税店（化妆品便宜30%+）。吃椰子鸡+文昌鸡+清补凉。周日中午飞回。",tags:["海滩","免税","潜水","度假"],fav:false},
+{id:48,name:"昆明·石林+滇池",loc:"云南昆明市",cat:"fly",days:"2天",cost:"1500~2500",best:"全年（春天最美）",trans:"飞机2.5h（提前订约400~700往返）",reason:"春城四季如春！Day1周五晚飞到住翠湖附近，Day2石林风景区（世界自然遗产）+滇池海埂大坝喂海鸥（冬天）。吃过桥米线+汽锅鸡+鲜花饼。空气好，气候舒服。周日中午飞回。",tags:["春城","石林","海鸥","美食"],fav:false},
+{id:49,name:"杭州·西湖+灵隐寺",loc:"浙江杭州市",cat:"fly",days:"2天",cost:"1800~3000",best:"3~5月 / 9~11月",trans:"飞机2h（提前订约300~600往返）",reason:"上有天堂下有苏杭！Day1周五晚飞到住西湖边，Day2环西湖骑行+灵隐寺祈福+河坊街。吃西湖醋鱼+龙井虾仁+东坡肉+知味观小笼包。春天看桃花，秋天赏桂花。周日中午飞回。",tags:["西湖","祈福","美食","骑行"],fav:false},
+{id:50,name:"南京·中山陵+秦淮河",loc:"江苏南京市",cat:"fly",days:"2天",cost:"1500~2500",best:"3~5月 / 9~11月",trans:"飞机2h（提前订约300~600往返）",reason:"六朝古都！Day1周五晚飞到住夫子庙附近，夜游秦淮河。Day2中山陵+明孝陵+总统府。吃鸭血粉丝汤+盐水鸭+小笼包+赤豆元宵。历史厚重感满满。周日中午飞回。",tags:["古都","秦淮河","美食","历史"],fav:false},
+// ===== 特色活动 (event) =====
+{id:51,name:"深圳湾草莓音乐节",loc:"深圳南山区",cat:"event",days:"1天",cost:"300~500",best:"4~5月（每年不同）",trans:"地铁/打车",reason:"深圳最大户外音乐节之一！每年春天举办，阵容强大。周六下午6点后打车去（免费），嗨到晚上11点打车回。记得带防晒+小板凳+充电宝。提前关注官方公众号抢票。",tags:["音乐节","户外","潮流","社交"],fav:false},
+{id:52,name:"深圳马拉松（半马）",loc:"深圳市",cat:"event",days:"1天",cost:"100~200",best:"12月（每年12月举办）",trans:"地铁",reason:"深圳年度盛事！半马21公里，沿深圳湾跑，海景赛道全国最美。你在减脂期，跑个半马消耗1500+大卡！报名费100元，提前3个月报名（名额秒光）。赛后还有美食补给站。",tags:["马拉松","减脂","运动","年度"],fav:false},
+{id:53,name:"东莞观音山万人相亲大会",loc:"东莞市樟木头",cat:"event",days:"1天",cost:"100~200",best:"5月/10月（每年两次）",trans:"自驾1h（油费约64元）",reason:"全国最大户外相亲活动！每年五一和国庆各举办一次，上万人参加。就算不相亲，看热闹也超有趣。顺便爬观音山锻炼身体。门票45元含景区。",tags:["相亲","热闹","登山","社交"],fav:false},
+{id:54,name:"广州国际灯光节",loc:"广州花城广场",cat:"event",days:"1天",cost:"100~200",best:"11月（每年11月举办）",trans:"自驾1.5h（油费约96元）",reason:"全球三大灯光节之一！花城广场+海心沙+广州塔联动，免费观看。灯光秀+艺术装置+互动体验，拍照超好看。建议周六下午出发，看完灯光秀吃个宵夜回。",tags:["灯光节","免费","拍照","国际"],fav:false},
+{id:55,name:"深圳国际电玩节",loc:"深圳会展中心",cat:"event",days:"1天",cost:"100~300",best:"12月（每年12月举办）",trans:"地铁/打车",reason:"华南最大电玩展！试玩最新游戏、买周边、看cosplay、参加电竞比赛。你有Switch，去试玩新游戏找灵感。门票约80元，提前网购更便宜。周六去一天玩到关门。",tags:["电玩","游戏","cosplay","展会"],fav:false},
+{id:56,name:"佛山秋色巡游",loc:"佛山市禅城区",cat:"event",days:"1天",cost:"150~300",best:"10~11月（每年秋季）",trans:"自驾1.5h（油费约96元）",reason:"佛山传统民俗盛典！花车巡游+舞狮+武术+粤剧，非遗文化大荟萃。在祖庙路看巡游，逛岭南天地，吃佛山扎蹄+盲公饼。感受最正宗的岭南文化。免费观看！",tags:["民俗","舞狮","巡游","免费"],fav:false},
+{id:57,name:"深圳大鹏半岛·帆船体验",loc:"深圳大鹏新区",cat:"event",days:"1天",cost:"300~500",best:"5~10月",trans:"自驾1.5h（油费约96元）",reason:"体验开帆船出海！大鹏有多家帆船俱乐部，单次体验约200~350元/人，含教练指导。在海上乘风破浪2~3小时，拍照超酷。周六下午去，傍晚看海上日落。",tags:["帆船","出海","体验","拍照"],fav:false},
+{id:58,name:"深圳湾人才公园·无人机灯光秀",loc:"深圳南山区",cat:"event",days:"半天",cost:"50~100",best:"节假日/特殊活动日",trans:"地铁/打车（周六6点后免费）",reason:"不定期举办的无人机灯光秀！数百架无人机在夜空组成各种图案，超震撼。你自己也有DJI无人机，可以去感受下专业编队飞行。关注"深圳发布"公众号获取时间。",tags:["无人机","灯光秀","免费","科技"],fav:false},
+{id:59,name:"横岗眼镜城·配眼镜",loc:"深圳龙岗区",cat:"event",days:"半天",cost:"100~500",best:"全年",trans:"自驾1h（油费约64元）",reason:"全国最大眼镜批发市场！品牌镜架+蔡司镜片，价格是外面的3~5折。配一副蔡司1.67非球面+钛架，外面2000+这里500搞定。周六下午去逛逛，顺便验光。",tags:["购物","眼镜","省钱","实用"],fav:false},
+{id:60,name:"深圳各大剧院·话剧/音乐剧",loc:"深圳市各区",cat:"event",days:"半天",cost:"200~800",best:"全年",trans:"地铁/打车",reason:"深圳演出市场很活跃！保利剧院、南山文体中心、深圳大剧院经常有话剧和音乐剧。推荐关注大麦APP和深圳本地宝。周六晚上看一场，文艺又放松。",tags:["话剧","音乐剧","文艺","夜晚"],fav:false},
+// ===== 美食之旅 (food) =====
+{id:61,name:"顺德·寻味顺德纪录片同款",loc:"佛山市顺德区",cat:"food",days:"1天",cost:"200~400",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"跟着《寻味顺德》纪录片吃！路线：民信老铺双皮奶→大头华烧鹅→细妹五香牛杂→欢姐伦教糕→黄但记陈村粉→猪肉婆私房菜。一天吃8顿，每顿只吃一两口精华。世界美食之都名不虚传！",tags:["纪录片同款","顺德","甜品","烧鹅"],fav:false},
+{id:62,name:"汕尾·海鲜大排档扫荡",loc:"汕尾市城区",cat:"food",days:"1天",cost:"200~400",best:"全年",trans:"自驾2h（油费约128元）",reason:"汕尾海鲜比深圳便宜一半！凤山街道的海鲜大排档一条街，生蚝5元/个、皮皮虾30元/斤、石斑鱼40元/斤。吃完去红海湾看海。周六早出发，吃到下午回。",tags:["海鲜","便宜","大排档","看海"],fav:false},
+{id:63,name:"广州·老西关早茶+上下九",loc:"广州荔湾区",cat:"food",days:"1天",cost:"200~350",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"来广州不喝早茶等于白来！推荐泮溪酒家或广州酒家（总店）。虾饺+凤爪+叉烧包+肠粉+马蹄糕，人均80就能吃到撑。下午逛上下九+沙面+永庆坊。",tags:["早茶","广州","老字号","骑楼"],fav:false},
+{id:64,name:"中山·石岐乳鸽+脆肉鲩",loc:"中山市石岐区",cat:"food",days:"1天",cost:"200~350",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"中山两大名菜必吃！石岐佬乳鸽（皮脆肉嫩汁多）+东升脆肉鲩（口感爽脆弹牙）。再加个小榄菊花宴。吃完逛孙中山故里+詹园。中山消费比深圳低很多。",tags:["乳鸽","脆肉鲩","中山","性价比"],fav:false},
+{id:65,name:"东莞·厚街濑粉+虎门烧鹅",loc:"东莞市",cat:"food",days:"1天",cost:"100~200",best:"全年",trans:"自驾50min（油费约32元）",reason:"东莞美食被严重低估！厚街濑粉+虎门赖尿虾+长安烧鹅+道滘粽子+糖不甩。一天吃遍东莞四镇，每个镇的特色都不一样。消费低，人均100就能吃到扶墙走。",tags:["东莞","濑粉","烧鹅","便宜"],fav:false},
+{id:66,name:"潮汕·牛肉火锅朝圣",loc:"汕头/潮州",cat:"food",days:"2天",cost:"600~1000",best:"全年",trans:"高铁2.5h约200元 / 飞机1h",reason:"全国最好吃的牛肉火锅在潮汕！每天凌晨现宰现切，分12个部位（脖仁、吊龙、匙柄…），8秒涮熟蘸沙茶酱。Day1周五晚到吃夜宵粿条，Day2早上肠粉+中午牛肉火锅+下午甜汤。周日回。",tags:["牛肉火锅","潮汕","必吃","朝圣"],fav:false},
+{id:67,name:"深圳·东门老街+水围村美食",loc:"深圳罗湖区/福田区",cat:"food",days:"半天",cost:"100~200",best:"全年",trans:"地铁/打车（周六6点后免费）",reason:"不用出深圳也能吃到爽！东门老街：阿婆牛杂+鸡翅包饭+臭豆腐。水围村：泰国菜+越南粉+各种东南亚美食（水围是深圳小联合国）。周六晚上出发扫街。",tags:["深圳","夜市","东南亚","扫街"],fav:false},
+{id:68,name:"江门·新会陈皮村+恩平温泉鸡",loc:"江门市",cat:"food",days:"1天",cost:"200~400",best:"10~12月（晒陈皮季）",trans:"自驾2h（油费约128元）",reason:"新会是陈皮之乡！10~12月可以看到满村晒陈皮的壮观场面。买正宗新会陈皮（5年的约200元/斤）。吃陈皮宴（陈皮骨、陈皮鸭、陈皮红豆沙）+恩平温泉鸡。",tags:["陈皮","特产","温泉鸡","秋冬"],fav:false},
+{id:69,name:"湛江·生蚝之都",loc:"湛江市",cat:"food",days:"2天",cost:"800~1300",best:"10~3月（生蚝肥美季）",trans:"飞机1.5h（提前订约200~400往返）",reason:"中国生蚝之都！湛江生蚝个大肉肥，炭烤蒜蓉生蚝5元/个。Day1周五晚飞到住赤坎老街，Day2早上吃湛江白切鸡+中午海鲜+晚上炭烤生蚝。逛湖光岩（玛珥湖）。周日飞回。",tags:["生蚝","海鲜","飞机","便宜"],fav:false},
+{id:70,name:"深圳·沙井蚝+福永烧骨",loc:"深圳宝安区",cat:"food",days:"半天",cost:"100~200",best:"11~3月（蚝季）",trans:"开车15min / 打车",reason:"就在家门口！沙井是深圳蚝的发源地，冬天的沙井蚝肥美鲜甜。去沙井蚝乡吃蚝烙+蚝煎+蚝仔粥。再去福永吃招牌烧骨（金满楼/肥佬烧骨）。不用出远门就能吃到极致美味。",tags:["宝安本地","蚝","烧骨","冬天"],fav:false},
+// ===== 自然风光 (nature) =====
+{id:71,name:"从化石门国家森林公园",loc:"广州从化区",cat:"nature",days:"1天",cost:"200~350",best:"2~3月（油菜花）/ 11~12月（红叶）",trans:"自驾2h（油费约128元）",reason:"广州最美森林公园！春天看千亩油菜花海，秋天赏红叶+枫叶。天池花海、莲花湖、石灶风景区都很美。门票40元。空气清新，负氧离子爆表。适合拍照+徒步。",tags:["森林","花海","红叶","拍照"],fav:false},
+{id:72,name:"惠州罗浮山·岭南第一山",loc:"惠州博罗县",cat:"nature",days:"1天",cost:"200~350",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"道教十大名山之一！苏东坡诗"罗浮山下四时春，卢橘杨梅次第新"说的就是这里。冲虚古观+白莲湖+飞来石。门票60元。山下有温泉可以泡。吃博罗酥糖+山坑鱼。",tags:["名山","道教","温泉","文化"],fav:false},
+{id:73,name:"深圳七娘山·深圳第二高峰",loc:"深圳大鹏新区",cat:"nature",days:"1天",cost:"50~100",best:"10~12月 / 3~4月",trans:"自驾1.5h（油费约96元）",reason:"海拔869米，深圳第二高峰！比梧桐山人少很多。登顶可以360°俯瞰大鹏半岛+大亚湾核电站。全程约4小时，难度中等偏上。你在减脂期，消耗超大！记得带足水。",tags:["登山","减脂","人少","海景"],fav:false},
+{id:74,name:"清远黄腾峡·天门悬廊",loc:"清远市清城区",cat:"nature",days:"1天",cost:"300~500",best:"全年",trans:"自驾2.5h（油费约160元）",reason:"除了漂流，黄腾峡还有全球最长的天门悬廊（520米高空玻璃廊桥）！站在上面腿软到不行，但风景绝美。还有高空飞索、旱滑道。门票套票约200元。刺激又好玩。",tags:["玻璃桥","刺激","高空","网红"],fav:false},
+{id:75,name:"深圳银湖山·城市绿肺",loc:"深圳罗湖/龙岗",cat:"nature",days:"半天",cost:"0~50",best:"全年",trans:"地铁3号线银湖站",reason:"深圳市区内的天然氧吧！2.87平方公里，有8公里登山步道。最高点海拔430米，登顶可以看到深圳CBD全景。地铁直达，周六下午去爬2小时，下来吃个饭回家。轻松减脂好去处！",tags:["免费","地铁直达","减脂","城市"],fav:false},
+{id:76,name:"河源桂山·玻璃桥+瀑布",loc:"河源市东源县",cat:"nature",days:"1天",cost:"200~350",best:"全年（夏天看瀑布）",trans:"自驾2.5h（油费约160元）",reason:"河源第一高峰！有18里花溪、百果园、大峡谷漂流。夏天看飞瀑流泉超壮观。还有玻璃桥和高空飞索。门票+玻璃桥套票约130元。和万绿湖可以安排在一起。",tags:["瀑布","玻璃桥","漂流","森林"],fav:false},
+{id:77,name:"阳春凌霄岩·地下溶洞",loc:"阳江阳春市",cat:"nature",days:"1.5天",cost:"400~650",best:"全年",trans:"自驾3.5h（油费约224元）",reason:"南国第一洞天！溶洞内有巨大的钟乳石和地下暗河，灯光效果震撼。门票60元。附近还有春湾石林（小桂林）可以一起游。吃阳春猪肠碌+鹅乸饭。周五晚出发，周日中午回。",tags:["溶洞","钟乳石","小众","奇观"],fav:false},
+{id:78,name:"深圳排牙山·险峻穿越",loc:"深圳大鹏新区",cat:"nature",days:"1天",cost:"50~100",best:"10~3月",trans:"自驾1.5h（油费约96元）",reason:"深圳最险的山！海拔707米，山脊线穿越需要手脚并用，部分路段需要攀岩。全程6~8小时，体力消耗巨大。适合有一定登山经验的人。风景绝美，可以看到大鹏湾全景。减脂效果拉满！",tags:["险峻","穿越","减脂","挑战"],fav:false},
+{id:79,name:"增城白水寨·全国最大瀑布",loc:"广州增城区",cat:"nature",days:"1天",cost:"200~350",best:"5~9月（水量最大）",trans:"自驾2h（油费约128元）",reason:"中国大陆落差最大瀑布！428.5米高，远看如白练悬空。有9999级登山步道（真的有9999级！），登顶约3小时。门票60元。夏天去水量大最壮观。吃增城迟菜心+正果腊味。",tags:["瀑布","登山","壮观","减脂"],fav:false},
+{id:80,name:"深圳塘朗山·轻松徒步",loc:"深圳南山区",cat:"nature",days:"半天",cost:"0~50",best:"全年",trans:"地铁7号线桃源村站",reason:"深圳最轻松的登山路线之一！海拔430米，有完善的台阶步道，1.5小时登顶。山顶有观景平台，可以看到南山CBD+深圳湾。地铁直达，周六下午去爬一下，回来正好吃晚饭。",tags:["免费","轻松","地铁直达","城市"],fav:false},
+// ===== 更多补充 =====
+{id:81,name:"珠海情侣路·骑行看海",loc:"珠海市",cat:"day1",days:"1天",cost:"200~350",best:"10~3月",trans:"自驾2h（油费约128元）",reason:"珠海最美海滨路！28公里沿海骑行，一边是大海一边是城市。可以远眺澳门、经过渔女雕像、日月贝歌剧院。冬天海风凉爽不晒。骑完去拱北口岸附近吃海鲜。",tags:["骑行","看海","澳门","浪漫"],fav:false},
+{id:82,name:"东莞香市动物园·喂长颈鹿",loc:"东莞市寮步镇",cat:"day1",days:"1天",cost:"150~250",best:"全年",trans:"自驾50min（油费约32元）",reason:"性价比超高的动物园！门票仅100元，可以近距离喂长颈鹿、骑大象、看白虎。还有游乐场和恐龙谷。比深圳野生动物园便宜一半，体验差不多。适合放松的一天。",tags:["动物园","性价比","亲子","轻松"],fav:false},
+{id:83,name:"惠州哈施塔特小镇",loc:"惠州博罗县",cat:"day1",days:"1天",cost:"150~250",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"1:1复刻奥地利哈施塔特小镇！欧式建筑+湖光山色，不出国就能拍出欧洲风情照。免费入园（部分项目收费）。旁边就是罗浮山，可以一起安排。拍照打卡圣地！",tags:["欧式","拍照","免费","网红"],fav:false},
+{id:84,name:"深圳甘坑客家小镇",loc:"深圳龙岗区",cat:"day1",days:"半天",cost:"50~150",best:"全年",trans:"地铁10号线甘坑站",reason:"深圳最美客家古镇！免费入园，有客家围屋、小凉帽农场、VR体验馆。吃客家盆菜+艾粄+擂茶。地铁直达，周六下午去逛逛，拍拍照，吃吃客家小吃，轻松惬意。",tags:["客家","免费","地铁直达","拍照"],fav:false},
+{id:85,name:"广州融创雪世界·室内滑雪",loc:"广州花都区",cat:"day1",days:"1天",cost:"300~500",best:"全年（夏天去最爽）",trans:"自驾1.5h（油费约96元）",reason:"华南最大室内滑雪场！7条雪道+雪圈区+冰雕区，零下5度室内。初级道适合新手，还有教练指导。门票约280元含2小时滑雪。夏天外面35度里面零下5度，反差感拉满！",tags:["滑雪","室内","夏天","运动"],fav:false},
+{id:86,name:"深圳海上田园·湿地观鸟",loc:"深圳宝安区",cat:"nature",days:"半天",cost:"50~100",best:"11~3月",trans:"自驾20min（油费约13元）",reason:"就在宝安家门口！占地22万平方米的湿地公园，冬天有大量候鸟栖息。门票60元。有木栈道、观鸟台、渔船体验。周六下午去散散步看看鸟，1~2小时就够。最近最方便的自然体验。",tags:["湿地","观鸟","宝安本地","轻松"],fav:false},
+{id:87,name:"中山温泉·孙中山故里温泉",loc:"中山市三乡镇",cat:"day1",days:"1天",cost:"200~350",best:"11~3月",trans:"自驾1.5h（油费约96元）",reason:"中山温泉度假村，泉水含多种微量元素。室内外30+个泡池，还有水上乐园。门票约128元。泡完温泉去长江水世界（夏天）或去石岐吃乳鸽。冬天泡温泉最舒服！",tags:["温泉","度假","冬天","放松"],fav:false},
+{id:88,name:"深圳世界之窗·环球微缩景观",loc:"深圳南山区",cat:"day1",days:"1天",cost:"200~350",best:"全年",trans:"地铁1号线世界之窗站",reason:"130个世界著名景点的微缩版！埃菲尔铁塔、金字塔、富士山…一天"环游世界"。门票约200元。晚上有大型演出《一步之遥》。虽然是老景点但确实好玩，适合拍照打卡。",tags:["主题公园","拍照","地铁直达","经典"],fav:false},
+{id:89,name:"佛山南风古灶·陶艺体验",loc:"佛山市禅城区",cat:"event",days:"1天",cost:"150~300",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"500年不灭窑火！世界现存最古老的柴烧龙窑。可以亲手做陶器（体验费约80元），等烧好后邮寄给你。逛石湾公仔街买陶瓷工艺品。吃佛山扎蹄+均安蒸猪。文艺又有趣！",tags:["陶艺","体验","非遗","文艺"],fav:false},
+{id:90,name:"深圳大梅沙·免费海滩",loc:"深圳盐田区",cat:"day1",days:"半天~1天",cost:"50~150",best:"5~6月 / 9~10月",trans:"自驾1h（油费约64元）",reason:"深圳最知名的免费海滩！1.8公里金色沙滩，旁边就是东部华侨城。注意：暑假人山人海，建议5~6月或9~10月去。需要提前预约（微信搜"i]大梅沙"）。周六早去下午回避开人流。",tags:["免费","海滩","预约","经典"],fav:false},
+{id:91,name:"广州·沙面+永庆坊文艺游",loc:"广州荔湾区",cat:"day1",days:"1天",cost:"150~300",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"广州最文艺的两个地方！沙面岛有150栋欧式建筑，像走进了欧洲小镇。永庆坊是老西关活化改造，李小龙祖居+粤剧博物馆+网红咖啡店。拍照出片率极高。吃竹升面+云吞面。",tags:["文艺","欧式","拍照","咖啡"],fav:false},
+{id:92,name:"惠州温泉镇·龙门铁泉",loc:"惠州龙门县",cat:"day2",days:"2天",cost:"500~800",best:"11~3月",trans:"自驾2h（油费约128元）",reason:"亚洲最大温泉度假区之一！72个温泉池+水上乐园+冰火两重天。含铁量全国最高，泡完皮肤滑溜溜。Day1周五晚到泡温泉，Day2南昆山或蓝田瑶族风情园。吃龙门胡须鸡+年饼。周日回。",tags:["温泉","度假","瑶族","冬天"],fav:false},
+{id:93,name:"深圳·华强北电子市场淘宝",loc:"深圳福田区",cat:"event",days:"半天",cost:"100~1000+",best:"全年",trans:"地铁1号线华强路站",reason:"全球最大电子市场！你是数码爱好者，来华强北淘配件、买二手设备、看最新科技产品。手机壳10元3个，数据线5元一条。还有各种DIY配件。周六下午逛一圈，说不定能淘到宝。",tags:["数码","淘宝","便宜","科技"],fav:false},
+{id:94,name:"深圳·OCT-LOFT华侨城创意园",loc:"深圳南山区",cat:"day1",days:"半天",cost:"50~200",best:"全年",trans:"地铁1号线侨城东站",reason:"深圳最有文艺气息的创意园区！独立书店、精品咖啡、艺术展览、设计师品牌店。每年还有创意市集和爵士音乐节。周六下午去喝杯咖啡看个展，晚上在附近吃个饭。",tags:["文艺","咖啡","展览","创意"],fav:false},
+{id:95,name:"广州塔·蜘蛛侠体验",loc:"广州海珠区",cat:"event",days:"半天~1天",cost:"200~500",best:"全年（晚上最美）",trans:"自驾1.5h（油费约96元）",reason:"小蛮腰600米高！可以坐摩天轮、走蜘蛛侠栈道（450米高空户外平台）、坐速降座椅。晚上灯光璀璨，俯瞰广州夜景。门票约150元（含摩天轮）。刺激+浪漫！",tags:["地标","刺激","夜景","高空"],fav:false},
+{id:96,name:"东莞·篮球中心看CBA",loc:"东莞市",cat:"event",days:"半天",cost:"100~500",best:"CBA赛季（10~4月）",trans:"自驾50min（油费约32元）",reason:"东莞是CBA广东宏远的主场！现场看CBA比赛氛围超燃。门票100~500元不等。周六晚上去看一场球赛，感受万人齐呼的热血。赛后吃东莞烧鹅濑粉宵夜。",tags:["CBA","篮球","体育","热血"],fav:false},
+{id:97,name:"深圳·仙湖植物园+弘法寺",loc:"深圳罗湖区",cat:"nature",days:"半天~1天",cost:"15~50",best:"全年（春天最美）",trans:"自驾1h（油费约64元）",reason:"深圳最美植物园！占地546公顷，有仙人掌园、蝶谷幽兰、化石森林等。弘法寺是深圳香火最旺的寺庙，祈福很灵。门票15元。春天看桃花+簕杜鹃，秋天看红叶。",tags:["植物园","祈福","拍照","便宜"],fav:false},
+{id:98,name:"中山·长江水世界",loc:"中山市",cat:"day1",days:"1天",cost:"200~350",best:"5~9月",trans:"自驾1.5h（油费约96元）",reason:"华南最大水上乐园之一！超级大喇叭、巨蟒滑道、懒人河、造浪池…比深圳的水上乐园便宜且人少。门票约150元。夏天去玩水消暑一整天。配合中山美食，完美一日游。",tags:["水上乐园","夏天","刺激","便宜"],fav:false},
+{id:99,name:"深圳·大鹏所城+较场尾",loc:"深圳大鹏新区",cat:"day1",days:"1天",cost:"100~250",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"600年历史的海防古城！免费参观，有将军府、天后宫、古城墙。旁边较场尾是深圳的"鼓浪屿"，400+家民宿和文艺小店。吃窑鸡+海鲜。秋冬去人少，拍照超好看。",tags:["古城","免费","文艺","海边"],fav:false},
+{id:100,name:"广州·陈家祠+北京路",loc:"广州越秀区",cat:"day1",days:"1天",cost:"150~300",best:"全年",trans:"自驾1.5h（油费约96元）",reason:"岭南建筑艺术巅峰！陈家祠的砖雕、木雕、石雕、陶塑精美绝伦，门票10元。逛完去北京路步行街（有玻璃地面下的千年古道遗址）。吃银记肠粉+陈添记鱼皮。",tags:["岭南建筑","文化","便宜","美食"],fav:false},
+{id:101,name:"深圳·前海石公园夜跑",loc:"深圳南山区前海",cat:"nature",days:"半天",cost:"0~30",best:"全年",trans:"打车（周六6点后免费）",reason:"前海石公园是深圳新晋网红打卡点！巨大的"前海石"地标+海滨栈道。晚上灯光很美，适合夜跑或散步。周六晚上打车去（免费），跑个5公里，吹吹海风，减脂+放松。",tags:["夜跑","免费","减脂","夜景"],fav:false},
+{id:102,name:"惠州·平海古城+巽寮湾",loc:"惠州惠东县",cat:"day2",days:"2天",cost:"500~800",best:"全年（秋冬人少）",trans:"自驾2h（油费约128元）",reason:"600年历史的军事古城！四门楼+十字街+古城墙，比大鹏所城更原生态。Day1周五晚到住巽寮湾，Day2逛平海古城+海滩。吃海鲜+客家菜。秋冬去游客少，体验好。周日中午回。",tags:["古城","海滩","人少","历史"],fav:false},
+{id:103,name:"深圳·莲花山放风筝",loc:"深圳福田区",cat:"nature",days:"半天",cost:"0~50",best:"3~5月 / 10~12月",trans:"地铁3号线少年宫站",reason:"深圳市民最爱的山顶！山顶广场有邓小平铜像，可以俯瞰CBD全景。春秋两季风力适中，是放风筝的绝佳地点。买个风筝20元，在山顶草坪放飞，超治愈。免费！",tags:["免费","放风筝","地铁直达","轻松"],fav:false},
+{id:104,name:"东莞·隐贤山庄+3D玻璃桥",loc:"东莞常平镇",cat:"day1",days:"1天",cost:"150~300",best:"全年",trans:"自驾1h（油费约64元）",reason:"东莞最大的综合游乐景区！有3D玻璃桥、过山车、摩天轮、动物园、恐龙谷。门票约120元含大部分项目。性价比很高，一天能玩很多项目。比长隆便宜一半。",tags:["游乐园","玻璃桥","性价比","综合"],fav:false},
+{id:105,name:"深圳·蛇口邮轮母港看邮轮",loc:"深圳南山区",cat:"event",days:"半天",cost:"0~100",best:"全年",trans:"地铁2号线蛇口港站",reason:"蛇口邮轮母港经常有大型邮轮停靠！不坐船也可以去看看巨型邮轮，拍照很壮观。旁边海上世界有很多餐厅和酒吧。周六晚上去吹海风、看邮轮、吃晚饭。免费看！",tags:["邮轮","免费","海边","夜晚"],fav:false},
+{id:106,name:"清远·笔架山漂流",loc:"清远市清新区",cat:"day1",days:"1天",cost:"350~550",best:"5~9月",trans:"自驾2.5h（油费约160元）",reason:"清远漂流除了古龙峡，笔架山也很棒！全程约2小时，落差适中，既刺激又不会太恐怖。比古龙峡人少，体验更好。漂完吃清远鸡+白切鹅。周六一早出发，下午回。",tags:["漂流","夏天","刺激","人少"],fav:false},
+{id:107,name:"深圳·梅林水库环湖徒步",loc:"深圳福田区",cat:"nature",days:"半天",cost:"0~30",best:"全年",trans:"打车/公交",reason:"深圳市区内的隐藏宝藏！梅林水库环湖步道约5公里，湖水碧绿，周围是原始森林。人比莲花山少很多，安静又美。周六下午去走一圈约1.5小时，减脂+吸氧。完全免费！",tags:["免费","徒步","安静","减脂"],fav:false},
+{id:108,name:"广州·番禺宝墨园+余荫山房",loc:"广州番禺区",cat:"day1",days:"1天",cost:"150~300",best:"全年（春秋最佳）",trans:"自驾1.5h（油费约96元）",reason:"岭南园林双璧！宝墨园有全球最大砖雕作品（门票54元），余荫山房是岭南四大名园之一（门票18元）。两个园子相距不远可以一天逛完。吃番禺沙湾姜撞奶+均安蒸猪。",tags:["园林","岭南","文化","拍照"],fav:false},
+{id:109,name:"深圳·南头古城·深圳原点",loc:"深圳南山区",cat:"day1",days:"半天",cost:"50~150",best:"全年",trans:"地铁12号线南头古城站",reason:"1700年历史的深圳城市原点！经过活化改造，现在是集古迹+文创+美食于一体的潮流街区。有网红咖啡店、独立设计师品牌、各种小吃。免费逛！地铁直达，周六下午去。",tags:["古城","文创","免费","地铁直达"],fav:false},
+{id:110,name:"惠州·红花湖骑行18公里",loc:"惠州市惠城区",cat:"day1",days:"1天",cost:"150~250",best:"全年（秋冬最佳）",trans:"自驾1.5h（油费约96元）",reason:"惠州最美骑行路线！18公里环湖绿道，湖光山色，空气清新。租自行车约30元/小时。骑完去惠州西湖散步，吃梅菜扣肉+东江盐焗鸡。一天骑行+美食，完美搭配。",tags:["骑行","湖景","美食","减脂"],fav:false}
+];
+
+// ==================== 核心逻辑 ====================
+let favSet = new Set(JSON.parse(localStorage.getItem('tripFavs')||'[]'));
+let customTrips = JSON.parse(localStorage.getItem('tripCustom')||'[]');
+let currentFilter = 'all';
+
+function getAllTrips(){
+  const all = [...TRIPS,...customTrips];
+  all.forEach(t=>{if(favSet.has(t.id))t.fav=true;else t.fav=false});
+  return all;
+}
+function getFiltered(){
+  const all=getAllTrips();
+  if(currentFilter==='all')return all;
+  if(currentFilter==='fav')return all.filter(t=>t.fav);
+  return all.filter(t=>t.cat===currentFilter);
+}
+
+function renderCards(){
+  const list=getFiltered();
+  const sw=document.getElementById('swiper');
+  const emp=document.getElementById('empty');
+  const cnt=document.getElementById('counter');
+  if(!list.length){sw.innerHTML='';emp.style.display='block';cnt.textContent='';return}
+  emp.style.display='none';
+  cnt.textContent=`共 ${list.length} 条活动`;
+  sw.innerHTML=list.map((t,i)=>{
+    const catLabel={'day1':'☀️ 一日游','day2':'🌙 两日游','fly':'✈️ 飞机游','event':'🎪 特色活动','food':'🍜 美食之旅','nature':'🌿 自然风光'}[t.cat]||t.cat;
+    const catCls={'day1':'cat-day1','day2':'cat-day2','fly':'cat-fly','event':'cat-event','food':'cat-food','nature':'cat-nature'}[t.cat]||'cat-day1';
+    return `<div class="trip-card${t.fav?' fav':''}" id="card-${t.id}">
+      <div class="card-header">
+        <span class="card-cat ${catCls}">${catLabel}</span>
+        <div class="card-name">${t.name}</div>
+        <div class="card-loc">📍 ${t.loc}</div>
+        <div class="card-reason" id="reason-${t.id}">${t.reason}</div>
+        <span class="expand-btn" onclick="toggleExpand(${t.id})">展开全部 ▾</span>
+        <div class="card-info">
+          <div class="info-item"><div class="info-label">⏱ 建议天数</div><div class="info-val">${t.days}</div></div>
+          <div class="info-item"><div class="info-label">💰 预计花费</div><div class="info-val">¥${t.cost}</div></div>
+          <div class="info-item"><div class="info-label">📅 最佳时间</div><div class="info-val">${t.best}</div></div>
+          <div class="info-item"><div class="info-label">🚗 交通</div><div class="info-val" style="font-size:.75rem">${t.trans}</div></div>
+        </div>
+        <div class="card-tags">${(t.tags||[]).map(tg=>`<span class="ctag">${tg}</span>`).join('')}</div>
+      </div>
+      <div class="card-footer">
+        <button class="fav-btn" onclick="toggleFav(${t.id})">${t.fav?'❤️':'🤍'}</button>
+        <span class="card-idx">${i+1} / ${list.length}</span>
+        ${t.id>1000?`<button class="fav-btn" onclick="delTrip(${t.id})" title="删除">🗑️</button>`:''}
+      </div>
+    </div>`}).join('');
+  updateStats();
+}
+
+function toggleExpand(id){
+  const el=document.getElementById('reason-'+id);
+  el.classList.toggle('expanded');
+  const btn=el.nextElementSibling;
+  btn.textContent=el.classList.contains('expanded')?'收起 ▴':'展开全部 ▾';
+}
+
+function toggleFav(id){
+  if(favSet.has(id))favSet.delete(id);else favSet.add(id);
+  localStorage.setItem('tripFavs',JSON.stringify([...favSet]));
+  renderCards();
+}
+
+function updateStats(){
+  const all=getAllTrips();
+  document.getElementById('statTotal').textContent=`📋 共 ${all.length} 条活动`;
+  document.getElementById('statFav').textContent=`❤️ 收藏 ${favSet.size}`;
+  const costs=all.map(t=>{const m=t.cost.match(/(\d+)/);return m?parseInt(m[1]):0}).filter(c=>c>0);
+  const mn=Math.min(...costs),mx=Math.max(...costs);
+  document.getElementById('statBudget').textContent=`💰 ¥${mn}~${mx}`;
+}
+
+// 筛选
+document.getElementById('filters').addEventListener('click',e=>{
+  const btn=e.target.closest('.fbtn');
+  if(!btn)return;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter=btn.dataset.f;
+  renderCards();
+});
+
+// 添加活动
+function openModal(){document.getElementById('modalBg').classList.add('show')}
+function closeModal(){document.getElementById('modalBg').classList.remove('show')}
+function saveTrip(){
+  const name=document.getElementById('fName').value.trim();
+  const reason=document.getElementById('fReason').value.trim();
+  if(!name||!reason){alert('请填写活动名称和推荐理由');return}
+  const trip={
+    id:Date.now(),
+    name,
+    loc:document.getElementById('fLoc').value.trim()||'待定',
+    cat:document.getElementById('fCat').value,
+    days:document.getElementById('fDays').value.trim()||'1天',
+    cost:document.getElementById('fCost').value.trim()||'待定',
+    best:document.getElementById('fBest').value.trim()||'全年',
+    trans:document.getElementById('fTrans').value.trim()||'待定',
+    reason,
+    tags:(document.getElementById('fTags').value||'').split(/[,，]/).map(s=>s.trim()).filter(Boolean),
+    fav:false
+  };
+  customTrips.push(trip);
+  localStorage.setItem('tripCustom',JSON.stringify(customTrips));
+  closeModal();
+  ['fName','fLoc','fDays','fCost','fBest','fTrans','fReason','fTags'].forEach(id=>document.getElementById(id).value='');
+  renderCards();
+}
+function delTrip(id){
+  if(!confirm('确定删除这条活动？'))return;
+  customTrips=customTrips.filter(t=>t.id!==id);
+  localStorage.setItem('tripCustom',JSON.stringify(customTrips));
+  favSet.delete(id);
+  localStorage.setItem('tripFavs',JSON.stringify([...favSet]));
+  renderCards();
+}
+
+// 点击模态框背景关闭
+document.getElementById('modalBg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+// 初始化
+renderCards();
+</script>
+</body>
+</html>
