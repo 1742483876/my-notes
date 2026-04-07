@@ -256,54 +256,160 @@ a:hover{text-decoration:underline}
   </div>
   <p style="color:var(--text2);font-size:0.78rem;margin-top:6px">* Kimi K2 成本为非官方估计。Scout+Maverick合计7.38M GPU时。</p>
 
-  <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">🚀 部署硬件需求对比</h2>
+  <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">🚀 统一基准：NVIDIA H20 96GB 部署对比</h2>
+  <div class="info-box purple" style="margin-bottom:16px">
+    <strong>📌 为什么选 H20 作为基准？</strong>NVIDIA H20 是中国市场主要可获取的合规数据中心GPU（96GB HBM3、4.0 TB/s带宽、FP8 296 TFLOPS、NVLink 900 GB/s）。以下所有对比统一以 <strong>H20 96GB × 8卡（总显存768GB）</strong>为标准节点进行计算。
+  </div>
+
   <div style="overflow-x:auto">
   <table class="compare-table">
     <tr>
       <th>模型</th>
-      <th>BF16/FP16 显存</th>
-      <th>FP8 显存</th>
-      <th>INT4 显存</th>
-      <th>最低部署方案</th>
-      <th>推荐生产方案</th>
+      <th>总参数</th>
+      <th>FP8 显存需求</th>
+      <th>INT4 显存需求</th>
+      <th>H20 FP8 最少卡数</th>
+      <th>H20 INT4 最少卡数</th>
+      <th>8×H20 FP8 可行?</th>
+      <th>可用上下文(8卡FP8)</th>
+      <th>说明</th>
     </tr>
     <tr>
-      <td>GLM-5 (744B)</td><td>~1.5TB</td><td>~756GB</td><td>~241GB (2bit GGUF)</td>
-      <td>8× H200 (FP8)</td><td>8× H200/B200 (FP8)</td>
+      <td>GLM-5 (744B)</td><td>744B</td>
+      <td>~756GB</td><td>~378GB</td>
+      <td class="warn">8卡（极限）</td><td class="best">4卡</td>
+      <td class="good">⚠️ 勉强</td><td>~4K-8K</td>
+      <td>768-756=12GB余量，KV缓存极少，仅短对话可用</td>
     </tr>
     <tr>
-      <td>DeepSeek-V3.2 (685B)</td><td>~1.4TB</td><td>~690GB</td><td>—</td>
-      <td>8× H100 (FP8)</td><td>8× H200 (FP8)</td>
+      <td>DeepSeek-V3.2 (685B)</td><td>685B</td>
+      <td>~690GB</td><td>~345GB</td>
+      <td>8卡</td><td class="best">4卡</td>
+      <td class="best">✅ 可行</td><td class="best">~32K-64K</td>
+      <td>MLA极省KV缓存（70KB/token），78GB余量够用</td>
     </tr>
     <tr>
-      <td>DeepSeek-R2 (~685B)</td><td>~1.4TB</td><td>~685GB</td><td>—</td>
-      <td>8× H100 (FP8)</td><td>8× H200 / 4× H200 (FP8)</td>
+      <td>DeepSeek-R2 (~685B)</td><td>~685B</td>
+      <td>~685GB</td><td>~343GB</td>
+      <td>8卡</td><td class="best">4卡</td>
+      <td class="best">✅ 可行</td><td>~32K</td>
+      <td>推理链长（20-40K tokens），KV缓存需更多空间</td>
     </tr>
     <tr>
-      <td>Qwen3.5-397B</td><td>~794GB</td><td>~397GB</td><td>~199GB</td>
-      <td class="best">4× H100 (INT4)</td><td>8× H100 (FP8)</td>
+      <td>Qwen3.5-397B</td><td>397B</td>
+      <td class="best">~397GB</td><td class="best">~199GB</td>
+      <td class="best">5卡</td><td class="best">3卡</td>
+      <td class="best">✅ 轻松</td><td class="best">~128K+</td>
+      <td>8卡余371GB，长上下文无压力；GDN省KV缓存</td>
     </tr>
     <tr>
-      <td>Kimi K2 (1T)</td><td>~2.4TB</td><td>~1.1TB</td><td>~600GB (INT4 QAT)</td>
-      <td>8× H200 (INT4)</td><td>16× H800 (128K ctx)</td>
+      <td>Kimi K2 (1T)</td><td>1,000B</td>
+      <td class="warn">~1.1TB</td><td>~600GB</td>
+      <td class="warn">12卡（跨节点）</td><td>7卡</td>
+      <td class="warn">❌ 不够</td><td>—</td>
+      <td>FP8需12+卡跨节点；INT4 QAT 8卡可行（余168GB）</td>
     </tr>
     <tr>
-      <td>Llama 4 Maverick (400B)</td><td>~800GB</td><td>~400GB</td><td>~200GB</td>
-      <td>3× H100 (INT4)</td><td>8× H200 (FP8)</td>
+      <td>Llama 4 Maverick (400B)</td><td>400B</td>
+      <td>~400GB</td><td>~200GB</td>
+      <td class="best">5卡</td><td class="best">3卡</td>
+      <td class="best">✅ 轻松</td><td class="best">~128K+</td>
+      <td>8卡余368GB，支持长上下文和高并发</td>
     </tr>
     <tr>
-      <td>Llama 4 Scout (109B)</td><td>~216GB</td><td>~109GB</td><td>~55GB</td>
-      <td class="best">1× H100 (INT4)</td><td>4-8× H100 (200K ctx)</td>
+      <td>Llama 4 Scout (109B)</td><td>109B</td>
+      <td class="best">~109GB</td><td class="best">~55GB</td>
+      <td class="best">2卡</td><td class="best">1卡</td>
+      <td class="best">✅ 单卡INT4</td><td class="best">~1M+</td>
+      <td>FP8仅需2卡；INT4单卡可跑！超长上下文优势巨大</td>
     </tr>
     <tr>
-      <td>Mistral Large 3 (675B)</td><td>~1.4TB</td><td>~675GB</td><td>~96GB (Q4 GGUF)</td>
-      <td>4× RTX 4090 (Q4)</td><td>8× H100 (NVFP4) / 8× H200 (FP8)</td>
+      <td>Mistral Large 3 (675B)</td><td>675B</td>
+      <td>~675GB</td><td>~338GB</td>
+      <td>8卡</td><td class="best">4卡</td>
+      <td class="best">✅ 可行</td><td>~64K</td>
+      <td>93GB余量，NVFP4量化可进一步压缩至4卡</td>
     </tr>
   </table>
   </div>
+  <p style="color:var(--text2);font-size:0.78rem;margin-top:6px">* 可用上下文为估算值，实际取决于batch size、KV缓存策略和框架优化。H20单卡实际可用显存约95.7GB（97871MiB）。</p>
 
-  <div class="info-box blue" style="margin-top:20px">
-    <strong>💡 部署经验法则：</strong>MoE模型虽然每token仅激活少量参数，但<strong>所有专家权重必须常驻显存</strong>。规划硬件时应按<strong>总参数量</strong>计算，而非激活参数量。FP8是当前性价比最优的生产精度。
+  <h3 style="color:#fff;font-size:1.2rem;margin:20px 0 12px">📊 H20 96GB 关键规格 vs 其他GPU</h3>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr>
+      <th>规格</th>
+      <th style="background:rgba(234,179,8,.15)">H20 96GB 🇨🇳</th>
+      <th>H100 80GB</th>
+      <th>H200 141GB</th>
+      <th>H800 80GB</th>
+      <th>昇腾910B 64GB</th>
+    </tr>
+    <tr><td>显存</td><td class="best">96 GB HBM3</td><td>80 GB HBM3</td><td class="best">141 GB HBM3e</td><td>80 GB HBM2e</td><td>64 GB HBM2e</td></tr>
+    <tr><td>显存带宽</td><td class="best">4.0 TB/s</td><td>3.35 TB/s</td><td class="best">4.8 TB/s</td><td>2.0 TB/s</td><td>1.6 TB/s</td></tr>
+    <tr><td>FP8 算力</td><td class="warn">296 TFLOPS</td><td class="best">1,979 TFLOPS</td><td class="best">1,979 TFLOPS</td><td>—</td><td>—</td></tr>
+    <tr><td>FP16 算力</td><td>148 TFLOPS</td><td class="best">495 TFLOPS</td><td class="best">495 TFLOPS</td><td>312 TFLOPS</td><td>390 TFLOPS</td></tr>
+    <tr><td>NVLink</td><td class="best">900 GB/s</td><td class="best">900 GB/s</td><td class="best">900 GB/s</td><td>400 GB/s</td><td>专有互联</td></tr>
+    <tr><td>TDP</td><td class="best">400W</td><td>700W</td><td>700W</td><td>700W</td><td>310W</td></tr>
+    <tr><td>8卡总显存</td><td class="best">768 GB</td><td>640 GB</td><td class="best">1,128 GB</td><td>640 GB</td><td>512 GB</td></tr>
+    <tr><td>中国可获取</td><td class="best">✅ 合规</td><td class="warn">❌ 受限</td><td class="warn">❌ 受限</td><td class="good">⚠️ 存量</td><td class="best">✅ 国产</td></tr>
+  </table>
+  </div>
+
+  <div class="info-box blue" style="margin-top:16px">
+    <strong>💡 H20 部署经验法则：</strong><br>
+    • 8×H20 总显存 768GB，FP8 可装下 <strong>≤750B 参数</strong>的模型（留余量给KV缓存）<br>
+    • H20 算力仅为 H100 的 ~15%，但<strong>显存容量比 H100 大 20%</strong>，且带宽更高——天生适合推理<br>
+    • MoE 模型所有专家权重必须<strong>常驻显存</strong>，规划硬件按<strong>总参数量</strong>计算<br>
+    • H20 的 NVLink 900 GB/s 与 H100 相同，多卡通信不是瓶颈<br>
+    • <strong>实测坑：</strong>H20 需使用 NVIDIA 推荐驱动 550.144.03+（CUDA 12.4），旧驱动推理会崩溃
+  </div>
+
+  <h3 style="color:#fff;font-size:1.2rem;margin:20px 0 12px">🏆 H20 性价比排行</h3>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <tr>
+      <th>排名</th>
+      <th>模型</th>
+      <th>H20卡数</th>
+      <th>精度</th>
+      <th>可用上下文</th>
+      <th>性价比评级</th>
+      <th>推荐理由</th>
+    </tr>
+    <tr>
+      <td>🥇</td><td class="best">Qwen3.5-397B</td><td class="best">5-8卡</td><td>FP8</td><td class="best">128K+</td>
+      <td class="best">⭐⭐⭐⭐⭐</td><td>参数最小旗舰，8卡余量巨大，长上下文无忧</td>
+    </tr>
+    <tr>
+      <td>🥇</td><td class="best">Llama 4 Scout</td><td class="best">1-2卡</td><td>INT4/FP8</td><td class="best">1M+</td>
+      <td class="best">⭐⭐⭐⭐⭐</td><td>单卡INT4即可跑！10M超长上下文，极致性价比</td>
+    </tr>
+    <tr>
+      <td>🥈</td><td>DeepSeek-V3.2</td><td>8卡</td><td>FP8</td><td>32-64K</td>
+      <td class="good">⭐⭐⭐⭐</td><td>MLA省KV缓存，8卡刚好，综合能力最强之一</td>
+    </tr>
+    <tr>
+      <td>🥈</td><td>Llama 4 Maverick</td><td class="best">5-8卡</td><td>FP8</td><td class="best">128K+</td>
+      <td class="good">⭐⭐⭐⭐</td><td>400B参数余量大，原生多模态，128E专家多样性</td>
+    </tr>
+    <tr>
+      <td>🥉</td><td>Mistral Large 3</td><td>8卡</td><td>FP8</td><td>64K</td>
+      <td>⭐⭐⭐</td><td>675B刚好装下，Apache 2.0完全开放</td>
+    </tr>
+    <tr>
+      <td>🥉</td><td>DeepSeek-R2</td><td>8卡</td><td>FP8</td><td>32K</td>
+      <td>⭐⭐⭐</td><td>推理专精，但长推理链消耗大量KV缓存</td>
+    </tr>
+    <tr>
+      <td>4</td><td>GLM-5</td><td class="warn">8卡（极限）</td><td>FP8</td><td class="warn">4-8K</td>
+      <td class="warn">⭐⭐</td><td>744B逼近768GB上限，KV缓存几乎没有余量</td>
+    </tr>
+    <tr>
+      <td>5</td><td class="warn">Kimi K2</td><td class="warn">12-16卡</td><td>FP8</td><td>—</td>
+      <td class="warn">⭐⭐</td><td>1T参数FP8需跨节点；INT4 QAT 8卡勉强可行</td>
+    </tr>
+  </table>
   </div>
 
   <h2 style="color:#fff;font-size:1.4rem;margin:24px 0 16px">⚡ 架构创新亮点</h2>
@@ -401,13 +507,17 @@ a:hover{text-decoration:underline}
     </div>
 
     <div class="gpu-section">
-      <h3>🚀 部署需求</h3>
+      <h3>🚀 部署需求（含 H20 96GB 方案）</h3>
       <table class="gpu-table">
-        <tr><th>精度</th><th>显存需求</th><th>推荐配置</th><th>推理速度</th></tr>
-        <tr><td>BF16</td><td>~1,490 GB</td><td>16× H100 80GB / 12× H200</td><td>—</td></tr>
-        <tr><td class="rec">FP8（推荐）</td><td>~756 GB</td><td class="rec">8× H200 141GB / 8× H20</td><td>~17-19 tok/s</td></tr>
-        <tr><td>2-bit GGUF</td><td>~241 GB</td><td>2× Mac Studio M3 Ultra 512GB</td><td>极慢（实验性）</td></tr>
+        <tr><th>精度</th><th>显存需求</th><th>H20 96GB 方案</th><th>其他方案</th><th>说明</th></tr>
+        <tr><td class="rec">FP8（推荐）</td><td>~756 GB</td><td class="rec">8× H20（极限，余12GB）</td><td>8× H200 141GB</td><td>8卡H20总768GB，仅支持短上下文（4-8K）</td></tr>
+        <tr><td>INT4</td><td>~378 GB</td><td class="rec">4× H20（余6GB）/ 5× H20（推荐）</td><td>4× H100 80GB</td><td>INT4量化后余量充足，可支持32K+上下文</td></tr>
+        <tr><td>BF16</td><td>~1,490 GB</td><td>16× H20（跨节点）</td><td>16× H100 / 12× H200</td><td>需2台8卡H20服务器</td></tr>
+        <tr><td>2-bit GGUF</td><td>~241 GB</td><td>3× H20</td><td>2× Mac Studio M3 Ultra 512GB</td><td>极慢（实验性）</td></tr>
       </table>
+      <div class="info-box yellow">
+        <strong>⚠️ H20 部署 GLM-5 注意：</strong>744B 参数 FP8 需 ~756GB，8×H20 总共 768GB，余量仅 12GB。实际可用上下文非常短（约4-8K tokens），<strong>不建议生产使用</strong>。建议使用 INT4 量化（5×H20）或等待官方 INT4/GPTQ 版本。
+      </div>
     </div>
 
     <div class="collapsible" style="margin-top:16px">
@@ -505,15 +615,19 @@ a:hover{text-decoration:underline}
     </ul>
 
     <div class="gpu-section">
-      <h3>🚀 部署需求</h3>
+      <h3>🚀 部署需求（含 H20 96GB 方案）</h3>
       <table class="gpu-table">
-        <tr><th>模型</th><th>精度</th><th>显存</th><th>推荐配置</th></tr>
-        <tr><td>V3.2 / R2</td><td>FP16</td><td>~1.4TB</td><td>16× H100 80GB</td></tr>
-        <tr><td class="rec">V3.2 / R2</td><td class="rec">FP8（推荐）</td><td>~690GB</td><td class="rec">8× H100 80GB（最低）/ 8× H200（推荐）</td></tr>
-        <tr><td>V3.2 Speciale</td><td>FP8</td><td>~690GB</td><td>8× H100 SXM（仅支持Hopper/Blackwell）</td></tr>
-        <tr><td>R2</td><td>FP8</td><td>~685GB + KV</td><td>8× H100（低并发）/ 4× H200（推荐）</td></tr>
-        <tr><td>KTransformers</td><td>混合</td><td>~10GB GPU + CPU</td><td>消费级GPU + 大内存（~20 tok/s）</td></tr>
+        <tr><th>模型</th><th>精度</th><th>显存</th><th>H20 96GB 方案</th><th>说明</th></tr>
+        <tr><td class="rec">V3.2 / R2</td><td class="rec">FP8（推荐）</td><td>~690GB</td><td class="rec">8× H20（余78GB，支持32-64K上下文）</td><td>MLA仅70KB/token KV缓存，H20带宽4TB/s完美匹配</td></tr>
+        <tr><td>V3.2 / R2</td><td>INT4 AWQ</td><td>~345GB</td><td class="rec">4× H20（余39GB）</td><td>4卡即可运行，质量略有损失</td></tr>
+        <tr><td>V3.2 / R2</td><td>FP16</td><td>~1.4TB</td><td>16× H20（跨节点）</td><td>需2台8卡H20服务器</td></tr>
+        <tr><td>V3.2 Speciale</td><td>FP8</td><td>~690GB</td><td>8× H20</td><td>高计算后训练变体，同等硬件需求</td></tr>
+        <tr><td>R2</td><td>FP8</td><td>~685GB + KV</td><td>8× H20（长推理链需更多KV空间）</td><td>推理链20-40K tokens，KV缓存需~2.1GB/30K</td></tr>
+        <tr><td>KTransformers</td><td>混合</td><td>~10GB GPU + CPU</td><td>1× H20 + 大内存</td><td>消费级方案，~20 tok/s</td></tr>
       </table>
+      <div class="info-box green">
+        <strong>✅ DeepSeek 是 H20 最佳搭档：</strong>MLA 技术使 KV 缓存仅需 70KB/token（vs LLaMA 的 516KB），8×H20 的 78GB 余量可支持 ~32-64K 上下文。H20 的 4.0TB/s 高带宽完美匹配 DeepSeek 的内存密集型推理模式。<strong>实测 8×H20 + SGLang 可达 163K 上下文长度。</strong>
+      </div>
     </div>
 
     <div class="collapsible" style="margin-top:16px">
@@ -573,15 +687,17 @@ a:hover{text-decoration:underline}
     </div>
 
     <div class="gpu-section">
-      <h3>🚀 旗舰 397B 部署方案</h3>
+      <h3>🚀 旗舰 397B 部署方案（含 H20 96GB）</h3>
       <table class="gpu-table">
-        <tr><th>配置</th><th>硬件</th><th>存储</th><th>说明</th></tr>
-        <tr><td>Full BF16</td><td>8× H100 80GB（16×推荐）</td><td>~794GB</td><td>最高质量，需大量显存</td></tr>
-        <tr><td class="rec">FP8（推荐）</td><td class="rec">8× H100 80GB</td><td>~397GB</td><td class="rec">H100原生FP8 Tensor Core，质量损失极小</td></tr>
-        <tr><td>AWQ INT4</td><td>4× H100 80GB</td><td>~200GB</td><td>成本减半，有少量质量损失</td></tr>
-        <tr><td>Q4_K_M GGUF</td><td>256GB M3 Ultra / 多GPU</td><td>~199GB</td><td>消费级可运行，25+ tok/s</td></tr>
-        <tr><td>1M 长上下文</td><td>16× H100/H200</td><td>~794GB</td><td>需要大量KV缓存空间</td></tr>
+        <tr><th>配置</th><th>H20 96GB 方案</th><th>其他方案</th><th>存储</th><th>说明</th></tr>
+        <tr><td class="rec">FP8（推荐）</td><td class="rec">5× H20（余83GB）/ 8× H20（余371GB！）</td><td>8× H100 80GB</td><td>~397GB</td><td>8卡H20余量巨大，支持128K+超长上下文</td></tr>
+        <tr><td>AWQ INT4</td><td class="rec">3× H20（余89GB）/ 4× H20（推荐）</td><td>4× H100 80GB</td><td>~200GB</td><td>3卡即可！成本极低</td></tr>
+        <tr><td>Full BF16</td><td>8× H20（余-26GB ❌）→ 需9+卡</td><td>8× H100（16×推荐）</td><td>~794GB</td><td>BF16超出8×H20容量，需额外卡</td></tr>
+        <tr><td>1M 长上下文</td><td>16× H20（跨节点）</td><td>16× H100/H200</td><td>~794GB + KV</td><td>需大量KV缓存空间</td></tr>
       </table>
+      <div class="info-box green">
+        <strong>🏆 Qwen3.5-397B 是 H20 上性价比之王：</strong>397B参数FP8仅需~397GB，8×H20余量高达371GB，全部可用于KV缓存，轻松支持128K+上下文。GDN架构进一步降低KV开销。<strong>INT4量化仅需3张H20卡！</strong>
+      </div>
     </div>
 
     <div class="collapsible" style="margin-top:16px">
@@ -633,14 +749,17 @@ a:hover{text-decoration:underline}
     </div>
 
     <div class="gpu-section">
-      <h3>🚀 部署需求</h3>
+      <h3>🚀 部署需求（含 H20 96GB 方案）</h3>
       <table class="gpu-table">
-        <tr><th>GPU</th><th>数量</th><th>量化</th><th>磁盘</th><th>最低显存</th><th>推理速度</th></tr>
-        <tr><td>NVIDIA H200</td><td>8×</td><td>INT4 (QAT)</td><td>~600GB</td><td>1.1+ TB</td><td>30-45 tok/s</td></tr>
-        <tr><td>NVIDIA H100</td><td>12-16×</td><td>FP8</td><td>~1.1TB</td><td>1.3+ TB</td><td>15-20 tok/s</td></tr>
-        <tr><td>NVIDIA H800</td><td>16×</td><td>FP8</td><td>~1.1TB</td><td>1.3+ TB</td><td>128K上下文</td></tr>
-        <tr><td>消费级</td><td>1× 24GB GPU</td><td>1.8-bit GGUF</td><td>~230GB</td><td>247GB RAM+VRAM</td><td>~1-2 tok/s</td></tr>
+        <tr><th>精度</th><th>显存</th><th>H20 96GB 方案</th><th>其他方案</th><th>说明</th></tr>
+        <tr><td>FP8</td><td>~1.1TB</td><td class="warn">12× H20（跨节点，余40GB）</td><td>8× H200 141GB</td><td>FP8超出8×H20容量，必须跨节点</td></tr>
+        <tr><td class="rec">INT4 QAT（推荐）</td><td>~600GB</td><td class="rec">7× H20（余72GB）/ 8× H20（余168GB）</td><td>8× H200 (INT4)</td><td>官方QAT量化，质量几乎无损，推理速度2×</td></tr>
+        <tr><td>BF16</td><td>~2.4TB</td><td>26× H20（跨节点）</td><td>不实际</td><td>需4台8卡服务器，不推荐</td></tr>
+        <tr><td>1.8-bit GGUF</td><td>~230GB</td><td>3× H20</td><td>1× 24GB GPU + 大内存</td><td>极慢（实验性，~1-2 tok/s）</td></tr>
       </table>
+      <div class="info-box yellow">
+        <strong>⚠️ Kimi K2 在 H20 上的挑战：</strong>1T参数FP8需~1.1TB显存，8×H20仅768GB，<strong>必须跨节点或使用INT4</strong>。推荐方案：<strong>8×H20 + INT4 QAT</strong>（官方量化，余168GB可支持中等上下文）。跨节点部署需注意节点间带宽瓶颈。
+      </div>
     </div>
 
     <div class="collapsible" style="margin-top:16px">
@@ -693,18 +812,19 @@ a:hover{text-decoration:underline}
     </div>
 
     <div class="gpu-section">
-      <h3>🚀 部署需求</h3>
+      <h3>🚀 部署需求（含 H20 96GB 方案）</h3>
       <table class="gpu-table">
-        <tr><th>模型</th><th>量化</th><th>显存</th><th>推荐配置</th></tr>
-        <tr><td>Scout</td><td>Full BF16</td><td>216GB + 16GB KV</td><td>4× H100</td></tr>
-        <tr><td>Scout</td><td>8-bit</td><td>109GB + 8GB KV</td><td>2× H100</td></tr>
-        <tr><td class="rec">Scout</td><td class="rec">INT4</td><td class="rec">~55GB</td><td class="rec">1× H100（单卡！）</td></tr>
-        <tr><td>Scout</td><td>1.78-bit GGUF</td><td>~34GB</td><td>1× RTX 4090 (~20 tok/s)</td></tr>
-        <tr><td>Maverick</td><td>Full BF16</td><td>800GB + 16GB KV</td><td>7× H200</td></tr>
-        <tr><td class="rec">Maverick</td><td class="rec">FP8</td><td>~400GB</td><td class="rec">8× H100 DGX（单节点）</td></tr>
-        <tr><td>Maverick</td><td>INT4</td><td>~200GB</td><td>3× H100</td></tr>
-        <tr><td>Maverick</td><td>1.78-bit GGUF</td><td>~122GB</td><td>2× RTX 4090 (~40 tok/s)</td></tr>
+        <tr><th>模型</th><th>精度</th><th>显存</th><th>H20 96GB 方案</th><th>说明</th></tr>
+        <tr><td>Scout</td><td class="rec">FP8</td><td>~109GB</td><td class="rec">2× H20（余83GB，支持超长上下文）</td><td>仅2卡！余量可支持数百万token上下文</td></tr>
+        <tr><td>Scout</td><td class="best">INT4</td><td>~55GB</td><td class="best">1× H20（余41GB！）</td><td>单卡H20即可运行！10M上下文潜力</td></tr>
+        <tr><td>Scout</td><td>Full BF16</td><td>~232GB</td><td>3× H20（余56GB）</td><td>3卡BF16也可轻松运行</td></tr>
+        <tr><td class="rec">Maverick</td><td class="rec">FP8</td><td>~400GB</td><td class="rec">5× H20（余80GB）/ 8× H20（余368GB！）</td><td>8卡余量巨大，支持128K+长上下文</td></tr>
+        <tr><td>Maverick</td><td>INT4</td><td>~200GB</td><td class="rec">3× H20（余88GB）</td><td>仅3卡INT4即可运行旗舰模型</td></tr>
+        <tr><td>Maverick</td><td>Full BF16</td><td>~816GB</td><td>9× H20（跨节点）</td><td>超出8卡容量，需跨节点</td></tr>
       </table>
+      <div class="info-box green">
+        <strong>🏆 Llama 4 Scout 是 H20 上的效率之王：</strong>109B参数INT4仅需55GB，<strong>单张H20即可运行</strong>，且余41GB支持超长上下文。Maverick 400B FP8仅需5张H20，8卡部署余量高达368GB。Llama 4系列是H20上最友好的旗舰模型。
+      </div>
     </div>
 
     <div class="collapsible" style="margin-top:16px">
@@ -767,14 +887,17 @@ a:hover{text-decoration:underline}
     </div>
 
     <div class="gpu-section">
-      <h3>🚀 Large 3 部署方案</h3>
+      <h3>🚀 Large 3 部署方案（含 H20 96GB）</h3>
       <table class="gpu-table">
-        <tr><th>配置</th><th>硬件</th><th>显存</th><th>说明</th></tr>
-        <tr><td>Q4 GGUF（预算方案）</td><td>4× RTX 4090</td><td>96GB</td><td>~$2-8/天（云），Ollama运行</td></tr>
-        <tr><td class="rec">NVFP4（生产推荐）</td><td class="rec">8× A100 80GB / 8× H100</td><td>640GB</td><td class="rec">vLLM，完整上下文</td></tr>
-        <tr><td>FP8（最高性能）</td><td>8× H200 141GB</td><td>1.1TB</td><td>完整256K上下文</td></tr>
-        <tr><td>Blackwell优化</td><td>GB200 NVL72</td><td>—</td><td>10× H200性能，5M+ tok/s/MW</td></tr>
+        <tr><th>配置</th><th>H20 96GB 方案</th><th>其他方案</th><th>显存</th><th>说明</th></tr>
+        <tr><td class="rec">FP8（推荐）</td><td class="rec">8× H20（余93GB，支持64K上下文）</td><td>8× H200 141GB</td><td>~675GB</td><td>8卡H20刚好装下，93GB余量可用于KV缓存</td></tr>
+        <tr><td>NVFP4 / INT4</td><td class="rec">4× H20（余46GB）</td><td>8× A100 80GB</td><td>~338GB</td><td>仅需4卡，性价比极高</td></tr>
+        <tr><td>Q4 GGUF（预算方案）</td><td>1× H20 + CPU offload</td><td>4× RTX 4090</td><td>~96GB</td><td>单卡可勉强运行，但速度慢</td></tr>
+        <tr><td>FP8（最高性能）</td><td>8× H20</td><td>8× H200 141GB</td><td>~675GB</td><td>完整256K上下文需更多余量</td></tr>
       </table>
+      <div class="info-box blue">
+        <strong>💡 Mistral Large 3 在 H20 上表现良好：</strong>675B参数FP8需~675GB，8×H20(768GB)余93GB。INT4/NVFP4仅需4张H20。Apache 2.0许可+H20部署 = 中国市场最友好的欧洲旗舰模型。
+      </div>
     </div>
   </div>
 </div>
@@ -790,13 +913,12 @@ a:hover{text-decoration:underline}
     <div class="collapsible-body open">
       <div class="collapsible-content">
         <div class="info-box green">
-<strong>🎯 按预算选模型：</strong><br>
-• <strong>无GPU / CPU only：</strong>Qwen3.5-0.8B/2B（llama.cpp）<br>
-• <strong>单卡 8-24GB（RTX 3060/4090）：</strong>Qwen3.5-4B/9B, Ministral 3B/8B/14B<br>
-• <strong>单卡 80GB（1× H100）：</strong>Qwen3.5-27B, Llama 4 Scout (INT4), Qwen3.5-35B-A3B<br>
-• <strong>单节点 8×H100：</strong>Qwen3.5-397B, DeepSeek-V3.2, Llama 4 Maverick, Mistral Large 3<br>
-• <strong>单节点 8×H200：</strong>GLM-5, Kimi K2, 上述所有模型（更大KV缓存）<br>
-• <strong>多节点集群：</strong>Kimi K2 (16× H800 for 128K), Llama 4 Behemoth
+<strong>🎯 H20 96GB 选型决策树：</strong><br>
+• <strong>1× H20（单卡96GB）：</strong>Llama 4 Scout (INT4), Qwen3.5-27B, Mistral Large 3 (Q4 GGUF)<br>
+• <strong>2-3× H20：</strong>Llama 4 Scout (FP8), Llama 4 Maverick (INT4), Qwen3.5-397B (INT4)<br>
+• <strong>4-5× H20：</strong>Qwen3.5-397B (FP8), Llama 4 Maverick (FP8), Mistral Large 3 (INT4), DeepSeek-V3.2 (INT4)<br>
+• <strong>8× H20（单节点）：</strong>DeepSeek-V3.2 (FP8), DeepSeek-R2 (FP8), Mistral Large 3 (FP8), GLM-5 (FP8极限), Kimi K2 (INT4 QAT)<br>
+• <strong>12-16× H20（跨节点）：</strong>Kimi K2 (FP8), GLM-5 (BF16), DeepSeek-V3.2 (BF16)
         </div>
       </div>
     </div>
@@ -856,32 +978,48 @@ ollama run qwen3.5:9b                    <span style="color:#888"># 16GB GPU</sp
 ollama run qwen3.5:27b                   <span style="color:#888"># 24GB+ GPU</span>
 ollama run mistral3:14b                  <span style="color:#888"># 24GB GPU</span>
 
-<span style="color:#888"># === vLLM（生产级）===</span>
-<span style="color:#888"># Qwen3.5-397B on 8× H100</span>
+<span style="color:#888"># === vLLM on H20 96GB（生产级）===</span>
+<span style="color:#888"># Qwen3.5-397B on 8× H20（推荐，余量大）</span>
 vllm serve Qwen/Qwen3.5-397B-A17B \
   --tensor-parallel-size 8 --quantization fp8 \
-  --max-model-len 32768 --port 8000
+  --max-model-len 131072 --port 8000
 
-<span style="color:#888"># DeepSeek-V3.2 on 8× H100</span>
+<span style="color:#888"># DeepSeek-V3.2 on 8× H20（FP8，支持32-64K ctx）</span>
 vllm serve deepseek-ai/DeepSeek-V3.2 \
   --tensor-parallel-size 8 --dtype fp8 \
   --max-model-len 32768 --port 8000
 
-<span style="color:#888"># GLM-5 on 8× H200</span>
+<span style="color:#888"># GLM-5 on 8× H20（FP8极限，短上下文）</span>
 vllm serve zai-org/GLM-5-FP8 \
   --tensor-parallel-size 8 \
-  --max-model-len 200000 --port 8000
+  --max-model-len 4096 --port 8000
 
-<span style="color:#888"># Llama 4 Maverick on 8× H200</span>
-vllm serve meta-llama/Llama-4-Maverick-17B-128E-Instruct \
-  --tensor-parallel-size 8 --max-model-len 100000 \
+<span style="color:#888"># Llama 4 Scout on 2× H20（FP8，超长上下文）</span>
+vllm serve meta-llama/Llama-4-Scout-17B-16E-Instruct \
+  --tensor-parallel-size 2 --max-model-len 1000000 \
   --override-generation-config='{"attn_temperature_tuning": true}'
 
-<span style="color:#888"># Mistral Large 3 NVFP4 on 8× H100</span>
-vllm serve mistralai/Mistral-Large-3-675B-Instruct-2512-NVFP4 \
-  --tensor-parallel-size 8 --tokenizer-mode mistral \
-  --config-format mistral --load-format mistral \
+<span style="color:#888"># Llama 4 Maverick on 8× H20（FP8，余量大）</span>
+vllm serve meta-llama/Llama-4-Maverick-17B-128E-Instruct \
+  --tensor-parallel-size 8 --max-model-len 131072 \
+  --override-generation-config='{"attn_temperature_tuning": true}'
+
+<span style="color:#888"># Mistral Large 3 on 8× H20（FP8）</span>
+vllm serve mistralai/Mistral-Large-3-675B-Instruct-2512 \
+  --tensor-parallel-size 8 --quantization fp8 \
   --max-model-len 65536 --port 8000
+
+<span style="color:#888"># Kimi K2 on 8× H20（INT4 QAT，推荐方案）</span>
+vllm serve moonshotai/Kimi-K2-Instruct-INT4 \
+  --tensor-parallel-size 8 \
+  --max-model-len 32768 --port 8000
+
+<span style="color:#888"># === SGLang on H20（DeepSeek推荐）===</span>
+<span style="color:#888"># DeepSeek-V3.2 on 8× H20（SGLang支持更长ctx）</span>
+python -m sglang.launch_server \
+  --model deepseek-ai/DeepSeek-V3.2 \
+  --tp 8 --quantization fp8 \
+  --context-length 163840 --port 8000
 </pre>
       </div>
     </div>
