@@ -2154,6 +2154,360 @@ body {
       </div>
     </div>
   </div>
+
+  <!-- Terminal Bench & SWE 环境合成 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🧪 Terminal Bench & SWE 环境合成</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Terminal Bench 概述</h4>
+        <p>面向代码Agent的终端交互评估基准，评估模型在真实终端环境中的代码执行、调试和修复能力。</p>
+
+        <h4>数据来源与合成</h4>
+        <ul>
+          <li><strong>CVE数据合成：</strong>基于 vulhub（GitHub上的CVE复现环境）合成数据，每条约7元成本</li>
+          <li><strong>CVE-Factory：</strong>合成887条→过QA 341条，其中138条高难度</li>
+          <li><strong>内部安全CVE：</strong>1450条→生产1000条→过QA 693条</li>
+          <li><strong>CodeBuddy/StackOverflow：</strong>重构合成流程，单题成本从10美元降至3美元</li>
+        </ul>
+
+        <h4>全自动合成管线</h4>
+        <p>设计了一个能自我学习自我运行的Pipeline（Agent作为实际运行方，真实人不参与）：</p>
+        <ul>
+          <li>种子输入（GitHub内容）→ Pipeline合成 → 质量校验 → 环境校验和修复 → 质量二次校验 → 产出数据</li>
+          <li>自修复管线：修复无法跑通的数据，同时抓取修复轨迹（修复成功率20~30%）</li>
+          <li>新增cache功能和checkpoint功能，支持断点续合成</li>
+        </ul>
+
+        <h4>Skill Graph 构建（基于ClawHub-Skills）</h4>
+        <ul>
+          <li>将Agent执行轨迹定义为 scenario → skills → scenario 的转换链</li>
+          <li>从ClawHub原始Skills过滤得到2K条适合构建任务的tasks</li>
+          <li>构建完整的SkillGraph，支持scalable synthesis</li>
+          <li>Multi-Agent Framework：Generator + Verifier + Feedback Provider</li>
+          <li>已自动化生成 641条（opus通过）+ 225条（sonnet通过）高难度0/1数据</li>
+        </ul>
+
+        <h4>SWE环境合成</h4>
+        <ul>
+          <li>参考GLM5论文：在数千个仓库中构建超过10000个可验证环境，覆盖9种编程语言</li>
+          <li>使用 RepoLaunch 框架，Docker镜像构建准确率超过90%</li>
+        </ul>
+
+        <h4>难度提升策略</h4>
+        <ul>
+          <li>两段式输出：第一阶段输出Instruction+test，第二阶段输出Dockerfile+solution</li>
+          <li>任务修复：在不改变instruction语义和难度的基础上修复QA发现的issue</li>
+          <li>产出71 xhard + 56 hard（基于1400道snorkel采买数据修复）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用逻辑增强 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🧠 通用逻辑增强：推理数据挖掘</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>核心目标</h4>
+        <p>从海量预训练数据中挖掘逻辑推理语料，提升模型在推理类Benchmark上的表现。</p>
+
+        <h4>挖掘流程</h4>
+        <table class="ranking-table">
+          <tr><th>阶段</th><th>数据量</th><th>方法</th></tr>
+          <tr><td>原始数据</td><td>700亿（D4 minhash后）</td><td>英文网页数据</td></tr>
+          <tr><td>初筛</td><td>115亿</td><td>FastText分类器保留</td></tr>
+          <tr><td>JOIN质量分</td><td>45亿</td><td>与302亿质量分后数据join</td></tr>
+          <tr><td>精筛</td><td>4千万（最高质）</td><td>Qwen3 4B + PE，2K P800弹性资源</td></tr>
+        </table>
+
+        <h4>逻辑QA挖掘</h4>
+        <table class="ranking-table">
+          <tr><th>阶段</th><th>数据量</th><th>方法</th></tr>
+          <tr><td>原始数据</td><td>302亿（D4质量分后）</td><td>英文网页数据</td></tr>
+          <tr><td>初筛</td><td>29亿</td><td>FastText + 阈值保留</td></tr>
+          <tr><td>精筛</td><td>4亿（最高质）</td><td>Qwen3 4B + PE</td></tr>
+        </table>
+
+        <h4>实验结论（1T ckpt续训100B）</h4>
+        <ul>
+          <li>实验4（保留law + 替换web_en & fineweb，32%替换）：综合OBM v1.0 <strong>+0.12pp</strong>，逻辑v1.0 <strong>+0.02pp</strong>，逻辑v1.1 <strong>+0.3pp</strong></li>
+          <li>英文推理上涨，中文记忆类下降（D35数据中中文网页占比12%）</li>
+          <li>BBH指标 <strong>+2.68pp</strong>，kor_bench <strong>+0.96pp</strong></li>
+        </ul>
+
+        <h4>SAE挖掘（稀疏自编码器）</h4>
+        <ul>
+          <li>对非72亿D4数据进行分析挖掘，数据池为教育质量分∈[2.0,2.5)，V4质量分∈[4.5,5.0)的100万条</li>
+          <li>6卡挖掘速度 1 doc/s，召回正样本比例0.04%，逻辑句子1/50</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 语义去重深度 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔬 语义去重深度：D4生产实战</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>D4语义去重实验结论</h4>
+        <ul>
+          <li><strong>英文端到端：</strong>t=0.90和t=0.94差不多，比基线+0.6~0.7pp</li>
+          <li><strong>中文（0.9阈值）：</strong>去重后validloss有显著优势，中文bench离线评估大部分正向</li>
+          <li><strong>小语种（0.9阈值）：</strong>伴生评测持平，离线评测前200B有明显优势</li>
+          <li>0.94阈值会比0.90阈值偏好，0.90在mmlupro上稍差</li>
+        </ul>
+
+        <h4>计算性能优化</h4>
+        <ul>
+          <li>增大单次计算块大小 + 归一化挪到GPU计算：1000w簇内 5797s → 2248s</li>
+          <li>簇压测：目前最大可跑到5kw级别的簇（8~10h）</li>
+          <li>超5kw簇处理策略：暴力分簇 或 semdedup(0.96) + luby(0.9)组合删除</li>
+        </ul>
+
+        <h4>D4聚类分析发现</h4>
+        <ul>
+          <li>D4比D35新增主题（777个簇），对应数据量21亿，大部分质量较低（日志、记录类）</li>
+          <li>质量分误判簇数据约3亿</li>
+          <li>问题数据：化学式泛滥页、小语种混入、乱码、房地产/公司注册页</li>
+          <li>有一定价值：棋谱、赛事、表格</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 段落质量分 & 子串去重 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>📝 段落质量分 & 子串去重：D4新算子</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>段落质量分</h4>
+        <ul>
+          <li><strong>模型：</strong>基于Qwen3.5-0.8B做SFT，训练数据55w，测试4.7w</li>
+          <li><strong>效果：</strong>Precision 0.8655 / Recall 0.7840 / F1 0.8227</li>
+          <li><strong>对比：</strong>R1比较保守（结合上下文判断，存疑就保留），0.8B比较激进</li>
+          <li><strong>流程：</strong>质量 → 语义去重 → 段落质量分过滤 → 子句去重</li>
+        </ul>
+        <h4>段落质量分发现的问题</h4>
+        <ul>
+          <li>帖子和时间戳/用户在一起，被模型误删</li>
+          <li>代码注释的语法被破坏</li>
+          <li>论坛时间戳/id过滤效果良好（goodcase）</li>
+          <li>题目和公式能被正确保留（goodcase）</li>
+        </ul>
+
+        <h4>D4英文子串去重</h4>
+        <ul>
+          <li><strong>主要卡点：</strong>D4长文数据引发数据倾斜（几十万字符的长文本大量增加）</li>
+          <li><strong>问题链：</strong>step1写出卡死 → step2子串去重OOM → step3句子去重chunk过多卡住</li>
+          <li><strong>解决：</strong>等大小分片（4B字符一组）、动态分配任务内存、截断过多chunk</li>
+          <li>等大小分组32.3% vs 硬跑100w一组33.2% vs 扩大等大小分组（20B一组）33.9%</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 论坛专项 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>💬 论坛数据专项：Reddit/知乎/StackOverflow</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>进展</h4>
+        <ul>
+          <li>英文论坛生产完成，产出20亿数据，带论坛质量分+通用质量分+v1质量分</li>
+          <li>中文论坛生产中，当前产出1亿数据（约330B）</li>
+        </ul>
+        <h4>策略</h4>
+        <ul>
+          <li><strong>配比：</strong>寻找英文网页和论坛的最优配比（当前实验1:1，远大于最终生产比例）</li>
+          <li><strong>筛选：</strong>避免单一论坛质量分筛选，用更多质量分打标结果，提高数据丰富度</li>
+          <li><strong>质量：</strong>先跑段落去重看重复情况，再看解析有没有明显垃圾doc</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 质量分V2 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>⭐ 质量分V2：新一代质量评估模型</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>小语种质量分V2</h4>
+        <ul>
+          <li>整体V2比V1好约1.3pp，每个维度都有领先</li>
+          <li>QPS从8→30，提升约4倍</li>
+          <li>使用DeepSeek R1 0528打标模型</li>
+        </ul>
+        <h4>中文质量分实验</h4>
+        <table class="ranking-table">
+          <tr><th>实验</th><th>综合指标</th><th>中文bench</th><th>结论</th></tr>
+          <tr><td>取TOP 15%（high）</td><td>落败0.63</td><td>领先1.24</td><td>cmath类简单数学不在TOP 15范围；单doc平均长度仅旧质量分20%</td></tr>
+          <tr><td>取TOP 70%（medium+high）</td><td><strong>领先0.32</strong></td><td><strong>领先1.56</strong></td><td>cmath从落败5.33pp→0.17pp，综合最优</td></tr>
+        </table>
+        <h4>P800部署一致性验证</h4>
+        <ul>
+          <li>解析模型：H20 vs P800 约3.35% diff，H20解析字符均值多9个，无明显噪音</li>
+          <li>质量分模型：极个别(2/40000)存在较大波动，整体指标接近</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI搜索 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔍 AI搜索：网页解析优化</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>优化目标</h4>
+        <ul>
+          <li>正文端到端效果：76% → 84%（上限95%），准确87%→90%</li>
+          <li>发布时间端到端效果：68% → 78%（上限83%），召回81.7%→90%</li>
+          <li>作者及互动信号：非医疗类召回80%+准确90%+</li>
+        </ul>
+        <h4>图片解析</h4>
+        <ul>
+          <li>圈定头条、163等8个重要站点，每天增量2000w网页</li>
+          <li>有价值图片600w：表格图片43%（250w）、简单文本39%（230w）、复杂排版18%（120w）</li>
+          <li>表格图片需约200张H20，简单文本约20张H20</li>
+        </ul>
+        <h4>边缘部署</h4>
+        <ul>
+          <li>部分AI搜索pipeline迁移到边缘计算（紫霄多卡）</li>
+          <li>已完成紫霄多卡推理适配，使用LESS平台部署成功</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWE数据挖掘 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔧 SWE数据挖掘：Commit/PR/Issue/Discussion</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Commit数据</h4>
+        <ul>
+          <li>自然拼接数据：完成质量清洗、去重及拼接，产出<strong>348B tokens</strong></li>
+          <li>定位/修复任务合成：基于高质量commit数据进行任务合成，离线推理中</li>
+          <li>Release数据拼接：152B + 14B，同一文件diff合并平均token 400K</li>
+        </ul>
+        <h4>PR/Issue数据</h4>
+        <ul>
+          <li>第一批：投种1300w仓库→1.4亿PR→过滤后8kw→完成checkout和清洗拼接</li>
+          <li>第二三批：投种6400w仓库→8800万PR→过滤后3700w→留存3350w</li>
+          <li>仓库目录结构压缩率65%，32K以上占比28.21%→15.08%</li>
+        </ul>
+        <h4>Discussion数据</h4>
+        <ul>
+          <li>获取133w discussion数据，去除空comments后133万</li>
+          <li>规则过滤后：PR 104B / Issue 36B / Discussion 1.2B</li>
+          <li>PR中bot类数据占38.84%需过滤</li>
+        </ul>
+        <h4>高难度代码专项</h4>
+        <ul>
+          <li><strong>SwallowCode：</strong>代码整体/block级理解能力，已交付100B</li>
+          <li><strong>竞赛题：</strong>共拼接32w轨迹，获取submission content + traj合成</li>
+          <li><strong>Code Reasoning：</strong>CodeI/O类数据验证 → function粒度推理数据合成 → 仓库粒度cot过程合成</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 近期工作周报总结 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>📅 近期工作周报总结（2026年3月~4月）</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <div class="info-box green">
+          <strong>📌 核心主线：</strong>D4数据全面生产 + Terminal Bench持续scaling + 逻辑推理数据挖掘 + 质量分V2迭代
+        </div>
+
+        <h4>🔴 D4数据生产（最高优先级）</h4>
+        <table class="ranking-table">
+          <tr><th>管线</th><th>进展</th><th>状态</th></tr>
+          <tr><td>网页-英文</td><td>解析→规则清洗→MinHash→质量分→语义去重→子串去重，全链路完成</td><td>✅ 已交付</td></tr>
+          <tr><td>网页-中文</td><td>漫爬+CC+CWP+公众号，二次泛滥低质过滤→质量分→uuid去重</td><td>🔄 生产中</td></tr>
+          <tr><td>网页-小语种</td><td>漫爬+CC数据MinHash后刷BGE，质量分V2适配</td><td>🔄 生产中</td></tr>
+          <tr><td>文档</td><td>漫爬PDF解析完成，调整管线解析书籍论文。H20常驻570卡+弹性930卡</td><td>🔄 书籍论文中</td></tr>
+          <tr><td>代码-增量</td><td>20251115~20260309增量：去重后2.5亿→清洗留存1.6亿（64%）</td><td>✅ 部分交付</td></tr>
+          <tr><td>代码-SWH</td><td>第一批92亿→24亿→产出15亿（64%）；第二批76亿→21亿→生产中</td><td>🔄 生产中</td></tr>
+        </table>
+
+        <h4>🟡 Terminal Bench（持续Scaling）</h4>
+        <ul>
+          <li><strong>CVE合成：</strong>本轮产出651道题，强化双向对齐策略，Redis全局状态追踪</li>
+          <li><strong>CodeBuddy重构：</strong>成本从10美元/题降至3美元/题，但hunyuan rollout通过率待提升</li>
+          <li><strong>SkillGraph：</strong>从ClawHub提取2K skills构建graph，Multi-Agent自动合成641+225高难度数据</li>
+          <li><strong>PR数据合成：</strong>扩量至无docker image的PR，2000个种子生产中</li>
+        </ul>
+
+        <h4>🟢 逻辑推理增强</h4>
+        <ul>
+          <li>使用2K P800弹性资源，至4.6已完成全量刷库</li>
+          <li>逻辑语料：700亿→115亿→45亿→<strong>4千万最高质</strong></li>
+          <li>逻辑QA：302亿→29亿→<strong>4亿最高质</strong></li>
+          <li>实验结论：保留law+替换web_en&fineweb（32%替换）效果最优</li>
+        </ul>
+
+        <h4>🔵 质量分 & 解析</h4>
+        <ul>
+          <li><strong>小语种V2：</strong>比V1好1.3pp，QPS提升4倍（8→30）</li>
+          <li><strong>中文实验：</strong>TOP 70%（medium+high）综合领先0.32，中文bench领先1.56</li>
+          <li><strong>段落质量分：</strong>0.8B SFT模型，F1=0.8227，已开始实验验证</li>
+          <li><strong>P800适配：</strong>质量分/BGE/OCR/Embedding模型陆续适配完成</li>
+        </ul>
+
+        <h4>🟣 基础设施 & 工程</h4>
+        <ul>
+          <li>D4计算资源6w核 + 存储10P已到位</li>
+          <li>ES检索搭建完成，写入全量D3.5数据，支持预训练合成数据检索</li>
+          <li>纯代码管线例行自动化：raw表→iceberg精确去重→HDFS→Ray管线→输出</li>
+          <li>政治反动内容检测：中文准确率98%，英文93%，召回率60%，300亿数据刷库中</li>
+          <li>泄题检测：小语种适配完成，召回率90%+</li>
+        </ul>
+
+        <h4>⚪ 各成员职责</h4>
+        <table class="ranking-table">
+          <tr><th>成员</th><th>主要负责</th></tr>
+          <tr><td>bertguan</td><td>语义去重生产 + Terminal Bench CVE合成 + P800适配</td></tr>
+          <tr><td>yiranwu</td><td>文档管线解析 + ES搭建 + Terminal Bench环境验证</td></tr>
+          <tr><td>vartu</td><td>清洗管线迭代 + 质量分模型适配 + D4解析生产</td></tr>
+          <tr><td>maxshxu</td><td>纯代码管线 + 政治反动检测 + MinHash算子封装 + 泄题检测</td></tr>
+          <tr><td>jiahaomei</td><td>D4数据投递/回捞/压缩 + 规则清洗 + 质量分刷库</td></tr>
+          <tr><td>逻辑组</td><td>通用逻辑增强：FastText初筛 + Qwen3精筛 + 1T续训实验</td></tr>
+          <tr><td>网页组(double/erwin等)</td><td>STEM抽检 + 段落质量分 + 论坛专项 + AI搜索优化</td></tr>
+          <tr><td>代码组(haodihou等)</td><td>Commit/PR/Issue数据scaling + 高难度代码专项</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ==================== 面试指南 ==================== -->
@@ -2165,7 +2519,8 @@ body {
 
   <div class="info-box green">
     <strong>🎯 适用岗位：</strong>大模型预训练数据工程师 / 数据管线开发 / NLP数据处理 / AI Infra<br>
-    <strong>📌 核心竞争力：</strong>理解数据对模型效果的影响机制，能独立设计和优化数据处理管线
+    <strong>📌 核心竞争力：</strong>理解数据对模型效果的影响机制，能独立设计和优化数据处理管线<br>
+    <strong>🔗 相关指南：</strong><a href="LLM代码评估面试指南.html" style="color:#22c55e;font-weight:600;">LLM代码评估面试指南</a>（代码生成鲁棒性评估与增强 属于该指南的子模块）
   </div>
 
   <!-- 面试模块1：数据处理全链路 -->
@@ -2435,6 +2790,11 @@ body {
           <tr><td class="model-name">代码数据的特殊处理？</td><td>需要语言识别、License过滤、Star权重、依赖关系分析、Commit质量评估</td></tr>
           <tr><td class="model-name">多语种数据处理？</td><td>头部35语种重点处理，语种识别→分语种解析→跨语种去重→语种配比实验</td></tr>
           <tr><td class="model-name">数据安全与合规？</td><td>闭源数据严格权限管控、PII过滤、License合规检查、数据溯源可追踪</td></tr>
+          <tr><td class="model-name">段落质量分 vs 文档质量分？</td><td>文档质量分评估整篇文档，段落质量分（0.8B SFT）可过滤文档内部的噪声段落（时间戳/导航/广告），F1=0.82</td></tr>
+          <tr><td class="model-name">子串去重遇到的工程挑战？</td><td>D4长文数据导致数据倾斜，解决方案：等大小分片（4B字符/组）、动态内存分配、截断过多chunk</td></tr>
+          <tr><td class="model-name">如何挖掘推理数据？</td><td>FastText初筛（700亿→115亿）→与质量分数据JOIN（45亿）→Qwen3 4B精筛（4千万），替换32%英文网页效果最优</td></tr>
+          <tr><td class="model-name">Terminal Bench是什么？</td><td>面向代码Agent的终端交互评估基准，基于CVE/CodeBuddy/SkillGraph合成，全自动Pipeline无需人工干预</td></tr>
+          <tr><td class="model-name">P800 vs H20性能对比？</td><td>文档解析：P800约1/4 H20，H800约3/4 H20。质量分：P800 BF32比BF16快。需要逐模型适配</td></tr>
         </table>
       </div>
     </div>
