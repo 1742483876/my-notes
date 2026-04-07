@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM 数据工程全景指南</title>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --border: #e7e5e4;
+    --text-primary: #1c1917;
+    --text-secondary: #57534e;
+    --text-muted: #a8a29e;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --accent-dark: #1d4ed8;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --purple: #9333ea;
+    --purple-light: #faf5ff;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --teal: #0d9488;
+    --teal-light: #f0fdfa;
+    --yellow: #ca8a04;
+    --yellow-light: #fefce8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  /* Navigation */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none; font-size: 13px;
+    padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  }
+  .nav-links a:hover { background: var(--accent-light); color: var(--accent); }
+  /* Hero */
+  .hero {
+    padding: 7rem 2rem 3rem; max-width: 900px; margin: 0 auto;
+    text-align: left;
+  }
+  .hero-badge {
+    display: inline-block; font-size: 12px; font-weight: 600;
+    color: var(--accent); background: var(--accent-light);
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 1.25rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: 2.75rem; font-weight: 800; letter-spacing: -1.5px;
+    line-height: 1.15; margin-bottom: 1rem;
+    background: linear-gradient(135deg, #1c1917 0%, #44403c 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 640px; }
+  /* Layout */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+  /* Section */
+  .section { margin-bottom: 3.5rem; }
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px;
+    margin-bottom: 0.75rem;
+  }
+  .section-desc { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
+  /* Pipeline */
+  .pipeline {
+    display: flex; gap: 0; align-items: stretch;
+    overflow-x: auto; padding-bottom: 1rem;
+  }
+  .pipeline-stage {
+    flex: 1; min-width: 180px; padding: 1.25rem;
+    border: 1px solid var(--border); position: relative;
+    background: var(--surface);
+  }
+  .pipeline-stage:first-child { border-radius: 10px 0 0 10px; }
+  .pipeline-stage:last-child { border-radius: 0 10px 10px 0; }
+  .pipeline-stage:not(:last-child)::after {
+    content: "→"; position: absolute; right: -12px; top: 50%;
+    transform: translateY(-50%); font-size: 18px; color: var(--text-muted);
+    z-index: 2; background: var(--bg); width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+  }
+  .stage-num {
+    font-size: 11px; font-weight: 700; color: #fff; width: 22px; height: 22px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+  .stage-title { font-size: 14px; font-weight: 700; margin-bottom: 0.35rem; }
+  .stage-en { font-size: 11px; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .stage-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+  .stage-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.75rem; }
+  .stage-tag {
+    font-size: 10.5px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 500;
+  }
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .card-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.25rem; transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .card-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 0.25rem; }
+  .card .card-en { font-size: 12px; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .card p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+  /* Glossary */
+  .glossary-group { margin-bottom: 2rem; }
+  .glossary-group-title {
+    font-size: 13px; font-weight: 700; padding: 6px 14px;
+    border-radius: 6px; display: inline-block; margin-bottom: 0.75rem;
+  }
+  .glossary-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .glossary-item {
+    display: grid; grid-template-columns: 180px 1fr;
+    gap: 1rem; padding: 0.75rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; align-items: baseline;
+  }
+  .glossary-term { font-weight: 700; font-size: 13.5px; }
+  .glossary-term .en { font-weight: 400; color: var(--text-muted); font-size: 11.5px; display: block; }
+  .glossary-def { font-size: 13px; color: var(--text-secondary); }
+  /* Table */
+  .data-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--surface); border-radius: 10px;
+    overflow: hidden; border: 1px solid var(--border);
+  }
+  .data-table th {
+    text-align: left; padding: 0.75rem 1rem; font-size: 12px;
+    font-weight: 700; color: var(--text-secondary);
+    background: #f5f5f4; border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .data-table td {
+    padding: 0.75rem 1rem; font-size: 13px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td:first-child { font-weight: 600; }
+  /* Tag */
+  .tag {
+    display: inline-block; font-size: 11px; padding: 2px 8px;
+    border-radius: 4px; font-weight: 500;
+  }
+  .tag-blue { background: var(--accent-light); color: var(--accent); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-orange { background: var(--orange-light); color: var(--orange); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-teal { background: var(--teal-light); color: var(--teal); }
+  .tag-yellow { background: var(--yellow-light); color: var(--yellow); }
+  /* Highlight box */
+  .highlight-box {
+    border-radius: 10px; padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem; border-left: 3px solid;
+  }
+  .highlight-box h4 { font-size: 14px; margin-bottom: 0.35rem; }
+  .highlight-box p { font-size: 13px; line-height: 1.65; }
+  .highlight-blue { background: var(--accent-light); border-color: var(--accent); }
+  .highlight-green { background: var(--green-light); border-color: var(--green); }
+  .highlight-orange { background: var(--orange-light); border-color: var(--orange); }
+  .highlight-purple { background: var(--purple-light); border-color: var(--purple); }
+  /* Diagram */
+  .diagram-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 2rem; text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .diagram-flow {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.5rem; flex-wrap: wrap;
+  }
+  .diagram-node {
+    padding: 0.6rem 1rem; border-radius: 8px; font-size: 13px;
+    font-weight: 600; white-space: nowrap;
+  }
+  .diagram-arrow { color: var(--text-muted); font-size: 20px; }
+  /* Footer */
+  .footer {
+    text-align: center; padding: 2rem; font-size: 12px;
+    color: var(--text-muted); border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .card-grid, .card-grid.triple { grid-template-columns: 1fr; }
+    .pipeline { flex-direction: column; }
+    .pipeline-stage { border-radius: 10px !important; }
+    .pipeline-stage:not(:last-child)::after { display: none; }
+    .glossary-item { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+  /* Accordion */
+  details { margin-bottom: 0.5rem; }
+  details summary {
+    cursor: pointer; font-weight: 600; font-size: 14px;
+    padding: 0.75rem 1rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 8px;
+    list-style: none; display: flex; align-items: center; gap: 0.5rem;
+  }
+  details summary::before { content: "▸"; transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+  details .details-content {
+    padding: 1rem; border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 8px 8px;
+    font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+  }
+  .metric-row { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+  .metric-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.25rem; flex: 1; min-width: 160px;
+  }
+  .metric-value { font-size: 1.75rem; font-weight: 800; letter-spacing: -1px; }
+  .metric-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  /* TOC */
+  .toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem; margin-bottom: 3rem;
+  }
+  .toc h3 { font-size: 14px; margin-bottom: 0.75rem; color: var(--text-secondary); }
+  .toc-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 2rem; }
+  .toc-list a {
+    font-size: 13px; color: var(--accent); text-decoration: none;
+    padding: 4px 0; display: block;
+  }
+  .toc-list a:hover { text-decoration: underline; }
+  .toc-list .toc-num { color: var(--text-muted); margin-right: 0.5rem; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">📊 LLM Data Engineering</div>
+  <div class="nav-links">
+    <a href="#pipeline">训练流程</a>
+    <a href="#data-pipeline">数据处理</a>
+    <a href="#data-methods">数据方法</a>
+    <a href="#glossary">术语表</a>
+    <a href="#rl">强化学习</a>
+    <a href="#landscape">数据格局</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <span class="hero-badge">Internal Reference · 2026 Q2</span>
+  <h1>LLM 数据工程<br>全景指南</h1>
+  <p>从预训练到强化学习——覆盖大语言模型数据全生命周期的关键方法、核心术语与行业实践。</p>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>📑 目录</h3>
+    <ol class="toc-list">
+      <li><a href="#pipeline"><span class="toc-num">01</span>LLM 训练全流程 Pipeline</a></li>
+      <li><a href="#pretrain-data"><span class="toc-num">02</span>预训练数据（Pre-training Data）</a></li>
+      <li><a href="#data-pipeline"><span class="toc-num">03</span>预训练数据处理 Pipeline 详解</a></li>
+      <li><a href="#midtrain"><span class="toc-num">04</span>中间训练（Mid-training / Continual Pre-training）</a></li>
+      <li><a href="#sft"><span class="toc-num">05</span>后训练：SFT 监督微调</a></li>
+      <li><a href="#rl"><span class="toc-num">06</span>后训练：强化学习（RLHF / RLAIF / RL）</a></li>
+      <li><a href="#data-methods"><span class="toc-num">07</span>主流数据方法论</a></li>
+      <li><a href="#glossary"><span class="toc-num">08</span>核心术语速查表</a></li>
+      <li><a href="#landscape"><span class="toc-num">09</span>数据格局与规模参考</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1: Pipeline -->
+  <div class="section" id="pipeline">
+    <p class="section-label">Part 01</p>
+    <h2 class="section-title">LLM 训练全流程 Pipeline</h2>
+    <p class="section-desc">一个大模型从"白板"到"上线"，通常经历以下阶段。数据贯穿每一步。</p>
+
+    <div class="pipeline">
+      <div class="pipeline-stage">
+        <div class="stage-num" style="background:var(--accent)">1</div>
+        <div class="stage-title">预训练</div>
+        <div class="stage-en">Pre-training</div>
+        <div class="stage-desc">在海量无标注语料上通过 Next Token Prediction 学习语言知识和世界知识。</div>
+        <div class="stage-tags">
+          <span class="stage-tag tag-blue">数据量: 数万亿 Token</span>
+          <span class="stage-tag tag-blue">时长: 数周~数月</span>
+        </div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="stage-num" style="background:var(--teal)">2</div>
+        <div class="stage-title">中间训练</div>
+        <div class="stage-en">Mid-training</div>
+        <div class="stage-desc">在特定领域或长上下文语料上继续预训练，增强模型在垂直领域的能力。</div>
+        <div class="stage-tags">
+          <span class="stage-tag tag-teal">数据量: 数百亿~万亿 Token</span>
+          <span class="stage-tag tag-teal">可选阶段</span>
+        </div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="stage-num" style="background:var(--orange)">3</div>
+        <div class="stage-title">监督微调</div>
+        <div class="stage-en">SFT / Instruction Tuning</div>
+        <div class="stage-desc">用高质量指令-回答对训练，让模型学会遵循人类指令。</div>
+        <div class="stage-tags">
+          <span class="stage-tag tag-orange">数据量: 数万~百万条</span>
+          <span class="stage-tag tag-orange">质量 > 数量</span>
+        </div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="stage-num" style="background:var(--purple)">4</div>
+        <div class="stage-title">强化学习对齐</div>
+        <div class="stage-en">RLHF / RLAIF / DPO</div>
+        <div class="stage-desc">通过人类偏好或 AI 反馈对齐模型行为，提升安全性和有用性。</div>
+        <div class="stage-tags">
+          <span class="stage-tag tag-purple">偏好数据</span>
+          <span class="stage-tag tag-purple">Reward Model</span>
+        </div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="stage-num" style="background:var(--red)">5</div>
+        <div class="stage-title">评估 & 部署</div>
+        <div class="stage-en">Evaluation & Serving</div>
+        <div class="stage-desc">Benchmark 评测 + 红队测试 + 在线 A/B 测试，持续迭代数据飞轮。</div>
+        <div class="stage-tags">
+          <span class="stage-tag tag-red">Benchmark</span>
+          <span class="stage-tag tag-red">Red Teaming</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Pre-training Data -->
+  <div class="section" id="pretrain-data">
+    <p class="section-label">Part 02</p>
+    <h2 class="section-title">预训练数据 Pre-training Data</h2>
+    <p class="section-desc">预训练是大模型的"基石"阶段，数据质量直接决定模型能力上限。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h3>网页数据</h3>
+        <div class="card-en">Web Crawl Data</div>
+        <p>Common Crawl、自建爬虫获取的互联网文本。占预训练数据 60-80%。需经过去重、过滤、质量筛选。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <h3>书籍 & 学术</h3>
+        <div class="card-en">Books & Academic Papers</div>
+        <p>高质量长文本来源，如 Books3、arXiv 论文、教科书。提升模型推理和知识深度。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <h3>代码数据</h3>
+        <div class="card-en">Code Corpus</div>
+        <p>GitHub、Stack Overflow 等来源。提升模型编程和逻辑推理能力。The Stack、StarCoder 数据集。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3>合成数据</h3>
+        <div class="card-en">Synthetic Data</div>
+        <p>由强模型生成的训练数据。如数学推理链、代码解题过程。已成为 2024-2026 年的核心趋势。</p>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <div class="highlight-box highlight-blue">
+        <h4>🔑 关键数据处理流程</h4>
+        <p><strong>收集</strong> → <strong>语言识别</strong> → <strong>去重</strong>（MinHash / SimHash / Exact Dedup） → <strong>质量过滤</strong>（Perplexity Filter / Classifier） → <strong>有害内容过滤</strong> → <strong>PII 脱敏</strong> → <strong>数据配比</strong>（Data Mix） → <strong>Tokenization</strong></p>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem">
+      <details>
+        <summary>主流预训练数据集一览</summary>
+        <div class="details-content">
+          <table class="data-table">
+            <thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>Common Crawl</td><td>PB 级</td><td>最大的公开网页数据集，需大量清洗</td></tr>
+              <tr><td>FineWeb (HuggingFace)</td><td>15T tokens</td><td>2024 年发布，高质量 CC 过滤版</td></tr>
+              <tr><td>RedPajama v2</td><td>30T tokens</td><td>开源复现 LLaMA 训练数据</td></tr>
+              <tr><td>The Pile</td><td>825 GB</td><td>EleutherAI 22 个子集的混合数据</td></tr>
+              <tr><td>RefinedWeb</td><td>5T tokens</td><td>Falcon 模型使用的高质量网页数据</td></tr>
+              <tr><td>DCLM Baseline</td><td>4T tokens</td><td>Apple DCLM 项目的基线数据</td></tr>
+              <tr><td>The Stack v2</td><td>67.5TB</td><td>最大的开源代码数据集</td></tr>
+              <tr><td>CulturaX</td><td>6.3T tokens</td><td>167 种语言的多语言数据集</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Section 3: Data Processing Pipeline Detail -->
+  <div class="section" id="data-pipeline">
+    <p class="section-label">Part 03</p>
+    <h2 class="section-title">预训练数据处理 Pipeline 详解</h2>
+    <p class="section-desc">从原始网页到高质量训练语料的完整处理流水线。每一步都有明确的技术目标和实现方法。</p>
+
+    <!-- Pipeline 可视化 -->
+    <div class="diagram-box" style="margin-bottom:2rem;">
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:1rem;">端到端数据处理 Pipeline（按执行顺序）</p>
+      <div class="diagram-flow">
+        <span class="diagram-node" style="background:#f1f5f9;color:#475569;border:2px solid #94a3b8;">🌐 原始网页<br><small>HTML / WARC</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:var(--accent-light);color:var(--accent);border:2px solid var(--accent);">📄 解析抽取<br><small>Extract</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:var(--orange-light);color:var(--orange);border:2px solid var(--orange);">🧹 规则过滤<br><small>Rule Filter</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:var(--green-light);color:var(--green);border:2px solid var(--green);">🔄 MinHash<br><small>近似去重</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:var(--yellow-light);color:var(--yellow);border:2px solid var(--yellow);">⭐ 质量分<br><small>Quality Score</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:var(--purple-light);color:var(--purple);border:2px solid var(--purple);">🧠 语义去重<br><small>SemDedup</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:var(--teal-light);color:var(--teal);border:2px solid var(--teal);">✂️ 子串去重<br><small>SubstrDedup</small></span>
+        <span class="diagram-arrow">→</span>
+        <span class="diagram-node" style="background:#f0fdf4;color:#15803d;border:2px solid #15803d;">✅ 高质量<br><small>训练数据</small></span>
+      </div>
+    </div>
+
+    <!-- Step 1: Extract -->
+    <div style="margin-bottom:1.5rem;">
+      <div class="highlight-box" style="background:var(--accent-light);border-color:var(--accent);">
+        <h4 style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">1</span>
+          网页解析抽取（Extract）
+        </h4>
+        <p style="margin-top:0.5rem;">
+          <strong>目标：</strong>从原始 HTML 中精准提取正文内容，去除非正文噪声。<br><br>
+          <strong>技术方案：</strong>文本数据团队<strong>自研的网页解析模型</strong>，对每个 HTML 块（DOM 节点）进行<strong>「是否正文」二分类识别</strong>。不同于传统的规则方法（如 readability / trafilatura），这是一个<strong>基于模型的方案</strong>，准确率更高。<br><br>
+          <strong>过滤目标：</strong><br>
+          &nbsp;&nbsp;• <strong>网页结构噪声</strong>：导航栏（nav）、侧边栏（sidebar）、底部备案信息（footer）、面包屑导航<br>
+          &nbsp;&nbsp;• <strong>UGC 噪声</strong>：论坛/评论中的发帖人信息、回复时间、用户签名、点赞数等元数据<br>
+          &nbsp;&nbsp;• <strong>广告和脚本</strong>：广告区块、JavaScript 代码、CSS 样式内容<br>
+          &nbsp;&nbsp;• <strong>模板重复内容</strong>：网站通用头部/底部、版权声明、免责声明<br><br>
+          <strong>输入：</strong>原始 HTML / WARC 文件<br>
+          <strong>输出：</strong>纯文本正文（保留段落结构）
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2: Rule Filter -->
+    <div style="margin-bottom:1.5rem;">
+      <div class="highlight-box" style="background:var(--orange-light);border-color:var(--orange);">
+        <h4 style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="background:var(--orange);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">2</span>
+          规则过滤（Rule-based Quality Filter）
+        </h4>
+        <p style="margin-top:0.5rem;">
+          <strong>目标：</strong>用一系列确定性规则快速过滤掉明显的低质量文档，是<strong>成本最低、速度最快</strong>的过滤手段。<br><br>
+          <strong>常用规则：</strong><br>
+          &nbsp;&nbsp;• <strong>超短正文过滤</strong>：正文字数过少（如 < 50 字）的文档直接丢弃，这类通常是残缺页面或导航页<br>
+          &nbsp;&nbsp;• <strong>大段落重复检测</strong>：文章内部出现大段落多次重复（如 SEO 堆砌、模板生成内容）<br>
+          &nbsp;&nbsp;• <strong>特殊字符比例</strong>：标点符号、emoji、数字占比过高的文档<br>
+          &nbsp;&nbsp;• <strong>行级重复率</strong>：重复行数占总行数比例超过阈值<br>
+          &nbsp;&nbsp;• <strong>语言检测</strong>：过滤非目标语言的文档（如只保留中文/英文）<br>
+          &nbsp;&nbsp;• <strong>URL/域名黑名单</strong>：已知的低质量站点、成人内容站点<br>
+          &nbsp;&nbsp;• <strong>敏感词过滤</strong>：包含大量敏感/有害关键词的文档<br><br>
+          <strong>特点：</strong>规则简单、执行速度极快，适合在 Pipeline 早期大批量过滤，降低后续环节的计算压力。
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 3: MinHash -->
+    <div style="margin-bottom:1.5rem;">
+      <div class="highlight-box" style="background:var(--green-light);border-color:var(--green);">
+        <h4 style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="background:var(--green);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">3</span>
+          MinHash 近似去重（MinHash Deduplication）
+        </h4>
+        <p style="margin-top:0.5rem;">
+          <strong>目标：</strong>在海量文档中快速找到内容高度相似（但不完全相同）的文档并去重。<br><br>
+          <strong>技术原理：</strong><br>
+          &nbsp;&nbsp;1. 将每个文档切分为 <strong>n-gram</strong>（如 5-gram 字符片段）<br>
+          &nbsp;&nbsp;2. 对所有 n-gram 计算多个哈希函数，取每个哈希函数的<strong>最小值</strong>组成 MinHash 签名<br>
+          &nbsp;&nbsp;3. 使用 <strong>LSH（局部敏感哈希）</strong>将签名分桶，相同桶内的文档为候选重复对<br>
+          &nbsp;&nbsp;4. 对候选对计算 <strong>Jaccard 相似度</strong>，超过阈值则判定为重复<br><br>
+          <strong>关键设计：</strong><br>
+          &nbsp;&nbsp;• <strong>跨源统一去重</strong>：此环节会将 <strong>Manpa（自建爬虫）</strong>和 <strong>Common Crawl</strong> 等不同来源的网页<strong>统一进行 MinHash 去重</strong>，避免不同数据源之间的重复<br>
+          &nbsp;&nbsp;• <strong>阈值偏低策略</strong>：阈值会<strong>卡低一些</strong>（如 Jaccard ≥ 0.5 而非常见的 0.7-0.8），目的是<strong>多召回一些近似重复</strong>，宁可多去一点也不留冗余<br><br>
+          <strong>规模参考：</strong>通常可去除 30-50% 的重复数据，是预训练数据去重的<strong>核心环节</strong>。
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 4: Quality Score -->
+    <div style="margin-bottom:1.5rem;">
+      <div class="highlight-box" style="background:var(--yellow-light);border-color:var(--yellow);">
+        <h4 style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="background:var(--yellow);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">4</span>
+          质量分筛选（Quality Scoring）
+        </h4>
+        <p style="margin-top:0.5rem;">
+          <strong>目标：</strong>用模型对每篇文档进行<strong>多维度质量打分</strong>，精细地筛选出高价值文本。<br><br>
+          <strong>技术方案（两阶段）：</strong><br>
+          &nbsp;&nbsp;1. <strong>LLM 打标</strong>：先用大语言模型（如 GPT-4 级别）对<strong>采样数据</strong>进行多维度质量标注<br>
+          &nbsp;&nbsp;2. <strong>小模型蒸馏</strong>：用 LLM 标注的数据训练<strong>轻量级分类/回归模型</strong>（如 fastText / BERT-small），然后用小模型对全量数据打分<br><br>
+          <strong>评估维度：</strong><br>
+          &nbsp;&nbsp;• <strong>文本知识性</strong>：内容是否包含有价值的知识信息<br>
+          &nbsp;&nbsp;• <strong>连贯性</strong>：文本是否逻辑通顺、段落衔接自然<br>
+          &nbsp;&nbsp;• <strong>教育意义</strong>：内容是否具有教育价值（类似 FineWeb-Edu 的思路）<br>
+          &nbsp;&nbsp;• <strong>内容完整性</strong>：文章是否完整，非截断或残缺内容<br>
+          &nbsp;&nbsp;• <strong>信息密度</strong>：单位文本中有效信息的浓度<br><br>
+          <strong>过滤目标：</strong>去掉低文本价值的数据，如纯列表页、目录页、广告软文、无意义的 UGC 灌水帖等。<br>
+          <strong>业界参考：</strong>FineWeb-Edu 使用类似方法，通过教育质量分筛选后的数据在下游任务上提升了 5-10%。
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 5: Semantic Dedup -->
+    <div style="margin-bottom:1.5rem;">
+      <div class="highlight-box" style="background:var(--purple-light);border-color:var(--purple);">
+        <h4 style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="background:var(--purple);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">5</span>
+          语义去重（Semantic Deduplication / SemDedup）
+        </h4>
+        <p style="margin-top:0.5rem;">
+          <strong>目标：</strong>去除<strong>文本表面不同但语义高度相似</strong>的重复内容——这是 MinHash 无法捕捉的。<br><br>
+          <strong>典型场景：</strong><br>
+          &nbsp;&nbsp;• 同一新闻事件的不同媒体报道（换了标题和措辞，但核心内容相同）<br>
+          &nbsp;&nbsp;• 同一知识点的不同表述（如多个百科站点对同一概念的解释）<br>
+          &nbsp;&nbsp;• 洗稿/伪原创内容（大量改写但信息无增量）<br><br>
+          <strong>技术原理：</strong><br>
+          &nbsp;&nbsp;1. 用预训练模型（如 BGE / E5 / OPT-125M）为每篇文档生成 <strong>Embedding 向量</strong><br>
+          &nbsp;&nbsp;2. 对所有向量进行 <strong>K-Means 聚类</strong>，将语义相近的文档分到同一簇<br>
+          &nbsp;&nbsp;3. 在每个簇内，计算文档间的<strong>余弦相似度</strong>，去除高度相似的文档（保留一篇代表性文档）<br><br>
+          <strong>核心价值：</strong>D4 论文（NeurIPS 2023）证明，在 MinHash 基础上再做语义去重，可以带来约 <strong>20% 的训练效率提升</strong>和 <strong>2% 的下游任务准确率提升</strong>。<br>
+          <strong>计算成本：</strong>需要对全量数据做 Embedding 推理 + 聚类，是 Pipeline 中<strong>计算量最大</strong>的环节之一。
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 6: Substring Dedup -->
+    <div style="margin-bottom:1.5rem;">
+      <div class="highlight-box" style="background:var(--teal-light);border-color:var(--teal);">
+        <h4 style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="background:var(--teal);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">6</span>
+          子串去重（Substring Deduplication / SubstrDedup）
+        </h4>
+        <p style="margin-top:0.5rem;">
+          <strong>目标：</strong>在文档<strong>内部</strong>检测和去除重复的文本片段，粒度比 MinHash（文档级）更细。<br><br>
+          <strong>处理对象：</strong><br>
+          &nbsp;&nbsp;• <strong>模板文本</strong>：网站通用的版权声明、免责条款、联系方式等在多个页面中重复出现的文本块<br>
+          &nbsp;&nbsp;• <strong>重复段落</strong>：文章内部因编辑错误或采集问题导致的段落重复<br>
+          &nbsp;&nbsp;• <strong>跨文档公共子串</strong>：不同文档中共享的大段相同文本（如引用的法律条文、标准规范等）<br><br>
+          <strong>技术方案：</strong><br>
+          &nbsp;&nbsp;• 基于 <strong>Suffix Array（后缀数组）</strong>的高效子串匹配算法<br>
+          &nbsp;&nbsp;• 设定最小重复长度阈值（如 ≥ 50 字符），找到所有超过阈值的重复子串<br>
+          &nbsp;&nbsp;• 保留一份，去除其余重复出现<br><br>
+          <strong>与 MinHash 的区别：</strong><br>
+          &nbsp;&nbsp;• MinHash 是<strong>文档级</strong>去重：判断两篇文档整体是否相似<br>
+          &nbsp;&nbsp;• SubstrDedup 是<strong>片段级</strong>去重：在保留文档的前提下，去除文档内部或跨文档的重复文本片段<br>
+          <strong>参考实现：</strong>Lee et al. (2022) "Deduplicating Training Data Makes Language Models Better" 中的 ExactSubstr 方法。
+        </p>
+      </div>
+    </div>
+
+    <!-- Summary comparison table -->
+    <div style="margin-top:1rem;">
+      <h3 style="font-size:15px;margin-bottom:1rem;">📊 各环节对比总览</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>环节</th>
+            <th>粒度</th>
+            <th>技术方法</th>
+            <th>计算成本</th>
+            <th>数据缩减</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🔵 解析抽取</td>
+            <td>HTML 块级</td>
+            <td>自研正文识别模型</td>
+            <td>⭐⭐</td>
+            <td>去除 40-60% 非正文</td>
+          </tr>
+          <tr>
+            <td>🟠 规则过滤</td>
+            <td>文档级</td>
+            <td>确定性规则集</td>
+            <td>⭐</td>
+            <td>过滤 10-30% 低质文档</td>
+          </tr>
+          <tr>
+            <td>🟢 MinHash</td>
+            <td>文档级</td>
+            <td>MinHash + LSH</td>
+            <td>⭐⭐⭐</td>
+            <td>去重 30-50%</td>
+          </tr>
+          <tr>
+            <td>🟡 质量分</td>
+            <td>文档级</td>
+            <td>LLM 打标 → 小模型蒸馏</td>
+            <td>⭐⭐⭐⭐</td>
+            <td>过滤 20-40% 低质数据</td>
+          </tr>
+          <tr>
+            <td>🟣 语义去重</td>
+            <td>文档级</td>
+            <td>Embedding + K-Means</td>
+            <td>⭐⭐⭐⭐⭐</td>
+            <td>去重 5-15%</td>
+          </tr>
+          <tr>
+            <td>🔵 子串去重</td>
+            <td>片段级</td>
+            <td>Suffix Array</td>
+            <td>⭐⭐⭐</td>
+            <td>去除 5-10% 冗余片段</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:1.5rem;">
+      <div class="highlight-box highlight-blue">
+        <h4>💡 Pipeline 设计哲学</h4>
+        <p>
+          <strong>渐进式过滤：</strong>从低成本到高成本，先用规则快速过滤大量垃圾，再用模型精细筛选。<br>
+          <strong>多层去重：</strong>MinHash（文本相似）→ SemDedup（语义相似）→ SubstrDedup（片段重复），三层去重互补，覆盖不同类型的冗余。<br>
+          <strong>跨源统一：</strong>不同数据源（自建爬虫、Common Crawl 等）统一进入同一个 Pipeline，避免源间重复。<br>
+          <strong>质量优先：</strong>宁可多过滤一些数据（recall 略低），也要保证留下的数据质量足够高。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Mid-training -->
+  <div class="section" id="midtrain">
+    <p class="section-label">Part 04</p>
+    <h2 class="section-title">中间训练 Mid-training</h2>
+    <p class="section-desc">介于预训练和后训练之间的阶段，也称为 Continual Pre-training（CPT）或 Domain-Adaptive Pre-training（DAPT）。</p>
+
+    <div class="highlight-box highlight-green">
+      <h4>💡 Mid-training 的核心价值</h4>
+      <p>在通用预训练完成后，用<strong>领域特定数据</strong>继续预训练，使模型获得垂直领域的深度知识，同时保持通用能力。这是当前很多行业大模型（医疗、法律、金融、代码）的标准做法。</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>长上下文扩展</h3>
+        <div class="card-en">Long Context Extension</div>
+        <p>在长文档上继续预训练，配合 RoPE 频率调整（如 YaRN、NTK-Aware），将上下文窗口从 4K 扩展到 128K+。</p>
+      </div>
+      <div class="card">
+        <h3>领域适配</h3>
+        <div class="card-en">Domain Adaptation</div>
+        <p>注入领域语料（如医学文献、法律条文、金融报告），让模型掌握专业术语和领域推理模式。</p>
+      </div>
+      <div class="card">
+        <h3>多模态扩展</h3>
+        <div class="card-en">Multimodal Extension</div>
+        <p>在 mid-training 阶段引入图像-文本对、视频数据，训练视觉编码器与语言模型的对齐。</p>
+      </div>
+      <div class="card">
+        <h3>知识更新 / 退火</h3>
+        <div class="card-en">Knowledge Update / Annealing</div>
+        <p>用最新数据更新模型知识截止日期。Annealing（退火）阶段用高质量数据在低学习率下训练。</p>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <div class="diagram-box">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:1rem;">Mid-training 在训练流程中的位置</p>
+        <div class="diagram-flow">
+          <span class="diagram-node" style="background:var(--accent-light);color:var(--accent);">Pre-training<br><small>通用语料</small></span>
+          <span class="diagram-arrow">→</span>
+          <span class="diagram-node" style="background:var(--green-light);color:var(--green);border:2px solid var(--green);">Mid-training<br><small>领域语料 / 长上下文</small></span>
+          <span class="diagram-arrow">→</span>
+          <span class="diagram-node" style="background:var(--orange-light);color:var(--orange);">SFT<br><small>指令微调</small></span>
+          <span class="diagram-arrow">→</span>
+          <span class="diagram-node" style="background:var(--purple-light);color:var(--purple);">RLHF<br><small>对齐</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: SFT -->
+  <div class="section" id="sft">
+    <p class="section-label">Part 05</p>
+    <h2 class="section-title">后训练：监督微调 SFT</h2>
+    <p class="section-desc">Supervised Fine-Tuning（SFT）是让"预训练模型"变成"对话助手"的关键步骤。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>指令微调</h3>
+        <div class="card-en">Instruction Tuning</div>
+        <p>用 (instruction, response) 对训练模型遵循指令。FLAN、InstructGPT 开创了这一范式。核心是教会模型"你问我答"的对话格式。</p>
+      </div>
+      <div class="card">
+        <h3>对话数据</h3>
+        <div class="card-en">Conversational Data</div>
+        <p>多轮对话格式的训练数据。包含 system prompt、user、assistant 多角色。ShareGPT、UltraChat 是典型数据集。</p>
+      </div>
+      <div class="card">
+        <h3>思维链数据</h3>
+        <div class="card-en">Chain-of-Thought (CoT) Data</div>
+        <p>包含详细推理步骤的数据。让模型学会"先思考再回答"。对数学、逻辑推理任务至关重要。</p>
+      </div>
+      <div class="card">
+        <h3>工具调用数据</h3>
+        <div class="card-en">Tool / Function Calling Data</div>
+        <p>训练模型正确调用 API、函数、搜索引擎等外部工具。包含工具定义、调用参数、返回值解析。</p>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <div class="highlight-box highlight-orange">
+        <h4>⚡ SFT 数据的关键原则</h4>
+        <p><strong>质量远大于数量</strong>：LIMA 论文证明仅 1000 条高质量数据就能训练出优秀模型。<br>
+        <strong>多样性</strong>：覆盖不同任务类型（问答、写作、代码、推理、翻译等）。<br>
+        <strong>Decontamination</strong>：确保训练数据不包含评测集数据，避免"数据泄露"导致虚高分数。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: RL -->
+  <div class="section" id="rl">
+    <p class="section-label">Part 06</p>
+    <h2 class="section-title">后训练：强化学习与对齐</h2>
+    <p class="section-desc">通过人类偏好或 AI 反馈，让模型输出更安全、更有帮助、更诚实。</p>
+
+    <div class="card-grid triple">
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <h3>RLHF</h3>
+        <div class="card-en">RL from Human Feedback</div>
+        <p>OpenAI 提出的经典范式。人类标注员对模型输出进行排序 → 训练 Reward Model → 用 PPO 优化策略模型。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>RLAIF</h3>
+        <div class="card-en">RL from AI Feedback</div>
+        <p>用强 AI 模型替代人类标注员提供偏好反馈。Constitutional AI（Anthropic）是典型代表。大幅降低标注成本。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h3>DPO</h3>
+        <div class="card-en">Direct Preference Optimization</div>
+        <p>无需训练 Reward Model，直接用偏好对数据优化策略。更简单、更稳定。2024 年后成为主流方法之一。</p>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <h3 style="font-size:15px;margin-bottom:1rem;">🔥 2025-2026 年强化学习前沿方法</h3>
+      <div class="card-grid">
+        <div class="card">
+          <h3>GRPO</h3>
+          <div class="card-en">Group Relative Policy Optimization</div>
+          <p>DeepSeek 提出。无需 Critic Model，通过组内相对奖励估计优势函数。在数学推理上表现优异，DeepSeek-R1 的核心训练方法。</p>
+        </div>
+        <div class="card">
+          <h3>DAPO</h3>
+          <div class="card-en">Dynamic Sampling Policy Optimization</div>
+          <p>ByteDance 提出。改进 GRPO 的采样策略，动态调整采样温度和过滤条件，解决训练中"熵塌缩"问题。</p>
+        </div>
+        <div class="card">
+          <h3>Rejection Sampling</h3>
+          <div class="card-en">Best-of-N Sampling</div>
+          <p>生成 N 个候选回答，用 Reward Model 选最优。简单有效，常与 SFT 结合使用。也叫 RFT（Rejection Fine-Tuning）。</p>
+        </div>
+        <div class="card">
+          <h3>RLVR</h3>
+          <div class="card-en">RL with Verifiable Rewards</div>
+          <p>用可验证的奖励信号（如数学题正确性、代码执行结果）替代人类偏好。DeepSeek-R1 和 Qwen3 的关键方法。</p>
+        </div>
+        <div class="card">
+          <h3>KTO</h3>
+          <div class="card-en">Kahneman-Tversky Optimization</div>
+          <p>基于行为经济学的前景理论，只需要"好/坏"二分标签而非成对偏好数据。降低数据标注门槛。</p>
+        </div>
+        <div class="card">
+          <h3>Online DPO / IPO</h3>
+          <div class="card-en">Online / Identity Preference Optimization</div>
+          <p>Online DPO 在训练中实时采样新数据对；IPO 修正了 DPO 的理论缺陷，使用更鲁棒的损失函数。</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <div class="diagram-box">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:1rem;">RLHF vs DPO vs GRPO 对比</p>
+        <table class="data-table" style="text-align:left;">
+          <thead><tr><th>方法</th><th>Reward Model</th><th>Critic Model</th><th>数据需求</th><th>稳定性</th><th>典型应用</th></tr></thead>
+          <tbody>
+            <tr><td>PPO (RLHF)</td><td>✅ 需要</td><td>✅ 需要</td><td>偏好对数据</td><td>⚠️ 较难调参</td><td>GPT-4, Claude</td></tr>
+            <tr><td>DPO</td><td>❌ 不需要</td><td>❌ 不需要</td><td>偏好对数据</td><td>✅ 稳定</td><td>Llama 3, Zephyr</td></tr>
+            <tr><td>GRPO</td><td>✅ 或规则奖励</td><td>❌ 不需要</td><td>Prompt + 规则</td><td>✅ 稳定</td><td>DeepSeek-R1</td></tr>
+            <tr><td>RLVR</td><td>❌ 可验证奖励</td><td>❌ 不需要</td><td>带答案的题目</td><td>✅ 稳定</td><td>数学/代码场景</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Data Methods -->
+  <div class="section" id="data-methods">
+    <p class="section-label">Part 07</p>
+    <h2 class="section-title">主流数据方法论</h2>
+    <p class="section-desc">数据工程中最核心的技术方法和最佳实践。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🧹</div>
+        <h3>数据清洗 & 过滤</h3>
+        <div class="card-en">Data Cleaning & Filtering</div>
+        <p><strong>规则过滤</strong>：URL 黑名单、长度过滤、特殊字符比例<br>
+        <strong>模型过滤</strong>：用 fastText / BERT 分类器判断质量<br>
+        <strong>困惑度过滤</strong>：用语言模型的 Perplexity 筛选<br>
+        <strong>代表工具</strong>：CCNet, DataTrove, RedPajama pipeline</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h3>数据去重</h3>
+        <div class="card-en">Deduplication</div>
+        <p><strong>精确去重</strong>：URL / Hash 完全匹配<br>
+        <strong>模糊去重</strong>：MinHash + LSH（局部敏感哈希）<br>
+        <strong>语义去重</strong>：Embedding 相似度去重<br>
+        <strong>行级去重</strong>：去除重复的文本行/段落</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧪</div>
+        <h3>合成数据生成</h3>
+        <div class="card-en">Synthetic Data Generation</div>
+        <p><strong>Self-Instruct</strong>：模型自己生成指令和回答<br>
+        <strong>Evol-Instruct</strong>：渐进式增加指令复杂度<br>
+        <strong>Distillation</strong>：用强模型生成数据训练弱模型<br>
+        <strong>代表项目</strong>：Alpaca, WizardLM, Magpie, Nemotron</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h3>数据配比 & 课程学习</h3>
+        <div class="card-en">Data Mixing & Curriculum Learning</div>
+        <p><strong>Data Mix</strong>：不同来源数据的比例调配（如 Web:Code:Book = 7:2:1）<br>
+        <strong>Curriculum</strong>：从简单到复杂逐步训练<br>
+        <strong>Annealing</strong>：训练末期用高质量数据"退火"<br>
+        <strong>DoReMi</strong>：自动优化数据配比的方法</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <h3>数据标注</h3>
+        <div class="card-en">Data Annotation / Labeling</div>
+        <p><strong>人工标注</strong>：专业标注员编写高质量回答<br>
+        <strong>偏好标注</strong>：对比两个回答选择更好的<br>
+        <strong>AI 辅助标注</strong>：用 LLM 初筛 + 人工审核<br>
+        <strong>众包平台</strong>：Scale AI, Surge AI, 内部标注团队</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>数据安全 & 合规</h3>
+        <div class="card-en">Data Safety & Compliance</div>
+        <p><strong>PII 脱敏</strong>：去除个人身份信息<br>
+        <strong>有害内容过滤</strong>：NSFW、暴力、仇恨内容<br>
+        <strong>版权合规</strong>：尊重 robots.txt、许可证<br>
+        <strong>Decontamination</strong>：去除评测集数据</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Glossary -->
+  <div class="section" id="glossary">
+    <p class="section-label">Part 08</p>
+    <h2 class="section-title">核心术语速查表</h2>
+    <p class="section-desc">与领导对齐时常用的关键词和概念。</p>
+
+    <!-- 训练阶段术语 -->
+    <div class="glossary-group">
+      <span class="glossary-group-title tag-blue" style="font-size:13px;">🎯 训练阶段</span>
+      <div class="glossary-list">
+        <div class="glossary-item">
+          <div class="glossary-term">预训练<span class="en">Pre-training</span></div>
+          <div class="glossary-def">在海量无标注数据上训练，通过预测下一个 Token 学习语言模式和世界知识。是模型能力的基础。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">中间训练<span class="en">Mid-training / CPT</span></div>
+          <div class="glossary-def">Continual Pre-training 的简称。在预训练后、SFT 前，用领域数据或长上下文数据继续训练。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">后训练<span class="en">Post-training</span></div>
+          <div class="glossary-def">预训练之后的所有训练阶段的统称，包括 SFT、RLHF、DPO 等。目标是让模型变得"可用"。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">监督微调<span class="en">SFT (Supervised Fine-Tuning)</span></div>
+          <div class="glossary-def">用人工标注的 (指令, 回答) 对训练模型。让模型从"续写文本"变成"遵循指令回答问题"。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">指令微调<span class="en">Instruction Tuning</span></div>
+          <div class="glossary-def">SFT 的一种形式，强调多任务指令格式。FLAN-T5、InstructGPT 是代表工作。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">退火<span class="en">Annealing</span></div>
+          <div class="glossary-def">训练末期用小学习率 + 高质量数据进行最后阶段训练。类似冶金中的"退火"过程，让模型更稳定。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 强化学习术语 -->
+    <div class="glossary-group">
+      <span class="glossary-group-title tag-purple" style="font-size:13px;">🎮 强化学习 & 对齐</span>
+      <div class="glossary-list">
+        <div class="glossary-item">
+          <div class="glossary-term">RLHF<span class="en">RL from Human Feedback</span></div>
+          <div class="glossary-def">用人类偏好训练奖励模型，再用 RL（通常是 PPO）优化策略模型。ChatGPT 的核心训练方法。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">RLAIF<span class="en">RL from AI Feedback</span></div>
+          <div class="glossary-def">用 AI 模型替代人类提供偏好反馈。Anthropic 的 Constitutional AI 是典型代表。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">PPO<span class="en">Proximal Policy Optimization</span></div>
+          <div class="glossary-def">最经典的策略梯度 RL 算法。通过限制策略更新幅度保证训练稳定性。RLHF 的标准优化器。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DPO<span class="en">Direct Preference Optimization</span></div>
+          <div class="glossary-def">绕过 Reward Model，直接用偏好对数据优化策略。将 RL 问题转化为简单的分类损失。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">GRPO<span class="en">Group Relative Policy Optimization</span></div>
+          <div class="glossary-def">DeepSeek 提出，无需 Critic 模型，通过同组采样的相对奖励估计优势。DeepSeek-R1 的核心方法。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Reward Model<span class="en">奖励模型 (RM)</span></div>
+          <div class="glossary-def">根据人类偏好训练的打分模型，用于评估模型输出的质量。是 RLHF 流程中的核心组件。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">偏好数据<span class="en">Preference Data</span></div>
+          <div class="glossary-def">形如 (prompt, chosen, rejected) 的三元组。标注员选择更好的回答作为 chosen，较差的作为 rejected。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">对齐<span class="en">Alignment</span></div>
+          <div class="glossary-def">让模型行为符合人类价值观和意图。核心目标：Helpful（有用）、Harmless（无害）、Honest（诚实）—— 3H 原则。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据工程术语 -->
+    <div class="glossary-group">
+      <span class="glossary-group-title tag-green" style="font-size:13px;">🔧 数据工程</span>
+      <div class="glossary-list">
+        <div class="glossary-item">
+          <div class="glossary-term">Token / Tokenization<span class="en">分词</span></div>
+          <div class="glossary-def">将文本切分为模型能处理的最小单元。BPE（Byte Pair Encoding）是主流方法。1 Token ≈ 0.7 个中文字。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">去重<span class="en">Deduplication</span></div>
+          <div class="glossary-def">去除训练数据中的重复内容。MinHash + LSH 是大规模去重的标准方法。可减少 30-50% 数据量。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">困惑度<span class="en">Perplexity (PPL)</span></div>
+          <div class="glossary-def">语言模型对文本的"困惑程度"。PPL 越低说明文本越"正常"。常用于过滤低质量数据。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">数据配比<span class="en">Data Mix / Data Recipe</span></div>
+          <div class="glossary-def">不同来源数据在训练中的比例。如 Llama 3: 网页 50% + 代码 25% + 书籍 15% + 数学 10%。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">数据飞轮<span class="en">Data Flywheel</span></div>
+          <div class="glossary-def">模型上线 → 收集用户反馈 → 改进数据 → 训练更好模型 → 更多用户 → 更多反馈。正向循环。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">合成数据<span class="en">Synthetic Data</span></div>
+          <div class="glossary-def">由 AI 模型生成的训练数据。2025 年已成为核心数据来源之一。关键是保证多样性和避免"模型塌缩"。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">蒸馏<span class="en">Distillation</span></div>
+          <div class="glossary-def">用大模型（Teacher）的输出训练小模型（Student）。是合成数据的一种重要形式。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">数据污染<span class="en">Data Contamination</span></div>
+          <div class="glossary-def">训练数据中包含了评测集的内容，导致评测分数虚高。Decontamination 是必要的数据处理步骤。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模型 & 架构术语 -->
+    <div class="glossary-group">
+      <span class="glossary-group-title tag-orange" style="font-size:13px;">🏗️ 模型 & 推理</span>
+      <div class="glossary-list">
+        <div class="glossary-item">
+          <div class="glossary-term">Scaling Law<span class="en">规模定律</span></div>
+          <div class="glossary-def">模型性能与参数量、数据量、计算量的幂律关系。Chinchilla 定律指出数据量应与参数量匹配。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">CoT<span class="en">Chain-of-Thought</span></div>
+          <div class="glossary-def">思维链推理。让模型逐步展示推理过程，显著提升数学和逻辑推理能力。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Reasoning Model<span class="en">推理模型</span></div>
+          <div class="glossary-def">专门优化推理能力的模型，如 o1、DeepSeek-R1、QwQ。在回答前进行长链推理（thinking）。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">MoE<span class="en">Mixture of Experts</span></div>
+          <div class="glossary-def">混合专家架构。每次推理只激活部分参数（专家），在保持大参数量的同时控制计算成本。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">RAG<span class="en">Retrieval-Augmented Generation</span></div>
+          <div class="glossary-def">检索增强生成。先检索相关文档，再让模型基于检索结果生成回答。减少幻觉的有效方法。</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Benchmark<span class="en">评测基准</span></div>
+          <div class="glossary-def">标准化评测集。常见：MMLU（知识）、GSM8K（数学）、HumanEval（代码）、MT-Bench（对话）。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 8: Landscape -->
+  <div class="section" id="landscape">
+    <p class="section-label">Part 09</p>
+    <h2 class="section-title">数据格局与规模参考</h2>
+    <p class="section-desc">当前行业主要模型的数据规模和方法参考。</p>
+
+    <div class="metric-row">
+      <div class="metric-item">
+        <div class="metric-value" style="color:var(--accent);">15T+</div>
+        <div class="metric-label">Llama 3.1 预训练 Token 数</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value" style="color:var(--green);">14.8T</div>
+        <div class="metric-label">DeepSeek-V3 预训练 Token 数</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value" style="color:var(--orange);">~10M</div>
+        <div class="metric-label">典型 SFT 数据条数</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value" style="color:var(--purple);">~1M</div>
+        <div class="metric-label">典型偏好数据条数</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;">
+      <table class="data-table">
+        <thead>
+          <tr><th>模型</th><th>预训练数据</th><th>后训练方法</th><th>关键数据策略</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GPT-4o</td>
+            <td>未公开（估计 10T+ tokens）</td>
+            <td>RLHF (PPO)</td>
+            <td>大规模人工标注 + 数据飞轮</td>
+          </tr>
+          <tr>
+            <td>Claude 3.5/4</td>
+            <td>未公开</td>
+            <td>RLAIF + Constitutional AI</td>
+            <td>AI 反馈 + 宪法原则约束</td>
+          </tr>
+          <tr>
+            <td>Llama 3.1 405B</td>
+            <td>15T tokens</td>
+            <td>SFT + DPO + PPO</td>
+            <td>多轮迭代，合成数据 + 人工标注</td>
+          </tr>
+          <tr>
+            <td>DeepSeek-V3</td>
+            <td>14.8T tokens</td>
+            <td>SFT + GRPO</td>
+            <td>多阶段训练，长上下文扩展</td>
+          </tr>
+          <tr>
+            <td>DeepSeek-R1</td>
+            <td>基于 V3</td>
+            <td>GRPO + RLVR</td>
+            <td>纯 RL 训练推理能力 + 蒸馏</td>
+          </tr>
+          <tr>
+            <td>Qwen 2.5</td>
+            <td>18T tokens</td>
+            <td>SFT + DPO + GRPO</td>
+            <td>多语言数据 + 代码数据增强</td>
+          </tr>
+          <tr>
+            <td>Gemini 2.0</td>
+            <td>未公开（多模态）</td>
+            <td>RLHF</td>
+            <td>原生多模态训练</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:2rem;">
+      <div class="highlight-box highlight-purple">
+        <h4>📈 2025-2026 数据趋势</h4>
+        <p>
+          <strong>1. 合成数据成为主流</strong>：高质量真实数据接近枯竭，合成数据占比持续提升<br>
+          <strong>2. RL 驱动的推理数据</strong>：通过 GRPO/RLVR 让模型自己"学会思考"，减少对标注数据的依赖<br>
+          <strong>3. 多模态数据融合</strong>：图文、视频、音频数据统一训练<br>
+          <strong>4. 数据质量 > 数据数量</strong>：FineWeb、DCLM 等项目证明过滤后的小数据集可以超越大数据集<br>
+          <strong>5. Agent 交互数据</strong>：工具调用、多步推理、环境交互的数据成为新的关键数据类型<br>
+          <strong>6. 数据飞轮闭环</strong>：线上反馈 → 数据改进 → 模型迭代的自动化闭环
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  LLM Data Engineering Guide · Internal Reference · Updated April 2026<br>
+  Built for team alignment and knowledge sharing
+</div>
+
+<script>
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Active nav link highlight
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 80;
+      if (window.scrollY >= top) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.style.background = link.getAttribute('href') === '#' + current ? 'var(--accent-light)' : '';
+      link.style.color = link.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+
+</body>
+</html>

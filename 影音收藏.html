@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 影音收藏</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; background: #0a0a0f; color: #e2e2e8; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  .tab-bar { display: flex; gap: 0; background: #13131a; border-bottom: 1px solid #1e1e2e; padding: 0 12px; flex-shrink: 0; overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab { padding: 14px 20px; font-size: 14px; font-weight: 500; color: #5a5a72; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; user-select: none; }
+  .tab:hover { color: #a0a0b8; }
+  .tab.active { color: #fbbf24; border-bottom-color: #fbbf24; font-weight: 600; }
+  .frame-container { flex: 1; position: relative; }
+  .frame-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: #fff; display: none; }
+  .frame-container iframe.active { display: block; }
+  .back-btn { position: fixed; bottom: 20px; right: 20px; z-index: 100; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #fbbf24, #fb923c); border: none; color: #fff; font-size: 20px; cursor: pointer; box-shadow: 0 4px 16px rgba(251,191,36,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.15s; }
+  .back-btn:hover { transform: scale(1.1); }
+</style>
+</head>
+<body>
+<div class="tab-bar" id="tabBar"></div>
+<div class="frame-container" id="frames"></div>
+<button class="back-btn" onclick="history.back()" title="返回首页">←</button>
+<script>
+const TABS = [
+  { label: '🎬 精品视频收藏', file: '精品视频收藏.html' },
+  { label: '🎵 音乐 & K歌曲库', file: '音乐收藏.html' },
+];
+let activeIdx = 0;
+const tabBar = document.getElementById('tabBar');
+const frames = document.getElementById('frames');
+
+TABS.forEach((t, i) => {
+  const tab = document.createElement('div');
+  tab.className = 'tab' + (i === 0 ? ' active' : '');
+  tab.textContent = t.label;
+  tab.onclick = () => switchTab(i);
+  tabBar.appendChild(tab);
+
+  const iframe = document.createElement('iframe');
+  iframe.className = i === 0 ? 'active' : '';
+  iframe.dataset.src = t.file;
+  if (i === 0) iframe.src = t.file;
+  frames.appendChild(iframe);
+});
+
+function switchTab(idx) {
+  if (idx === activeIdx) return;
+  tabBar.children[activeIdx].classList.remove('active');
+  frames.children[activeIdx].classList.remove('active');
+  activeIdx = idx;
+  tabBar.children[idx].classList.add('active');
+  const iframe = frames.children[idx];
+  iframe.classList.add('active');
+  if (!iframe.src || iframe.src === 'about:blank') iframe.src = iframe.dataset.src;
+}
+</script>
+</body>
+</html>
