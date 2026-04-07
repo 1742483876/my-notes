@@ -1833,10 +1833,619 @@ body {
   </div>
 </div>
 
+<!-- ==================== 数据工程 ==================== -->
+<div id="dataeng" class="section">
+  <div class="section-header">
+    <h2>📊 大模型预训练数据工程</h2>
+    <p>从数据获取到质量筛选，覆盖网页/文档/代码/STEM四大管线的完整数据工程体系</p>
+  </div>
+
+  <!-- Architecture Overview -->
+  <div class="arch-box">
+    <h3 style="color:var(--text-bright);margin-bottom:16px;">🏗️ 预训练数据处理全流程</h3>
+    <div class="arch-flow">
+      <div class="arch-node" style="background:var(--gradient4);">🌐 数据获取<br><small>漫爬 / 定爬 / 采买</small></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node" style="background:var(--gradient1);">🔍 解析清洗<br><small>HTML解析 / PDF解析 / 规则过滤</small></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node" style="background:var(--gradient3);">🧹 去重<br><small>MinHash / 语义 / 子串</small></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node" style="background:var(--gradient2);">⭐ 质量筛选<br><small>质量分模型 / LLM打标</small></div>
+    </div>
+    <div class="arch-flow">
+      <div class="arch-node" style="background:var(--gradient5);">💾 存储<br><small>HDFS / CEPH / COS</small></div>
+      <span class="arch-arrow">←</span>
+      <div class="arch-node" style="background:var(--gradient6);">🧪 实验验证<br><small>4B Dense / 主模型MidTrain</small></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.82rem;margin-top:12px;">
+      核心理念：数据质量 > 数据数量 · 每个管线独立迭代，统一交付标准
+    </p>
+  </div>
+
+  <!-- 四大管线卡片 -->
+  <div class="card-grid">
+    <div class="card g1">
+      <div class="card-icon">🌐</div>
+      <h3>网页管线</h3>
+      <div class="card-desc">
+        <strong>数据源：</strong>漫爬（Manpa）+ Common Crawl<br>
+        <strong>核心流程：</strong>抓取→HTML块正文识别→规则过滤→MinHash去重→质量分→语义去重→子串去重<br>
+        <strong>关键技术：</strong>自研网页解析模型（Transformer），HTML块级正文识别，过滤导航栏/边框/备案信息；低质泛滥过滤器识别采集作弊站、索引页、功能性网页<br>
+        <strong>D4规模：</strong>中英多语言网页总量约2000亿Token
+      </div>
+      <span class="tag hot">🔥 最大管线</span>
+      <span class="tag new">D4生产中</span>
+    </div>
+    <div class="card g2">
+      <div class="card-icon">📄</div>
+      <h3>文档管线</h3>
+      <div class="card-desc">
+        <strong>数据源：</strong>书籍（Anna档案4100万、Google 1640万）、论文（ScHub 8840万、知网 2672万）、泛PDF（16.2亿去重后）<br>
+        <strong>核心流程：</strong>PDF获取→文档解析（自研模型，准确率86%+）→质量筛选→去重<br>
+        <strong>格式分布：</strong>PDF 71% / EPUB 14.4% / ZIP 7.9%<br>
+        <strong>D4待解析：</strong>120亿页，预计1500张H20刷45天
+      </div>
+      <span class="tag hot">🔥 解析突破</span>
+      <span class="tag free">超越Mathpix</span>
+    </div>
+    <div class="card g3">
+      <div class="card-icon">💻</div>
+      <h3>代码管线</h3>
+      <div class="card-desc">
+        <strong>三大数据类：</strong><br>
+        ① 纯代码（SWH + GitHub）：D3 CodeV4.1 达 1600B Token<br>
+        ② 代码网页（StackOverflow等问答对）：D3全量538B，高质187B<br>
+        ③ Commit/PR/Issue：1.5亿commit，SWE Bench提升3pp<br>
+        <strong>关键技术：</strong>FastText分类器回捞代码网页、7B生成式抽取模型、HTML裁剪+规则预抽取
+      </div>
+      <span class="tag hot">🔥 SWE增益</span>
+      <span class="tag new">CodeV4.1</span>
+    </div>
+    <div class="card g4">
+      <div class="card-icon">🔬</div>
+      <h3>STEM管线</h3>
+      <div class="card-desc">
+        <strong>定位：</strong>科学、技术、工程、数学领域的专业数据<br>
+        <strong>数据特点：</strong>公式密集、结构化程度高、需要专业解析能力<br>
+        <strong>现状：</strong>D4挖掘数据确认中，持续论文调研
+      </div>
+      <span class="tag new">调研中</span>
+    </div>
+  </div>
+
+  <!-- 网页管线详解 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🌐 网页管线详解：从HTML到高质Token</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>1. 数据获取阶段</h4>
+        <ul>
+          <li><strong>漫爬（Manpa）：</strong>自有爬虫系统，持续爬取全网网页，约1500亿Token规模</li>
+          <li><strong>Common Crawl：</strong>约500亿Token（含一半小语种）</li>
+          <li>抓取环节同时进行：网页初步解析、MinHash去重（较严格阈值）、低质泛滥过滤</li>
+        </ul>
+        <h4>2. 重解析</h4>
+        <ul>
+          <li>自研网页解析模型：基于Transformer，对每个HTML块进行正文识别</li>
+          <li>能过滤：导航栏、边框、底部备案信息、UGC发帖人/回复时间等噪声</li>
+          <li>紫霄 HTML块抽取模型 QPS 60，H20按120计算</li>
+        </ul>
+        <h4>3. 规则过滤</h4>
+        <ul>
+          <li>LLM数据过滤常用规则：超短正文、大段落重复等</li>
+          <li>资源：2w Core PySpark，处理2000亿数据</li>
+        </ul>
+        <h4>4. MinHash去重</h4>
+        <ul>
+          <li>统一对Manpa和CC等不同来源进行全局MinHash</li>
+          <li>优化版本：1900T存储，12000核，72T内存，5天完成</li>
+          <li>非优化版本：250T存储，24000核，144T内存</li>
+        </ul>
+        <h4>5. 质量分模型</h4>
+        <ul>
+          <li>LLM打标采样数据训练小模型，多维度筛选</li>
+          <li>维度：文本知识性、连贯性、教育意义等</li>
+          <li>需刷4个模型（NCC两个+自建两个），400张H20刷10天</li>
+        </ul>
+        <h4>6. 语义去重 + 子串去重</h4>
+        <ul>
+          <li>语义去重：基于文本Embedding全局去重，过滤文本不完全匹配的重复</li>
+          <li>子串去重：文本内部去重算法，需2T内存机器×10</li>
+        </ul>
+        <div class="info-box orange">
+          <strong>⚠️ 泛滥网页检测：</strong>发现Manpa有较多泛滥网页，通过大模型对同一Domain下多个网页打标，确定是否泛滥站点。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 文档管线详解 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>📄 文档管线详解：书籍论文PDF解析</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>1. 数据源梳理</h4>
+        <p><strong>书籍</strong>（原始去重后8091万）：</p>
+        <ul>
+          <li>Anna档案（含LibGen）：4099万，占47.8%</li>
+          <li>Google：1640万，占19.1%</li>
+          <li>Common Crawl Docs：1412万，占16.5%</li>
+          <li>Goodreads：486万 / LibCats：159万 / 读秀：154万</li>
+        </ul>
+        <p><strong>论文</strong>：</p>
+        <ul>
+          <li>Anna档案-SciHub：8840万（英文，学科有偏，医学占40%+）</li>
+          <li>Semantic Scholar：2748万（AI2开源）</li>
+          <li>知网：2672万（中文）</li>
+          <li>万方：702万 / arXiv：428万（质量高但量少）</li>
+        </ul>
+        <p><strong>泛PDF</strong>：去重后15.8亿，已解析6亿+，筛选后0.7T Token</p>
+
+        <h4>2. 解析技术</h4>
+        <ul>
+          <li><strong>自研文档解析模型</strong>，准确率：书籍 86.59%（vs Mathpix 85.71%）、论文 86.22%（vs Mathpix 82.67%）</li>
+          <li>小语种头部35语种：76.74%（vs Mathpix 73.75%）</li>
+          <li>解析能力：单卡QPS=2，1500张H20刷45天完成120亿页</li>
+        </ul>
+
+        <h4>3. 影响力论文</h4>
+        <ul>
+          <li><strong>DocPO</strong>：文档元素解析的强化方法（Step-Aware Divergent Rewards）</li>
+          <li><strong>MORE</strong>：多语种文档解析Benchmark</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 代码管线详解 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>💻 代码管线详解：纯代码 + 代码网页 + Commit</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>一、纯代码数据</h4>
+        <ul>
+          <li><strong>SWH（Software Heritage）：</strong>GitHub离线镜像站，2025年7月前主要数据源，对应Code V3</li>
+          <li><strong>GitHub直接爬取：</strong>发现SWH对最新冷门仓库覆盖度低，启动全量爬取（Code V4）</li>
+          <li>量级演进：D2 CodeV3 910B → D3 CodeV4 1244B → CodeV4.1 1600B</li>
+        </ul>
+        <table class="ranking-table">
+          <tr><th>数据源</th><th>说明</th><th>量级</th></tr>
+          <tr><td>GitHub Meta信息</td><td>全量接口获取</td><td>2.4亿</td></tr>
+          <tr><td>GitHub仓库增量</td><td>与SWH找Diff</td><td>1亿/8200万完成</td></tr>
+          <tr><td>SWH-GitHub</td><td>直接从SWH获取</td><td>2.3亿</td></tr>
+          <tr><td>SWH-非GitHub+Gitee</td><td>700万+500万</td><td>已完成</td></tr>
+          <tr><td>SWH最新Content</td><td>文件级别</td><td>250亿文件</td></tr>
+        </table>
+
+        <h4>二、代码网页数据</h4>
+        <ul>
+          <li>典型形式：问题描述+代码解决方案（如StackOverflow）、文档说明+代码示例</li>
+          <li>早期通过7w+种子站点圈定，后训练高精FastText分类器从全量网页回捞</li>
+          <li>D3全量538B Token，高质分类后187B</li>
+        </ul>
+        <p><strong>处理流程：</strong></p>
+        <ul>
+          <li>HTML裁剪（启发式规则去除无用block）→ 规则预抽取（BeautifulSoup）→ 低质过滤（LLM打标）→ 生成式解析（DeepSeek V3标注训练7B模型）→ 质量筛选</li>
+        </ul>
+
+        <h4>三、Commit数据</h4>
+        <ul>
+          <li>GitHub API直接爬取（GHArchive存在commit不全问题）</li>
+          <li>50万精选仓库（按star筛选），获得1.5亿commit</li>
+          <li><strong>实验效果：</strong>SWE Bench pass@1 提升3pp（16.6→19.8），文件定位能力同步提升</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 知识合成 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🧠 知识合成：提升模型知识能力的数据方法</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>核心目标</h4>
+        <p>提升模型在知识问答（SimpleQA/中文SimpleQA）和知识推理上的能力，追赶DeepSeek-V3和Kimi-K2。</p>
+
+        <h4>三大方法</h4>
+        <ul>
+          <li><strong>结构化改写：</strong>将原始Wiki等知识文本改写为结构化格式，可泛化至OOD（域外数据）</li>
+          <li><strong>重述（Restatement）：</strong>6.3B数据，对原始知识进行重新表述，提升吸收效率</li>
+          <li><strong>QA合成：</strong>3.5B数据，将知识转化为问答对形式</li>
+        </ul>
+
+        <h4>关键实验结论</h4>
+        <ul>
+          <li>英文全部20B知识数据增训后，SimpleQA从2.78→4.98（5 epoch）</li>
+          <li><strong>非结构化改写无法泛化至OOD</strong>，收益主要来自in-domain</li>
+          <li>结构化方法已推广至论坛/问答站点（Quora、知乎、Reddit、Stack等）</li>
+          <li>主模型MidTrain后：SimpleQA 18.01→29.72，已超过DeepSeek-V3（26.54）</li>
+        </ul>
+
+        <div class="info-box green">
+          <strong>D3目标：</strong>SimpleQA超过Kimi-K2（35.25），中文SimpleQA从68.02→73.02。知识推理和知识问答pass@5各提升5pp。
+        </div>
+
+        <h4>实验方法论</h4>
+        <ul>
+          <li>4B Dense模型做MidTrain作为主模型替代实验</li>
+          <li>经验规律：4B每提升1pp，主模型约提升2~3pp</li>
+          <li>SimleQA和模型参数呈对数关系</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据工程基建 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔧 数据工程基建：存储 / 计算 / 平台</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>存储体系</h4>
+        <table class="ranking-table">
+          <tr><th>存储类型</th><th>用途</th><th>容量</th></tr>
+          <tr><td>HDFS（NJ3）</td><td>主要日常数据处理</td><td>16P</td></tr>
+          <tr><td>HDFS（GZ11）</td><td>备用集群</td><td>10P</td></tr>
+          <tr><td>CEPH</td><td>实验/本地处理</td><td>-</td></tr>
+          <tr><td>THIVE</td><td>生产数据存储</td><td>-</td></tr>
+          <tr><td>COS</td><td>文档管道使用</td><td>-</td></tr>
+        </table>
+
+        <h4>HDFS目录规范</h4>
+        <ul>
+          <li><code>/web</code> 网页 · <code>/code</code> 代码 · <code>/doc</code> 文档 · <code>/special</code> 专项 · <code>/experiment</code> 实验</li>
+          <li>数据必须压缩（推荐Parquet+Snappy/Gzip），默认2副本</li>
+          <li>超1月无读写→提醒 / 超3月→清理 / 超6月→强制清理</li>
+        </ul>
+
+        <h4>计算资源</h4>
+        <ul>
+          <li><strong>TDW Spark：</strong>CPU计算主力，去重/筛选/规则过滤</li>
+          <li><strong>TDW Ray：</strong>分布式推理任务</li>
+          <li><strong>GPU资源：</strong>太极管理，H20为主力卡型，支持4090/紫霄/Pro系列</li>
+          <li><strong>TKE：</strong>管道部署和日常工具</li>
+        </ul>
+
+        <h4>D4生产资源需求</h4>
+        <ul>
+          <li>网页解析：TDW CPU 11.5w核心（峰值），GPU确认中</li>
+          <li>文档解析：1500张H20刷45天</li>
+          <li>质量分：400张H20刷10天</li>
+          <li>MinHash去重：12000核+72T内存，5天</li>
+        </ul>
+
+        <div class="info-box">
+          <strong>💡 工程优化方向：</strong>
+          PD分离架构加速推理 · Prefix Decoder提高生产效率 · 监控日志统一收敛 · 存储读写收口可追溯 · 打平COS/CEPH/HDFS差异
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 优质数据源 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>📦 优质文本数据源全景梳理</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>四大数据来源</h4>
+        <ul>
+          <li><strong>1. 业界大规模优质数据源：</strong>网页/文档/代码，获取→漫爬，解析→各管线，质量筛选→算子</li>
+          <li><strong>2. 闭源数据：</strong>知乎、微博、Reddit、Quora、Twitter等，主要定爬获取，平均质量较高</li>
+          <li><strong>3. In-house自有产品数据：</strong>公众号、新闻、医疗对话等，来自PCG/WXG/IEG/CSIG/CDG各BG</li>
+          <li><strong>4. 采买数据：</strong>暂无针对预训练的系统梳理</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 面试指南 ==================== -->
+<div id="interview" class="section">
+  <div class="section-header">
+    <h2>📋 大模型数据工程面试指南</h2>
+    <p>基于实际项目经验，覆盖预训练数据处理全链路的核心面试知识点</p>
+  </div>
+
+  <div class="info-box green">
+    <strong>🎯 适用岗位：</strong>大模型预训练数据工程师 / 数据管线开发 / NLP数据处理 / AI Infra<br>
+    <strong>📌 核心竞争力：</strong>理解数据对模型效果的影响机制，能独立设计和优化数据处理管线
+  </div>
+
+  <!-- 面试模块1：数据处理全链路 -->
+  <div class="collapsible open">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔗 模块一：预训练数据处理全链路</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: 描述一下大模型预训练数据的完整处理流程？</h4>
+        <p><strong>标准答案框架：</strong></p>
+        <ul>
+          <li><strong>数据获取：</strong>漫爬（Manpa/CC）、定爬（Reddit/知乎等闭源站）、采买、司内合作</li>
+          <li><strong>解析清洗：</strong>HTML解析（正文识别模型）、PDF解析（文档解析模型）、规则过滤（短文本/重复段落）</li>
+          <li><strong>去重：</strong>MinHash（近似去重）→ 语义去重（Embedding聚类）→ 子串去重（文本内部）</li>
+          <li><strong>质量筛选：</strong>LLM打标训练小模型，多维度评估（知识性/连贯性/教育价值）</li>
+          <li><strong>实验验证：</strong>小模型（4B Dense）快速验证 → 主模型MidTrain确认效果</li>
+          <li><strong>数据交付：</strong>统一格式（Parquet），按版本管理（D2→D3→D4）</li>
+        </ul>
+
+        <h4>Q2: 不同数据管线的处理有什么差异？</h4>
+        <ul>
+          <li><strong>网页：</strong>重点在HTML正文识别和泛滥站点检测，需要处理导航栏/广告/模板页等噪声</li>
+          <li><strong>文档：</strong>重点在PDF解析准确率（公式/表格/多栏），需要处理多语种、多格式</li>
+          <li><strong>代码：</strong>重点在代码质量评估和代码网页抽取，需要区分纯代码/代码网页/Commit三类</li>
+        </ul>
+
+        <h4>Q3: 数据版本迭代（D2→D3→D4）的核心改进是什么？</h4>
+        <ul>
+          <li><strong>D2→D3：</strong>纯代码从910B→1600B，网页引入质量分模型，文档解析准确率超越Mathpix</li>
+          <li><strong>D3→D4：</strong>全量重刷网页、全局精确去重、后处理算子升级、存储规范化（Parquet+2副本）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块2：去重技术 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🧹 模块二：数据去重技术深度</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: MinHash去重的原理和参数选择？</h4>
+        <ul>
+          <li><strong>原理：</strong>通过多个哈希函数生成文档签名，用Jaccard相似度衡量文档重复度</li>
+          <li><strong>关键参数：</strong>哈希函数数量（通常128-256）、相似度阈值（0.7-0.9）、Shingle大小</li>
+          <li><strong>实践经验：</strong>不同来源数据需要不同阈值——Manpa内部用较严格阈值，跨来源统一时阈值放宽多召回</li>
+          <li><strong>工程规模：</strong>优化版需1900T存储+12000核+72T内存，5天完成</li>
+        </ul>
+
+        <h4>Q2: 为什么需要三层去重（MinHash+语义+子串）？</h4>
+        <ul>
+          <li><strong>MinHash：</strong>高效处理大规模近似重复，但无法捕捉语义级重复</li>
+          <li><strong>语义去重：</strong>基于Embedding聚类，能发现改写/翻译等语义相似但文本不同的内容</li>
+          <li><strong>子串去重：</strong>文本内部精细去重，处理段落级别的重复片段</li>
+          <li>三层递进：粗筛→精筛→细筛，逐步提高数据纯度</li>
+        </ul>
+
+        <h4>Q3: 大规模去重的工程挑战？</h4>
+        <ul>
+          <li>内存瓶颈：子串去重需要2T内存机器×10</li>
+          <li>存储开销：MinHash中间结果需要TB级存储</li>
+          <li>并行化：PySpark分布式处理，需要合理的分区策略</li>
+          <li>版本管理：不同轮次去重结果需要可追溯</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块3：质量评估 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>⭐ 模块三：数据质量评估与筛选</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: 如何构建数据质量评估模型？</h4>
+        <ul>
+          <li><strong>Step 1：</strong>使用大模型（如DeepSeek V3）对采样数据打标，生成质量标签</li>
+          <li><strong>Step 2：</strong>基于标注数据训练小模型（7B以下），用于大规模推理</li>
+          <li><strong>评估维度：</strong>文本知识性、连贯性、教育意义、信息密度等</li>
+          <li><strong>两种打标方式：</strong>直接打分（用于预过滤）vs 输出Reason后打分（准召更高，用于精筛）</li>
+        </ul>
+
+        <h4>Q2: 质量分模型的迭代策略？</h4>
+        <ul>
+          <li>同时使用4个质量分模型（NCC两个+自建两个），多维度交叉验证</li>
+          <li>低质验证实验：删除低质数据后，代码Benchmark（BCB/Crux）提升，其他持平</li>
+          <li>续训高质实验：在基础训练320B后续训160B高质数据，整体效果更好</li>
+        </ul>
+
+        <h4>Q3: 如何验证数据质量对模型效果的影响？</h4>
+        <ul>
+          <li><strong>小模型快速验证：</strong>4B Dense模型MidTrain，成本低、周期短</li>
+          <li><strong>Scaling规律：</strong>4B每提升1pp → 主模型约提升2~3pp</li>
+          <li><strong>关键Benchmark：</strong>SimpleQA（英文知识）、中文SimpleQA、TriviaQA、NQ、SWE Bench（代码）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块4：网页解析 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🌐 模块四：网页解析与正文抽取</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: 网页正文抽取有哪些方法？各有什么优缺点？</h4>
+        <ul>
+          <li><strong>规则方法（BeautifulSoup/Readability）：</strong>速度快，但对复杂页面效果差</li>
+          <li><strong>模型方法（Transformer块级分类）：</strong>对每个HTML块判断是否正文，准确率高但需要GPU</li>
+          <li><strong>生成式抽取（7B模型）：</strong>端到端生成清洁文本，质量最好但成本最高</li>
+          <li><strong>实际方案：</strong>规则预抽取（快速过滤）→ 模型精抽（质量保证），分层处理</li>
+        </ul>
+
+        <h4>Q2: 如何处理网页中的噪声和泛滥内容？</h4>
+        <ul>
+          <li><strong>结构噪声：</strong>导航栏/边框/备案信息 → HTML块级正文识别模型过滤</li>
+          <li><strong>内容噪声：</strong>UGC发帖人/回复时间 → 模型识别+规则清洗</li>
+          <li><strong>泛滥站点：</strong>采集作弊站/索引页/功能性网页 → 大模型对同Domain多页面打标</li>
+          <li><strong>低质内容：</strong>短文本/重复段落 → 规则过滤 + 质量分模型</li>
+        </ul>
+
+        <h4>Q3: 代码网页和普通网页的处理差异？</h4>
+        <ul>
+          <li>代码网页需要保留代码块的格式和缩进</li>
+          <li>种子站扩展 → FastText分类器训练 → 全量网页回捞</li>
+          <li>处理流程增加：HTML裁剪→规则预抽取→低质过滤→生成式抽取（DeepSeek V3标注+7B模型）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块5：文档解析 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>📄 模块五：文档解析（PDF/书籍/论文）</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: PDF解析的主要技术挑战？</h4>
+        <ul>
+          <li><strong>版面分析：</strong>多栏布局、图文混排、表格识别</li>
+          <li><strong>公式识别：</strong>LaTeX公式的准确提取和还原</li>
+          <li><strong>多语种支持：</strong>35+语种的字符识别和排版适配</li>
+          <li><strong>格式多样性：</strong>PDF 71%、EPUB 14.4%、ZIP 7.9%、MOBI 2%等</li>
+        </ul>
+
+        <h4>Q2: 你们的文档解析模型相比Mathpix有什么优势？</h4>
+        <ul>
+          <li>书籍准确率：86.59% vs Mathpix 85.71%（+0.88pp）</li>
+          <li>论文准确率：86.22% vs Mathpix 82.67%（+3.55pp）</li>
+          <li>小语种准确率：76.74% vs Mathpix 73.75%（+2.99pp）</li>
+          <li>自研模型可定制优化，针对特定场景（如化学结构式、代码块）可回捞重解析</li>
+        </ul>
+
+        <h4>Q3: 大规模文档解析的工程方案？</h4>
+        <ul>
+          <li>总量：22亿本文档，186亿页，当前解析进度36%</li>
+          <li>GPU推理：单卡QPS=2，1500张H20刷45天</li>
+          <li>CPU资源：解析1w核4wG，去重筛选2w核</li>
+          <li>存储：统一Parquet格式，2副本，按生产步骤分目录</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块6：知识增强 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🧠 模块六：知识增强与数据合成</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: 如何通过数据方法提升模型的知识能力？</h4>
+        <ul>
+          <li><strong>结构化改写：</strong>将非结构化文本转为结构化格式，可泛化至OOD，已推广至论坛/问答站点</li>
+          <li><strong>重述（Restatement）：</strong>对知识文本进行多样化重新表述</li>
+          <li><strong>QA合成：</strong>将知识转为问答对，直接提升问答能力</li>
+          <li><strong>关键发现：</strong>非结构化改写无法泛化至OOD，结构化方法是关键</li>
+        </ul>
+
+        <h4>Q2: SimpleQA指标的意义和提升方法？</h4>
+        <ul>
+          <li>SimpleQA衡量模型的事实性知识记忆能力</li>
+          <li>与模型参数呈对数关系（参数越大，边际提升越小）</li>
+          <li>MidTrain阶段是知识注入的关键窗口：从18.01→29.72（超过DeepSeek-V3的26.54）</li>
+          <li>目标：超过Kimi-K2（35.25）</li>
+        </ul>
+
+        <h4>Q3: 数据Scaling的实验方法论？</h4>
+        <ul>
+          <li>单一数据源+单一方法 → 单一数据源+多方法 → 多数据源+多方法，逐步Scaling</li>
+          <li>4B Dense模型做快速实验，主模型做最终验证</li>
+          <li>Scaling量级：200B~1T</li>
+          <li>资源：512卡常驻H20训练</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块7：工程实践 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>🔧 模块七：大规模数据工程实践</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <h4>Q1: HDFS存储管理的最佳实践？</h4>
+        <ul>
+          <li>按管线分一级目录：/web、/code、/doc、/special、/experiment</li>
+          <li>数据格式：统一Parquet + Snappy/Gzip压缩，2副本存储</li>
+          <li>生命周期管理：1月无读写→提醒，3月→清理，6月→强制清理</li>
+          <li>安全Quota：超额自动通知负责人和Leader</li>
+        </ul>
+
+        <h4>Q2: Spark大规模数据处理的优化经验？</h4>
+        <ul>
+          <li>使用RSS（Remote Shuffle Service）避免Shuffle数据丢失</li>
+          <li>合理设置并发（控制在2000左右），平衡速度和稳定性</li>
+          <li>大规模Repartition技巧：避免数据倾斜，合理分区</li>
+          <li>引擎参数配置：<code>spark.hadoop.dfs.replication=2</code></li>
+        </ul>
+
+        <h4>Q3: GPU推理管线的优化方向？</h4>
+        <ul>
+          <li><strong>PD分离架构：</strong>Prefill和Decode分离，提高推理效率</li>
+          <li><strong>Prefix Decoder：</strong>共享Prefix减少重复计算</li>
+          <li><strong>多卡型适配：</strong>H20/4090/紫霄/Pro系列，按算力比例换算</li>
+          <li><strong>自主推理优化：</strong>针对数据特性做定制优化，不完全依赖外部加速团队</li>
+        </ul>
+
+        <h4>Q4: 数据平台的痛点和改进方向？</h4>
+        <ul>
+          <li><strong>痛点：</strong>平台杂乱（Wedata/混元一站式/太极）、入门难、缺少FAQ、链路长</li>
+          <li><strong>改进：</strong>数据读写收口（禁止原生spark.write/read）、操作可追溯、Quota管控</li>
+          <li><strong>业界参考：</strong>Langfuse（可观测）、n8n（工作流）、Prefect（数据管道）、MLflow（生产监控）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 面试模块8：高频问题速查 -->
+  <div class="collapsible">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <h3>⚡ 模块八：高频面试问题速查表</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <table class="ranking-table">
+          <tr><th>问题</th><th>关键答案要点</th></tr>
+          <tr><td class="model-name">预训练数据量级？</td><td>网页~2000B Token，代码~1600B，文档186亿页，总量万亿级Token</td></tr>
+          <tr><td class="model-name">MinHash vs SimHash？</td><td>MinHash基于Jaccard相似度，适合集合比较；SimHash基于汉明距离，适合长文本。预训练数据普遍用MinHash</td></tr>
+          <tr><td class="model-name">为什么不直接用大模型做质量筛选？</td><td>成本太高。实践是用大模型打标→训练小模型→大规模推理，成本降低100x+</td></tr>
+          <tr><td class="model-name">数据对模型效果的影响？</td><td>数据质量>数量。删除低质后Benchmark提升，续训高质数据效果更好</td></tr>
+          <tr><td class="model-name">如何发现模型知识短板？</td><td>通过SimpleQA/中文SimpleQA等Benchmark定位，结合自动化方法发现弱项领域</td></tr>
+          <tr><td class="model-name">代码数据的特殊处理？</td><td>需要语言识别、License过滤、Star权重、依赖关系分析、Commit质量评估</td></tr>
+          <tr><td class="model-name">多语种数据处理？</td><td>头部35语种重点处理，语种识别→分语种解析→跨语种去重→语种配比实验</td></tr>
+          <tr><td class="model-name">数据安全与合规？</td><td>闭源数据严格权限管控、PII过滤、License合规检查、数据溯源可追踪</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <!-- Footer -->
 <div class="footer">
   <p>🧠 多模态大模型技术全景 2026 · 持续更新中</p>
-  <p style="margin-top:8px;">数据来源：arXiv、Artificial Analysis、LM Arena、各厂商官方发布</p>
+  <p style="margin-top:8px;">数据来源：arXiv、Artificial Analysis、LM Arena、各厂商官方发布、内部iWiki技术沉淀</p>
 </div>
 
 <script>
