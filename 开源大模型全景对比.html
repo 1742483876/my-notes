@@ -120,7 +120,8 @@ a:hover{text-decoration:underline}
   <button class="tab-btn" onclick="switchTab('glm5')">🇨🇳 GLM-5</button>
   <button class="tab-btn" onclick="switchTab('deepseek')">🔬 DeepSeek</button>
   <button class="tab-btn" onclick="switchTab('qwen')">☁️ Qwen 3.5</button>
-  <button class="tab-btn" onclick="switchTab('kimi')">🌙 Kimi K2</button>
+  <button class="tab-btn" onclick="switchTab('kimi')">🌙 Kimi K2.5</button>
+  <button class="tab-btn" onclick="switchTab('minimax')">⚡ MiniMax M2.5</button>
   <button class="tab-btn" onclick="switchTab('llama')">🦙 Llama 4</button>
   <button class="tab-btn" onclick="switchTab('mistral')">🇫🇷 Mistral 3</button>
   <button class="tab-btn" onclick="switchTab('deploy')">🚀 部署实战</button>
@@ -168,10 +169,16 @@ a:hover{text-decoration:underline}
       <td><span class="best">Apache 2.0</span></td><td>2026.02</td>
     </tr>
     <tr>
-      <td>Kimi K2</td><td>Moonshot</td>
-      <td class="best">1T</td><td>32B</td><td>MoE (384E)</td>
-      <td>128K</td><td>15.5T tokens</td>
-      <td>Modified MIT</td><td>2025.07</td>
+      <td>Kimi K2.5</td><td>Moonshot</td>
+      <td class="best">1T</td><td>32B</td><td>MoE (384E/8A) + MLA</td>
+      <td>256K</td><td>~32T tokens</td>
+      <td><span class="best">MIT</span></td><td>2026.01</td>
+    </tr>
+    <tr>
+      <td>MiniMax M2.5</td><td>MiniMax</td>
+      <td>230B</td><td class="best">10B</td><td>MoE (256E/8A) + Lightning Attn</td>
+      <td>200K</td><td>—</td>
+      <td><span class="best">Modified MIT</span></td><td>2026.02</td>
     </tr>
     <tr>
       <td>Llama 4 Maverick</td><td>Meta</td>
@@ -228,9 +235,14 @@ a:hover{text-decoration:underline}
       <td>—</td><td>GDN混合架构，多token预测，RL缩放</td>
     </tr>
     <tr>
-      <td>Kimi K2</td><td>NVIDIA H800</td>
+      <td>Kimi K2.5</td><td>NVIDIA H800</td>
       <td>集群(每节点8卡)</td><td>—</td><td>~$4.6M*</td>
-      <td>—</td><td>MuonClip优化器，QAT量化感知训练</td>
+      <td>—</td><td>MuonClip优化器，QAT量化，PARL Agent Swarm训练</td>
+    </tr>
+    <tr>
+      <td>MiniMax M2.5</td><td>NVIDIA (未公开)</td>
+      <td>—</td><td>—</td><td>—</td>
+      <td>—</td><td>Forge RL框架，200K+真实环境训练，40×RL加速</td>
     </tr>
     <tr>
       <td>Llama 4 Scout</td><td>NVIDIA H100</td>
@@ -303,11 +315,18 @@ a:hover{text-decoration:underline}
       <td>8卡余371GB，长上下文无压力；GDN省KV缓存</td>
     </tr>
     <tr>
-      <td>Kimi K2 (1T)</td><td>1,000B</td>
+      <td>Kimi K2.5 (1T)</td><td>1,000B</td>
       <td class="warn">~1.1TB</td><td>~600GB</td>
       <td class="warn">12卡（跨节点）</td><td>7卡</td>
       <td class="warn">❌ 不够</td><td>—</td>
       <td>FP8需12+卡跨节点；INT4 QAT 8卡可行（余168GB）</td>
+    </tr>
+    <tr>
+      <td>MiniMax M2.5 (230B)</td><td>230B</td>
+      <td class="best">~230GB</td><td class="best">~115GB</td>
+      <td class="best">3卡</td><td class="best">2卡</td>
+      <td class="best">✅ 轻松</td><td class="best">~200K</td>
+      <td>8卡余538GB！极致性价比，3卡FP8即可全功能运行</td>
     </tr>
     <tr>
       <td>Llama 4 Maverick (400B)</td><td>400B</td>
@@ -386,6 +405,10 @@ a:hover{text-decoration:underline}
       <td class="best">⭐⭐⭐⭐⭐</td><td>单卡INT4即可跑！10M超长上下文，极致性价比</td>
     </tr>
     <tr>
+      <td>🥇</td><td class="best">MiniMax M2.5</td><td class="best">3卡</td><td>FP8</td><td class="best">200K</td>
+      <td class="best">⭐⭐⭐⭐⭐</td><td>230B仅需3卡！SWE-bench 80.2%，成本最低旗舰</td>
+    </tr>
+    <tr>
       <td>🥈</td><td>DeepSeek-V3.2</td><td>8卡</td><td>FP8</td><td>32-64K</td>
       <td class="good">⭐⭐⭐⭐</td><td>MLA省KV缓存，8卡刚好，综合能力最强之一</td>
     </tr>
@@ -406,7 +429,7 @@ a:hover{text-decoration:underline}
       <td class="warn">⭐⭐</td><td>744B逼近768GB上限，KV缓存几乎没有余量</td>
     </tr>
     <tr>
-      <td>5</td><td class="warn">Kimi K2</td><td class="warn">12-16卡</td><td>FP8</td><td>—</td>
+      <td>5</td><td class="warn">Kimi K2.5</td><td class="warn">12-16卡</td><td>FP8</td><td>—</td>
       <td class="warn">⭐⭐</td><td>1T参数FP8需跨节点；INT4 QAT 8卡勉强可行</td>
     </tr>
   </table>
@@ -435,8 +458,12 @@ a:hover{text-decoration:underline}
       <td>Gated DeltaNet替代75%注意力层，多token预测</td><td>✅ 文本+图像+视频</td>
     </tr>
     <tr>
-      <td>Kimi K2</td><td>标准MHA</td><td>384E，MuonClip优化器</td>
-      <td>原生INT4 QAT量化，2×推理速度</td><td>❌ 纯文本</td>
+      <td>Kimi K2.5</td><td>MLA（多头潜在注意力）</td><td>384E/8A，MuonClip优化器</td>
+      <td>MoonViT视觉编码器，Agent Swarm（100子代理），PARL训练</td><td class="best">✅ 文本+图像+视频</td>
+    </tr>
+    <tr>
+      <td>MiniMax M2.5</td><td>Lightning Attention</td><td>256E/8A</td>
+      <td>Forge RL框架（40×加速），200K+环境训练，任务时间优化奖励</td><td>❌ 纯文本</td>
     </tr>
     <tr>
       <td>Llama 4</td><td>iRoPE交错注意力</td><td>Scout 16E / Maverick 128E</td>
@@ -456,7 +483,8 @@ a:hover{text-decoration:underline}
     <tr><td>GLM-5</td><td class="best">~$1.00</td><td class="best">~$3.20</td><td>5-6× 更便宜</td></tr>
     <tr><td>DeepSeek-V3.2</td><td class="best">~$0.27</td><td class="best">~$1.10</td><td>10× 更便宜</td></tr>
     <tr><td>Qwen3.5-397B</td><td class="best">~$0.40</td><td>~$1.20</td><td>5-8× 更便宜</td></tr>
-    <tr><td>Kimi K2</td><td>~$0.60</td><td>~$2.00</td><td>3-5× 更便宜</td></tr>
+    <tr><td>Kimi K2.5</td><td>~$0.60</td><td>~$2.50</td><td>3-5× 更便宜</td></tr>
+    <tr><td>MiniMax M2.5</td><td class="best">~$0.15</td><td class="best">~$1.20</td><td class="best">10-20× 更便宜</td></tr>
     <tr><td>Llama 4 Maverick</td><td>~$0.20</td><td>~$0.85</td><td>自部署免费</td></tr>
     <tr><td>Mistral Large 3</td><td class="best">~$0.50</td><td>~$1.50</td><td>3-5× 更便宜</td></tr>
     <tr><td style="color:var(--text2)">GPT-5.2 (参考)</td><td>~$1.75-5</td><td>~$14-25</td><td>—</td></tr>
@@ -614,6 +642,10 @@ a:hover{text-decoration:underline}
       <li><strong>更深专家路由：</strong>针对结构化证明、数学符号、逻辑链的专家特化</li>
     </ul>
 
+    <div class="info-box purple" style="margin-top:16px">
+      <strong>🔮 DeepSeek V4 状态（截至2026-04-07）：</strong>V4仍<strong>未正式发布</strong>。原定2月中旬（春节）发布，已多次延期。3月9日"V4 Lite"短暂出现在DeepSeek网站。据多方报道预计<strong>4月发布</strong>，将为多模态模型，支持1M+ token上下文，Engram条件记忆架构。预计开源（Apache 2.0），针对编码和长代码任务深度优化。
+    </div>
+
     <div class="gpu-section">
       <h3>🚀 部署需求（含 H20 96GB 方案）</h3>
       <table class="gpu-table">
@@ -720,32 +752,68 @@ a:hover{text-decoration:underline}
   </div>
 </div>
 
-<!-- ==================== Kimi K2 ==================== -->
+<!-- ==================== Kimi K2.5 ==================== -->
 <div id="kimi" class="tab-content">
   <div class="model-card">
     <div class="model-header">
-      <div class="model-logo" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff">K2</div>
+      <div class="model-logo" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff">K2.5</div>
       <div class="model-title">
-        <h2>Kimi K2 / K2 Thinking</h2>
-        <span class="org">Moonshot AI — 2025年7月 / 2025年11月</span>
+        <h2>Kimi K2.5 — 原生多模态 Agent 智能体</h2>
+        <span class="org">Moonshot AI — 2026年1月27日发布</span>
       </div>
       <div class="model-badges">
-        <span class="badge badge-mit">Modified MIT</span>
+        <span class="badge badge-mit">MIT License</span>
         <span class="badge badge-moe">MoE 1T</span>
+        <span class="badge badge-multimodal">原生多模态</span>
       </div>
     </div>
 
     <div class="info-box yellow">
-      <strong>🔥 最大开源模型：</strong>1万亿参数（1T），384个专家，每token激活32B参数。K2 Thinking 可以链式调用200-300次工具，是当前最强的Agent模型之一。
+      <strong>🔥 K2 → K2.5 重大升级：</strong>基于K2继续预训练~15T混合视觉+文本tokens（总训练量~32T），新增<strong>原生多模态</strong>（MoonViT 400M视觉编码器）、<strong>Agent Swarm</strong>（100子代理并行，1500+工具调用，4.5×加速）和<strong>256K上下文</strong>（K2为128K）。HLE 50.2%（带工具），BrowseComp 78.4%（Swarm模式）。
     </div>
 
     <div class="spec-grid">
-      <div class="spec-item"><div class="label">总参数</div><div class="value highlight">1T</div><div class="sub">384专家</div></div>
+      <div class="spec-item"><div class="label">总参数</div><div class="value highlight">1T</div><div class="sub">384专家，8激活+1共享/token</div></div>
       <div class="spec-item"><div class="label">激活参数</div><div class="value">32B</div><div class="sub">每token</div></div>
-      <div class="spec-item"><div class="label">上下文</div><div class="value">128K</div></div>
-      <div class="spec-item"><div class="label">训练数据</div><div class="value">15.5T</div><div class="sub">tokens</div></div>
-      <div class="spec-item"><div class="label">训练GPU</div><div class="value">H800</div><div class="sub">大规模集群</div></div>
-      <div class="spec-item"><div class="label">估算成本</div><div class="value">~$4.6M*</div><div class="sub">非官方</div></div>
+      <div class="spec-item"><div class="label">上下文</div><div class="value highlight">256K</div><div class="sub">K2为128K，翻倍</div></div>
+      <div class="spec-item"><div class="label">训练数据</div><div class="value highlight">~32T</div><div class="sub">K2 15T文本 + K2.5 15T视觉+文本 + 1.7T</div></div>
+      <div class="spec-item"><div class="label">视觉编码器</div><div class="value highlight">MoonViT</div><div class="sub">400M参数，原生分辨率ViT</div></div>
+      <div class="spec-item"><div class="label">注意力</div><div class="value">MLA</div><div class="sub">多头潜在注意力，KV压缩40-50%</div></div>
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">🐝 Agent Swarm — 革命性并行执行</h3>
+    <div class="info-box purple">
+      <strong>核心创新：</strong>K2.5 从单Agent扩展到<strong>自主协调的群体智能</strong>。编排器将复杂任务分解为并行子任务，动态实例化领域专用子Agent执行。<br>
+      • 最多<strong>100个并行子Agent</strong>，每任务最多<strong>1,500次工具调用</strong><br>
+      • 使用<strong>PARL</strong>（Parallel-Agent Reinforcement Learning）训练，奖励缩短关键路径而非简单串行<br>
+      • BrowseComp: 60.6% → <strong>78.4%</strong>（Swarm模式），执行时间<strong>缩短3-4.5×</strong><br>
+      • WideSearch F1: 72.7% → <strong>79.0%</strong>（Swarm模式）
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">📊 四种运行模式</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>模式</th><th>特点</th><th>速度</th><th>适用场景</th></tr>
+      <tr><td><strong>K2.5 Instant</strong></td><td>快速响应，无思考链</td><td>最快</td><td>简单问答、日常对话</td></tr>
+      <tr><td><strong>K2.5 Thinking</strong></td><td>深度推理，思考链可见</td><td>中等</td><td>数学、编程、复杂推理</td></tr>
+      <tr><td><strong>K2.5 Agent</strong></td><td>单Agent + 200-300次工具调用</td><td>中等</td><td>自动化工作流</td></tr>
+      <tr><td class="rec"><strong>K2.5 Agent Swarm</strong> (Beta)</td><td>100并行Agent，1500+工具调用</td><td>变化</td><td>大规模研究、复杂任务</td></tr>
+    </table>
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">🏆 基准测试</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>基准</th><th>K2.5 (Thinking)</th><th>GPT-5.2</th><th>Claude 4.5 Opus</th><th>Gemini 3 Pro</th></tr>
+      <tr><td>HLE-Full（带工具）</td><td class="rec">50.2%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>AIME 2025</td><td class="rec">96.1%</td><td>100%</td><td>92.8%</td><td>95.0%</td></tr>
+      <tr><td>GPQA-Diamond</td><td>87.6%</td><td>92.4%</td><td>87.0%</td><td>91.9%</td></tr>
+      <tr><td>SWE-bench Verified</td><td>76.8%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>SWE-bench Multilingual</td><td class="rec">73.0%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>BrowseComp（Swarm）</td><td class="rec">78.4%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>MMMU-Pro（视觉）</td><td>78.5%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>VideoMMMU（视频）</td><td>86.6%</td><td>—</td><td>—</td><td>—</td></tr>
+    </table>
     </div>
 
     <div class="gpu-section">
@@ -753,27 +821,138 @@ a:hover{text-decoration:underline}
       <table class="gpu-table">
         <tr><th>精度</th><th>显存</th><th>H20 96GB 方案</th><th>其他方案</th><th>说明</th></tr>
         <tr><td>FP8</td><td>~1.1TB</td><td class="warn">12× H20（跨节点，余40GB）</td><td>8× H200 141GB</td><td>FP8超出8×H20容量，必须跨节点</td></tr>
-        <tr><td class="rec">INT4 QAT（推荐）</td><td>~600GB</td><td class="rec">7× H20（余72GB）/ 8× H20（余168GB）</td><td>8× H200 (INT4)</td><td>官方QAT量化，质量几乎无损，推理速度2×</td></tr>
+        <tr><td class="rec">INT4 QAT（推荐）</td><td>~595GB</td><td class="rec">7× H20（余77GB）/ 8× H20（余173GB）</td><td>8× H200 (INT4)</td><td>官方QAT量化，质量几乎无损，推理速度2×</td></tr>
         <tr><td>BF16</td><td>~2.4TB</td><td>26× H20（跨节点）</td><td>不实际</td><td>需4台8卡服务器，不推荐</td></tr>
-        <tr><td>1.8-bit GGUF</td><td>~230GB</td><td>3× H20</td><td>1× 24GB GPU + 大内存</td><td>极慢（实验性，~1-2 tok/s）</td></tr>
+        <tr><td>1.8-bit GGUF</td><td>~240GB</td><td>3× H20</td><td>1× 24GB GPU + 大内存（~10 tok/s）</td><td>Unsloth动态量化，极慢</td></tr>
       </table>
       <div class="info-box yellow">
-        <strong>⚠️ Kimi K2 在 H20 上的挑战：</strong>1T参数FP8需~1.1TB显存，8×H20仅768GB，<strong>必须跨节点或使用INT4</strong>。推荐方案：<strong>8×H20 + INT4 QAT</strong>（官方量化，余168GB可支持中等上下文）。跨节点部署需注意节点间带宽瓶颈。
+        <strong>⚠️ Kimi K2.5 在 H20 上的挑战：</strong>1T参数FP8需~1.1TB显存，8×H20仅768GB，<strong>必须跨节点或使用INT4</strong>。推荐方案：<strong>8×H20 + INT4 QAT</strong>（官方量化，余173GB可支持中等上下文）。支持 vLLM、SGLang、KTransformers 推理框架。
       </div>
     </div>
 
     <div class="collapsible" style="margin-top:16px">
       <div class="collapsible-header" onclick="toggleCollapsible(this)">
-        <h3>⚡ 核心技术</h3><span class="arrow">▼</span>
+        <h3>🔑 K2 → K2.5 完整升级对比</h3><span class="arrow">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-content">
+          <table class="gpu-table">
+            <tr><th>特性</th><th>Kimi K2（2025.07）</th><th>Kimi K2.5（2026.01）</th></tr>
+            <tr><td>多模态</td><td>❌ 纯文本</td><td class="rec">✅ 原生多模态（图像+视频+PDF）</td></tr>
+            <tr><td>上下文</td><td>128K</td><td class="rec">256K（翻倍）</td></tr>
+            <tr><td>训练数据</td><td>15T 文本</td><td class="rec">~32T（15T文本 + 15T混合视觉+文本 + 1.7T）</td></tr>
+            <tr><td>视觉编码器</td><td>无</td><td class="rec">MoonViT 400M（原生分辨率ViT，SigLIP基础）</td></tr>
+            <tr><td>Agent能力</td><td>单Agent，200-300次工具调用</td><td class="rec">Agent Swarm：100并行子Agent，1500+工具调用</td></tr>
+            <tr><td>Agent训练</td><td>标准RL</td><td class="rec">PARL（Parallel-Agent RL），防止串行坍缩</td></tr>
+            <tr><td>视觉编程</td><td>❌</td><td class="rec">✅ UI截图→代码，视频→代码，视觉调试</td></tr>
+            <tr><td>视频理解</td><td>❌</td><td class="rec">✅ 时空池化4×压缩，长视频理解</td></tr>
+            <tr><td>INT4 QAT</td><td>✅ ~600GB</td><td>✅ ~595GB</td></tr>
+            <tr><td>许可证</td><td>Modified MIT</td><td class="rec">MIT（更开放）</td></tr>
+          </table>
+          <h4 style="color:var(--accent);margin:12px 0 8px">局限性</h4>
+          <ul>
+            <li>1T参数自部署门槛高（FP8需12+卡H20跨节点）</li>
+            <li>Agent Swarm功能复现需要理解PARL训练方法论</li>
+            <li>视频输入仍为实验性功能</li>
+            <li>纯推理能力（AIME 96.1%）略低于GPT-5.2（100%）和Gemini 3 Pro（95%）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MiniMax M2.5 ==================== -->
+<div id="minimax" class="tab-content">
+  <div class="model-card">
+    <div class="model-header">
+      <div class="model-logo" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff">M2.5</div>
+      <div class="model-title">
+        <h2>MiniMax M2.5 / M2.5-Lightning</h2>
+        <span class="org">MiniMax (上海) — 2026年2月12日发布</span>
+      </div>
+      <div class="model-badges">
+        <span class="badge badge-mit">Modified MIT</span>
+        <span class="badge badge-moe">MoE 230B</span>
+      </div>
+    </div>
+
+    <div class="info-box green">
+      <strong>💰 极致性价比之王：</strong>SWE-bench Verified 80.2%（开源最高，仅差Claude Opus 4.6 0.6分），API输出仅$1.20/M tokens（Opus的1/20），Lightning版100 tok/s。230B参数仅10B激活，<strong>$1/小时连续运行</strong>。
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-item"><div class="label">总参数</div><div class="value">230B</div><div class="sub">256专家，8激活/token</div></div>
+      <div class="spec-item"><div class="label">激活参数</div><div class="value highlight">10B</div><div class="sub">仅4%参数激活</div></div>
+      <div class="spec-item"><div class="label">上下文</div><div class="value">200K</div><div class="sub">支持128K输出</div></div>
+      <div class="spec-item"><div class="label">SWE-bench</div><div class="value highlight">80.2%</div><div class="sub">开源SOTA</div></div>
+      <div class="spec-item"><div class="label">推理速度</div><div class="value highlight">100 tok/s</div><div class="sub">Lightning版，2×其他旗舰</div></div>
+      <div class="spec-item"><div class="label">API成本</div><div class="value highlight">$1.20/M</div><div class="sub">输出，Opus的1/20</div></div>
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">🏆 核心基准</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>基准</th><th>M2.5</th><th>Claude Opus 4.6</th><th>GPT-5.2</th><th>Gemini 3 Pro</th></tr>
+      <tr><td class="rec">SWE-bench Verified</td><td class="rec">80.2%</td><td>80.8%</td><td>—</td><td>—</td></tr>
+      <tr><td>Multi-SWE-bench</td><td class="rec">51.3%</td><td>50.3%</td><td>—</td><td>—</td></tr>
+      <tr><td>SWE-bench Pro</td><td>55.4%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>BrowseComp</td><td>76.3%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>BFCL Multi-Turn</td><td class="rec">76.8%</td><td>63.3%</td><td>—</td><td>—</td></tr>
+      <tr><td>AIME 2025</td><td>86.3%</td><td>95.6%</td><td>98.0%</td><td>96.0%</td></tr>
+      <tr><td>GPQA-Diamond</td><td>85.2%</td><td>90.0%</td><td>90.0%</td><td>91.0%</td></tr>
+      <tr><td>Terminal Bench 2</td><td>52.2%</td><td>—</td><td>—</td><td>—</td></tr>
+    </table>
+    </div>
+    <div class="info-box blue" style="margin-top:10px">
+      <strong>📌 定位：</strong>M2.5 专注<strong>编码和Agent任务</strong>，在SWE-bench上与Opus 4.6打平，但在纯推理（AIME 86.3% vs 95.6%）上有差距。这是一个为开发者打造的<strong>高效编码Agent模型</strong>，而非通用推理模型。
+    </div>
+
+    <h3 style="color:var(--accent);margin:16px 0 10px">💰 API 定价（两个版本）</h3>
+    <div style="overflow-x:auto">
+    <table class="gpu-table">
+      <tr><th>版本</th><th>速度</th><th>输入价格</th><th>输出价格</th><th>vs Opus 4.6</th><th>说明</th></tr>
+      <tr><td><strong>M2.5 Standard</strong></td><td>50 tok/s</td><td class="rec">$0.15/M</td><td class="rec">$1.20/M</td><td>1/20</td><td>性价比最高</td></tr>
+      <tr><td><strong>M2.5 Lightning</strong></td><td class="rec">100 tok/s</td><td>$0.30/M</td><td>$2.40/M</td><td>1/10</td><td>$1/小时连续运行</td></tr>
+      <tr><td style="color:var(--text2)">Claude Opus 4.6</td><td>~50 tok/s</td><td>$5-10/M</td><td>$25/M</td><td>—</td><td>参考</td></tr>
+    </table>
+    </div>
+
+    <div class="gpu-section">
+      <h3>🚀 部署需求（含 H20 96GB 方案）</h3>
+      <table class="gpu-table">
+        <tr><th>精度</th><th>显存</th><th>H20 96GB 方案</th><th>其他方案</th><th>说明</th></tr>
+        <tr><td class="rec">FP8（推荐）</td><td>~230GB</td><td class="rec">3× H20（余58GB）/ 4× H20（推荐，余154GB）</td><td>4× H100 80GB</td><td>3卡即可！4卡余量支持200K全上下文</td></tr>
+        <tr><td>BF16</td><td>~457GB</td><td>5× H20（余23GB）/ 8× H20（推荐）</td><td>8× A100 80GB</td><td>5卡BF16可运行</td></tr>
+        <tr><td>INT4</td><td>~115GB</td><td class="rec">2× H20（余77GB）</td><td>2× RTX 4090</td><td>仅2卡！极致低成本</td></tr>
+        <tr><td>3-bit GGUF</td><td>~101GB</td><td>2× H20 / 1× H20 + CPU</td><td>128GB Mac（~20 tok/s）</td><td>Unsloth动态量化，消费级可用</td></tr>
+      </table>
+      <div class="info-box green">
+        <strong>🏆 MiniMax M2.5 是 H20 上最容易部署的旗舰模型：</strong>230B参数FP8仅需~230GB，<strong>3张H20即可运行</strong>，8卡部署余量高达538GB。INT4仅需2张卡。对于编码和Agent任务，M2.5提供了最高的"性能/卡数"比。
+      </div>
+    </div>
+
+    <div class="collapsible" style="margin-top:16px">
+      <div class="collapsible-header" onclick="toggleCollapsible(this)">
+        <h3>⚡ 核心技术创新</h3><span class="arrow">▼</span>
       </div>
       <div class="collapsible-body">
         <div class="collapsible-content">
           <ul>
-            <li><strong>MuonClip优化器：</strong>训练稳定性优化，支持32节点倍数的灵活并行</li>
-            <li><strong>原生INT4 QAT：</strong>量化感知训练，推理速度提升~2×，内存减半，质量几乎无损</li>
-            <li><strong>K2 Thinking：</strong>Humanity's Last Exam 44.9%，可链式200-300次工具调用</li>
-            <li><strong>许可证注意：</strong>Modified MIT — 超过1亿MAU或$2000万月收入需在UI显著展示"Kimi K2"</li>
-            <li><strong>训练集群：</strong>每节点8 GPU（NVLink+NVSwitch），8×400 Gbps RoCE跨节点</li>
+            <li><strong>Forge RL框架：</strong>Agent原生RL训练系统，前缀树合并+窗口FIFO调度实现<strong>40×训练加速</strong></li>
+            <li><strong>任务完成时间优化：</strong>奖励函数同时优化智能和速度，SWE-bench完成时间比M2.1快37%（22.8分钟 vs 31.3分钟）</li>
+            <li><strong>跨框架泛化：</strong>在Claude Code(80.2%)、Droid(79.7%)、OpenCode(76.1%)多框架上表现一致</li>
+            <li><strong>Lightning Attention：</strong>256专家MoE + Lightning注意力机制，实现100 tok/s高速推理</li>
+            <li><strong>"建筑师式"规划：</strong>训练中涌现Spec-writing行为——先分解计划，再写代码</li>
+            <li><strong>全栈能力：</strong>10+编程语言，200K+真实环境训练，覆盖Web/Android/iOS/Windows全平台</li>
+            <li><strong>Token效率：</strong>每任务3.52M tokens（M2.1为3.72M），减少20%无效推理</li>
+          </ul>
+          <h4 style="color:var(--accent);margin:12px 0 8px">局限性</h4>
+          <ul>
+            <li>纯文本模型，不支持图像/视频输入</li>
+            <li>纯推理能力弱于Opus/GPT-5.2（AIME 86.3% vs 95.6%）</li>
+            <li>HLE w/o tools仅19.4%，知识广度有限</li>
+            <li>Modified MIT许可（商用有条件）</li>
           </ul>
         </div>
       </div>
@@ -915,10 +1094,10 @@ a:hover{text-decoration:underline}
         <div class="info-box green">
 <strong>🎯 H20 96GB 选型决策树：</strong><br>
 • <strong>1× H20（单卡96GB）：</strong>Llama 4 Scout (INT4), Qwen3.5-27B, Mistral Large 3 (Q4 GGUF)<br>
-• <strong>2-3× H20：</strong>Llama 4 Scout (FP8), Llama 4 Maverick (INT4), Qwen3.5-397B (INT4)<br>
-• <strong>4-5× H20：</strong>Qwen3.5-397B (FP8), Llama 4 Maverick (FP8), Mistral Large 3 (INT4), DeepSeek-V3.2 (INT4)<br>
-• <strong>8× H20（单节点）：</strong>DeepSeek-V3.2 (FP8), DeepSeek-R2 (FP8), Mistral Large 3 (FP8), GLM-5 (FP8极限), Kimi K2 (INT4 QAT)<br>
-• <strong>12-16× H20（跨节点）：</strong>Kimi K2 (FP8), GLM-5 (BF16), DeepSeek-V3.2 (BF16)
+• <strong>2-3× H20：</strong>Llama 4 Scout (FP8), MiniMax M2.5 (FP8/INT4), Llama 4 Maverick (INT4), Qwen3.5-397B (INT4)<br>
+• <strong>4-5× H20：</strong>Qwen3.5-397B (FP8), Llama 4 Maverick (FP8), Mistral Large 3 (INT4), DeepSeek-V3.2 (INT4), MiniMax M2.5 (BF16)<br>
+• <strong>8× H20（单节点）：</strong>DeepSeek-V3.2 (FP8), DeepSeek-R2 (FP8), Mistral Large 3 (FP8), GLM-5 (FP8极限), Kimi K2.5 (INT4 QAT)<br>
+• <strong>12-16× H20（跨节点）：</strong>Kimi K2.5 (FP8), GLM-5 (BF16), DeepSeek-V3.2 (BF16)
         </div>
       </div>
     </div>
@@ -1009,10 +1188,18 @@ vllm serve mistralai/Mistral-Large-3-675B-Instruct-2512 \
   --tensor-parallel-size 8 --quantization fp8 \
   --max-model-len 65536 --port 8000
 
-<span style="color:#888"># Kimi K2 on 8× H20（INT4 QAT，推荐方案）</span>
-vllm serve moonshotai/Kimi-K2-Instruct-INT4 \
+<span style="color:#888"># Kimi K2.5 on 8× H20（INT4 QAT，推荐方案）</span>
+vllm serve moonshotai/Kimi-K2.5-INT4 \
   --tensor-parallel-size 8 \
   --max-model-len 32768 --port 8000
+
+<span style="color:#888"># MiniMax M2.5 on 3× H20（FP8，仅需3卡！）</span>
+python -m sglang.launch_server \
+  --model MiniMaxAI/MiniMax-M2.5 \
+  --tp 3 --trust-remote-code \
+  --tool-call-parser minimax-m2 \
+  --reasoning-parser minimax-append-think \
+  --mem-fraction-static 0.85 --port 8000
 
 <span style="color:#888"># === SGLang on H20（DeepSeek推荐）===</span>
 <span style="color:#888"># DeepSeek-V3.2 on 8× H20（SGLang支持更长ctx）</span>
