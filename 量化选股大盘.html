@@ -682,7 +682,12 @@ function renderTopBanner() {
       <div class="top-banner-title">今日 Top5 推荐（${G.date || '--'}）</div>
       <div style="font-size:12px;color:var(--text2)">基于 ${G.strategy_count||15} 个量化策略加权评分，数据仅供参考，不构成投资建议</div>
       <div class="top-banner-stocks">
-        ${recs.map(r => `<span class="top-stock-pill">${r.name} <span style="opacity:.7">${r.score.toFixed(0)}分</span></span>`).join('')}
+        ${recs.map(r => {
+          const b = r.board || getBoard(r.code);
+          const isKC = b === '科创板';
+          const pillStyle = isKC ? 'background:rgba(248,81,73,.15);color:var(--red);border-color:rgba(248,81,73,.3)' : '';
+          return `<span class="top-stock-pill" style="${pillStyle}">${r.name}${isKC?' 🚫':''} <span style="opacity:.7">${r.score.toFixed(0)}分</span></span>`;
+        }).join('')}
       </div>
     </div>`;
 }
@@ -730,6 +735,29 @@ function calcTradeDiscipline(r) {
   const volOk = vol5 > vol20 * 0.8; // 量能不萎缩
 
   return { maAligned, maPartial, bias, biasOk, buyPrice, stopLoss, target, volOk, ma5, ma10, ma20 };
+}
+
+// ===== 板块判断工具 =====
+function getBoard(code) {
+  if (!code) return '';
+  if (code.startsWith('688') || code.startsWith('689')) return '科创板';
+  if (code.startsWith('300') || code.startsWith('301')) return '创业板';
+  if (code.startsWith('60')) return '沪主板';
+  if (code.startsWith('00')) return '深主板';
+  if (code.startsWith('8') || code.startsWith('4')) return '北交所';
+  return '其他';
+}
+function getBoardBadge(code, board) {
+  const b = board || getBoard(code);
+  const cfg = {
+    '科创板': { bg: 'rgba(248,81,73,.15)', color: 'var(--red)', border: 'rgba(248,81,73,.3)', icon: '🚫' },
+    '创业板': { bg: 'rgba(188,140,255,.12)', color: '#bc8cff', border: 'rgba(188,140,255,.25)', icon: '' },
+    '沪主板': { bg: 'rgba(88,166,255,.10)', color: 'var(--accent)', border: 'rgba(88,166,255,.2)', icon: '' },
+    '深主板': { bg: 'rgba(63,185,80,.10)', color: 'var(--green)', border: 'rgba(63,185,80,.2)', icon: '' },
+    '北交所': { bg: 'rgba(227,179,65,.12)', color: '#e3b341', border: 'rgba(227,179,65,.25)', icon: '⚠️' },
+  }[b] || { bg: 'rgba(255,255,255,.05)', color: 'var(--text2)', border: 'var(--border)', icon: '' };
+  const warn = b === '科创板' ? ' title="⚠️ 科创板需开通权限才能交易"' : b === '北交所' ? ' title="⚠️ 北交所需开通权限才能交易"' : '';
+  return `<span style="font-size:10px;padding:1px 5px;border-radius:3px;background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border};margin-left:4px;white-space:nowrap;font-weight:600"${warn}>${cfg.icon}${b}</span>`;
 }
 
 function renderRecommend() {
@@ -811,7 +839,7 @@ function renderRecommend() {
     return `
     <div class="stock-card" onclick="openKlineByIndex('rec',${i})">
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
-      <div class="stock-name">${r.name}</div>
+      <div class="stock-name">${r.name} ${getBoardBadge(r.code, r.board)}</div>
       <div class="stock-code">${r.code} · ${dateBadge}</div>
       <div class="stock-meta">
         <div>
@@ -903,7 +931,7 @@ function renderHistoryVerify() {
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
-          <div class="stock-name">${p.name}</div>
+          <div class="stock-name">${p.name} ${getBoardBadge(p.code, p.board)}</div>
           <div class="stock-code">${p.code} · 入场 ${entryPrice}</div>
         </div>
         <div style="font-size:18px">${winIcon}</div>
@@ -1378,7 +1406,7 @@ window.renderDailyList = function renderDailyList(page) {
         <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:.15s"
             onmouseover="this.style.background='rgba(88,166,255,.06)'" onmouseout="this.style.background=''"
             onclick="openKlineByIndex('daily',${di},${dayPicks.indexOf(p)})">
-          <td style="padding:8px 12px;font-weight:500">${p.name}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
+          <td style="padding:8px 12px;font-weight:500">${p.name}${getBoardBadge(p.code, p.board)}<span style="color:var(--text2);font-size:11px;margin-left:6px">${p.code}</span></td>
           <td style="padding:8px 12px;color:var(--text2);font-size:12px">${(p.strategies||[]).join(' ')}</td>
           <td style="padding:8px 12px;color:var(--text2)">${p.entry_price ?? '-'}</td>
           <td style="padding:8px 12px">${fmtRet(p.return_1d ?? p.return)}</td>
@@ -2709,7 +2737,7 @@ function renderZtList() {
     <div class="zt-card">
       <div class="zt-card-top">
         <div>
-          <div class="zt-name">${s.name}</div>
+          <div class="zt-name">${s.name} ${getBoardBadge(s.code)}</div>
           <div class="zt-code">${s.code} · ${s.date || '--'}</div>
           <div class="zt-level">${s.level || ''}</div>
         </div>
