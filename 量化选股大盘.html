@@ -1176,7 +1176,7 @@ function switchPeriod(p) {
 let _dailyReversedData = [];  // 原始数据（包含所有Top picks）
 let _dailyPage = 1;
 let _holdMode = '1d';
-let _topMode = 3;  // 默认Top3
+let _topMode = 5;  // 默认Top5
 const _holdRetKey = { '1d': 'return_1d', '5d': 'return_5d', '20d': 'return_20d', 'now': 'return_now' };
 const _holdLabel  = { '1d': '1天', '5d': '5天', '20d': '20天', 'now': '至今' };
 
@@ -1480,7 +1480,7 @@ function renderDailyPicks() {
   _dailyReversedData = [...dailyData].reverse();
   _dailyPage = 1;
   _holdMode = '1d';
-  _topMode = 3;
+  _topMode = 5;
 
   // 用统一函数渲染所有内容（基于当前 Top M × Hold N）
   _recalcSummaryCards();
