@@ -155,6 +155,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
   </div>
   <div class="header-right">
     <div class="update-time" id="updateTime">--</div>
+    <span id="rtIndicator" style="display:none;font-size:11px;color:var(--green);background:var(--surface2);padding:4px 10px;border-radius:16px;border:1px solid rgba(63,185,80,.3);align-items:center;gap:4px"></span>
     <button class="refresh-btn" onclick="loadData()">🔄 刷新</button>
   </div>
 </div>
@@ -354,6 +355,125 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft
 let G = null; // 全局数据
 let charts = {};
 let currentPeriod = '1y';
+let _realtimeTimer = null;    // 实时行情刷新定时器
+let _realtimePrices = {};     // {code: {price, chg, chg_pct, high, low, volume, time}}
+let _recBasePrice = {};       // 推荐时的基准价格（推荐当天收盘价）
+
+// ===== 实时行情：东方财富 API =====
+function isTradeTime() {
+  const now = new Date();
+  const day = now.getDay();
+  if (day === 0 || day === 6) return false; // 周末
+  const h = now.getHours(), m = now.getMinutes();
+  const t = h * 100 + m;
+  // 9:15-11:35 或 12:55-15:05（留缓冲）
+  return (t >= 915 && t <= 1135) || (t >= 1255 && t <= 1505);
+}
+
+function buildEastmoneyUrl(codes) {
+  // 转换股票代码为东方财富格式：沪市 1.XXXXXX，深市 0.XXXXXX
+  const secids = codes.map(c => {
+    if (c.startsWith('6') || c.startsWith('9')) return '1.' + c;
+    return '0.' + c;
+  });
+  return `https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f3,f4,f12,f14,f15,f16,f17,f18,f6&secids=${secids.join(',')}`;
+}
+
+async function fetchRealtimePrices() {
+  if (!G || !G.today_recommendations || !G.today_recommendations.length) return;
+
+  const codes = G.today_recommendations.map(r => r.code);
+  // 保存推荐基准价格（仅首次）
+  if (!Object.keys(_recBasePrice).length) {
+    G.today_recommendations.forEach(r => {
+      _recBasePrice[r.code] = r.close;  // 推荐时的收盘价
+    });
+  }
+
+  try {
+    const url = buildEastmoneyUrl(codes);
+    const resp = await fetch(url);
+    const json = await resp.json();
+    if (json.data && json.data.diff) {
+      const now = new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      json.data.diff.forEach(item => {
+        const code = item.f12;
+        if (!code) return;
+        _realtimePrices[code] = {
+          price:    item.f2,    // 最新价
+          chg_pct:  item.f3,    // 涨跌幅%
+          chg_amt:  item.f4,    // 涨跌额
+          high:     item.f15,   // 最高
+          low:      item.f16,   // 最低
+          open:     item.f17,   // 开盘
+          preclose: item.f18,   // 昨收
+          amount:   item.f6,    // 成交额
+          name:     item.f14,   // 名称
+          time:     now,
+        };
+      });
+      console.log(`[realtime] 已更新 ${Object.keys(_realtimePrices).length} 只实时行情 @ ${now}`);
+      // 更新卡片价格（不重新渲染整个页面，只更新价格DOM）
+      updateRealtimePriceDOM();
+    }
+  } catch(e) {
+    console.warn('[realtime] 东方财富API请求失败，使用静态数据', e.message);
+  }
+}
+
+function updateRealtimePriceDOM() {
+  // 更新所有推荐卡片的实时价格
+  document.querySelectorAll('.stock-card[data-code]').forEach(card => {
+    const code = card.getAttribute('data-code');
+    const rt = _realtimePrices[code];
+    if (!rt || rt.price === '-' || rt.price == null) return;
+
+    const priceEl = card.querySelector('.rt-price');
+    const chgEl = card.querySelector('.rt-chg');
+    const plEl = card.querySelector('.rt-pl');
+    const timeEl = card.querySelector('.rt-time');
+
+    if (priceEl) priceEl.textContent = '¥' + rt.price.toFixed(2);
+    if (chgEl) {
+      const cls = rt.chg_pct > 0 ? 'up' : rt.chg_pct < 0 ? 'down' : 'flat';
+      const sign = rt.chg_pct > 0 ? '+' : '';
+      chgEl.className = 'stock-chg rt-chg ' + cls;
+      chgEl.textContent = sign + rt.chg_pct.toFixed(2) + '%';
+    }
+    // 推荐以来盈亏
+    const base = _recBasePrice[code];
+    if (plEl && base && rt.price) {
+      const pl = ((rt.price - base) / base * 100);
+      const plSign = pl > 0 ? '+' : '';
+      const plColor = pl > 0 ? 'var(--red)' : pl < 0 ? 'var(--green)' : 'var(--text2)';
+      const plIcon = pl > 0 ? '📈' : pl < 0 ? '📉' : '➖';
+      plEl.innerHTML = `${plIcon} 推荐以来 <strong style="color:${plColor}">${plSign}${pl.toFixed(2)}%</strong>`;
+    }
+    if (timeEl) timeEl.textContent = rt.time || '';
+  });
+
+  // 更新顶部实时行情指示器
+  const rtIndicator = document.getElementById('rtIndicator');
+  if (rtIndicator) {
+    const count = Object.keys(_realtimePrices).length;
+    const anyTime = Object.values(_realtimePrices)[0]?.time || '';
+    if (count > 0) {
+      rtIndicator.innerHTML = `<span style="color:var(--green)">● 实时</span> ${anyTime}`;
+      rtIndicator.style.display = 'inline-flex';
+    }
+  }
+}
+
+function startRealtimeRefresh() {
+  if (_realtimeTimer) clearInterval(_realtimeTimer);
+  // 交易时段每60秒刷新
+  _realtimeTimer = setInterval(async () => {
+    if (isTradeTime()) {
+      await fetchRealtimePrices();
+    }
+  }, 60000);
+  console.log('[realtime] 自动刷新已启动（交易时段每60秒）');
+}
 
 // ===== 进度提示 =====
 function setProgress(pct, text, step = '') {
@@ -521,6 +641,10 @@ async function loadData() {
       console.warn('[llm_analysis] 暂无LLM分析数据', e.message);
     }
 
+    // 异步加载实时行情（东方财富 API，交易时段每60秒自动刷新）
+    await fetchRealtimePrices();
+    startRealtimeRefresh();
+
     setProgress(75, '渲染图表数据...', `📊 处理 ${data.today_recommendations?.length || 0} 只推荐股票`);
     await new Promise(r => setTimeout(r, 30));
 
@@ -633,7 +757,7 @@ async function renderAll() {
   await tick(); renderStats(); renderTopBanner();
 
   setProgress(83, '渲染推荐列表...', `🏆 展示 ${(G.today_recommendations||[]).length} 只股票`);
-  await tick(); renderRecommend(); initHistoryDateSelect();
+  await tick(); renderRecommend(); initHistoryDateSelect(); updateRealtimePriceDOM();
 
   setProgress(88, '渲染策略回测图...', '📈 绘制胜率/收益图表');
   await tick(); renderBacktestCharts(); renderStrategyTable();
@@ -837,7 +961,7 @@ function renderRecommend() {
     }
 
     return `
-    <div class="stock-card" onclick="openKlineByIndex('rec',${i})">
+    <div class="stock-card" data-code="${r.code}" onclick="openKlineByIndex('rec',${i})">
       <div class="stock-card-rank ${rankClass}">${i+1}</div>
       <div class="stock-name">${r.name} ${getBoardBadge(r.code, r.board)}</div>
       <div class="stock-code">${r.code} · ${dateBadge}</div>
@@ -847,10 +971,12 @@ function renderRecommend() {
           <div class="hit-count">命中 ${r.hit_count} 个策略</div>
         </div>
         <div class="stock-price-info">
-          <div class="stock-price">¥${r.close?.toFixed(2)||'--'}</div>
-          <div class="stock-chg ${chgClass}">${chgSign}${r.chg_1d?.toFixed(2)||'--'}%</div>
+          <div class="stock-price rt-price">¥${r.close?.toFixed(2)||'--'}</div>
+          <div class="stock-chg rt-chg ${chgClass}">${chgSign}${r.chg_1d?.toFixed(2)||'--'}%</div>
+          <div class="rt-time" style="font-size:10px;color:var(--text2);margin-top:2px"></div>
         </div>
       </div>
+      <div class="rt-pl" style="font-size:12px;margin:6px 0;padding:4px 8px;background:rgba(255,255,255,.03);border-radius:6px;min-height:20px"></div>
       <div class="stock-score-bar"><div class="stock-score-fill" style="width:${scoreW}%"></div></div>
       <div class="strategy-tags">${(r.strategies||[]).map(s=>`<span class="stag">${s}</span>`).join('')}</div>
       ${disciplineHtml}
