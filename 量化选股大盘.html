@@ -2698,6 +2698,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKlineMo
         <div class="predict-kline-header">
           <div class="predict-kline-title">📈 K线走势</div>
           <div class="predict-kline-tabs">
+            <div class="predict-kline-tab" onclick="switchPToIntraday(this)">📊 当日分时</div>
             <div class="predict-kline-tab active" onclick="switchPKlineRange(30,this)">近30日</div>
             <div class="predict-kline-tab" onclick="switchPKlineRange(60,this)">近60日</div>
             <div class="predict-kline-tab" onclick="switchPKlineRange(120,this)">近120日</div>
@@ -2995,12 +2996,16 @@ let _pKlineData = [];
 let _pKlineRange = 30;
 let _pKlineChart = null;
 let _pKlineVolChart = null;
+let _pCurrentCode = '';     // 当前个股预测的股票code
+let _pIsIntradayMode = false;
 
 async function loadPredictKline(code, predictDate, predictClose) {
   // 销毁旧图表
   if (_pKlineChart)    { _pKlineChart.destroy();    _pKlineChart = null; }
   if (_pKlineVolChart) { _pKlineVolChart.destroy();  _pKlineVolChart = null; }
   _pKlineData = [];
+  _pCurrentCode = code;
+  _pIsIntradayMode = false;
   document.getElementById('pTodayBar').style.display = 'none';
 
   // Step 1: 尝试本地静态JSON
@@ -3068,15 +3073,125 @@ async function loadPredictKline(code, predictDate, predictClose) {
   }
 
   _pKlineRange = 30;
-  document.querySelectorAll('.predict-kline-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  document.querySelectorAll('.predict-kline-tab').forEach((t,i) => t.classList.toggle('active', i===1));
   renderPKlineCharts();
 }
 
 function switchPKlineRange(n, el) {
   _pKlineRange = n;
+  _pIsIntradayMode = false;
   document.querySelectorAll('.predict-kline-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   renderPKlineCharts();
+}
+
+// 个股预测切换到分时模式
+async function switchPToIntraday(el) {
+  if (!_pCurrentCode) return;
+  _pIsIntradayMode = true;
+  document.querySelectorAll('.predict-kline-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // 复用主弹窗的fetchIntradayData
+  const result = await fetchIntradayData(_pCurrentCode);
+  if (!result || !result.minutes || !result.minutes.length) {
+    // 无数据提示
+    if (_pKlineChart) { _pKlineChart.destroy(); _pKlineChart = null; }
+    if (_pKlineVolChart) { _pKlineVolChart.destroy(); _pKlineVolChart = null; }
+    const canvas = document.getElementById('pKlineChart');
+    const ctx2d = canvas.getContext('2d');
+    ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2d.fillStyle = '#8b949e';
+    ctx2d.font = '14px PingFang SC, sans-serif';
+    ctx2d.textAlign = 'center';
+    ctx2d.fillText('📊 暂无当日分时数据（非交易时段或未交易）', canvas.width/2, canvas.height/2);
+    return;
+  }
+  // 渲染分时图（复用renderIntradayChart的逻辑，但用个股预测的canvas）
+  renderPIntradayChart(result);
+}
+
+// 个股预测分时图渲染
+function renderPIntradayChart(data) {
+  const { minutes, preclose, date } = data;
+  if (!minutes || !minutes.length) return;
+
+  const labels = minutes.map(m => m.time);
+  const prices = minutes.map(m => m.price);
+  const vols = minutes.map(m => m.volume);
+  const avgPrices = minutes.map(m => m.avgPrice);
+
+  const lastPrice = prices[prices.length - 1];
+  const chg = preclose > 0 ? ((lastPrice - preclose) / preclose * 100) : 0;
+  const priceColor = chg >= 0 ? 'rgba(248,81,73,1)' : 'rgba(63,185,80,1)';
+  const priceBg = chg >= 0 ? 'rgba(248,81,73,.08)' : 'rgba(63,185,80,.08)';
+  const volColors = minutes.map((m, i) => {
+    if (i === 0) return m.price >= preclose ? 'rgba(248,81,73,.6)' : 'rgba(63,185,80,.6)';
+    return m.price >= minutes[i-1].price ? 'rgba(248,81,73,.6)' : 'rgba(63,185,80,.6)';
+  });
+
+  const allPrices = prices.concat(avgPrices);
+  const maxDiff = Math.max(...allPrices.map(p => Math.abs(p - preclose)));
+  const yMin = preclose - maxDiff * 1.15;
+  const yMax = preclose + maxDiff * 1.15;
+
+  if (_pKlineChart) _pKlineChart.destroy();
+  _pKlineChart = new Chart(document.getElementById('pKlineChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '分时价格', data: prices, borderColor: priceColor, backgroundColor: priceBg, borderWidth: 1.5, pointRadius: 0, pointHoverRadius: 3, fill: true, tension: 0.1 },
+        { label: '均价线', data: avgPrices, borderColor: '#ffa657', borderWidth: 1, pointRadius: 0, borderDash: [4,2], fill: false, tension: 0.1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: { duration: 200 },
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 16 } },
+        tooltip: {
+          mode: 'index', intersect: false,
+          callbacks: {
+            title: ctx => `${date?.slice(0,4)}-${date?.slice(4,6)}-${date?.slice(6,8)} ${labels[ctx[0].dataIndex]}`,
+            afterTitle: () => `昨收: ¥${preclose.toFixed(2)}`,
+            label: ctx => {
+              if (ctx.datasetIndex === 0) {
+                const p = ctx.parsed.y;
+                const pChg = preclose > 0 ? ((p - preclose) / preclose * 100).toFixed(2) : '--';
+                return `价格: ¥${p.toFixed(2)} (${pChg >= 0 ? '+' : ''}${pChg}%)`;
+              }
+              return `均价: ¥${ctx.parsed.y?.toFixed(2)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 0, callback: function(v,i) { const t=labels[i]; return ['09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00'].includes(t)?t:''; } }, grid: { color: '#21262d' } },
+        y: { min: +yMin.toFixed(2), max: +yMax.toFixed(2), ticks: { color: '#8b949e', font: { size: 10 }, callback: v => `${v.toFixed(2)} ${preclose>0?((v-preclose)/preclose*100).toFixed(1):''}%` }, grid: { color: '#21262d' }, position: 'right' }
+      },
+      interaction: { mode: 'index', intersect: false }
+    },
+    plugins: [{ id: 'pPrecloseRef', afterDraw(chart) {
+      const yAxis = chart.scales.y, xAxis = chart.scales.x, y = yAxis.getPixelForValue(preclose), ctx = chart.ctx;
+      ctx.save(); ctx.strokeStyle='#484f58'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+      ctx.beginPath(); ctx.moveTo(xAxis.left,y); ctx.lineTo(xAxis.right,y); ctx.stroke();
+      ctx.fillStyle='#8b949e'; ctx.font='10px PingFang SC,sans-serif'; ctx.fillText(`昨收 ${preclose.toFixed(2)}`,xAxis.left+4,y-4); ctx.restore();
+    }}]
+  });
+
+  if (_pKlineVolChart) _pKlineVolChart.destroy();
+  _pKlineVolChart = new Chart(document.getElementById('pKlineVolChart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: '成交量(手)', data: vols, backgroundColor: volColors, borderRadius: 0, barPercentage: 1, categoryPercentage: 1 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: { duration: 200 },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { title: ctx => labels[ctx[0].dataIndex], label: ctx => `成交量: ${ctx.parsed.y} 手` } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 0, callback: function(v,i) { const t=labels[i]; return ['09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00'].includes(t)?t:''; } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 9 } }, grid: { color: '#21262d' }, position: 'right' }
+      }
+    }
+  });
 }
 
 function renderPKlineCharts() {
