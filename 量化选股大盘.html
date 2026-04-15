@@ -1961,20 +1961,68 @@ function openKlineByIndex(type, idx, pickIdx) {
   if (stock) openKlineModal(stock);
 }
 
+// 从腾讯证券API获取日K数据（含当日实时）
+async function fetchKlineFromAPI(code, limit = 120) {
+  // 转换为腾讯格式：沪市 sh+code，深市 sz+code
+  const prefix = (code.startsWith('6') || code.startsWith('9')) ? 'sh' : 'sz';
+  const symbol = prefix + code;
+  const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${symbol},day,,,${limit},qfq`;
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) return [];
+    const json = await resp.json();
+    if (json.code !== 0 || !json.data || !json.data[symbol]) return [];
+    const dayData = json.data[symbol].qfqday || json.data[symbol].day || [];
+    // 格式：[日期, 开盘, 收盘, 最高, 最低, 成交量]
+    return dayData.map(arr => ({
+      date: arr[0],
+      open: parseFloat(arr[1]),
+      close: parseFloat(arr[2]),
+      high: parseFloat(arr[3]),
+      low: parseFloat(arr[4]),
+      volume: parseFloat(arr[5]) * 100  // 腾讯返回的是手，转为股
+    }));
+  } catch(e) {
+    console.warn('[kline-api] 腾讯证券K线API请求失败:', e);
+    return [];
+  }
+}
+
 async function openKlineModal(stock) {
-  // 如果没有内嵌K线，按需从 data/klines/{code}.json 加载
+  // Step 1: 尝试本地静态JSON
   if (!stock.klines || stock.klines.length === 0) {
     try {
       const r = await fetch(`./data/klines/${stock.code}.json`);
       if (r.ok) {
         const d = await r.json();
         stock.klines = d.klines || [];
-        // 如果有 entry_date / exit_date，截取对应范围
         if (stock.exit_date) {
-          stock.klines = stock.klines.filter(k => k.date <= stock.exit_date).slice(-80);
+          stock.klines = stock.klines.filter(k => k.date <= stock.exit_date).slice(-120);
         }
       }
-    } catch(e) { console.warn('K线加载失败', e); }
+    } catch(e) { /* 静态文件不存在，忽略 */ }
+  }
+
+  // Step 2: 本地无数据则从东方财富API实时获取
+  if (!stock.klines || stock.klines.length === 0) {
+    console.log(`[kline] 本地无K线，从东方财富API获取: ${stock.code}`);
+    stock.klines = await fetchKlineFromAPI(stock.code, 120);
+  }
+
+  // Step 3: 检查是否缺少今天的K线，缺少则从API补充（任何时间都尝试）
+  const today = new Date().toISOString().slice(0, 10);
+  if (stock.klines.length > 0) {
+    const lastDate = stock.klines[stock.klines.length - 1]?.date;
+    if (lastDate && lastDate < today) {
+      console.log(`[kline] 本地K线最新=${lastDate}，补充今日数据`);
+      const apiKlines = await fetchKlineFromAPI(stock.code, 5);
+      // 将API中比本地更新的数据追加
+      const newKlines = apiKlines.filter(k => k.date > lastDate);
+      if (newKlines.length) {
+        stock.klines = stock.klines.concat(newKlines);
+        console.log(`[kline] 已补充 ${newKlines.length} 条新K线`);
+      }
+    }
   }
 
   klineData = stock.klines || [];
@@ -1982,18 +2030,24 @@ async function openKlineModal(stock) {
   klineExitDate  = stock.exit_date  || '';
   klineRange = 30;
 
+  // 用最新K线数据更新显示信息
+  const latestK = klineData.length ? klineData[klineData.length - 1] : null;
+  const displayClose = latestK ? latestK.close : (stock.close || '--');
+  const displayDate = latestK ? latestK.date : (stock.last_date || stock.entry_date || '');
+  const prevK = klineData.length >= 2 ? klineData[klineData.length - 2] : null;
+  const displayChg = latestK && prevK ? ((latestK.close - prevK.close) / prevK.close * 100) : (stock.return !== undefined ? stock.return : stock.chg_1d);
+
   // 标题
-  const chgSign = stock.return !== undefined ? (stock.return >= 0 ? '+' : '') : (stock.chg_1d >= 0 ? '+' : '');
-  const chgVal  = stock.return !== undefined ? stock.return : stock.chg_1d;
-  const chgColor = (chgVal || 0) >= 0 ? 'var(--red)' : 'var(--green)';
+  const chgSign = (displayChg || 0) >= 0 ? '+' : '';
+  const chgColor = (displayChg || 0) >= 0 ? 'var(--red)' : 'var(--green)';
   document.getElementById('klineModalTitle').textContent = `${stock.name}（${stock.code}）`;
-  document.getElementById('klineModalSub').textContent = stock.last_date || stock.entry_date || '';
+  document.getElementById('klineModalSub').textContent = displayDate;
 
   // 基本信息行
   const last = klineData[klineData.length - 1] || {};
   const infoItems = [
-    { label: '最新收盘', value: `¥${(stock.close || last.close || '--')}`, color: 'var(--text)' },
-    { label: '今日涨跌', value: `${chgSign}${(chgVal||0).toFixed(2)}%`, color: chgColor },
+    { label: '最新价格', value: `¥${displayClose}`, color: 'var(--text)' },
+    { label: '今日涨跌', value: `${chgSign}${(displayChg||0).toFixed(2)}%`, color: chgColor },
     { label: '评分', value: `${stock.score?.toFixed(1) || '--'} 分`, color: 'var(--accent)' },
     { label: '命中策略', value: `${(stock.strategies||[]).join(' · ') || '--'}`, color: 'var(--text2)' },
   ];
@@ -2034,7 +2088,25 @@ function switchKlineRange(n, el) {
 
 function renderKlineCharts() {
   const slice = klineData.slice(-klineRange);
-  if (!slice.length) return;
+  const chartCanvas = document.getElementById('klineChart');
+  
+  // 空数据提示
+  let emptyTip = document.getElementById('klineEmptyTip');
+  if (!emptyTip) {
+    emptyTip = document.createElement('div');
+    emptyTip.id = 'klineEmptyTip';
+    emptyTip.style.cssText = 'text-align:center;padding:60px 20px;color:var(--text2);font-size:14px;';
+    chartCanvas.parentNode.insertBefore(emptyTip, chartCanvas);
+  }
+  
+  if (!slice.length) {
+    emptyTip.innerHTML = '📊 暂无K线数据<br><span style="font-size:12px;opacity:.6">数据获取中或该股票无历史交易记录</span>';
+    emptyTip.style.display = 'block';
+    chartCanvas.style.display = 'none';
+    return;
+  }
+  emptyTip.style.display = 'none';
+  chartCanvas.style.display = 'block';
 
   const labels  = slice.map(k => k.date.slice(5));   // MM-DD
   const closes  = slice.map(k => k.close);
@@ -2660,52 +2732,73 @@ async function loadPredictKline(code, predictDate, predictClose) {
   _pKlineData = [];
   document.getElementById('pTodayBar').style.display = 'none';
 
+  // Step 1: 尝试本地静态JSON
   try {
     const r = await fetch(`./data/klines/${code}.json?t=${Math.floor(Date.now()/60000)}`);
-    if (!r.ok) return;
-    const d = await r.json();
-    _pKlineData = d.klines || [];
-    if (!_pKlineData.length) return;
-
-    // 检查是否有比预测文件更新的K线数据
-    const latestKline = _pKlineData[_pKlineData.length - 1];
-    const latestDate  = latestKline.date;
-
-    if (latestDate > predictDate) {
-      // 有更新的K线（今天），用K线数据更新顶部显示
-      const prevClose = _pKlineData.length >= 2 ? _pKlineData[_pKlineData.length - 2].close : predictClose;
-      const chg = ((latestKline.close - prevClose) / prevClose * 100);
-      const chgStr = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
-      const chgColor = chg >= 0 ? 'var(--red)' : 'var(--green)';
-
-      // 更新顶部价格和日期
-      document.getElementById('pStockPrice').textContent = `¥${latestKline.close}`;
-      document.getElementById('pStockDate').textContent = `数据日期：${latestDate} ✅今日最新`;
-
-      // 显示今日行情条
-      const todayItems = [
-        { label: '今日收盘', val: `¥${latestKline.close}`, color: chgColor },
-        { label: '今日涨跌', val: chgStr, color: chgColor },
-        { label: '今日开盘', val: `¥${latestKline.open}`, color: 'var(--text)' },
-        { label: '今日最高', val: `¥${latestKline.high}`, color: 'var(--red)' },
-        { label: '今日最低', val: `¥${latestKline.low}`, color: 'var(--green)' },
-        { label: '成交量', val: latestKline.volume >= 1000000 ? (latestKline.volume/1000000).toFixed(1)+'万手' : (latestKline.volume/100).toFixed(0)+'手', color: 'var(--text2)' },
-      ];
-      document.getElementById('pTodayBar').innerHTML = todayItems.map(it =>
-        `<div class="predict-today-item">
-          <div class="predict-today-label">${it.label}</div>
-          <div class="predict-today-val" style="color:${it.color}">${it.val}</div>
-        </div>`
-      ).join('');
-      document.getElementById('pTodayBar').style.display = 'flex';
+    if (r.ok) {
+      const d = await r.json();
+      _pKlineData = d.klines || [];
     }
+  } catch(e) { /* 本地文件不存在 */ }
 
-    _pKlineRange = 30;
-    document.querySelectorAll('.predict-kline-tab').forEach((t,i) => t.classList.toggle('active', i===0));
-    renderPKlineCharts();
-  } catch(e) {
-    console.warn('预测K线加载失败', e);
+  // Step 2: 本地无数据则从东方财富API获取
+  if (!_pKlineData.length) {
+    console.log(`[predict-kline] 本地无K线，从东方财富API获取: ${code}`);
+    _pKlineData = await fetchKlineFromAPI(code, 120);
   }
+
+  // Step 3: 检查是否缺少今天的K线，尝试补充
+  if (_pKlineData.length) {
+    const today = new Date().toISOString().slice(0, 10);
+    const lastDate = _pKlineData[_pKlineData.length - 1]?.date;
+    if (lastDate && lastDate < today) {
+      const apiKlines = await fetchKlineFromAPI(code, 5);
+      const newKlines = apiKlines.filter(k => k.date > lastDate);
+      if (newKlines.length) {
+        _pKlineData = _pKlineData.concat(newKlines);
+        console.log(`[predict-kline] 已补充 ${newKlines.length} 条新K线`);
+      }
+    }
+  }
+
+  if (!_pKlineData.length) return;
+
+  // 检查是否有比预测文件更新的K线数据
+  const latestKline = _pKlineData[_pKlineData.length - 1];
+  const latestDate  = latestKline.date;
+
+  if (latestDate > predictDate) {
+    // 有更新的K线（今天），用K线数据更新顶部显示
+    const prevClose = _pKlineData.length >= 2 ? _pKlineData[_pKlineData.length - 2].close : predictClose;
+    const chg = ((latestKline.close - prevClose) / prevClose * 100);
+    const chgStr = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+    const chgColor = chg >= 0 ? 'var(--red)' : 'var(--green)';
+
+    // 更新顶部价格和日期
+    document.getElementById('pStockPrice').textContent = `¥${latestKline.close}`;
+    document.getElementById('pStockDate').textContent = `数据日期：${latestDate} ✅今日最新`;
+
+    // 显示今日行情条
+    const todayItems = [
+      { label: '今日收盘', val: `¥${latestKline.close}`, color: chgColor },
+      { label: '今日涨跌', val: chgStr, color: chgColor },
+      { label: '今日开盘', val: `¥${latestKline.open}`, color: 'var(--text)' },
+      { label: '今日最高', val: `¥${latestKline.high}`, color: 'var(--red)' },
+      { label: '今日最低', val: `¥${latestKline.low}`, color: 'var(--green)' },
+      { label: '成交量', val: latestKline.volume >= 1000000 ? (latestKline.volume/1000000).toFixed(1)+'万手' : (latestKline.volume/100).toFixed(0)+'手', color: 'var(--text2)' },
+    ];
+    document.getElementById('pTodayBar').innerHTML = todayItems.map(it =>
+      `<div class="predict-today-item">
+        <div class="predict-today-label">${it.label}</div>
+        <div class="predict-today-val" style="color:${it.color}">${it.val}</div>
+      </div>`
+    ).join('');
+    document.getElementById('pTodayBar').style.display = 'flex';
+  }
+
+  _pKlineRange = 30;
+  document.querySelectorAll('.predict-kline-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  renderPKlineCharts();
 }
 
 function switchPKlineRange(n, el) {
