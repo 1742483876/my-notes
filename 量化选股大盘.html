@@ -1152,7 +1152,7 @@ function renderBacktestCharts() {
   if (chartTitles[0]) chartTitles[0].textContent = `📊 各策略胜率对比（${periodLabel}）`;
   if (chartTitles[1]) chartTitles[1].textContent = `💰 各策略平均收益对比（${periodLabel}）`;
 
-  destroyChart('chartWinRate');
+  destroyChart('winRate');
   charts.winRate = new Chart(document.getElementById('chartWinRate'), {
     type: 'bar',
     data: {
@@ -1175,7 +1175,7 @@ function renderBacktestCharts() {
     }
   });
 
-  destroyChart('chartAvgReturn');
+  destroyChart('avgReturn');
   charts.avgReturn = new Chart(document.getElementById('chartAvgReturn'), {
     type: 'bar',
     data: {
@@ -1654,7 +1654,7 @@ function renderEquityCharts() {
   const e30 = G.equity_30d || [];
   const e1y = G.equity_1y  || [];
 
-  destroyChart('chartEquity30');
+  destroyChart('eq30');
   if (e30.length) {
     charts.eq30 = new Chart(document.getElementById('chartEquity30'), {
       type: 'line',
@@ -1675,7 +1675,7 @@ function renderEquityCharts() {
     });
   }
 
-  destroyChart('chartEquity1y');
+  destroyChart('eq1y');
   if (e1y.length) {
     charts.eq1y = new Chart(document.getElementById('chartEquity1y'), {
       type: 'line',
@@ -1699,7 +1699,7 @@ function renderEquityCharts() {
   // 雷达图
   const bt1y = G.backtest_1y || {};
   const sl = (G.strategy_list || []).slice(0, 8);
-  destroyChart('chartRadar');
+  destroyChart('radar');
   charts.radar = new Chart(document.getElementById('chartRadar'), {
     type: 'radar',
     data: {
@@ -1768,7 +1768,7 @@ function renderWeightCharts() {
 
   const colors = ['#58a6ff','#bc8cff','#3fb950','#ffa657','#f85149','#d29922','#79c0ff','#56d364','#ffb3ba','#c3e88d','#82aaff','#ff9d00','#89ddff','#f07178','#c792ea'];
 
-  destroyChart('chartWeights');
+  destroyChart('weights');
   charts.weights = new Chart(document.getElementById('chartWeights'), {
     type: 'doughnut',
     data: { labels: names, datasets: [{ data: wVals, backgroundColor: colors, borderColor: '#161b22', borderWidth: 2 }] },
@@ -1787,7 +1787,7 @@ function renderWeightCharts() {
   recs.forEach(r => (r.strategies||[]).forEach(s => freq[s] = (freq[s]||0)+1));
   const freqSorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10);
 
-  destroyChart('chartHitFreq');
+  destroyChart('hitFreq');
   charts.hitFreq = new Chart(document.getElementById('chartHitFreq'), {
     type: 'bar',
     data: {
@@ -1895,6 +1895,7 @@ loadData();
       <div class="kline-info-row" id="klineInfoRow"></div>
       <!-- 切换按钮 -->
       <div class="kline-tabs">
+        <div class="kline-tab" onclick="switchToIntraday(this)">📊 当日分时</div>
         <div class="kline-tab active" onclick="switchKlineRange(30, this)">近30日</div>
         <div class="kline-tab" onclick="switchKlineRange(60, this)">近60日</div>
         <div class="kline-tab" onclick="switchKlineRange(120, this)">近120日</div>
@@ -1916,6 +1917,9 @@ let klineExitDate  = ''; // 卖出日（可选）
 let klineChartInst = null;
 let klineVolInst   = null;
 let klineRange = 30;
+let _klineCurrentCode = ''; // 当前弹窗股票代码
+let _intradayData = [];     // 当日分时数据
+let _isIntradayMode = false; // 是否处于分时模式
 
 // 通过全局索引打开K线弹窗（避免把大JSON塞进HTML属性）
 function openKlineByIndex(type, idx, pickIdx) {
@@ -2029,6 +2033,9 @@ async function openKlineModal(stock) {
   klineEntryDate = stock.entry_date || stock.last_date || '';
   klineExitDate  = stock.exit_date  || '';
   klineRange = 30;
+  _klineCurrentCode = stock.code || '';
+  _intradayData = [];
+  _isIntradayMode = false;
 
   // 用最新K线数据更新显示信息
   const latestK = klineData.length ? klineData[klineData.length - 1] : null;
@@ -2062,9 +2069,9 @@ async function openKlineModal(stock) {
     </div>`
   ).join('');
 
-  // 重置切换按钮状态
+  // 重置切换按钮状态（默认近30日，索引1）
   document.querySelectorAll('.kline-tab').forEach((t,i) => {
-    t.classList.toggle('active', i === 0);
+    t.classList.toggle('active', i === 1);
   });
 
   document.getElementById('klineModal').classList.remove('hidden');
@@ -2081,9 +2088,273 @@ function closeKlineModal() {
 
 function switchKlineRange(n, el) {
   klineRange = n;
+  _isIntradayMode = false;
   document.querySelectorAll('.kline-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+  // 恢复日K线标题
+  document.querySelector('.kline-chart-wrap').previousElementSibling?.remove(); // 移除分时标题（如果有）
   renderKlineCharts();
+}
+
+// ===== 当日分时图功能 =====
+// 从腾讯证券API获取当日分时数据
+async function fetchIntradayData(code) {
+  const prefix = (code.startsWith('6') || code.startsWith('9')) ? 'sh' : 'sz';
+  const symbol = prefix + code;
+  const url = `https://web.ifzq.gtimg.cn/appstock/app/minute/query?code=${symbol}&_=${Date.now()}`;
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) return [];
+    const json = await resp.json();
+    if (json.code !== 0 || !json.data || !json.data[symbol]) return [];
+    const stockData = json.data[symbol];
+    const mi = stockData.data;
+    if (!mi || !mi.data || !mi.data.length) return [];
+    // 获取昨收（qt数组第5个元素，索引4）
+    const qtArr = stockData.qt?.[symbol] || [];
+    const preclose = parseFloat(qtArr[4] || 0);
+    return {
+      date: mi.date,
+      preclose: preclose,
+      minutes: mi.data.map((item, idx) => {
+        const parts = item.split(' ');
+        const cumVol = parseInt(parts[2]);     // 累计成交量(手)
+        const cumAmount = parseFloat(parts[3]); // 累计成交额(元)
+        // 计算单分钟成交量
+        let prevCumVol = 0;
+        if (idx > 0) {
+          const prevParts = mi.data[idx - 1].split(' ');
+          prevCumVol = parseInt(prevParts[2]);
+        }
+        return {
+          time: parts[0].slice(0,2) + ':' + parts[0].slice(2),  // "0930" -> "09:30"
+          price: parseFloat(parts[1]),
+          volume: cumVol - prevCumVol,  // 单分钟成交量(手)
+          cumVol: cumVol,               // 累计成交量(手)
+          cumAmount: cumAmount,         // 累计成交额(元)
+          avgPrice: cumVol > 0 ? cumAmount / (cumVol * 100) : parseFloat(parts[1])  // 均价=累计额/(累计手×100)
+        };
+      })
+    };
+  } catch(e) {
+    console.warn('[intraday] 分时数据获取失败:', e);
+    return null;
+  }
+}
+
+// 切换到分时模式
+async function switchToIntraday(el) {
+  if (!_klineCurrentCode) return;
+  _isIntradayMode = true;
+  document.querySelectorAll('.kline-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // 显示加载中
+  const chartCanvas = document.getElementById('klineChart');
+  let emptyTip = document.getElementById('klineEmptyTip');
+  if (!emptyTip) {
+    emptyTip = document.createElement('div');
+    emptyTip.id = 'klineEmptyTip';
+    emptyTip.style.cssText = 'text-align:center;padding:60px 20px;color:var(--text2);font-size:14px;';
+    chartCanvas.parentNode.insertBefore(emptyTip, chartCanvas);
+  }
+  emptyTip.innerHTML = '⏳ 正在加载当日分时数据...';
+  emptyTip.style.display = 'block';
+  chartCanvas.style.display = 'none';
+
+  // 获取分时数据
+  const result = await fetchIntradayData(_klineCurrentCode);
+  if (!result || !result.minutes || !result.minutes.length) {
+    emptyTip.innerHTML = '📊 暂无当日分时数据<br><span style="font-size:12px;opacity:.6">可能是非交易时段或该股票今日未交易</span>';
+    if (klineChartInst) { klineChartInst.destroy(); klineChartInst = null; }
+    if (klineVolInst) { klineVolInst.destroy(); klineVolInst = null; }
+    return;
+  }
+  _intradayData = result;
+  emptyTip.style.display = 'none';
+  chartCanvas.style.display = 'block';
+  renderIntradayChart();
+}
+
+// 渲染分时图
+function renderIntradayChart() {
+  const { minutes, preclose, date } = _intradayData;
+  if (!minutes || !minutes.length) return;
+
+  const labels = minutes.map(m => m.time);
+  const prices = minutes.map(m => m.price);
+  const vols   = minutes.map(m => m.volume);  // 单分钟成交量(手)
+
+  // 均价线（直接使用预计算的 cumAmount/(cumVol*100)）
+  const avgPrices = minutes.map(m => m.avgPrice);
+
+  // 最新价与昨收
+  const lastPrice = prices[prices.length - 1];
+  const chg = preclose > 0 ? ((lastPrice - preclose) / preclose * 100) : 0;
+
+  // 颜色
+  const priceColor = chg >= 0 ? 'rgba(248,81,73,1)' : 'rgba(63,185,80,1)';
+  const priceBg = chg >= 0 ? 'rgba(248,81,73,.08)' : 'rgba(63,185,80,.08)';
+
+  // 成交量颜色（每分钟涨跌）
+  const volColors = minutes.map((m, i) => {
+    if (i === 0) return m.price >= preclose ? 'rgba(248,81,73,.6)' : 'rgba(63,185,80,.6)';
+    return m.price >= minutes[i-1].price ? 'rgba(248,81,73,.6)' : 'rgba(63,185,80,.6)';
+  });
+
+  // Y轴范围（以昨收为中心对称）
+  const allPrices = prices.concat(avgPrices);
+  const maxDiff = Math.max(...allPrices.map(p => Math.abs(p - preclose)));
+  const yMin = preclose - maxDiff * 1.15;
+  const yMax = preclose + maxDiff * 1.15;
+
+  if (klineChartInst) klineChartInst.destroy();
+  klineChartInst = new Chart(document.getElementById('klineChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '分时价格',
+          data: prices,
+          borderColor: priceColor,
+          backgroundColor: priceBg,
+          borderWidth: 1.5,
+          pointRadius: 0,
+          pointHoverRadius: 3,
+          fill: true,
+          tension: 0.1,
+        },
+        {
+          label: '均价线',
+          data: avgPrices,
+          borderColor: '#ffa657',
+          borderWidth: 1,
+          pointRadius: 0,
+          borderDash: [4, 2],
+          fill: false,
+          tension: 0.1,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 16 } },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            title: (ctx) => `${date?.slice(0,4)}-${date?.slice(4,6)}-${date?.slice(6,8)} ${labels[ctx[0].dataIndex]}`,
+            afterTitle: () => `昨收: ¥${preclose.toFixed(2)}`,
+            label: (ctx) => {
+              if (ctx.datasetIndex === 0) {
+                const p = ctx.parsed.y;
+                const pChg = preclose > 0 ? ((p - preclose) / preclose * 100).toFixed(2) : '--';
+                const sign = pChg >= 0 ? '+' : '';
+                return `价格: ¥${p.toFixed(2)} (${sign}${pChg}%)`;
+              }
+              return `均价: ¥${ctx.parsed.y?.toFixed(2)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#8b949e', font: { size: 9 }, maxRotation: 0,
+            callback: function(val, idx) {
+              const t = labels[idx];
+              // 只显示关键时间点
+              if (['09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00'].includes(t)) return t;
+              return '';
+            }
+          },
+          grid: { color: '#21262d' }
+        },
+        y: {
+          min: +yMin.toFixed(2),
+          max: +yMax.toFixed(2),
+          ticks: {
+            color: '#8b949e', font: { size: 10 },
+            callback: function(val) {
+              const pct = preclose > 0 ? ((val - preclose) / preclose * 100).toFixed(1) : '';
+              return `${val.toFixed(2)} ${pct}%`;
+            }
+          },
+          grid: { color: '#21262d' },
+          position: 'right'
+        }
+      },
+      interaction: { mode: 'index', intersect: false }
+    },
+    plugins: [{
+      id: 'precloseRef',
+      afterDraw(chart) {
+        // 画昨收参考线
+        const yAxis = chart.scales.y;
+        const xAxis = chart.scales.x;
+        const y = yAxis.getPixelForValue(preclose);
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.strokeStyle = '#484f58';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(xAxis.left, y);
+        ctx.lineTo(xAxis.right, y);
+        ctx.stroke();
+        ctx.fillStyle = '#8b949e';
+        ctx.font = '10px PingFang SC, sans-serif';
+        ctx.fillText(`昨收 ${preclose.toFixed(2)}`, xAxis.left + 4, y - 4);
+        ctx.restore();
+      }
+    }]
+  });
+
+  // 分时成交量图
+  if (klineVolInst) klineVolInst.destroy();
+  klineVolInst = new Chart(document.getElementById('klineVolChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: '成交量(手)',
+        data: vols,
+        backgroundColor: volColors,
+        borderRadius: 0,
+        barPercentage: 1,
+        categoryPercentage: 1,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: {
+          title: ctx => labels[ctx[0].dataIndex],
+          label: ctx => `成交量: ${ctx.parsed.y} 手`
+        }
+      }},
+      scales: {
+        x: {
+          ticks: {
+            color: '#8b949e', font: { size: 9 }, maxRotation: 0,
+            callback: function(val, idx) {
+              const t = labels[idx];
+              if (['09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00'].includes(t)) return t;
+              return '';
+            }
+          },
+          grid: { color: '#21262d' }
+        },
+        y: { ticks: { color: '#8b949e', font: { size: 9 } }, grid: { color: '#21262d' }, position: 'right' }
+      }
+    }
+  });
 }
 
 function renderKlineCharts() {
