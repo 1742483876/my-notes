@@ -380,49 +380,63 @@ function buildEastmoneyUrl(codes) {
 }
 
 async function fetchRealtimePrices() {
-  if (!G || !G.today_recommendations || !G.today_recommendations.length) return;
+  // 收集所有需要实时行情的股票代码（推荐+涨停预测）
+  const codeSet = new Set();
+  if (G && G.today_recommendations) {
+    G.today_recommendations.forEach(r => codeSet.add(r.code));
+  }
+  if (G && G.zt_predict && G.zt_predict.top50) {
+    G.zt_predict.top50.forEach(s => codeSet.add(s.code));
+  }
+  const codes = [...codeSet];
+  if (!codes.length) return;
 
-  const codes = G.today_recommendations.map(r => r.code);
   // 保存推荐基准价格（仅首次）
   if (!Object.keys(_recBasePrice).length) {
-    G.today_recommendations.forEach(r => {
-      _recBasePrice[r.code] = r.close;  // 推荐时的收盘价
-    });
+    if (G.today_recommendations) {
+      G.today_recommendations.forEach(r => {
+        _recBasePrice[r.code] = r.close;
+      });
+    }
   }
 
   try {
-    const url = buildEastmoneyUrl(codes);
-    const resp = await fetch(url);
-    const json = await resp.json();
-    if (json.data && json.data.diff) {
-      const now = new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      json.data.diff.forEach(item => {
-        const code = item.f12;
-        if (!code) return;
-        _realtimePrices[code] = {
-          price:    item.f2,    // 最新价
-          chg_pct:  item.f3,    // 涨跌幅%
-          chg_amt:  item.f4,    // 涨跌额
-          high:     item.f15,   // 最高
-          low:      item.f16,   // 最低
-          open:     item.f17,   // 开盘
-          preclose: item.f18,   // 昨收
-          amount:   item.f6,    // 成交额
-          name:     item.f14,   // 名称
-          time:     now,
-        };
-      });
-      console.log(`[realtime] 已更新 ${Object.keys(_realtimePrices).length} 只实时行情 @ ${now}`);
-      // 更新卡片价格（不重新渲染整个页面，只更新价格DOM）
-      updateRealtimePriceDOM();
+    // 分批请求（每批最多50只）
+    for (let batch = 0; batch < codes.length; batch += 50) {
+      const batchCodes = codes.slice(batch, batch + 50);
+      const url = buildEastmoneyUrl(batchCodes);
+      const resp = await fetch(url);
+      const json = await resp.json();
+      if (json.data && json.data.diff) {
+        json.data.diff.forEach(item => {
+          const code = item.f12;
+          if (!code) return;
+          _realtimePrices[code] = {
+            price:    item.f2,
+            chg_pct:  item.f3,
+            chg_amt:  item.f4,
+            high:     item.f15,
+            low:      item.f16,
+            open:     item.f17,
+            preclose: item.f18,
+            amount:   item.f6,
+            name:     item.f14,
+            time:     new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+          };
+        });
+      }
     }
+    const now = Object.values(_realtimePrices)[0]?.time || '';
+    console.log(`[realtime] 已更新 ${Object.keys(_realtimePrices).length} 只实时行情 @ ${now}`);
+    // 更新卡片价格
+    updateRealtimePriceDOM();
   } catch(e) {
     console.warn('[realtime] 东方财富API请求失败，使用静态数据', e.message);
   }
 }
 
 function updateRealtimePriceDOM() {
-  // 更新所有推荐卡片的实时价格
+  // === 更新推荐卡片的实时价格 ===
   document.querySelectorAll('.stock-card[data-code]').forEach(card => {
     const code = card.getAttribute('data-code');
     const rt = _realtimePrices[code];
@@ -448,6 +462,26 @@ function updateRealtimePriceDOM() {
       const plColor = pl > 0 ? 'var(--red)' : pl < 0 ? 'var(--green)' : 'var(--text2)';
       const plIcon = pl > 0 ? '📈' : pl < 0 ? '📉' : '➖';
       plEl.innerHTML = `${plIcon} 推荐以来 <strong style="color:${plColor}">${plSign}${pl.toFixed(2)}%</strong>`;
+    }
+    if (timeEl) timeEl.textContent = rt.time || '';
+  });
+
+  // === 更新涨停预测卡片的实时价格 ===
+  document.querySelectorAll('.zt-card[data-code]').forEach(card => {
+    const code = card.getAttribute('data-code');
+    const rt = _realtimePrices[code];
+    if (!rt || rt.price === '-' || rt.price == null) return;
+
+    const priceEl = card.querySelector('.zt-rt-price');
+    const chgEl = card.querySelector('.zt-rt-chg');
+    const timeEl = card.querySelector('.zt-rt-time');
+
+    if (priceEl) priceEl.textContent = '¥' + rt.price.toFixed(2);
+    if (chgEl) {
+      const cls = rt.chg_pct > 0 ? 'up' : rt.chg_pct < 0 ? 'down' : '';
+      const sign = rt.chg_pct > 0 ? '+' : '';
+      chgEl.className = 'zt-chg zt-rt-chg ' + cls;
+      chgEl.textContent = sign + rt.chg_pct.toFixed(2) + '%';
     }
     if (timeEl) timeEl.textContent = rt.time || '';
   });
@@ -1821,7 +1855,7 @@ function switchTab(name) {
       if (name === 'equity')   renderEquityCharts();
       if (name === 'weights')  renderWeightCharts();
       if (name === 'daily')    renderDailyPicks();
-      if (name === 'zt')       renderZtPredict();
+      if (name === 'zt')       { renderZtPredict(); updateRealtimePriceDOM(); }
     }, 50);
   }
 }
@@ -1890,6 +1924,23 @@ function openKlineByIndex(type, idx, pickIdx) {
     stock = (G.today_recommendations || [])[idx];
     if (!stock) return;
     stock = { ...stock };
+  } else if (type === 'zt') {
+    // 涨停预测卡片
+    const zt = G.zt_predict || {};
+    const top50 = zt.top50 || [];
+    // 需要按当前过滤结果找到对应股票
+    let filtered = top50;
+    if (_ztFilter === 'fire') filtered = top50.filter(s => s.score >= 80);
+    else if (_ztFilter === 'star') filtered = top50.filter(s => s.score >= 70 && s.score < 80);
+    else if (_ztFilter === 'up') filtered = top50.filter(s => s.score >= 60 && s.score < 70);
+    const s = filtered[idx];
+    if (!s) return;
+    stock = {
+      code: s.code, name: s.name, score: s.score,
+      close: s.price, chg_1d: s.chg_pct,
+      last_date: s.date, strategies: [],
+      klines: []
+    };
   } else if (type === 'daily') {
     // di 是 reverse 后的索引，需要转回原始索引
     const dp = G.daily_picks || {};
@@ -2800,6 +2851,7 @@ function filterZt(type) {
     b.classList.toggle('active', types[i] === type);
   });
   renderZtList();
+  updateRealtimePriceDOM();
 }
 
 function renderZtPredict() {
@@ -2842,7 +2894,7 @@ function renderZtList() {
     return;
   }
 
-  const html = filtered.map(s => {
+  const html = filtered.map((s, i) => {
     const chgClass = s.chg_pct > 0 ? 'up' : s.chg_pct < 0 ? 'down' : '';
     const chgSign  = s.chg_pct > 0 ? '+' : '';
     const ft = s.features || {};
@@ -2860,7 +2912,7 @@ function renderZtList() {
     const scoreColor = s.score >= 80 ? '#ff5f57' : s.score >= 70 ? '#f0b429' : 'var(--accent)';
 
     return `
-    <div class="zt-card">
+    <div class="zt-card" data-code="${s.code}" onclick="openKlineByIndex('zt',${i})">
       <div class="zt-card-top">
         <div>
           <div class="zt-name">${s.name} ${getBoardBadge(s.code)}</div>
@@ -2873,13 +2925,15 @@ function renderZtList() {
         </div>
       </div>
       <div class="zt-price-row">
-        <span class="zt-price">¥${s.price?.toFixed(2) || '--'}</span>
-        <span class="zt-chg ${chgClass}">${chgSign}${s.chg_pct?.toFixed(2) || 0}%</span>
+        <span class="zt-price zt-rt-price">¥${s.price?.toFixed(2) || '--'}</span>
+        <span class="zt-chg zt-rt-chg ${chgClass}">${chgSign}${s.chg_pct?.toFixed(2) || 0}%</span>
+        <span class="zt-rt-time" style="font-size:10px;color:var(--text2);margin-left:auto"></span>
       </div>
       <div class="zt-features">
         ${tags.map(t => `<span class="zt-feat-tag ${t.hit?'hit':''}">${t.label}</span>`).join('')}
       </div>
       ${bt.precision ? `<div class="zt-backtest">历史精度 ${bt.precision?.toFixed(1)}% · 样本 ${bt.sample_count} 只 · F1 ${bt.f1?.toFixed(1)}</div>` : ''}
+      <div style="margin-top:6px;font-size:11px;color:var(--text2);opacity:.6">点击查看K线图 📈</div>
     </div>`;
   }).join('');
 
