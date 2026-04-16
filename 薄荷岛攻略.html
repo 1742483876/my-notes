@@ -108,6 +108,15 @@
   .checklist li:last-child { border-bottom:none; }
   .checklist .ck { width:20px; height:20px; border:2px solid var(--sea); border-radius:6px; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--palm); cursor:pointer; transition:all .2s; }
   .checklist .ck.done { background:var(--palm); border-color:var(--palm); color:#fff; }
+  .route-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin:12px 0; transition:all .2s; }
+  .route-card:hover { border-color:var(--sea); }
+  .route-card.best { border-color:var(--palm); background:rgba(6,214,160,.03); }
+  .route-card h5 { font-size:15px; font-weight:700; margin-bottom:8px; }
+  .route-card .steps { font-size:13px; color:var(--text2); line-height:2; }
+  .route-card .steps strong { color:var(--text1); }
+  .route-card .bottom { display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+  .route-card .bottom .cost { font-size:18px; font-weight:700; }
+  .route-card .bottom .time { font-size:12px; color:var(--text2); }
   .divider { height:1px; background:linear-gradient(to right, transparent, var(--border), transparent); margin:36px 0; }
   .footer { text-align:center; padding:40px 0 20px; color:var(--text2); font-size:12px; }
   @media(max-width:600px) {
@@ -125,14 +134,14 @@
 <div class="hero">
   <div class="hero-emoji">🏝️</div>
   <h1>五一薄荷岛攻略</h1>
-  <div class="sub">香港出发 · Bohol · 3天2晚精华游</div>
-  <div class="dates">📅 5月1日（周四）— 5月5日（周一）· 往返机票已锁定</div>
+  <div class="sub">香港出发 · Bohol · 4天3晚深度游</div>
+  <div class="dates">📅 5月1日（周四）— 5月6日（周三）· 往返机票已锁定</div>
 </div>
 
 <!-- Quick Stats -->
 <div class="stats">
-  <div class="stat"><div class="icon">💰</div><div class="val">¥1,646</div><div class="lab">往返机票/人</div></div>
-  <div class="stat"><div class="icon">🏝️</div><div class="val">3天2晚</div><div class="lab">薄荷岛实际游玩</div></div>
+  <div class="stat"><div class="icon">💰</div><div class="val">¥1,470</div><div class="lab">往返机票/人</div></div>
+  <div class="stat"><div class="icon">🏝️</div><div class="val">4天3晚</div><div class="lab">薄荷岛实际游玩</div></div>
   <div class="stat"><div class="icon">✈️</div><div class="val">2h20m</div><div class="lab">香港直飞马尼拉</div></div>
   <div class="stat"><div class="icon">🌡️</div><div class="val">28-33°C</div><div class="lab">5月·旱季末</div></div>
 </div>
@@ -142,9 +151,9 @@
   <div class="section-title">✈️ 已确定机票（香港快运航空）</div>
 
   <div class="tip green">
-    <h4>✅ 机票已锁定！往返 ¥1,646/人</h4>
+    <h4>✅ 机票已锁定！往返 ¥1,470/人</h4>
     <p>香港快运 HK Express · 空客321(中) · 香港T1 ↔ 马尼拉尼诺伊T3<br>
-    <strong>⚠️ 香港快运是廉航</strong>：不含行李托运（需另购）、不含餐食、座位可加购选座</p>
+    <strong>⚠️ 香港快运是廉航</strong>：不含行李托运（需另购约HK$200/件）、不含餐食、座位可加购选座</p>
   </div>
 
   <!-- 去程 -->
@@ -161,16 +170,16 @@
   <div class="flight-card booked">
     <div class="flight-route">
       <div class="flight-city"><div class="code">MNL</div><div class="name">马尼拉 T3</div></div>
-      <div class="flight-line"><span class="plane">✈️</span> <span>香港快运 · 2h20m · 5月5日</span></div>
+      <div class="flight-line"><span class="plane">✈️</span> <span>香港快运 · 2h20m · 5月6日</span></div>
       <div class="flight-city"><div class="code">HKG</div><div class="name">香港 T1</div></div>
     </div>
-    <div class="flight-price"><div class="amount">¥691</div><div class="note">01:45 → 04:05 · 含税</div></div>
+    <div class="flight-price"><div class="amount">¥515</div><div class="note">21:10 → 23:30 · 当日低价 · 含税</div></div>
   </div>
 
   <div class="tip sea">
-    <h4>🔗 衔接航班：马尼拉 → 薄荷岛（需另购）</h4>
+    <h4>🔗 衔接航班：马尼拉 ↔ 薄荷岛（需另购）</h4>
     <p>5/2凌晨01:00到马尼拉T3，在机场休息后转机到薄荷岛邦劳(TAG)。<br>
-    5/4晚从薄荷岛飞回马尼拉，赶5/5凌晨01:45回程。<strong>菲律宾国内航班约¥150-250/程。</strong></p>
+    5/6下午从薄荷岛飞回马尼拉，赶21:10晚班回港。<strong>菲律宾国内航班约¥150-250/程。</strong></p>
   </div>
 
   <table class="data-table">
@@ -180,14 +189,14 @@
       <tr><td><span class="tag tag-g">去</span> MNL→TAG</td><td>宿太 5J617</td><td>09:35→11:20</td><td>1h45m</td><td class="price">¥180</td><td>⭐ 推荐！机场休息补觉后再飞，中午到薄荷岛</td></tr>
       <tr><td><span class="tag tag-b">去</span> MNL→TAG</td><td>菲航 PR2773</td><td>08:45→10:20</td><td>1h35m</td><td class="price">¥225</td><td>含餐含行李，舒适之选</td></tr>
       <tr style="background:rgba(30,58,95,.2);"><td colspan="6" style="color:var(--text2);font-size:12px;text-align:center;">— 回 程 —</td></tr>
-      <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>菲航 PR2776</td><td>18:50→20:25</td><td>1h35m</td><td class="price">¥225</td><td>含餐，到马尼拉后等5h赶01:45回港</td></tr>
-      <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>宿太 5J622</td><td>22:50→00:25+1</td><td>1h35m</td><td class="price">¥150</td><td>⭐ 推荐！最晚班，多玩半天，到MNL后1h就能登机</td></tr>
-      <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>菲亚 Z2</td><td>20:00→21:25</td><td>1h25m</td><td class="price">¥200</td><td>备选，时间也合适</td></tr>
+      <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>宿太 5J615</td><td>16:05→17:45</td><td>1h40m</td><td class="price">¥150</td><td>⭐ 推荐！下午飞回，19:00前到马尼拉候机</td></tr>
+      <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>菲航 PR2776</td><td>18:50→20:25</td><td>1h35m</td><td class="price">¥225</td><td>多玩半天，到马尼拉后直接候机45min</td></tr>
+      <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>宿太 5J617</td><td>09:35→11:20</td><td>1h45m</td><td class="price">¥180</td><td>上午飞回，马尼拉逛半天再登机</td></tr>
     </tbody>
   </table>
 
   <div class="info-grid">
-    <div class="info-card" style="border-color:var(--palm);"><div class="label">✈️ 全程机票总费用</div><div class="val" style="color:var(--palm);">¥1,946~2,146</div><div class="note">香港↔马尼拉 ¥1,646<br>+ 马尼拉↔薄荷岛 ¥300~500</div></div>
+    <div class="info-card" style="border-color:var(--palm);"><div class="label">✈️ 全程机票总费用</div><div class="val" style="color:var(--palm);">¥1,770~1,920</div><div class="note">香港↔马尼拉 ¥1,470<br>+ 马尼拉↔薄荷岛 ¥300~450</div></div>
     <div class="info-card"><div class="label">🚆 深圳→香港机场</div><div class="val" style="color:var(--sea);font-size:14px;">高铁到西九龙 + 机场快线</div><div class="note">深圳北/福田→西九龙(20min, ¥75)<br>九龙→机场(24min, HK$115≈¥105)<br>或 蛇口港→香港机场(船, 30min, ¥260)</div></div>
   </div>
 </div>
@@ -196,30 +205,29 @@
 
 <!-- 🏨 住宿 -->
 <div class="section">
-  <div class="section-title">🏨 住宿推荐 · 只住2晚</div>
+  <div class="section-title">🏨 住宿推荐 · 住3晚（5/2、5/3、5/4）</div>
 
   <div class="tip sea">
     <h4>📍 住宿区域 · Alona Beach</h4>
-    <p>只住2晚（5/2、5/3），推荐住好一点的！反正总花费也不多。<br>首选 <strong>邦劳岛 Alona Beach</strong>，薄荷岛最热闹的沙滩区，餐厅、潜店、出海跳岛都在这里。</p>
+    <p>住3晚（5/2、5/3、5/4），5/5退房后行李寄存，玩到下午飞。<br>首选 <strong>邦劳岛 Alona Beach</strong>，薄荷岛最热闹的沙滩区，餐厅、潜店、出海跳岛都在这里。</p>
   </div>
 
   <div class="hotel" style="border-color:var(--palm);">
-    <div class="top"><h5>🌊 阿洛纳42度假村 (Alona42 Resort) <span class="badge">⭐ 性价比首选</span></h5><div class="price-tag"><div class="amt" style="color:var(--palm);">¥350</div><div class="per">/晚 · 2晚=¥700</div></div></div>
+    <div class="top"><h5>🌊 阿洛纳42度假村 (Alona42 Resort) <span class="badge">⭐ 性价比首选</span></h5><div class="price-tag"><div class="amt" style="color:var(--palm);">¥350</div><div class="per">/晚 · 3晚=¥1,050</div></div></div>
     <div class="meta"><span>⭐ Agoda 8.7/10</span><span>📍 离Alona Beach步行10分钟</span></div>
     <div class="feats"><span>🍳 含早餐</span><span>🅿️ 免费停车</span><span>🏊 泳池</span><span>📶 WiFi</span><span>🛵 可租摩托</span></div>
   </div>
 
   <div class="hotel">
-    <div class="top"><h5>🏝️ 岛屿世界度假村 (Island World Panglao)</h5><div class="price-tag"><div class="amt" style="color:var(--sky);">¥660</div><div class="per">/晚 · 2晚=¥1,320</div></div></div>
+    <div class="top"><h5>🏝️ 岛屿世界度假村 (Island World Panglao)</h5><div class="price-tag"><div class="amt" style="color:var(--sky);">¥660</div><div class="per">/晚 · 3晚=¥1,980</div></div></div>
     <div class="meta"><span>⭐ Agoda 9.1/10 · 超高分</span><span>📍 独立小木屋·超出片</span></div>
     <div class="feats"><span>🍳 含早餐</span><span>🏊 美丽泳池</span><span>🏠 独立小木屋</span><span>🚌 免费Alona接驳</span></div>
   </div>
 
   <div class="hotel">
-    <div class="top"><h5>⭐ 赫纳恩度假村 (Henann Resort) <span class="badge" style="background:rgba(255,209,102,.15);color:var(--sand);border-color:rgba(255,209,102,.3);">🏆 五星</span></h5><div class="price-tag"><div class="amt" style="color:var(--sand);">¥920</div><div class="per">/晚 · 2晚=¥1,840</div></div></div>
+    <div class="top"><h5>⭐ 赫纳恩度假村 (Henann Resort) <span class="badge" style="background:rgba(255,209,102,.15);color:var(--sand);border-color:rgba(255,209,102,.3);">🏆 五星</span></h5><div class="price-tag"><div class="amt" style="color:var(--sand);">¥920</div><div class="per">/晚 · 3晚=¥2,760</div></div></div>
     <div class="meta"><span>⭐ 9.0/10</span><span>📍 Alona Beach海景第一排</span><span>🏆 薄荷岛最佳度假村</span></div>
     <div class="feats"><span>🍳 丰盛早餐</span><span>🏊 无边际泳池</span><span>🏖️ 直通沙滩</span><span>💆 SPA中心</span><span>🏋️ 健身房</span></div>
-    <div class="desc">只住2晚，推荐直接上五星！2晚¥1,840也就比平价多花¥1,100，体验完全不同。</div>
   </div>
 </div>
 
@@ -234,9 +242,10 @@
     <p>
       <strong>5/1 周四晚</strong> 深圳→香港机场→22:40飞马尼拉<br>
       <strong>5/2 周五</strong> 凌晨到马尼拉 → 上午飞薄荷岛 → 下午Alona Beach<br>
-      <strong>5/3 周六</strong> 全天精华：跳岛浮潜/陆地游（选一个）<br>
-      <strong>5/4 周日</strong> 上午深潜/自由活动 → 傍晚飞回马尼拉<br>
-      <strong>5/5 周一凌晨</strong> 01:45马尼拉→04:05香港 → 回深圳
+      <strong>5/3 周六</strong> 全天精华：跳岛浮潜（巴里卡萨+处女岛）<br>
+      <strong>5/4 周日</strong> 陆地游：巧克力山+眼镜猴+罗博河 + 萤火虫夜游<br>
+      <strong>5/5 周一</strong> 上午体验深潜 → 下午沙滩自由活动<br>
+      <strong>5/6 周三</strong> 飞回马尼拉 → 21:10飞香港 → 23:30到 → 回深圳宝安
     </p>
   </div>
 
@@ -275,64 +284,166 @@
     </div>
 
     <div class="tl-item hl">
-      <div class="tl-day">Day 3 · 5月3日 周六 ⭐ 核心玩耍日</div>
-      <div class="tl-title">🏝️ 跳岛浮潜 或 🐒 陆地精华游（二选一）</div>
+      <div class="tl-day">Day 3 · 5月3日 周六 ⭐ 跳岛浮潜日</div>
+      <div class="tl-title">🏝️ 巴里卡萨岛 + 处女岛跳岛一日游</div>
       <div class="tl-desc">
-        <strong>10:00</strong> 自然醒，酒店早餐 ☕🍳<br><br>
-        <strong>🅰️ 方案A：跳岛浮潜一日游（推荐！来薄荷岛必玩）</strong><br>
+        <strong>10:00</strong> 自然醒，酒店早餐 ☕🍳<br>
         <strong>10:30</strong> 螃蟹船出海 🚤<br>
         <strong>11:30</strong> 🤿 <strong>巴里卡萨岛大断层浮潜</strong>（海龟🐢·珊瑚墙·超清能见度）<br>
         <strong>13:30</strong> 🏖️ <strong>处女岛</strong>午餐（沙滩BBQ，海胆+烤鱼）<br>
         <strong>15:00</strong> 📸 处女岛拍照打卡（潮汐拖尾沙滩·绝美）<br>
-        <strong>17:00</strong> 返回<br><br>
-        <strong>🅱️ 方案B：薄荷岛陆地精华游</strong><br>
-        <strong>10:30</strong> 包车出发<br>
-        <strong>11:00</strong> 🐵 <strong>眼镜猴保护区</strong>（世界最小灵长类！）<br>
-        <strong>12:00</strong> 🌴 <strong>罗博河竹筏午餐</strong>（歌舞表演+河景）🎶<br>
-        <strong>14:00</strong> 🍫 <strong>巧克力山</strong>（1268座圆锥山丘群·登观景台）<br>
-        <strong>15:30</strong> 🌳 <strong>人造森林</strong>打卡（桃花心木走廊·出片神器）📸<br>
-        <strong>17:00</strong> 返回<br><br>
-        <strong>--- 晚上（两个方案共享）---</strong><br>
+        <strong>17:00</strong> 返回酒店<br>
         <strong>18:00</strong> 泳池放松 🏊<br>
         <strong>19:00</strong> 晚餐：烤海鲜 or Gerarda's 当地菜<br>
-        <strong>20:30</strong> 🌟 <strong>阿巴丹河萤火虫夜游</strong>（河两岸树上满是萤火虫✨，超浪漫！）<br>
-        <strong>22:30~24:00</strong> 🍻 最后一夜酒吧狂欢 🎶
+        <strong>21:00~24:00</strong> 🍻 酒吧 + 沙滩散步 🎶
       </div>
-      <div class="tl-cost">💰 跳岛¥250/人 或 陆游¥300/人 + 萤火虫¥120/人</div>
+      <div class="tl-cost">💰 跳岛¥250/人 + 餐饮¥150</div>
     </div>
 
-    <div class="tl-item">
-      <div class="tl-day">Day 4 · 5月4日 周日</div>
-      <div class="tl-title">🤿 体验深潜 + ✈️ 返程马尼拉</div>
+    <div class="tl-item hl">
+      <div class="tl-day">Day 4 · 5月4日 周日 ⭐ 陆地精华日</div>
+      <div class="tl-title">🐒 眼镜猴 + 🍫 巧克力山 + 🌟 萤火虫夜游</div>
       <div class="tl-desc">
-        <strong>10:00</strong> 自然醒，最后的酒店早餐 ☕<br>
-        <strong>11:00</strong> 🤿 <strong>体验深潜 Discover Scuba</strong>（3-4h，无需潜水证！教练1对1带你下水，珊瑚+热带鱼群🐠）<br>
-        &nbsp;&nbsp;· 推荐：<strong>王者潜水</strong>（Alona Beach上，中文教练，含水下拍照 📸）约¥400<br>
-        &nbsp;&nbsp;· 或 KKday/Klook 预订 School of Sardines 体验潜水 约¥500<br>
-        <strong>14:30</strong> 深潜结束！沙滩放空 + 最后一顿午餐 🍽️<br>
-        <strong>16:00</strong> 🎁 采购伴手礼（芒果干、椰子油、Otap酥饼）<br>
-        <strong>17:00</strong> 退房，前往邦劳机场(TAG)（车程约20分钟）<br>
-        <strong>18:50</strong> ✈️ 菲航PR2776 TAG→MNL（或选22:50宿太最晚班，多玩几小时）<br>
-        <strong>20:25</strong> 抵达马尼拉T3<br>
-        <strong>20:30~01:00</strong> 马尼拉T3候机：免税店逛逛 🛍️ + 吃晚餐 + 休息
+        <strong>10:00</strong> 自然醒，酒店早餐 ☕🍳<br>
+        <strong>10:30</strong> 包车出发<br>
+        <strong>11:00</strong> 🐵 <strong>眼镜猴保护区</strong>（世界最小灵长类！超萌 📸）<br>
+        <strong>12:00</strong> 🌴 <strong>罗博河竹筏午餐</strong>（歌舞表演+河景自助）🎶<br>
+        <strong>14:00</strong> 🍫 <strong>巧克力山</strong>（1268座圆锥山丘群·登观景台 📸）<br>
+        <strong>15:30</strong> 🌳 <strong>人造森林</strong>打卡（桃花心木走廊·出片神器）📸<br>
+        <strong>17:00</strong> 返回酒店休息<br>
+        <strong>19:00</strong> 晚餐<br>
+        <strong>20:30</strong> 🌟 <strong>阿巴丹河萤火虫夜游</strong>（河两岸树上满是萤火虫✨，超浪漫！）<br>
+        <strong>22:30~24:00</strong> 酒吧最后狂欢 🍻
       </div>
-      <div class="tl-cost">💰 深潜¥400~500 + 伴手礼¥100 + 内航¥150~225</div>
+      <div class="tl-cost">💰 陆游包车¥300/人 + 萤火虫¥120/人</div>
     </div>
 
     <div class="tl-item">
       <div class="tl-day">Day 5 · 5月5日 周一</div>
-      <div class="tl-title">✈️ 马尼拉 → 香港 → 🚄 回深圳</div>
+      <div class="tl-title">🤿 体验深潜 + 🏖️ 沙滩自由日</div>
       <div class="tl-desc">
-        <strong>01:45</strong> ✈️ <strong>香港快运起飞</strong> 马尼拉T3→香港T1<br>
-        <strong>04:05</strong> 抵达香港机场（当地时间，比菲律宾快0h）<br>
-        <strong>05:00</strong> 入境香港，机场快线/巴士回深圳<br>
-        &nbsp;&nbsp;· 方案A：机场快线→九龙→高铁回深圳（最早班约6:30）<br>
-        &nbsp;&nbsp;· 方案B：机场直通巴士到深圳湾口岸（24h运营）<br>
-        <strong>07:00~08:00</strong> 回到深圳家中 🏠<br>
-        补觉一天，5/6正常上班 💪
+        <strong>10:00</strong> 自然醒，酒店早餐 ☕<br>
+        <strong>11:00</strong> 🤿 <strong>体验深潜 Discover Scuba</strong>（3-4h，无需潜水证！教练1对1带你下水，珊瑚+热带鱼群🐠）<br>
+        &nbsp;&nbsp;· 推荐：<strong>王者潜水</strong>（Alona Beach上，中文教练，含水下拍照 📸）约¥400<br>
+        &nbsp;&nbsp;· 或 KKday/Klook 预订 School of Sardines 体验潜水 约¥500<br>
+        <strong>14:30</strong> 深潜结束！退房，行李寄存前台<br>
+        <strong>15:00</strong> 🏖️ 最后的沙滩时光：浮潜、日光浴、拍照 📸<br>
+        <strong>17:00</strong> 🎁 Alona Beach采购伴手礼（芒果干、椰子油、Otap酥饼）<br>
+        <strong>18:00</strong> 🦐 最后一顿海鲜大餐！<br>
+        <strong>20:00</strong> 💆 最后一次沙滩马杀鸡<br>
+        <strong>22:00~24:00</strong> 🍻 Alona Beach最后一夜 · 看星星 ⭐
       </div>
-      <div class="tl-cost">💰 回程机票¥691 + 香港→深圳约¥100~180</div>
+      <div class="tl-cost">💰 深潜¥400~500 + 伴手礼¥100 + 马杀鸡¥80</div>
     </div>
+
+    <div class="tl-item">
+      <div class="tl-day">Day 6 · 5月6日 周三</div>
+      <div class="tl-title">✈️ 薄荷岛 → 马尼拉 → 香港 → 🏠 回深圳宝安</div>
+      <div class="tl-desc">
+        <strong>10:00</strong> 自然醒，享受最后的薄荷岛早晨 ☕<br>
+        <strong>12:00</strong> 收拾行李，前往邦劳机场(TAG)（车程约20分钟）<br>
+        <strong>16:05</strong> ✈️ 宿太5J615 TAG→MNL（推荐！下午飞回马尼拉）<br>
+        <strong>17:45</strong> 抵达马尼拉T3<br>
+        <strong>18:00~20:30</strong> 马尼拉T3免税店逛逛 🛍️ + 吃晚餐 🍝<br>
+        <strong>21:10</strong> ✈️ <strong>香港快运起飞</strong> 马尼拉T3→香港T1<br>
+        <strong>23:30</strong> 抵达香港机场T1 🎉<br>
+        <strong>00:00~01:00</strong> 入境、取行李 → 赶回深圳（详见下方方案 👇）
+      </div>
+      <div class="tl-cost">💰 回程内航¥150 + 国际¥515 + 回深圳约¥40~180</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 🏠 回深圳方案 -->
+<div class="section">
+  <div class="section-title">🏠 香港机场 → 深圳宝安企鹅公寓 · 回家方案</div>
+
+  <div class="tip hot">
+    <h4>⏰ 时间背景</h4>
+    <p>5/6 <strong>23:30到达香港机场T1</strong>，入境取行李预计 <strong>00:00-00:30</strong>。<br>
+    此时已是凌晨，高铁和大部分跨境巴士已停运。<br>
+    目的地：<strong>深圳市宝安区新安街道企鹅公寓</strong></p>
+  </div>
+
+  <!-- 方案1：推荐 -->
+  <div class="route-card best">
+    <h5>🅰️ 24h跨境巴士经皇岗口岸 <span class="badge">⭐ 推荐！深夜唯一方案</span></h5>
+    <div class="steps">
+      <strong>00:30</strong> 香港机场T1 → 乘坐 <strong>N21夜间巴士</strong>（00:20发车，每20min一班）<br>
+      &nbsp;&nbsp;&nbsp;· 票价 HK$23（约¥21），从机场地面交通中心上车<br>
+      <strong>01:30</strong> 约25站后在 <strong>旺角警署站</strong> 下车<br>
+      <strong>01:35</strong> 步行至 <strong>太子砵兰街364号</strong>（旺角维景酒店对面），乘坐 <strong>全日通24h跨境巴士</strong><br>
+      &nbsp;&nbsp;&nbsp;· <strong>旺角线→皇岗口岸</strong>，深夜每20-30min一班，票价 HK$45（约¥40）<br>
+      <strong>02:20</strong> 到达 <strong>皇岗口岸</strong>（24小时通关），过关入境深圳<br>
+      <strong>02:40</strong> 皇岗口岸深圳侧 → 打车/网约车到<strong>宝安新安企鹅公寓</strong><br>
+      &nbsp;&nbsp;&nbsp;· 皇岗→宝安新安约 <strong>25-30分钟</strong>，打车约 <strong>¥50-60</strong><br>
+      <strong>03:10</strong> 🏠 到家！洗澡睡觉 💤
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--palm);">≈ ¥115</span> <span style="font-size:11px;color:var(--text2);">（N21 ¥21 + 跨境巴 ¥40 + 打车 ¥55）</span></div>
+      <div class="time">⏱️ 全程约2.5h</div>
+    </div>
+  </div>
+
+  <!-- 方案2 -->
+  <div class="route-card">
+    <h5>🅱️ 香港机场跨境巴士直达皇岗（如赶上末班）</h5>
+    <div class="steps">
+      <strong>00:30</strong> 香港机场T1内地交通服务中心 → 查看是否有 <strong>中旅/环岛跨境巴士</strong> 最晚班次<br>
+      &nbsp;&nbsp;&nbsp;· 正常末班约22:00，五一期间可能延长运营，到了机场碰碰运气<br>
+      &nbsp;&nbsp;&nbsp;· 如有班次：HK$130（约¥120），50分钟直达皇岗口岸<br>
+      <strong>01:30</strong> 皇岗口岸过关 → 打车到宝安新安企鹅公寓<br>
+      <strong>02:00</strong> 🏠 到家
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--sky);">≈ ¥175</span> <span style="font-size:11px;color:var(--text2);">（跨境巴 ¥120 + 打车 ¥55）</span></div>
+      <div class="time">⏱️ 全程约1.5h · ⚠️ 不确定有无班次</div>
+    </div>
+  </div>
+
+  <!-- 方案3 -->
+  <div class="route-card">
+    <h5>🅲 机场过夜 + 早班高铁回深圳（最舒适）</h5>
+    <div class="steps">
+      <strong>00:30</strong> 香港机场T1 → 找个舒适位置休息（有付费贵宾室约HK$200/3h）<br>
+      &nbsp;&nbsp;&nbsp;· 或者机场星巴克/麦当劳坐到天亮<br>
+      <strong>05:30</strong> 乘坐 <strong>机场快线</strong> 到九龙站（24min, HK$115≈¥105）<br>
+      <strong>06:00</strong> 步行到 <strong>西九龙高铁站</strong><br>
+      <strong>07:01</strong> 坐 <strong>首班高铁</strong> → <strong>深圳北站</strong>（18min, ¥82）<br>
+      <strong>07:20</strong> 深圳北 → 地铁5号线到<strong>宝安中心</strong>或打车（约¥30-40）<br>
+      <strong>08:00</strong> 🏠 到家！正好睡个回笼觉
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--sand);">≈ ¥225</span> <span style="font-size:11px;color:var(--text2);">（机场快线 ¥105 + 高铁 ¥82 + 打车 ¥40）</span></div>
+      <div class="time">⏱️ 凌晨等候+早班 · 💤 最不折腾但要等</div>
+    </div>
+  </div>
+
+  <!-- 方案4 -->
+  <div class="route-card">
+    <h5>🅳 直接打7座中港车（最省事·土豪方案）</h5>
+    <div class="steps">
+      <strong>00:30</strong> 香港机场T1出来 → 提前预约好的<strong>中港车</strong>已在等候<br>
+      &nbsp;&nbsp;&nbsp;· 7座商务车，走皇岗口岸24h通关，<strong>无需下车过关</strong><br>
+      &nbsp;&nbsp;&nbsp;· 直送到宝安企鹅公寓门口<br>
+      <strong>01:30~02:00</strong> 🏠 到家！全程躺着
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--coral);">≈ ¥400-500</span> <span style="font-size:11px;color:var(--text2);">（含过关·直达门口）</span></div>
+      <div class="time">⏱️ 最快1-1.5h · 💎 VIP体验</div>
+    </div>
+  </div>
+
+  <div class="tip green">
+    <h4>💡 推荐策略</h4>
+    <ul>
+      <li><strong>首选方案A</strong>（N21+全日通）：最经济，深夜唯一确定有车的方案，凌晨3点到家</li>
+      <li>如果不差钱 → <strong>方案D</strong>（中港车）最省心，提前微信约好司机</li>
+      <li>如果不赶时间 → <strong>方案C</strong>（机场过夜+早班高铁）最舒服</li>
+      <li>⚠️ 注意：<strong>深圳湾口岸不是24h的</strong>（6:30-24:00），凌晨只能走<strong>皇岗口岸</strong></li>
+    </ul>
   </div>
 </div>
 
@@ -340,20 +451,20 @@
 
 <!-- 💰 预算 -->
 <div class="section">
-  <div class="section-title">💰 预算明细（精打细算版）</div>
+  <div class="section-title">💰 预算明细</div>
 
-  <div class="budget-bar"><span class="budget-label">✈️ 国际机票</span><div class="budget-track"><div class="budget-fill" style="width:45%;background:var(--gradient1);"></div></div><span class="budget-amt" style="color:var(--sea)">¥1,646</span></div>
-  <div class="budget-bar"><span class="budget-label">✈️ 菲国内航</span><div class="budget-track"><div class="budget-fill" style="width:12%;background:linear-gradient(135deg,var(--sea),var(--deep));"></div></div><span class="budget-amt" style="color:var(--sky)">¥300~450</span></div>
-  <div class="budget-bar"><span class="budget-label">🚄 深圳↔香港</span><div class="budget-track"><div class="budget-fill" style="width:10%;background:linear-gradient(135deg,#a855f7,var(--sea));"></div></div><span class="budget-amt" style="color:#a855f7">¥360~520</span></div>
-  <div class="budget-bar"><span class="budget-label">🏨 住宿2晚</span><div class="budget-track"><div class="budget-fill" style="width:20%;background:linear-gradient(135deg,var(--sky),var(--deep));"></div></div><span class="budget-amt" style="color:var(--sky)">¥700~1,840</span></div>
-  <div class="budget-bar"><span class="budget-label">🎢 活动体验</span><div class="budget-track"><div class="budget-fill" style="width:22%;background:var(--gradient2);"></div></div><span class="budget-amt" style="color:var(--coral)">¥770~870</span></div>
-  <div class="budget-bar"><span class="budget-label">🍽️ 餐饮3天</span><div class="budget-track"><div class="budget-fill" style="width:10%;background:linear-gradient(135deg,var(--sand),var(--coral));"></div></div><span class="budget-amt" style="color:var(--sand)">¥300~450</span></div>
+  <div class="budget-bar"><span class="budget-label">✈️ 国际机票</span><div class="budget-track"><div class="budget-fill" style="width:38%;background:var(--gradient1);"></div></div><span class="budget-amt" style="color:var(--sea)">¥1,470</span></div>
+  <div class="budget-bar"><span class="budget-label">✈️ 菲国内航</span><div class="budget-track"><div class="budget-fill" style="width:10%;background:linear-gradient(135deg,var(--sea),var(--deep));"></div></div><span class="budget-amt" style="color:var(--sky)">¥300~450</span></div>
+  <div class="budget-bar"><span class="budget-label">🚄 深圳↔香港</span><div class="budget-track"><div class="budget-fill" style="width:8%;background:linear-gradient(135deg,#a855f7,var(--sea));"></div></div><span class="budget-amt" style="color:#a855f7">¥300~440</span></div>
+  <div class="budget-bar"><span class="budget-label">🏨 住宿3晚</span><div class="budget-track"><div class="budget-fill" style="width:25%;background:linear-gradient(135deg,var(--sky),var(--deep));"></div></div><span class="budget-amt" style="color:var(--sky)">¥1,050~2,760</span></div>
+  <div class="budget-bar"><span class="budget-label">🎢 活动体验</span><div class="budget-track"><div class="budget-fill" style="width:20%;background:var(--gradient2);"></div></div><span class="budget-amt" style="color:var(--coral)">¥850~1,000</span></div>
+  <div class="budget-bar"><span class="budget-label">🍽️ 餐饮4天</span><div class="budget-track"><div class="budget-fill" style="width:12%;background:linear-gradient(135deg,var(--sand),var(--coral));"></div></div><span class="budget-amt" style="color:var(--sand)">¥400~600</span></div>
 
   <div class="info-grid" style="margin-top:16px;">
-    <div class="info-card" style="border-color:var(--palm);"><div class="label">人均总预算</div><div class="val" style="color:var(--palm);">¥4,100~5,800</div><div class="note">经济版¥4,100（平价酒店+跳岛）<br>舒适版¥5,800（五星+跳岛+深潜）</div></div>
-    <div class="info-card"><div class="label">费用构成</div><div class="val" style="color:var(--sea);font-size:14px;">机票占50%+</div><div class="note">机票¥1,646 是大头<br>薄荷岛本地消费很便宜<br>龙虾¥60、按摩¥80、打车¥10</div></div>
-    <div class="info-card"><div class="label">活动明细</div><div class="val" style="color:var(--sand);font-size:14px;">跳岛¥250 + 萤火虫¥120<br>+ 深潜¥400</div><div class="note">核心三项 · 都不用早起 😴</div></div>
-    <div class="info-card"><div class="label">⚠️ 深潜注意</div><div class="val" style="color:var(--coral);font-size:14px;">潜水后18h内不能坐飞机！</div><div class="note">Day4上午潜 → 次日01:45飞<br>间隔约13h ⚠️ 需确认<br>保守方案：Day3潜水 Day4浮潜</div></div>
+    <div class="info-card" style="border-color:var(--palm);"><div class="label">人均总预算</div><div class="val" style="color:var(--palm);">¥4,400~6,700</div><div class="note">经济版¥4,400（平价酒店+全玩）<br>舒适版¥6,700（五星+全项目）</div></div>
+    <div class="info-card"><div class="label">回程省了¥176！</div><div class="val" style="color:var(--palm);font-size:18px;">¥691 → ¥515</div><div class="note">回程改5/6晚班，便宜了¥176<br>还多玩了整整一天！<br>不用坐红眼航班 😴</div></div>
+    <div class="info-card"><div class="label">活动明细</div><div class="val" style="color:var(--sand);font-size:14px;">跳岛¥250 + 陆游¥300<br>+ 萤火虫¥120 + 深潜¥400</div><div class="note">4天全安排上！不赶时间 ✌️</div></div>
+    <div class="info-card"><div class="label">✅ 深潜安全</div><div class="val" style="color:var(--palm);font-size:14px;">潜水→飞机间隔30h+</div><div class="note">Day5上午潜水 → Day6晚21:10飞<br>间隔超30小时，完全安全 ✅</div></div>
   </div>
 </div>
 
@@ -388,7 +499,7 @@
       <li><strong>香港快运是廉航</strong>：行李托运需另购（约HK$200/件），建议提前在app买好</li>
       <li><strong>深圳→香港机场</strong>：蛇口船最方便（免入境香港，直达机场），但班次有限要提前查</li>
       <li><strong>马尼拉T3转机</strong>：国际到达T3，菲律宾国内航班可能在T2/T3/T4，注意预留转航站楼时间</li>
-      <li><strong>潜水后不能立即飞</strong>：体验深潜后建议至少18小时再坐飞机（安排在Day3最安全）</li>
+      <li><strong>回程到港23:30</strong>：凌晨只能走皇岗口岸（24h），或在机场过夜等早班高铁</li>
       <li><strong>菲律宾出境税</strong>：部分机场收取离境费（约₱850≈¥100），有的已含在票价里</li>
     </ul>
   </div>
@@ -403,11 +514,12 @@
   <div class="tip sun">
     <h4>📌 出发前准备（倒计时15天！）</h4>
     <ul class="checklist">
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>🔥 立即</strong>：购买香港→马尼拉机票（已锁定价格¥955+¥691，价格预测持续上涨！）</div></li>
+      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>🔥 立即</strong>：购买香港↔马尼拉机票（¥955+¥515=¥1,470，价格随时上涨！）</div></li>
       <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>🔥 立即</strong>：购买马尼拉↔薄荷岛菲律宾国内机票（宿务太平洋/菲律宾航空）</div></li>
       <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>🔥 立即</strong>：办理菲律宾签证（电子签3-5个工作日，来不及就加急纸签）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：Booking/Agoda 预订薄荷岛酒店（2晚）</div></li>
+      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：Booking/Agoda 预订薄荷岛酒店（3晚：5/2、5/3、5/4）</div></li>
       <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：香港快运app购买行李托运额度</div></li>
+      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：预约5/6凌晨中港车（如选方案D回深圳）</div></li>
       <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>下周</strong>：淘宝买菲律宾eSIM/电话卡（¥30-50）</div></li>
       <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>出发前</strong>：准备防晒霜SPF50+、浮潜面罩、速干衣</div></li>
       <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>出发前</strong>：兑换少量美元/比索，开通境外支付</div></li>
@@ -427,11 +539,11 @@
         🔌 万能转换插头
       </div>
       <div style="font-size:13px;color:var(--text2);line-height:2;">
-        👕 速干衣裤×3套<br>
+        👕 速干衣裤×4套<br>
         🩴 防滑拖鞋+涉水鞋<br>
         💳 Visa/Master信用卡<br>
-        📱 充电宝（飞机上补觉用）<br>
-        🎧 降噪耳机（红眼航班必备）
+        📱 充电宝<br>
+        🎧 降噪耳机
       </div>
     </div>
   </div>
@@ -439,7 +551,7 @@
 
 <div class="footer">
   <p>🏝️ 五一薄荷岛攻略 · 更新时间：2026-04-16 · 基于真实机票价格</p>
-  <p style="margin-top:4px;">机票数据：香港快运HK Express实时报价 · ⚠️ 价格持续上涨，建议尽快下手</p>
+  <p style="margin-top:4px;">去程¥955 + 回程¥515 = <strong>往返仅¥1,470</strong> · 比上版省¥176 还多玩1天！</p>
 </div>
 
 </div>
