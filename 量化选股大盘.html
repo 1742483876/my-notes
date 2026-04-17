@@ -400,8 +400,10 @@ async function fetchRealtimePrices() {
     }
   }
 
+  let success = false;
+
+  // 方案A：东方财富 API
   try {
-    // 分批请求（每批最多50只）
     for (let batch = 0; batch < codes.length; batch += 50) {
       const batchCodes = codes.slice(batch, batch + 50);
       const url = buildEastmoneyUrl(batchCodes);
@@ -424,15 +426,99 @@ async function fetchRealtimePrices() {
             time:     new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'}),
           };
         });
+        success = true;
       }
     }
+  } catch(e) {
+    console.warn('[realtime] 东方财富API请求失败，尝试腾讯备用源...', e.message);
+  }
+
+  // 方案B：腾讯证券 API（JSONP 方式，跨域友好）
+  if (!success) {
+    try {
+      await fetchRealtimeFromTencent(codes);
+      success = true;
+    } catch(e2) {
+      console.warn('[realtime] 腾讯API也失败，使用静态数据', e2.message);
+    }
+  }
+
+  if (success) {
     const now = Object.values(_realtimePrices)[0]?.time || '';
     console.log(`[realtime] 已更新 ${Object.keys(_realtimePrices).length} 只实时行情 @ ${now}`);
-    // 更新卡片价格
     updateRealtimePriceDOM();
-  } catch(e) {
-    console.warn('[realtime] 东方财富API请求失败，使用静态数据', e.message);
   }
+}
+
+// 腾讯证券 API fallback（支持 JSONP，无跨域问题）
+function fetchRealtimeFromTencent(codes) {
+  return new Promise((resolve, reject) => {
+    // 转换代码格式：沪市 sh+code，深市 sz+code
+    const qqCodes = codes.map(c => {
+      if (c.startsWith('6') || c.startsWith('9')) return 'sh' + c;
+      return 'sz' + c;
+    });
+
+    // 分批请求（每批最多80只）
+    const batches = [];
+    for (let i = 0; i < qqCodes.length; i += 80) {
+      batches.push(qqCodes.slice(i, i + 80));
+    }
+
+    let completed = 0;
+    let hasError = false;
+
+    batches.forEach((batch, bi) => {
+      const cbName = '_qqStockCb_' + bi + '_' + Date.now();
+      const script = document.createElement('script');
+      // 使用腾讯股票接口（JSONP无跨域限制）
+      const url = `https://qt.gtimg.cn/q=${batch.join(',')}&_=${Date.now()}`;
+
+      // 腾讯接口返回的是 var v_shXXXXXX="..."; 格式的纯文本
+      script.onload = () => {
+        // 不需要回调解析，但onload也不会触发因为不是JSONP
+        document.head.removeChild(script);
+      };
+      script.onerror = () => {
+        document.head.removeChild(script);
+        if (!hasError) { hasError = true; reject(new Error('腾讯脚本加载失败')); }
+      };
+      script.src = url;
+      document.head.appendChild(script);
+    });
+
+    // 改用 fetch + text 解析方式
+    const fetchBatches = batches.map(batch => {
+      const url = `https://qt.gtimg.cn/q=${batch.join(',')}`;
+      return fetch(url).then(r => r.text()).then(text => {
+        // 解析 v_szXXXXXX="1~名称~代码~当前价~昨收~..."; 格式
+        const lines = text.split(';').filter(l => l.trim());
+        lines.forEach(line => {
+          const match = line.match(/v_\w+="(.+)"/);
+          if (!match) return;
+          const parts = match[1].split('~');
+          if (parts.length < 40) return;
+          const code = parts[2];
+          const name = parts[1];
+          const price = parseFloat(parts[3]);
+          const preclose = parseFloat(parts[4]);
+          const open = parseFloat(parts[5]);
+          const high = parseFloat(parts[33]) || parseFloat(parts[41]) || 0;
+          const low = parseFloat(parts[34]) || parseFloat(parts[42]) || 0;
+          if (!code || isNaN(price) || price <= 0) return;
+          const chg_pct = preclose > 0 ? ((price - preclose) / preclose * 100) : 0;
+          const chg_amt = price - preclose;
+          _realtimePrices[code] = {
+            price, chg_pct: parseFloat(chg_pct.toFixed(2)), chg_amt: parseFloat(chg_amt.toFixed(2)),
+            high, low, open, preclose, name,
+            time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+          };
+        });
+      });
+    });
+
+    Promise.all(fetchBatches).then(() => resolve()).catch(e => reject(e));
+  });
 }
 
 function updateRealtimePriceDOM() {
@@ -483,7 +569,19 @@ function updateRealtimePriceDOM() {
       chgEl.className = 'zt-chg zt-rt-chg ' + cls;
       chgEl.textContent = sign + rt.chg_pct.toFixed(2) + '%';
     }
-    if (timeEl) timeEl.textContent = rt.time || '';
+    if (timeEl) timeEl.textContent = '实时 ' + (rt.time || '');
+  });
+
+  // === 更新推荐卡片的rt-time ===
+  document.querySelectorAll('.stock-card[data-code] .rt-time').forEach(el => {
+    const card = el.closest('.stock-card');
+    if (!card) return;
+    const code = card.getAttribute('data-code');
+    const rt = _realtimePrices[code];
+    if (rt && rt.price != null && rt.price !== '-') {
+      el.textContent = '实时 ' + (rt.time || '');
+    }
+  });
   });
 
   // 更新顶部实时行情指示器
@@ -3443,7 +3541,7 @@ function renderZtList() {
       <div class="zt-price-row">
         <span class="zt-price zt-rt-price">¥${s.price?.toFixed(2) || '--'}</span>
         <span class="zt-chg zt-rt-chg ${chgClass}">${chgSign}${s.chg_pct?.toFixed(2) || 0}%</span>
-        <span class="zt-rt-time" style="font-size:10px;color:var(--text2);margin-left:auto"></span>
+        <span class="zt-rt-time" style="font-size:10px;color:var(--text2);margin-left:auto">昨收</span>
       </div>
       <div class="zt-features">
         ${tags.map(t => `<span class="zt-feat-tag ${t.hit?'hit':''}">${t.label}</span>`).join('')}
