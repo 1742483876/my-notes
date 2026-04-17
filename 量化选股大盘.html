@@ -3298,6 +3298,22 @@ renderPredictHistory();
   .zt-feat-tag.hit{background:rgba(63,185,80,.12);color:var(--green);border-color:var(--green)}
   .zt-backtest{font-size:11px;color:var(--text2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
   .zt-empty{text-align:center;padding:60px 0;color:var(--text2)}
+  /* 涨停预测子Tab */
+  .zt-sub-tabs{display:flex;gap:6px;margin-bottom:16px}
+  .zt-sub-tab{padding:6px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:13px;cursor:pointer;transition:.2s;font-weight:500}
+  .zt-sub-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  /* 历史回测样式 */
+  .zt-bt-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+  .zt-bt-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+  .zt-bt-card .v{font-size:20px;font-weight:700;color:var(--accent)}
+  .zt-bt-card .l{font-size:11px;color:var(--text2);margin-top:4px}
+  .zt-bt-table{width:100%;border-collapse:collapse;font-size:12px}
+  .zt-bt-table th{background:var(--surface2);padding:8px 6px;text-align:center;color:var(--text2);font-weight:600;position:sticky;top:0}
+  .zt-bt-table td{padding:6px;text-align:center;border-bottom:1px solid var(--border)}
+  .zt-bt-table tr:hover{background:var(--surface2)}
+  .zt-bt-table .hit{color:var(--green);font-weight:600}
+  .zt-bt-table .miss{color:var(--text2)}
+  .zt-bt-chart-wrap{height:200px;margin-bottom:20px}
 </style>
 <div class="zt-wrap">
   <div class="zt-header">
@@ -3307,14 +3323,35 @@ renderPredictHistory();
     </div>
     <div class="zt-stats" id="ztStats"></div>
   </div>
-  <div class="zt-filter" id="ztFilter">
-    <div class="zt-filter-btn active" onclick="filterZt('all')">全部</div>
-    <div class="zt-filter-btn" onclick="filterZt('fire')">🔥 强烈关注</div>
-    <div class="zt-filter-btn" onclick="filterZt('star')">⭐ 高概率</div>
-    <div class="zt-filter-btn" onclick="filterZt('up')">📈 关注</div>
+  <!-- 子Tab切换 -->
+  <div class="zt-sub-tabs">
+    <div class="zt-sub-tab active" onclick="switchZtView('predict')">📋 今日预测</div>
+    <div class="zt-sub-tab" onclick="switchZtView('backtest')">📊 历史回测</div>
   </div>
-  <div class="zt-list" id="ztList">
-    <div class="zt-empty">数据加载中...</div>
+  <!-- 今日预测视图 -->
+  <div id="ztPredictView">
+    <div class="zt-filter" id="ztFilter">
+      <div class="zt-filter-btn active" onclick="filterZt('all')">全部</div>
+      <div class="zt-filter-btn" onclick="filterZt('fire')">🔥 强烈关注</div>
+      <div class="zt-filter-btn" onclick="filterZt('star')">⭐ 高概率</div>
+      <div class="zt-filter-btn" onclick="filterZt('up')">📈 关注</div>
+    </div>
+    <div class="zt-list" id="ztList">
+      <div class="zt-empty">数据加载中...</div>
+    </div>
+  </div>
+  <!-- 历史回测视图 -->
+  <div id="ztBacktestView" style="display:none">
+    <div class="zt-bt-summary" id="ztBtSummary"></div>
+    <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">📈 Top5预测次日涨幅走势</div>
+    <div class="zt-bt-chart-wrap"><canvas id="ztBtChart"></canvas></div>
+    <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">📋 逐日回测明细</div>
+    <div style="max-height:500px;overflow-y:auto;border:1px solid var(--border);border-radius:10px">
+      <table class="zt-bt-table" id="ztBtTable">
+        <thead><tr><th>日期</th><th>预测数</th><th>实际涨停</th><th>命中</th><th>精准率</th><th>Top5均涨</th><th>Top5详情</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 </div>
 </div>
@@ -3417,6 +3454,116 @@ function renderZtList() {
   }).join('');
 
   document.getElementById('ztList').innerHTML = html;
+}
+
+// ===== 涨停预测视图切换 =====
+let _ztBtChartInst = null;
+
+function switchZtView(view) {
+  document.querySelectorAll('.zt-sub-tab').forEach((t,i) => {
+    t.classList.toggle('active', (i===0 && view==='predict') || (i===1 && view==='backtest'));
+  });
+  document.getElementById('ztPredictView').style.display = view === 'predict' ? '' : 'none';
+  document.getElementById('ztBacktestView').style.display = view === 'backtest' ? '' : 'none';
+  if (view === 'backtest') renderZtBacktest();
+}
+
+function renderZtBacktest() {
+  const zt = G && G.zt_predict;
+  if (!zt || !zt.daily_backtest || !zt.daily_backtest.length) {
+    document.getElementById('ztBtSummary').innerHTML = '<div class="zt-empty" style="grid-column:1/-1">⚠️ 暂无历史回测数据，请等待下次涨停预测更新后查看</div>';
+    return;
+  }
+
+  const bt = zt.daily_backtest;
+  const sm = zt.backtest_summary || {};
+
+  // 汇总卡片
+  document.getElementById('ztBtSummary').innerHTML = `
+    <div class="zt-bt-card"><div class="v">${sm.total_days || 0}</div><div class="l">回测天数</div></div>
+    <div class="zt-bt-card"><div class="v" style="color:#ff5f57">${sm.avg_precision || 0}%</div><div class="l">平均精准率</div></div>
+    <div class="zt-bt-card"><div class="v" style="color:#f0b429">${sm.avg_recall || 0}%</div><div class="l">平均召回率</div></div>
+    <div class="zt-bt-card"><div class="v">${sm.f1 || 0}%</div><div class="l">F1</div></div>
+    <div class="zt-bt-card"><div class="v" style="color:var(--green)">${sm.avg_top5_return > 0 ? '+' : ''}${sm.avg_top5_return || 0}%</div><div class="l">Top5次日均涨</div></div>
+    <div class="zt-bt-card"><div class="v" style="color:var(--green)">${sm.top5_win_rate || 0}%</div><div class="l">Top5盈利天占比</div></div>
+    <div class="zt-bt-card"><div class="v">${sm.total_tp || 0}</div><div class="l">总命中次数</div></div>
+    <div class="zt-bt-card"><div class="v">${Math.round(sm.avg_predicted_per_day || 0)}</div><div class="l">日均预测数</div></div>
+  `;
+
+  // 逐日表格
+  const tbody = document.querySelector('#ztBtTable tbody');
+  tbody.innerHTML = bt.slice().reverse().map(d => {
+    const chgClass = d.top5_avg_chg > 0 ? 'hit' : d.top5_avg_chg < 0 ? 'miss' : '';
+    const top5Html = (d.top5 || []).slice(0, 5).map(p => {
+      const icon = p.hit ? '✅' : (p.next_chg >= 5 ? '🔶' : '');
+      const chg = p.next_chg > 0 ? `<span style="color:#ff5f57">+${p.next_chg}%</span>` : `<span style="color:var(--green)">${p.next_chg}%</span>`;
+      return `<span style="font-size:10px;margin-right:4px" title="${p.name}(${p.code}) 得分${p.score} 次日${p.next_chg}%">${icon}${p.name}${chg}</span>`;
+    }).join('');
+    return `<tr>
+      <td style="white-space:nowrap">${d.date?.slice(5) || ''}</td>
+      <td>${d.predicted_count}</td>
+      <td>${d.actual_zt_count}</td>
+      <td class="${d.hit_count > 0 ? 'hit' : ''}">${d.hit_count}</td>
+      <td>${d.precision}%</td>
+      <td class="${chgClass}">${d.top5_avg_chg > 0 ? '+' : ''}${d.top5_avg_chg}%</td>
+      <td style="text-align:left;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${top5Html}</td>
+    </tr>`;
+  }).join('');
+
+  // Top5涨幅折线图
+  const labels = bt.map(d => d.date?.slice(5) || '');
+  const returns = bt.map(d => d.top5_avg_chg || 0);
+  const precisions = bt.map(d => d.precision || 0);
+
+  if (_ztBtChartInst) _ztBtChartInst.destroy();
+  _ztBtChartInst = new Chart(document.getElementById('ztBtChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Top5次日涨幅%',
+          data: returns,
+          backgroundColor: returns.map(r => r >= 0 ? 'rgba(248,81,73,.6)' : 'rgba(63,185,80,.5)'),
+          borderRadius: 3,
+          barPercentage: 0.7,
+          yAxisID: 'y',
+        },
+        {
+          label: '精准率%',
+          type: 'line',
+          data: precisions,
+          borderColor: '#ffa657',
+          borderWidth: 1.5,
+          pointRadius: 2,
+          tension: 0.3,
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 16 } },
+        tooltip: {
+          callbacks: {
+            title: ctx => bt[ctx[0].dataIndex]?.date || '',
+            afterBody: ctx => {
+              const d = bt[ctx[0].dataIndex];
+              return d ? [`预测: ${d.predicted_count}只`, `涨停: ${d.actual_zt_count}只`, `命中: ${d.hit_count}只`] : [];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 45 }, grid: { color: '#21262d' } },
+        y: { position: 'left', ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v + '%' }, grid: { color: '#21262d' }, title: { display: true, text: 'Top5涨幅', color: '#8b949e', font: { size: 10 } } },
+        y1: { position: 'right', ticks: { color: '#ffa657', font: { size: 10 }, callback: v => v + '%' }, grid: { display: false }, title: { display: true, text: '精准率', color: '#ffa657', font: { size: 10 } } },
+      }
+    }
+  });
 }
 </script>
 </body>
