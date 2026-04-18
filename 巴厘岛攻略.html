@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌺 五一巴厘岛攻略 · 深圳出发</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --bg: #0a0e1a; --card: #111827; --card2: #1a2235;
+    --border: #1e3a5f; --text1: #f0f4ff; --text2: #8899bb;
+    --lava: #ef476f; --gold: #ffd166; --jungle: #06d6a0;
+    --ocean: #00b4d8; --sunset: #ff8c42; --temple: #9b5de5;
+    --gradient1: linear-gradient(135deg, #ef476f 0%, #ffd166 100%);
+    --gradient2: linear-gradient(135deg, #06d6a0 0%, #00b4d8 100%);
+    --gradient3: linear-gradient(135deg, #9b5de5 0%, #ef476f 100%);
+  }
+  body { background:var(--bg); color:var(--text1); font-family:'Inter',system-ui,sans-serif; line-height:1.6; }
+  .container { max-width:900px; margin:0 auto; padding:20px 24px 60px; }
+  .hero { text-align:center; padding:50px 0 30px; position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:800px; height:800px; background:radial-gradient(circle, rgba(239,71,111,.12) 0%, rgba(255,209,102,.06) 40%, transparent 70%); pointer-events:none; }
+  .hero-emoji { font-size:64px; margin-bottom:12px; filter:drop-shadow(0 4px 20px rgba(239,71,111,.4)); animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  .hero h1 { font-size:38px; font-weight:800; background:var(--gradient1); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-0.5px; }
+  .hero .sub { color:var(--text2); font-size:15px; margin-top:8px; }
+  .hero .dates { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:6px 16px; border-radius:24px; background:rgba(239,71,111,.1); border:1px solid rgba(239,71,111,.3); color:var(--lava); font-size:14px; font-weight:600; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:30px 0; }
+  .stat { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; text-align:center; transition:all .2s; }
+  .stat:hover { border-color:var(--lava); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.3); }
+  .stat .icon { font-size:24px; margin-bottom:6px; }
+  .stat .val { font-size:20px; font-weight:700; color:var(--lava); }
+  .stat .lab { font-size:11px; color:var(--text2); margin-top:2px; }
+  .section { margin:36px 0; }
+  .section-title { font-size:18px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .section-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right, var(--border), transparent); }
+  .data-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:13px; }
+  .data-table th { background:var(--card2); color:var(--lava); font-weight:600; text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+  .data-table td { padding:10px 14px; border-bottom:1px solid var(--border); color:var(--text2); }
+  .data-table tr:hover td { background:rgba(239,71,111,.04); color:var(--text1); }
+  .price { color:var(--jungle); font-weight:600; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:500; }
+  .tag-g { background:rgba(6,214,160,.15); color:var(--jungle); }
+  .tag-b { background:rgba(0,180,216,.15); color:var(--ocean); }
+  .tag-y { background:rgba(255,209,102,.15); color:var(--gold); }
+  .tag-r { background:rgba(239,71,111,.15); color:var(--lava); }
+  .tag-p { background:rgba(155,93,229,.15); color:var(--temple); }
+  .hotel { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin:12px 0; transition:all .2s; }
+  .hotel:hover { border-color:var(--lava); }
+  .hotel .top { display:flex; justify-content:space-between; align-items:flex-start; }
+  .hotel h5 { font-size:15px; font-weight:600; margin-bottom:6px; }
+  .hotel .price-tag { text-align:right; }
+  .hotel .price-tag .amt { font-size:20px; font-weight:700; }
+  .hotel .price-tag .per { font-size:11px; color:var(--text2); }
+  .hotel .meta { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+  .hotel .meta span { font-size:12px; color:var(--text2); }
+  .hotel .feats { display:flex; gap:6px; flex-wrap:wrap; }
+  .hotel .feats span { font-size:11px; padding:3px 8px; border-radius:6px; background:var(--card2); color:var(--text2); border:1px solid var(--border); }
+  .badge { display:inline-flex; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+  .badge-fire { background:rgba(239,71,111,.12); color:var(--lava); border:1px solid rgba(239,71,111,.3); }
+  .badge-gold { background:rgba(255,209,102,.12); color:var(--gold); border:1px solid rgba(255,209,102,.3); }
+  .timeline { position:relative; padding-left:30px; }
+  .timeline::before { content:''; position:absolute; left:9px; top:8px; bottom:8px; width:2px; background:linear-gradient(to bottom, var(--lava), var(--gold), var(--jungle), var(--temple)); border-radius:2px; }
+  .tl-item { position:relative; margin-bottom:24px; }
+  .tl-item::before { content:''; position:absolute; left:-25px; top:8px; width:12px; height:12px; border-radius:50%; border:2px solid var(--lava); background:var(--bg); z-index:1; }
+  .tl-item.hl::before { background:var(--lava); box-shadow:0 0 12px rgba(239,71,111,.5); }
+  .tl-day { font-size:12px; color:var(--lava); font-weight:600; letter-spacing:.5px; margin-bottom:4px; }
+  .tl-title { font-size:16px; font-weight:700; margin-bottom:6px; }
+  .tl-desc { font-size:13px; color:var(--text2); line-height:1.8; }
+  .tl-desc strong { color:var(--text1); }
+  .tl-cost { display:inline-flex; align-items:center; gap:4px; margin-top:6px; padding:3px 10px; border-radius:10px; background:rgba(6,214,160,.1); color:var(--jungle); font-size:12px; font-weight:500; }
+  .budget-bar { display:flex; align-items:center; gap:10px; margin:8px 0; }
+  .budget-label { font-size:13px; color:var(--text2); min-width:100px; }
+  .budget-track { flex:1; height:10px; background:var(--card); border-radius:5px; overflow:hidden; }
+  .budget-fill { height:100%; border-radius:5px; }
+  .budget-amt { font-size:14px; font-weight:600; min-width:75px; text-align:right; }
+  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+  .info-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; transition:all .2s; }
+  .info-card:hover { border-color:var(--lava); transform:translateY(-2px); }
+  .info-card h4 { font-size:14px; font-weight:600; margin-bottom:6px; }
+  .info-card p { font-size:13px; color:var(--text2); line-height:1.7; }
+  .info-card .val { font-size:22px; font-weight:700; }
+  .info-card .note { font-size:11px; color:var(--text2); margin-top:4px; }
+  .info-card .label { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
+  .tip { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:16px 0; }
+  .tip.fire { border-left:3px solid var(--lava); }
+  .tip.sun { border-left:3px solid var(--gold); }
+  .tip.green { border-left:3px solid var(--jungle); }
+  .tip.purple { border-left:3px solid var(--temple); }
+  .tip.blue { border-left:3px solid var(--ocean); }
+  .tip h4 { font-size:14px; font-weight:600; margin-bottom:6px; }
+  .tip p, .tip li { font-size:13px; color:var(--text2); line-height:1.8; }
+  .tip ul { padding-left:18px; }
+  .flight-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin:12px 0; display:flex; align-items:center; gap:20px; transition:all .2s; }
+  .flight-card:hover { border-color:var(--lava); }
+  .flight-route { display:flex; align-items:center; gap:12px; flex:1; }
+  .flight-city { text-align:center; }
+  .flight-city .code { font-size:22px; font-weight:800; }
+  .flight-city .name { font-size:11px; color:var(--text2); }
+  .flight-line { flex:1; text-align:center; position:relative; }
+  .flight-line::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); }
+  .flight-line span { position:relative; background:var(--card); padding:0 10px; font-size:11px; color:var(--text2); }
+  .flight-line .plane { font-size:16px; }
+  .flight-price { text-align:right; }
+  .flight-price .amount { font-size:24px; font-weight:800; color:var(--jungle); }
+  .flight-price .note { font-size:11px; color:var(--text2); }
+  .vs-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:13px; }
+  .vs-table th { background:var(--card2); font-weight:600; text-align:center; padding:12px 14px; border-bottom:1px solid var(--border); font-size:12px; }
+  .vs-table th:first-child { text-align:left; color:var(--text2); }
+  .vs-table th:nth-child(2) { color:var(--ocean); }
+  .vs-table th:nth-child(3) { color:var(--lava); }
+  .vs-table td { padding:10px 14px; border-bottom:1px solid var(--border); color:var(--text2); text-align:center; }
+  .vs-table td:first-child { text-align:left; color:var(--text1); font-weight:500; }
+  .divider { height:1px; background:linear-gradient(to right, transparent, var(--border), transparent); margin:36px 0; }
+  .footer { text-align:center; padding:40px 0 20px; color:var(--text2); font-size:12px; }
+  @media(max-width:600px) {
+    .stats { grid-template-columns:repeat(2,1fr); }
+    .info-grid { grid-template-columns:1fr; }
+    .hero h1 { font-size:28px; }
+    .flight-card { flex-direction:column; align-items:stretch; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-emoji">🌺</div>
+  <h1>五一巴厘岛攻略</h1>
+  <div class="sub">深圳出发 · Bali · 4天3晚 · 👫 两人出行 · 备选方案</div>
+  <div class="dates">📅 5月1日 — 5月6日 · 与薄荷岛同期对比</div>
+</div>
+
+<!-- Quick Stats -->
+<div class="stats">
+  <div class="stat"><div class="icon">💰</div><div class="val">¥5,200~8,500</div><div class="lab">人均预算（两人均摊）</div></div>
+  <div class="stat"><div class="icon">🌺</div><div class="val">4天3晚</div><div class="lab">巴厘岛实际游玩</div></div>
+  <div class="stat"><div class="icon">✈️</div><div class="val">5h10m</div><div class="lab">深圳直飞/中转</div></div>
+  <div class="stat"><div class="icon">🌡️</div><div class="val">26-33°C</div><div class="lab">5月·雨旱季交替</div></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 🆚 薄荷岛 vs 巴厘岛对比 -->
+<div class="section">
+  <div class="section-title">🆚 薄荷岛 vs 巴厘岛 · 横向对比</div>
+
+  <table class="vs-table">
+    <thead><tr><th>对比项</th><th>🇵🇭 薄荷岛 Bohol</th><th>🇮🇩 巴厘岛 Bali</th></tr></thead>
+    <tbody>
+      <tr><td>💰 人均预算</td><td style="color:var(--jungle)">¥3,910~5,255 ✅</td><td>¥5,200~8,500</td></tr>
+      <tr><td>✈️ 机票往返</td><td style="color:var(--jungle)">¥1,470（已购！）</td><td>¥2,000~4,000</td></tr>
+      <tr><td>🕐 飞行时间</td><td>2h20m+1h45m 转机</td><td>5h10m 直飞/中转</td></tr>
+      <tr><td>🛂 签证</td><td>需办（¥250-350）</td><td style="color:var(--jungle)">免签30天 ✅</td></tr>
+      <tr><td>🌊 海洋活动</td><td style="color:var(--jungle)">沙丁鱼风暴🐟 大断层🤿</td><td>佩尼达岛 蓝梦岛</td></tr>
+      <tr><td>🏔️ 陆地景点</td><td>巧克力山 眼镜猴</td><td style="color:var(--jungle)">火山 梯田 寺庙 秋千</td></tr>
+      <tr><td>🎭 文化体验</td><td>较少</td><td style="color:var(--jungle)">印度教寺庙 传统舞蹈</td></tr>
+      <tr><td>🍽️ 美食</td><td>海鲜为主</td><td style="color:var(--jungle)">脏鸭饭 烤猪饭 丰富多样</td></tr>
+      <tr><td>💆 SPA</td><td>沙滩马杀鸡（¥80）</td><td style="color:var(--jungle)">世界顶级SPA（¥100起）</td></tr>
+      <tr><td>🏨 住宿</td><td>¥350~920/晚</td><td>¥300~2000/晚（Villa文化）</td></tr>
+      <tr><td>🌤️ 5月天气</td><td style="color:var(--jungle)">旱季末 ☀️ 最佳</td><td>雨旱交替 🌦️</td></tr>
+      <tr><td>⏰ 时差</td><td>无时差</td><td>无时差</td></tr>
+      <tr><td>🎯 适合</td><td>海岛控 潜水 小众冒险</td><td>度假 文化 拍照 蜜月</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip fire">
+    <h4>📌 结论</h4>
+    <p><strong>这次五一首选薄荷岛</strong>（机票已买✅、预算更低、旱季更好）。<br>
+    巴厘岛作为<strong>备选方案</strong>留着，适合下次有5-7天假期时专门去（可以深度玩乌布+佩尼达岛+火山日出+SPA）。<br>
+    如果你以后想去，巴厘岛<strong>免签</strong>说走就走，比薄荷岛更方便！</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ✈️ 机票方案 -->
+<div class="section">
+  <div class="section-title">✈️ 机票方案 · 深圳→巴厘岛</div>
+
+  <div class="tip sun">
+    <h4>🛫 航线概况</h4>
+    <p>巴厘岛机场代码 <strong>DPS</strong>（伍拉·赖国际机场，又叫登巴萨机场）。<br>
+    <strong>深圳无直飞巴厘岛！</strong>需要在吉隆坡/新加坡/雅加达中转，或从香港出发。<br>
+    香港有<strong>香港航空直飞</strong>（5h5min，凌晨02:00出发），是最方便的选择。</p>
+  </div>
+
+  <div class="flight-card">
+    <div class="flight-route">
+      <div class="flight-city"><div class="code">HKG</div><div class="name">香港</div></div>
+      <div class="flight-line"><span class="plane">✈️</span> <span>香港航空直飞 · 5h05m</span></div>
+      <div class="flight-city"><div class="code">DPS</div><div class="name">巴厘岛</div></div>
+    </div>
+    <div class="flight-price"><div class="amount">¥2,400~4,200</div><div class="note">往返含税 · 五一旺季较贵</div></div>
+  </div>
+
+  <div class="flight-card">
+    <div class="flight-route">
+      <div class="flight-city"><div class="code">SZX</div><div class="name">深圳</div></div>
+      <div class="flight-line"><span class="plane">✈️</span> <span>亚航·吉隆坡转 · 8-10h</span></div>
+      <div class="flight-city"><div class="code">DPS</div><div class="name">巴厘岛</div></div>
+    </div>
+    <div class="flight-price"><div class="amount">¥2,000~3,000</div><div class="note">往返含税 · 需中转1次</div></div>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>方案</th><th>出发地</th><th>航司</th><th>飞行</th><th>往返价格</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag tag-r">⭐推荐</span></td><td>香港HKG</td><td>香港航空</td><td>5h直飞</td><td class="price">¥2,400~4,200</td><td>凌晨02:00出发，早上07:00到；最方便</td></tr>
+      <tr><td><span class="tag tag-y">经济</span></td><td>深圳SZX</td><td>亚洲航空</td><td>8-10h转</td><td class="price">¥2,000~3,000</td><td>吉隆坡转机，廉航无行李</td></tr>
+      <tr><td><span class="tag tag-b">舒适</span></td><td>深圳SZX</td><td>新加坡航空</td><td>9-11h转</td><td class="price">¥2,500~3,500</td><td>新加坡转机，服务好</td></tr>
+      <tr><td><span class="tag tag-p">高端</span></td><td>香港HKG</td><td>国泰航空</td><td>5h直飞</td><td class="price">¥3,900+</td><td>直飞+含行李+含餐</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- 🏨 住宿 -->
+<div class="section">
+  <div class="section-title">🏨 住宿推荐 · 住3晚（5/2、5/3、5/4）</div>
+
+  <div class="tip blue">
+    <h4>📍 住宿区域选择</h4>
+    <p>巴厘岛住宿区域很多，推荐两个方案：<br>
+    <strong>方案A</strong>：全程住<strong>水明漾/库塔</strong>（南部），交通方便，去各景点都顺路<br>
+    <strong>方案B</strong>：前2晚住<strong>乌布</strong>（中部丛林）+ 最后1晚住<strong>金巴兰</strong>（南部海边），体验两种风格</p>
+  </div>
+
+  <div class="hotel" style="border-color:var(--jungle);">
+    <div class="top"><h5>🌿 乌布 Villa · 丛林泳池别墅 <span class="badge badge-fire">⭐ 必体验</span></h5><div class="price-tag"><div class="amt" style="color:var(--jungle);">¥400~800</div><div class="per">/晚 · 独栋Villa含早</div></div></div>
+    <div class="meta"><span>⭐ Booking 9.0+</span><span>📍 乌布梯田区</span><span>🏡 独栋私人别墅</span></div>
+    <div class="feats"><span>🏊 私人泳池</span><span>🌿 丛林景观</span><span>🍳 含早餐</span><span>📶 WiFi</span><span>🛵 免费摩托</span></div>
+  </div>
+
+  <div class="hotel">
+    <div class="top"><h5>🏖️ 库塔/水明漾 · 海边度假酒店</h5><div class="price-tag"><div class="amt" style="color:var(--ocean);">¥300~600</div><div class="per">/晚 · 含早</div></div></div>
+    <div class="meta"><span>⭐ Agoda 8.5+</span><span>📍 库塔海滩步行可达</span></div>
+    <div class="feats"><span>🏊 泳池</span><span>🏖️ 近海滩</span><span>🍳 含早餐</span><span>🛍️ 逛街方便</span><span>🍻 夜生活</span></div>
+  </div>
+
+  <div class="hotel">
+    <div class="top"><h5>🌅 金巴兰 · 悬崖海景度假村 <span class="badge badge-gold">🏆 奢华</span></h5><div class="price-tag"><div class="amt" style="color:var(--gold);">¥1,000~2,500</div><div class="per">/晚 · 无边际泳池+日落</div></div></div>
+    <div class="meta"><span>⭐ 9.0+</span><span>📍 金巴兰悬崖</span><span>🏆 世界十大日落海景</span></div>
+    <div class="feats"><span>🏊 无边际泳池</span><span>🌅 绝美日落</span><span>💆 SPA中心</span><span>🍽️ 悬崖餐厅</span><span>🏋️ 健身房</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 📋 行程 -->
+<div class="section">
+  <div class="section-title">📋 行程安排（适配晚起作息）</div>
+
+  <div class="tip fire">
+    <h4>🕐 时间线总览</h4>
+    <p>
+      <strong>5/1 周四</strong> 深圳→香港机场 → 凌晨直飞巴厘岛（或中转）<br>
+      <strong>5/2 周五</strong> 上午到巴厘岛 → 入住乌布Villa → 下午梯田+丛林秋千<br>
+      <strong>5/3 周六</strong> 乌布文化日：圣泉寺 + 乌布皇宫 + 阿勇河漂流<br>
+      <strong>5/4 周日</strong> 佩尼达岛跳岛一日游（精灵坠崖+水晶湾+破碎海滩）<br>
+      <strong>5/5 周一</strong> 南部精华：情人崖 + 海神庙日落 + 金巴兰BBQ<br>
+      <strong>5/6 周二</strong> SPA放松 → 购物 → 飞回深圳/香港
+    </p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item hl">
+      <div class="tl-day">Day 1 · 5月1日 周四</div>
+      <div class="tl-title">✈️ 深圳 → 巴厘岛</div>
+      <div class="tl-desc">
+        <strong>方案A（推荐·香港航空直飞）：</strong><br>
+        <strong>18:00</strong> 深圳出发去香港机场（高铁到西九龙+机场快线，约2h）<br>
+        <strong>20:30</strong> 到达香港机场T1，办理登机，逛免税店 🛍️<br>
+        <strong>02:00+1</strong> ✈️ 香港航空 HX709 起飞（凌晨红眼航班）<br>
+        <strong>07:05</strong> 抵达巴厘岛登巴萨机场DPS 🌺<br><br>
+
+        <strong>方案B（经济·亚航转机）：</strong><br>
+        <strong>下午</strong> 深圳宝安T3 → 飞吉隆坡（3.5h）→ 转机 → 飞巴厘岛（3h）<br>
+        <strong>晚上/次日凌晨</strong> 抵达巴厘岛DPS<br><br>
+
+        💡 巴厘岛<strong>免签30天</strong>，落地直接走免签通道，超方便！
+      </div>
+      <div class="tl-cost">💰 机票¥1,000~2,100（单程）+ 深圳→香港交通¥180</div>
+    </div>
+
+    <div class="tl-item hl">
+      <div class="tl-day">Day 2 · 5月2日 周五 ⭐ 乌布丛林日</div>
+      <div class="tl-title">🌿 入住丛林Villa + 🌾 德格拉朗梯田 + 🎋 丛林秋千</div>
+      <div class="tl-desc">
+        <strong>07:00</strong> 到达巴厘岛！入境免签，走绿色通道<br>
+        <strong>08:00</strong> 包车前往乌布（机场→乌布约1.5h）<br>
+        <strong>10:00</strong> 入住 <strong>乌布丛林Villa</strong> 🏡（独栋泳池别墅！先睡个回笼觉补眠）<br>
+        <strong>13:00</strong> 自然醒，Villa享用午餐 🍲<br>
+        <strong>14:30</strong> 🌾 <strong>德格拉朗梯田</strong>（周杰伦《稻香》MV取景地！层层叠叠的翠绿梯田📸超出片）<br>
+        <strong>15:30</strong> 🎋 <strong>巴厘大秋千 Bali Swing</strong>（在悬崖丛林上荡秋千！俯瞰热带雨林🌴 网红爆款📸）<br>
+        &nbsp;&nbsp;· 有多种高度可选（10m/30m/78m），不敢玩高的可以选低的<br>
+        &nbsp;&nbsp;· 还有鸟巢、爱心等各种拍照道具<br>
+        <strong>17:30</strong> 回Villa，在私人泳池游泳 🏊 享受丛林黄昏<br>
+        <strong>19:00</strong> 🍽️ <strong>脏鸭餐 Bebek Bengil</strong>（乌布最著名的餐厅！外酥里嫩的鸭肉🦆 稻田景观用餐）<br>
+        <strong>20:30</strong> 🎭 <strong>乌布皇宫传统舞蹈表演</strong>（19:30开演，巴厘岛传统雷贡舞/巴龙舞，配火把超震撼！）<br>
+        <strong>22:00~</strong> 回Villa泡泳池 · 看星星 🌌
+      </div>
+      <div class="tl-cost">💰 包车¥200 + Villa¥400~800 + 秋千¥150 + 餐饮¥150</div>
+    </div>
+
+    <div class="tl-item hl">
+      <div class="tl-day">Day 3 · 5月3日 周六 ⭐ 文化&冒险日</div>
+      <div class="tl-title">⛲ 圣泉寺净化 + 🐒 猴子森林 + 🚣 阿勇河漂流</div>
+      <div class="tl-desc">
+        <strong>10:00</strong> 自然醒，Villa早餐（热带水果+印尼咖啡☕）<br>
+        <strong>11:00</strong> ⛲ <strong>圣泉寺 Tirta Empul</strong>（巴厘岛最神圣的寺庙！泉水净化仪式🙏）<br>
+        &nbsp;&nbsp;· 可以穿纱笼下水体验净化仪式（12个泉眼，每个代表不同神明）<br>
+        &nbsp;&nbsp;· 💡 带好泳衣和换洗衣物，出来可以换<br>
+        <strong>12:30</strong> 🍽️ 午餐：<strong>火山景观餐厅</strong>（俯瞰京打马尼火山+巴图尔湖，边吃边看火山🌋）<br>
+        <strong>14:00</strong> 🐒 <strong>圣猴森林公园 Sacred Monkey Forest</strong>（数百只长尾猕猴！古树参天，石雕精美📸）<br>
+        &nbsp;&nbsp;· ⚠️ 收好眼镜/帽子/手机！猴子会抢！<br>
+        <strong>15:30</strong> 🚣 <strong>阿勇河漂流 Ayung River Rafting</strong>（2-3h，穿越热带丛林峡谷💦超刺激！）<br>
+        &nbsp;&nbsp;· 沿途可看瀑布、岩壁石雕、热带植被<br>
+        &nbsp;&nbsp;· 难度适中，不会游泳也能玩<br>
+        <strong>18:30</strong> 漂流结束，回Villa洗澡换衣<br>
+        <strong>19:30</strong> 🍽️ <strong>烤猪饭 Babi Guling</strong>（乌布特色！整只烤乳猪外脆里嫩，配红米饭🐷）<br>
+        &nbsp;&nbsp;· 推荐：<strong>Ibu Oka</strong>（安东尼·波登推荐的名店！）<br>
+        <strong>21:00</strong> 🛍️ 逛<strong>乌布市场</strong>（夜间更有氛围，买木雕/蜡染/精油）<br>
+        <strong>22:00~</strong> 回Villa放松 💤
+      </div>
+      <div class="tl-cost">💰 圣泉寺¥6 + 猴子森林¥30 + 漂流¥250/人 + 包车¥200 + 餐饮¥150</div>
+    </div>
+
+    <div class="tl-item hl">
+      <div class="tl-day">Day 4 · 5月4日 周日 ⭐ 跳岛日</div>
+      <div class="tl-title">🏝️ 佩尼达岛一日游 · 精灵坠崖 + 水晶湾 + 破碎海滩</div>
+      <div class="tl-desc">
+        <strong>07:00</strong> 早起！退房乌布Villa，包车前往萨努尔码头（1.5h）<br>
+        <strong>08:30</strong> 到达萨努尔码头，乘快艇前往<strong>佩尼达岛 Nusa Penida</strong>（45min）🚤<br>
+        <strong>09:30</strong> 抵达佩尼达岛！换乘岛上包车<br><br>
+
+        <strong>10:00</strong> 🏖️ <strong>Kelingking Beach 精灵坠崖</strong>（巴厘岛最震撼的悬崖海景！📸 T-Rex恐龙形状的岬角）<br>
+        &nbsp;&nbsp;· 这是巴厘岛最出名的打卡点，下方是绝美蓝色海水<br>
+        &nbsp;&nbsp;· 可以爬下去（40min，陡峭⚠️），也可以在上方拍全景<br>
+        <strong>11:30</strong> 🌊 <strong>Broken Beach 破碎海滩</strong>（天然石拱桥+碧绿水潭🌀 超级出片！）<br>
+        <strong>12:00</strong> 🏊 <strong>Angel's Billabong 天使泳池</strong>（天然无边际泳池！悬崖边上的翡翠水潭）<br>
+        <strong>12:30</strong> 🍽️ 午餐：当地餐厅（简餐）<br>
+        <strong>14:00</strong> 🤿 <strong>Crystal Bay 水晶湾浮潜</strong>（水质超清澈！可能看到翻车鱼Mola Mola🐡）<br>
+        <strong>16:00</strong> 返回码头，快艇回巴厘岛<br>
+        <strong>17:00</strong> 抵达萨努尔码头，包车前往<strong>金巴兰</strong>入住（30min）<br>
+        <strong>18:00</strong> 🌅 <strong>金巴兰海滩日落BBQ</strong>（世界十大日落🌅 + 沙滩海鲜烧烤🦀 + 现场乐队）<br>
+        &nbsp;&nbsp;· 坐在沙滩长桌上，脚踩细沙，看太阳慢慢沉入印度洋…绝美！<br>
+        <strong>20:00</strong> 入住金巴兰/库塔酒店<br>
+        <strong>21:00~</strong> 库塔夜生活 🍻（Sky Garden超级有名的天台酒吧！）
+      </div>
+      <div class="tl-cost">💰 佩尼达一日游¥400-500/人 + 金巴兰BBQ¥150 + 酒店¥300-600</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-day">Day 5 · 5月5日 周一 ⭐ 南部精华日</div>
+      <div class="tl-title">🏛️ 情人崖 + 🌊 海神庙日落 + 💆 巴厘岛SPA</div>
+      <div class="tl-desc">
+        <strong>10:00</strong> 自然醒，酒店早餐 ☕🥞<br>
+        <strong>11:00</strong> 🏛️ <strong>乌鲁瓦图寺·情人崖</strong>（70m高悬崖直插印度洋！巨浪拍岸🌊）<br>
+        &nbsp;&nbsp;· ⚠️ 小心猴子！眼镜、帽子收好<br>
+        &nbsp;&nbsp;· 📸 悬崖边超震撼，蓝得发光的印度洋<br>
+        <strong>12:30</strong> 🍽️ 午餐：<strong>Rock Bar</strong>（悬崖海景餐厅/酒吧，坐在岩石上喝鸡尾酒看海🍸）<br>
+        &nbsp;&nbsp;· 或者 <strong>Single Fin</strong>（冲浪者天堂酒吧，悬崖观浪🏄）<br>
+        <strong>14:00</strong> 💆 <strong>巴厘岛正宗SPA</strong>（2小时精油按摩+花瓣浴🌸）<br>
+        &nbsp;&nbsp;· 推荐：<strong>Taman Air Spa</strong> 或 <strong>Spring Spa</strong>（约¥150-300/2h）<br>
+        &nbsp;&nbsp;· 巴厘岛SPA全球闻名！不做一次太可惜<br>
+        <strong>16:30</strong> 🛍️ <strong>库塔购物</strong>（Beachwalk Shopping、库塔艺术市场、Discovery百货）<br>
+        &nbsp;&nbsp;· 买伴手礼：精油皂、木雕、蜡染、猫屎咖啡、银饰<br>
+        <strong>18:00</strong> 🌊 <strong>海神庙 Tanah Lot 日落</strong>（巴厘岛最标志性的景点！🙏）<br>
+        &nbsp;&nbsp;· 矗立在海中岩石上的寺庙，日落时剪影绝美📸<br>
+        &nbsp;&nbsp;· 💡 日落约17:50，提前到占好位置<br>
+        <strong>19:30</strong> 🍽️ <strong>最后的晚餐</strong>：Jimbaran Bay海鲜 or 水明漾高端餐厅<br>
+        <strong>21:00~</strong> 库塔夜生活 · 或者打包收拾行李 🧳
+      </div>
+      <div class="tl-cost">💰 情人崖¥6 + SPA¥150-300 + 海神庙¥20 + 购物¥200 + 包车¥250</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-day">Day 6 · 5月6日 周二</div>
+      <div class="tl-title">✈️ 巴厘岛 → 回深圳</div>
+      <div class="tl-desc">
+        <strong>10:00</strong> 自然醒，退房<br>
+        <strong>11:00</strong> 最后逛逛库塔海滩 🏖️ 或 享受酒店泳池<br>
+        <strong>12:00</strong> 前往机场（库塔→DPS机场仅20min）<br>
+        <strong>14:00</strong> 办理登机，逛DPS机场免税店<br>
+        <strong>16:00-18:00</strong> ✈️ 起飞回程（直飞香港约5h / 中转回深圳约8-10h）<br>
+        <strong>21:00-23:00</strong> 抵达香港/深圳 🏠<br>
+        💡 如果是香港直飞回来，同样走高铁/跨境巴士回深圳宝安
+      </div>
+      <div class="tl-cost">💰 机票¥1,000~2,100（单程）+ 回深圳交通¥115~225</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 🎯 核心景点 -->
+<div class="section">
+  <div class="section-title">🎯 巴厘岛核心景点 · 必去清单</div>
+
+  <div class="tip green">
+    <h4>🏝️ 海岛 & 海洋</h4>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>景点</th><th>价格</th><th>时长</th><th>亮点</th></tr></thead>
+    <tbody>
+      <tr><td>🏖️ <strong>佩尼达岛一日游</strong></td><td class="price">¥400-500</td><td>全天</td><td>⭐ 必去！精灵坠崖+破碎海滩+水晶湾浮潜，巴厘岛最美海景</td></tr>
+      <tr><td>🌅 <strong>金巴兰海滩BBQ</strong></td><td class="price">¥100-200</td><td>2-3h</td><td>⭐ 必去！世界十大日落+沙滩海鲜烧烤+现场音乐</td></tr>
+      <tr><td>🏄 <strong>库塔海滩冲浪</strong></td><td class="price">¥100-200</td><td>2h</td><td>冲浪圣地，适合初学者，教练1对1教学</td></tr>
+      <tr><td>🏝️ <strong>蓝梦岛 Nusa Lembongan</strong></td><td class="price">¥300-400</td><td>全天</td><td>巴厘岛的"马尔代夫"，红树林+浮潜+恶魔之泪</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip purple">
+    <h4>🏛️ 文化 & 寺庙</h4>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>景点</th><th>价格</th><th>时长</th><th>亮点</th></tr></thead>
+    <tbody>
+      <tr><td>🌊 <strong>海神庙 Tanah Lot</strong></td><td class="price">¥20</td><td>2h</td><td>⭐ 必去！巴厘岛标志性景点，海中岩石上的寺庙，日落绝美</td></tr>
+      <tr><td>🏛️ <strong>情人崖 Uluwatu</strong></td><td class="price">¥6</td><td>2h</td><td>⭐ 必去！70m悬崖+印度洋巨浪，克差舞火焰表演（日落时）</td></tr>
+      <tr><td>⛲ <strong>圣泉寺 Tirta Empul</strong></td><td class="price">¥6</td><td>1.5h</td><td>⭐ 必去！12个神圣泉眼净化仪式，独特体验</td></tr>
+      <tr><td>🏰 <strong>乌布皇宫</strong></td><td class="price">免费</td><td>1h</td><td>精美石雕+金箔装饰，晚上有传统舞蹈表演</td></tr>
+      <tr><td>🐒 <strong>圣猴森林公园</strong></td><td class="price">¥30</td><td>1.5h</td><td>数百只猕猴+古树参天+精美石雕</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip sun">
+    <h4>🏔️ 自然 & 冒险</h4>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>景点</th><th>价格</th><th>时长</th><th>亮点</th></tr></thead>
+    <tbody>
+      <tr><td>🎋 <strong>巴厘大秋千 Bali Swing</strong></td><td class="price">¥150</td><td>2h</td><td>⭐ 必去！悬崖丛林荡秋千，网红爆款📸 多种高度可选</td></tr>
+      <tr><td>🌾 <strong>德格拉朗梯田</strong></td><td class="price">¥6</td><td>1h</td><td>⭐ 必去！周杰伦《稻香》取景地，层叠翠绿梯田</td></tr>
+      <tr><td>🚣 <strong>阿勇河漂流</strong></td><td class="price">¥250</td><td>3h</td><td>穿越热带丛林峡谷，沿途瀑布+岩壁石雕</td></tr>
+      <tr><td>🌋 <strong>巴图尔火山日出</strong></td><td class="price">¥200-300</td><td>5h</td><td>凌晨2点出发爬火山看日出（需要早起⚠️与作息冲突）</td></tr>
+      <tr><td>💆 <strong>巴厘岛SPA</strong></td><td class="price">¥150-300</td><td>2h</td><td>⭐ 必体验！精油按摩+花瓣浴，全球闻名</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- 🍽️ 美食 -->
+<div class="section">
+  <div class="section-title">🍽️ 巴厘岛必吃美食</div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h4>🦆 脏鸭饭 Bebek Bengil</h4>
+      <p>乌布最经典！整只鸭子炸到酥脆，配红米饭和蔬菜<br>📍 推荐：Bebek Bengil（乌布总店）<br>💰 约¥60-80/人</p>
+    </div>
+    <div class="info-card">
+      <h4>🐷 烤猪饭 Babi Guling</h4>
+      <p>巴厘岛国民美食！整只烤乳猪外脆里嫩<br>📍 推荐：Ibu Oka（安东尼·波登力荐）<br>💰 约¥30-50/人</p>
+    </div>
+    <div class="info-card">
+      <h4>🥘 印尼炒饭 Nasi Goreng</h4>
+      <p>印尼国菜，配煎蛋+虾片+沙爹鸡肉串<br>📍 到处都有，路边摊最正宗<br>💰 约¥10-20/人</p>
+    </div>
+    <div class="info-card">
+      <h4>🦀 金巴兰海鲜BBQ</h4>
+      <p>沙滩烛光晚餐，龙虾/螃蟹/烤鱼<br>📍 金巴兰海滩一排排海鲜摊<br>💰 约¥80-200/人</p>
+    </div>
+    <div class="info-card">
+      <h4>☕ 猫屎咖啡 Kopi Luwak</h4>
+      <p>全球最贵的咖啡之一！巴厘岛原产地体验<br>📍 乌布咖啡种植园（免费品尝多种咖啡）<br>💰 一杯约¥40-80</p>
+    </div>
+    <div class="info-card">
+      <h4>🥤 椰子冰沙 Kelapa Muda</h4>
+      <p>新鲜椰子水+椰肉，热带消暑圣品<br>📍 海滩/餐厅到处可买<br>💰 约¥5-15</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 💰 预算 -->
+<div class="section">
+  <div class="section-title">💰 预算明细 · 两人出行版</div>
+
+  <p style="color:var(--lava);font-weight:700;margin:12px 0 8px;">🔴 个人固定费用</p>
+  <div class="budget-bar"><span class="budget-label">✈️ 往返机票</span><div class="budget-track"><div class="budget-fill" style="width:45%;background:var(--gradient1);"></div></div><span class="budget-amt" style="color:var(--lava)">¥2,000~4,200</span></div>
+  <div class="budget-bar"><span class="budget-label">🚄 深圳↔机场交通</span><div class="budget-track"><div class="budget-fill" style="width:8%;background:linear-gradient(135deg,#a855f7,var(--ocean));"></div></div><span class="budget-amt" style="color:#a855f7">¥300~450</span></div>
+  <div class="budget-bar"><span class="budget-label">🎢 按人头活动</span><div class="budget-track"><div class="budget-fill" style="width:18%;background:var(--gradient3);"></div></div><span class="budget-amt" style="color:var(--temple)">¥800~1,200</span></div>
+  <div class="budget-bar"><span class="budget-label">💆 SPA按摩</span><div class="budget-track"><div class="budget-fill" style="width:5%;background:linear-gradient(135deg,var(--jungle),var(--ocean));"></div></div><span class="budget-amt" style="color:var(--jungle)">¥150~300</span></div>
+
+  <p style="color:var(--jungle);font-weight:700;margin:16px 0 8px;">🟢 可均摊费用</p>
+  <div class="budget-bar"><span class="budget-label">🏨 住宿3晚</span><div class="budget-track"><div class="budget-fill" style="width:25%;background:linear-gradient(135deg,var(--ocean),var(--temple));"></div></div><span class="budget-amt" style="color:var(--ocean)">¥500~1,500/人</span></div>
+  <div class="budget-bar"><span class="budget-label">🚗 包车费（全程）</span><div class="budget-track"><div class="budget-fill" style="width:10%;background:linear-gradient(135deg,var(--gold),var(--lava));"></div></div><span class="budget-amt" style="color:var(--gold)">¥325/人</span></div>
+  <div class="budget-bar"><span class="budget-label">🍽️ 餐饮4天</span><div class="budget-track"><div class="budget-fill" style="width:10%;background:linear-gradient(135deg,var(--jungle),var(--gold));"></div></div><span class="budget-amt" style="color:var(--gold)">¥300~500/人</span></div>
+
+  <div class="info-grid" style="margin-top:20px;">
+    <div class="info-card" style="border-color:var(--lava);border-width:2px;">
+      <div class="label">👤 人均总预算</div>
+      <div class="val" style="color:var(--lava);">¥5,200~8,500</div>
+      <div class="note">
+        经济版 ¥5,200（亚航+平价酒店）<br>
+        舒适版 ¥6,800（港航直飞+Villa）<br>
+        奢华版 ¥8,500（直飞+悬崖度假村+全SPA）<br>
+        <strong style="color:var(--lava)">比薄荷岛贵 ¥1,300~3,200</strong>
+      </div>
+    </div>
+    <div class="info-card" style="border-color:var(--jungle);">
+      <div class="label">🆚 对比薄荷岛</div>
+      <div class="val" style="color:var(--jungle);font-size:16px;">薄荷岛更省钱！</div>
+      <div class="note">
+        机票：薄荷¥1,470 vs 巴厘¥2,000~4,200 💸<br>
+        签证：薄荷¥250 vs 巴厘 免费 ✅<br>
+        住宿：薄荷更便宜<br>
+        餐饮：差不多<br>
+        <strong>总计贵 ¥1,300~3,200/人</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 📝 实用信息 -->
+<div class="section">
+  <div class="section-title">📝 实用信息</div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h4>🛂 签证</h4>
+      <p><strong style="color:var(--jungle)">🎉 免签30天！</strong><br>中国护照免签入境巴厘岛<br>落地直接走免签通道<br>比薄荷岛方便太多！</p>
+    </div>
+    <div class="info-card">
+      <h4>💱 汇率 & 支付</h4>
+      <p>1 人民币 ≈ 2,200 印尼盾<br>10万盾 ≈ ¥45<br>支持Visa/Master信用卡<br>Grab打车非常方便</p>
+    </div>
+    <div class="info-card">
+      <h4>📱 通讯</h4>
+      <p>买Telkomsel电话卡<br>7天流量卡约 ¥20-40<br>淘宝买eSIM更方便<br>机场出口有很多卖卡的</p>
+    </div>
+    <div class="info-card">
+      <h4>🌡️ 天气 & 时差</h4>
+      <p>5月巴厘岛 26-33°C<br>雨旱季交替，偶有阵雨<br><strong>无时差</strong>（印尼中部=中国时间）<br>紫外线强，必备防晒</p>
+    </div>
+    <div class="info-card">
+      <h4>🚗 交通</h4>
+      <p><strong>包车最方便！</strong><br>10h包车约 ¥250-350（含司机）<br>Grab叫车也很便宜<br>租摩托约 ¥30/天（需国际驾照）<br>⚠️ 巴厘岛堵车严重！时间多留30min</p>
+    </div>
+    <div class="info-card">
+      <h4>💡 注意事项</h4>
+      <p>进寺庙必须穿<strong>纱笼</strong>（门口免费租）<br>猴子会抢东西！收好帽子眼镜<br>左手不洁，用右手传递物品<br>给小费是习惯（¥5-15/次）</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 🌤️ 天气 -->
+<div class="section">
+  <div class="section-title">🌤️ 五一期间天气预报</div>
+
+  <div class="info-grid">
+    <div class="info-card" style="border-color:var(--lava);">
+      <h4>🌺 巴厘岛 · 5月天气</h4>
+      <div class="val" style="color:var(--lava);">26~33°C</div>
+      <div class="note" style="line-height:2;margin-top:8px;">
+        🌦️ <strong>雨旱季交替期</strong>（降雨逐渐减少）<br>
+        💧 5月平均降雨8天（比薄荷岛少！）<br>
+        ☀️ 多为晴天+午后短阵雨<br>
+        ☀️ 紫外线强，<strong>必备SPF50+防晒</strong><br>
+        👕 穿着：短袖短裤+拖鞋，带薄外套<br>
+        🌅 日出 06:15 / 日落 17:55
+      </div>
+    </div>
+    <div class="info-card" style="border-color:var(--gold);">
+      <h4>🌡️ 逐日天气</h4>
+      <div class="note" style="line-height:2.2;margin-top:8px;">
+        <strong>5/1</strong> 🏙️ 深圳→香港 多云 24-30°C<br>
+        <strong>5/2</strong> 🌺 巴厘岛 ☀️ 晴 27-33°C<br>
+        <strong>5/3</strong> 🌺 巴厘岛 ⛅ 多云 26-32°C<br>
+        <strong>5/4</strong> 🌺 巴厘岛 🌦️ 午后阵雨 26-31°C<br>
+        <strong>5/5</strong> 🌺 巴厘岛 ☀️ 晴转多云 27-33°C<br>
+        <strong>5/6</strong> ✈️ 回程 ⛅ 多云 26-32°C
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>🌺 五一巴厘岛攻略 v1 · 更新时间：2026-04-18 · 两人出行 · 备选方案</p>
+  <p style="margin-top:4px;">免签30天 · 无时差 · 丛林Villa+悬崖日落+寺庙文化 · 人均 ¥5,200~8,500</p>
+</div>
+
+</div>
+</body>
+</html>
