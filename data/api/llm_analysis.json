@@ -1,15 +1,15 @@
 {
-  "date": "2026-04-23",
+  "date": "2026-04-24",
   "stocks": [
     {
       "code": "003007",
       "name": "直真科技",
       "score": 78.2,
       "strategies": [],
-      "close": 42.38,
-      "chg_1d": -6.09,
-      "analysis": "高开低走重挫6%放量破位，云办公退潮主力出逃，空头主导",
-      "sentiment": "bearish",
+      "close": 43.66,
+      "chg_1d": 3.02,
+      "analysis": "暴跌后反弹3%量能偏弱，短线超跌修复非反转，震荡观望",
+      "sentiment": "neutral",
       "news": [
         "云办公概念涨3.23%，主力资金净流入29股",
         "强势股追踪 主力资金连续5日净流入64股",
@@ -24,9 +24,9 @@
       "strategies": [
         "KSFT2"
       ],
-      "close": 63.46,
-      "chg_1d": -3.44,
-      "analysis": "高送转填权冲高回落跌3.4%，获利盘涌出短期调整，偏空",
+      "close": 61.99,
+      "chg_1d": -2.32,
+      "analysis": "高送转填权失败连阴缩量，获利盘未出尽短期偏空",
       "sentiment": "bearish",
       "news": [
         "鑫宏业拟每10股派息2.5元 并转增4股",
@@ -40,9 +40,9 @@
       "name": "中恒电气",
       "score": 72.5,
       "strategies": [],
-      "close": 43.53,
-      "chg_1d": -0.48,
-      "analysis": "连续三日缩量阴跌，游资撤退筹码松动，震荡偏空",
+      "close": 41.69,
+      "chg_1d": -4.23,
+      "analysis": "放量重挫4.2%破位加速，游资集中出逃趋势转空",
       "sentiment": "bearish",
       "news": [
         "中恒电气002364龙虎榜数据04-15)",
@@ -56,9 +56,9 @@
       "name": "思特威",
       "score": 71.8,
       "strategies": [],
-      "close": 92.0,
-      "chg_1d": -1.04,
-      "analysis": "冲高94.77受阻回落，CIS芯片资金分歧加大，震荡整理",
+      "close": 91.6,
+      "chg_1d": -0.43,
+      "analysis": "CIS龙头缩量横盘窄幅震荡，90元支撑有效多空均衡",
       "sentiment": "neutral",
       "news": [
         "4月16日科创板主力资金净流出7.42亿元",
@@ -74,9 +74,9 @@
       "strategies": [
         "KSFT2"
       ],
-      "close": 29.13,
-      "chg_1d": -4.55,
-      "analysis": "跌破30元关口放量杀跌4.5%，趋势走坏止损优先，空头",
+      "close": 28.5,
+      "chg_1d": -2.16,
+      "analysis": "连续破位下跌趋势恶化，30元关口失守空头主导",
       "sentiment": "bearish",
       "news": [
         "强势股追踪 主力资金连续5日净流入86股",
@@ -86,6 +86,6 @@
       "news_fetched_at": "2026-04-20 15:46"
     }
   ],
-  "generated_at": "2026-04-23 15:47",
+  "generated_at": "2026-04-24 15:47",
   "llm_model": "knot-agent"
 }
