@@ -829,9 +829,9 @@
   <div class="section-title">📝 实用信息</div>
 
   <div class="info-grid">
-    <div class="info-card">
-      <h4>🛂 签证</h4>
-      <p>菲律宾需签证（中国护照）<br>电子签或纸签均可<br>旅行社代办约 <strong>¥250-350</strong><br>3-5个工作日出签<br><strong>⚠️ 现在就要办！</strong></p>
+    <div class="info-card" style="border-color:var(--palm);">
+      <h4>🛂 签证 <span class="badge">✅ 免签！</span></h4>
+      <p><strong style="color:var(--palm);">2026.1.16起免签14天！</strong><br>仅限马尼拉/宿务机场入境<br>护照有效期≥6个月<br>需提前填写 <strong>eTravel系统</strong><br>准备好回程机票+酒店订单</p>
     </div>
     <div class="info-card">
       <h4>💱 汇率 & 支付</h4>
@@ -861,124 +861,328 @@
 
 <div class="divider"></div>
 
-<!-- ✅ 行动清单 -->
-<div class="section">
-  <div class="section-title">✅ 行动清单</div>
+<!-- ✅ 行前准备清单（可勾选+自定义添加） -->
+<div class="section" id="checklist-section">
+  <div class="section-title">✅ 行前准备清单 · 可勾选 & 自定义添加</div>
 
-  <div class="tip sun">
-    <h4>📌 出发前准备（倒计时15天！）</h4>
-    <ul class="checklist">
-      <li><span class="ck done">✓</span><div><strong>✅ 已买</strong>：香港↔马尼拉机票 UO516+UO535（¥955+¥515=¥1,470）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>🔥 立即</strong>：购买马尼拉↔薄荷岛菲律宾国内机票（宿务太平洋/菲律宾航空）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>🔥 立即</strong>：办理菲律宾签证（电子签3-5个工作日，来不及就加急纸签）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：Booking/Agoda 预订薄荷岛酒店（3晚：5/2、5/3、5/4）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：香港快运app购买行李托运额度</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>本周</strong>：预约5/6凌晨中港车（如选方案D回深圳）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>下周</strong>：淘宝买菲律宾eSIM/电话卡（¥30-50）</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>出发前</strong>：准备防晒霜SPF50+、浮潜面罩、速干衣</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>出发前</strong>：兑换少量美元/比索，开通境外支付</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>出发前</strong>：查蛇口→香港机场船班次，或买高铁票到西九龙</div></li>
-      <li><span class="ck" onclick="this.classList.toggle('done')">✓</span><div><strong>出发前</strong>：下载Google Maps离线地图（菲律宾区域）</div></li>
-    </ul>
+  <!-- 总进度条 -->
+  <div id="progress-bar" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-size:15px;font-weight:700;">📊 准备进度</span>
+      <span id="progress-text" style="font-size:14px;font-weight:600;color:var(--palm);">0 / 0</span>
+    </div>
+    <div style="height:12px;background:var(--card2);border-radius:6px;overflow:hidden;">
+      <div id="progress-fill" style="height:100%;background:var(--gradient1);border-radius:6px;transition:width .4s ease;width:0%;"></div>
+    </div>
+    <div id="progress-emoji" style="text-align:center;margin-top:6px;font-size:13px;color:var(--text2);"></div>
   </div>
 
-  <div class="tip green">
-    <h4>🎒 必带物品清单（按分类整理）</h4>
-
-    <p style="color:var(--coral);font-weight:700;margin:12px 0 8px;">🏖️ 海岛/水上活动装备</p>
-    <div class="info-grid" style="margin:8px 0 16px;">
-      <div style="font-size:13px;color:var(--text2);line-height:2.2;">
-        ☀️ <strong>SPF50+ 防晒霜</strong>（必备中的必备！偏黑肤质更要涂，每2h补涂）<br>
-        🤿 <strong>浮潜面罩+呼吸管</strong>（自带更卫生，Decathlon ¥80左右）<br>
-        🥿 <strong>涉水鞋/浮潜袜</strong>（珊瑚礁和礁石会割脚！必带）<br>
-        📸 <strong>防水手机壳</strong>（¥20-50，浮潜拍照用，比租GoPro划算）<br>
-        📸 <strong>GoPro/水下相机</strong>（深潜拍沙丁鱼必备！潜店可租约¥100）<br>
-        🩱 <strong>泳衣×2套</strong>（一套穿一套晾）<br>
-        👒 <strong>遮阳帽</strong>（出海/沙滩必戴，防晒+拍照好看）<br>
-        🕶️ <strong>偏光墨镜</strong>（海面反光很刺眼）<br>
-        💊 <strong>晕船药</strong>（出海前30min吃，螃蟹船颠簸明显⚠️）
-      </div>
-      <div style="font-size:13px;color:var(--text2);line-height:2.2;">
-        🦺 <strong>朋友专属：不用额外带救生衣</strong>（跳岛船上/潜店都有提供）<br>
-        🏊 <strong>朋友专属：浮力板/浮板</strong>（Alona Beach可租，不会游泳趴着看鱼）<br>
-        🩴 <strong>防滑拖鞋</strong>（沙滩/酒店/街上都穿它）<br>
-        🧴 <strong>晒后修复芦荟胶</strong>（晒伤了敷一下超管用）<br>
-        🧴 <strong>防晒喷雾</strong>（身体大面积涂抹方便）<br>
-        🦟 <strong>驱蚊水/驱蚊手环</strong>（丛林徒步+萤火虫夜游必带！）<br>
-        🩹 <strong>防水创可贴</strong>（珊瑚划伤应急用）<br>
-        🎒 <strong>防水袋/干湿分离包</strong>（出海时手机钱包放里面）<br>
-        🪢 <strong>速干毛巾</strong>（轻便吸水，比酒店毛巾方便带出海）
-      </div>
-    </div>
-
-    <p style="color:var(--sea);font-weight:700;margin:12px 0 8px;">👕 衣物穿搭</p>
-    <div style="font-size:13px;color:var(--text2);line-height:2.2;margin-bottom:16px;">
-      👕 <strong>速干T恤/短袖×4-5件</strong>（每天换，速干材质！纯棉的湿了干不了）<br>
-      🩳 <strong>速干短裤×3条</strong><br>
-      👗 <strong>防晒衣/皮肤衣</strong>（出海穿，防晒+防风+美观，比光膀子好）<br>
-      🧥 <strong>薄外套1件</strong>（空调房/飞机/船上风大时穿）<br>
-      🥾 <strong>运动鞋1双</strong>（Day 4 丛林徒步+ATV用）<br>
-      🩴 <strong>人字拖/凉拖1双</strong>（日常穿）<br>
-      🧦 <strong>袜子×3双</strong>（徒步穿）<br>
-      👙 <strong>内衣裤×5套</strong>（速干材质优先）
-    </div>
-
-    <p style="color:var(--palm);font-weight:700;margin:12px 0 8px;">💊 药品/健康</p>
-    <div style="font-size:13px;color:var(--text2);line-height:2.2;margin-bottom:16px;">
-      💊 <strong>晕船药</strong>（茶苯海明/晕海宁，出海前30min服用，必带！）<br>
-      💊 <strong>肠胃药</strong>（藿香正气水/蒙脱石散，东南亚饮食可能不适应）<br>
-      💊 <strong>感冒药</strong>（空调+海水交替容易着凉）<br>
-      💊 <strong>退烧药/止痛药</strong>（布洛芬备一板）<br>
-      🩹 <strong>创可贴+碘伏棉签</strong>（小伤口消毒）<br>
-      🧴 <strong>风油精/清凉油</strong>（蚊虫叮咬+提神）<br>
-      💊 <strong>过敏药</strong>（氯雷他定，海鲜/蚊虫过敏备用）<br>
-      ⚠️ <strong>深潜注意</strong>：潜水前24h不要喝酒、不要感冒鼻塞（否则耳压平衡做不了！）
-    </div>
-
-    <p style="color:var(--sand);font-weight:700;margin:12px 0 8px;">📱 电子设备</p>
-    <div class="info-grid" style="margin:8px 0 16px;">
-      <div style="font-size:13px;color:var(--text2);line-height:2.2;">
-        📱 <strong>手机</strong> + <strong>菲律宾eSIM卡</strong>（淘宝提前买¥30-50）<br>
-        🔋 <strong>充电宝 20000mAh</strong>（出海一天没地方充电）<br>
-        🔌 <strong>万能转换插头</strong>（菲律宾是美标两脚扁插，和国标不同⚠️）<br>
-        📸 <strong>相机</strong> + 存储卡 + 备用电池<br>
-        🎧 <strong>降噪耳机</strong>（飞机/机场休息用）
-      </div>
-      <div style="font-size:13px;color:var(--text2);line-height:2.2;">
-        🚁 <strong>大疆Flip无人机</strong>（航拍Alona Beach/巧克力山！电池随身带）<br>
-        ⚡ <strong>充电线×2</strong>（Type-C + Lightning备用）<br>
-        🔌 <strong>排插/多口充电头</strong>（一个插座充所有设备）<br>
-        📱 <strong>下载好Google Maps离线地图</strong>（菲律宾区域）<br>
-        📱 <strong>下载好Grab App</strong>（东南亚打车软件，叫车用）
-      </div>
-    </div>
-
-    <p style="color:var(--coral);font-weight:700;margin:12px 0 8px;">💳 证件/钱</p>
-    <div style="font-size:13px;color:var(--text2);line-height:2.2;margin-bottom:16px;">
-      🛂 <strong>护照</strong>（有效期6个月以上！菲律宾要求）<br>
-      🛂 <strong>菲律宾签证</strong>（电子签打印件 or 纸签贴纸）<br>
-      ✈️ <strong>机票行程单</strong>（打印纸质版备用，入境可能要求出示回程票）<br>
-      🏨 <strong>酒店预订确认单</strong>（打印或截图保存）<br>
-      💳 <strong>Visa/Master信用卡</strong>（大商户可刷卡，银联不太好用）<br>
-      💵 <strong>少量美元或比索现金</strong>（小商贩/市场/马杀鸡只收现金！建议换₱5,000≈¥625）<br>
-      📱 <strong>开通境外支付</strong>（支付宝/微信部分商户可用）<br>
-      📋 <strong>紧急联系人信息</strong>（大使馆电话：+63-2-88443148）
-    </div>
-
-    <p style="color:#a855f7;font-weight:700;margin:12px 0 8px;">🎒 其他实用</p>
-    <div style="font-size:13px;color:var(--text2);line-height:2.2;">
-      🧳 <strong>行李箱建议</strong>：20寸登机箱+双肩背包（香港快运需另购托运！提前app买好）<br>
-      🗑️ <strong>密封袋几个</strong>（装湿衣服/脏衣服/零食）<br>
-      ✏️ <strong>笔1支</strong>（飞机上填入境卡用，很多人忘了到处借笔！）<br>
-      🧻 <strong>纸巾/湿巾</strong>（菲律宾很多厕所不提供纸巾⚠️）<br>
-      🔒 <strong>小锁</strong>（锁行李箱，行李寄存时安心）<br>
-      🍬 <strong>零食</strong>（飞机上不提供餐食，廉航！自带泡面/面包/饼干）
-    </div>
+  <!-- 分类筛选 -->
+  <div id="cat-filter" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+    <button class="cat-btn active" data-cat="all" onclick="filterCat('all')">📋 全部</button>
+    <button class="cat-btn" data-cat="todo" onclick="filterCat('todo')">📌 出发前待办</button>
+    <button class="cat-btn" data-cat="beach" onclick="filterCat('beach')">🏖️ 海岛装备</button>
+    <button class="cat-btn" data-cat="clothes" onclick="filterCat('clothes')">👕 衣物穿搭</button>
+    <button class="cat-btn" data-cat="health" onclick="filterCat('health')">💊 药品健康</button>
+    <button class="cat-btn" data-cat="tech" onclick="filterCat('tech')">📱 电子设备</button>
+    <button class="cat-btn" data-cat="docs" onclick="filterCat('docs')">💳 证件钱财</button>
+    <button class="cat-btn" data-cat="other" onclick="filterCat('other')">🎒 其他实用</button>
+    <button class="cat-btn" data-cat="custom" onclick="filterCat('custom')">✨ 我的自定义</button>
   </div>
+
+  <!-- 自定义添加 -->
+  <div id="add-item-bar" style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+    <input id="new-item-input" type="text" placeholder="输入要添加的物品或待办…" style="flex:1;min-width:200px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text1);font-size:13px;outline:none;" onkeydown="if(event.key==='Enter')addCustomItem()">
+    <select id="new-item-cat" style="padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text1);font-size:13px;">
+      <option value="custom">✨ 我的自定义</option>
+      <option value="todo">📌 出发前待办</option>
+      <option value="beach">🏖️ 海岛装备</option>
+      <option value="clothes">👕 衣物穿搭</option>
+      <option value="health">💊 药品健康</option>
+      <option value="tech">📱 电子设备</option>
+      <option value="docs">💳 证件钱财</option>
+      <option value="other">🎒 其他实用</option>
+    </select>
+    <button onclick="addCustomItem()" style="padding:10px 18px;border-radius:10px;border:none;background:var(--gradient1);color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">＋ 添加</button>
+  </div>
+
+  <!-- 清单容器 -->
+  <div id="checklist-container"></div>
 </div>
 
+<style>
+  .cat-btn { padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap; }
+  .cat-btn:hover { border-color:var(--sea);color:var(--sea); }
+  .cat-btn.active { background:rgba(0,180,216,.15);border-color:var(--sea);color:var(--sea);font-weight:600; }
+  .cl-group { margin-bottom:20px; }
+  .cl-group-hd { display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px 12px 0 0;cursor:pointer; }
+  .cl-group-hd h4 { font-size:14px;font-weight:700;margin:0; }
+  .cl-group-hd .cnt { font-size:12px;color:var(--text2); }
+  .cl-group-bd { border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;overflow:hidden; }
+  .cl-row { display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(30,58,95,.3);font-size:13px;color:var(--text2);transition:all .15s;cursor:pointer; }
+  .cl-row:last-child { border-bottom:none; }
+  .cl-row:hover { background:rgba(0,180,216,.04); }
+  .cl-row.checked { opacity:.55; }
+  .cl-row.checked .cl-text { text-decoration:line-through; }
+  .cl-box { width:20px;height:20px;border:2px solid var(--sea);border-radius:6px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all .2s; }
+  .cl-row.checked .cl-box { background:var(--palm);border-color:var(--palm);color:#fff; }
+  .cl-text { flex:1;line-height:1.7; }
+  .cl-text strong { color:var(--text1); }
+  .cl-del { width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);opacity:0;cursor:pointer;transition:all .15s;border-radius:4px; }
+  .cl-row:hover .cl-del { opacity:.6; }
+  .cl-del:hover { opacity:1!important;color:var(--coral);background:rgba(239,71,111,.1); }
+</style>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'bohol_checklist_v11';
+  const DEFAULT_DATA = {
+    todo: {
+      label: '📌 出发前待办',
+      color: 'var(--sand)',
+      items: [
+        { id:'t1', text:'✅ <strong>已买</strong>：香港↔马尼拉机票 UO516+UO535（¥1,470）', checked:true, preset:true },
+        { id:'t2', text:'🔥 购买马尼拉↔薄荷岛国内机票（宿务太平洋/菲律宾航空）', checked:false, preset:true },
+        { id:'t3', text:'🆕 <strong>填写eTravel系统</strong>（https://etravel.gov.ph/，出发前1-2天填好截图）', checked:false, preset:true },
+        { id:'t4', text:'Booking/Agoda 预订薄荷岛酒店（3晚：5/2、5/3、5/4）', checked:false, preset:true },
+        { id:'t5', text:'香港快运app购买<strong>行李托运额度</strong>（约HK$200/件）', checked:false, preset:true },
+        { id:'t6', text:'预约5/6凌晨中港车（如选方案D回深圳）', checked:false, preset:true },
+        { id:'t7', text:'淘宝买菲律宾<strong>eSIM/电话卡</strong>（Globe/Smart，¥30-50）', checked:false, preset:true },
+        { id:'t8', text:'KKday/Klook预订<strong>巴里卡萨岛跳岛</strong>（每日限200人！）', checked:false, preset:true },
+        { id:'t9', text:'预约<strong>深潜体验</strong>（王者潜水/海妖潜水，Day3上午）', checked:false, preset:true },
+        { id:'t10', text:'兑换少量美元/比索（建议换₱5,000≈¥625），开通境外支付', checked:false, preset:true },
+        { id:'t11', text:'查蛇口→香港机场船班次 或 买高铁票到西九龙', checked:false, preset:true },
+        { id:'t12', text:'下载<strong>Google Maps离线地图</strong>（菲律宾区域）', checked:false, preset:true },
+        { id:'t13', text:'下载<strong>Grab App</strong>（东南亚打车软件）', checked:false, preset:true },
+        { id:'t14', text:'确认护照<strong>有效期≥6个月</strong>（2026年11月之后过期才OK）', checked:false, preset:true },
+      ]
+    },
+    beach: {
+      label: '🏖️ 海岛/水上装备',
+      color: 'var(--coral)',
+      items: [
+        { id:'b1', text:'☀️ <strong>SPF50+防晒霜</strong>（必备！偏黑肤质更要涂，每2h补涂）', checked:false, preset:true },
+        { id:'b2', text:'🧴 <strong>防晒喷雾</strong>（身体大面积涂抹方便）', checked:false, preset:true },
+        { id:'b3', text:'🧴 <strong>晒后修复芦荟胶</strong>（晒伤了敷一下超管用）', checked:false, preset:true },
+        { id:'b4', text:'🤿 <strong>浮潜面罩+呼吸管</strong>（自带更卫生，Decathlon ¥80左右）', checked:false, preset:true },
+        { id:'b5', text:'🥿 <strong>涉水鞋/浮潜袜</strong>（珊瑚礁会割脚！必带⚠️）', checked:false, preset:true },
+        { id:'b6', text:'📸 <strong>防水手机壳</strong>（¥20-50，浮潜拍照用）', checked:false, preset:true },
+        { id:'b7', text:'📸 <strong>GoPro/水下相机</strong>（深潜拍沙丁鱼！潜店可租约¥100）', checked:false, preset:true },
+        { id:'b8', text:'🩱 <strong>泳衣×2套</strong>（一套穿一套晾）', checked:false, preset:true },
+        { id:'b9', text:'👒 <strong>遮阳帽</strong>（出海/沙滩必戴，防晒+拍照好看）', checked:false, preset:true },
+        { id:'b10', text:'🕶️ <strong>偏光墨镜</strong>（海面反光很刺眼）', checked:false, preset:true },
+        { id:'b11', text:'💊 <strong>晕船药</strong>（出海前30min吃，螃蟹船颠簸明显⚠️）', checked:false, preset:true },
+        { id:'b12', text:'🩴 <strong>防滑拖鞋</strong>（沙滩/酒店/街上都穿）', checked:false, preset:true },
+        { id:'b13', text:'🦟 <strong>驱蚊水/驱蚊手环</strong>（丛林徒步+萤火虫夜游必带！）', checked:false, preset:true },
+        { id:'b14', text:'🩹 <strong>防水创可贴</strong>（珊瑚划伤应急用）', checked:false, preset:true },
+        { id:'b15', text:'🎒 <strong>防水袋/干湿分离包</strong>（出海时手机钱包放里面）', checked:false, preset:true },
+        { id:'b16', text:'🪢 <strong>速干毛巾</strong>（轻便吸水，比酒店毛巾方便带出海）', checked:false, preset:true },
+      ]
+    },
+    clothes: {
+      label: '👕 衣物穿搭',
+      color: 'var(--sea)',
+      items: [
+        { id:'c1', text:'👕 <strong>速干T恤/短袖×4-5件</strong>（每天换，速干材质！纯棉湿了干不了）', checked:false, preset:true },
+        { id:'c2', text:'🩳 <strong>速干短裤×3条</strong>', checked:false, preset:true },
+        { id:'c3', text:'👗 <strong>防晒衣/皮肤衣</strong>（出海穿，防晒+防风+美观）', checked:false, preset:true },
+        { id:'c4', text:'🧥 <strong>薄外套1件</strong>（空调房/飞机/船上风大时穿）', checked:false, preset:true },
+        { id:'c5', text:'🥾 <strong>运动鞋1双</strong>（Day4丛林徒步+ATV用）', checked:false, preset:true },
+        { id:'c6', text:'🩴 <strong>人字拖/凉拖1双</strong>（日常穿）', checked:false, preset:true },
+        { id:'c7', text:'🧦 <strong>袜子×3双</strong>（徒步穿）', checked:false, preset:true },
+        { id:'c8', text:'👙 <strong>内衣裤×5套</strong>（速干材质优先）', checked:false, preset:true },
+      ]
+    },
+    health: {
+      label: '💊 药品/健康',
+      color: 'var(--palm)',
+      items: [
+        { id:'h1', text:'💊 <strong>晕船药</strong>（茶苯海明/晕海宁，出海前30min服用）', checked:false, preset:true },
+        { id:'h2', text:'💊 <strong>肠胃药</strong>（藿香正气水/蒙脱石散，东南亚饮食可能不适应）', checked:false, preset:true },
+        { id:'h3', text:'💊 <strong>感冒药</strong>（空调+海水交替容易着凉）', checked:false, preset:true },
+        { id:'h4', text:'💊 <strong>退烧药/止痛药</strong>（布洛芬备一板）', checked:false, preset:true },
+        { id:'h5', text:'🩹 <strong>创可贴+碘伏棉签</strong>（小伤口消毒）', checked:false, preset:true },
+        { id:'h6', text:'🧴 <strong>风油精/清凉油</strong>（蚊虫叮咬+提神）', checked:false, preset:true },
+        { id:'h7', text:'💊 <strong>过敏药</strong>（氯雷他定，海鲜/蚊虫过敏备用）', checked:false, preset:true },
+        { id:'h8', text:'⚠️ <strong>深潜前24h不喝酒、不感冒鼻塞</strong>（否则耳压平衡做不了！）', checked:false, preset:true },
+      ]
+    },
+    tech: {
+      label: '📱 电子设备',
+      color: 'var(--sand)',
+      items: [
+        { id:'e1', text:'📱 <strong>手机</strong> + <strong>菲律宾eSIM卡</strong>（淘宝提前买¥30-50）', checked:false, preset:true },
+        { id:'e2', text:'🔋 <strong>充电宝20000mAh</strong>（出海一天没地方充电）', checked:false, preset:true },
+        { id:'e3', text:'🔌 <strong>万能转换插头</strong>（菲律宾是美标两脚扁插⚠️）', checked:false, preset:true },
+        { id:'e4', text:'📸 <strong>相机</strong> + 存储卡 + 备用电池', checked:false, preset:true },
+        { id:'e5', text:'🎧 <strong>降噪耳机</strong>（飞机/机场休息用）', checked:false, preset:true },
+        { id:'e6', text:'🚁 <strong>大疆Flip无人机</strong>（航拍Alona Beach/巧克力山！电池随身带）', checked:false, preset:true },
+        { id:'e7', text:'⚡ <strong>充电线×2</strong>（Type-C + Lightning备用）', checked:false, preset:true },
+        { id:'e8', text:'🔌 <strong>排插/多口充电头</strong>（一个插座充所有设备）', checked:false, preset:true },
+      ]
+    },
+    docs: {
+      label: '💳 证件/钱财',
+      color: 'var(--coral)',
+      items: [
+        { id:'d1', text:'🛂 <strong>护照</strong>（有效期6个月以上！）', checked:false, preset:true },
+        { id:'d2', text:'📋 <strong>eTravel填报截图</strong>（入境时海关要查）', checked:false, preset:true },
+        { id:'d3', text:'✈️ <strong>机票行程单</strong>（打印纸质版备用，入境要出示回程票）', checked:false, preset:true },
+        { id:'d4', text:'🏨 <strong>酒店预订确认单</strong>（打印或截图保存）', checked:false, preset:true },
+        { id:'d5', text:'💳 <strong>Visa/Master信用卡</strong>（银联不太好用）', checked:false, preset:true },
+        { id:'d6', text:'💵 <strong>少量美元或比索现金</strong>（小商贩/马杀鸡只收现金！建议换₱5,000≈¥625）', checked:false, preset:true },
+        { id:'d7', text:'📱 <strong>开通境外支付</strong>（支付宝/微信部分商户可用）', checked:false, preset:true },
+        { id:'d8', text:'📋 <strong>紧急联系人信息</strong>（大使馆电话：+63-2-88443148）', checked:false, preset:true },
+      ]
+    },
+    other: {
+      label: '🎒 其他实用',
+      color: '#a855f7',
+      items: [
+        { id:'o1', text:'🧳 <strong>行李箱</strong>：20寸登机箱+双肩背包（廉航需另购托运！）', checked:false, preset:true },
+        { id:'o2', text:'🗑️ <strong>密封袋几个</strong>（装湿衣服/脏衣服/零食）', checked:false, preset:true },
+        { id:'o3', text:'✏️ <strong>笔1支</strong>（飞机上填入境卡用，很多人忘了！）', checked:false, preset:true },
+        { id:'o4', text:'🧻 <strong>纸巾/湿巾</strong>（菲律宾很多厕所不提供纸巾⚠️）', checked:false, preset:true },
+        { id:'o5', text:'🔒 <strong>小锁</strong>（锁行李箱，行李寄存时安心）', checked:false, preset:true },
+        { id:'o6', text:'🍬 <strong>零食</strong>（廉航不提供餐食！自带泡面/面包/饼干）', checked:false, preset:true },
+      ]
+    },
+    custom: {
+      label: '✨ 我的自定义',
+      color: 'var(--sea)',
+      items: []
+    }
+  };
+
+  let data = loadData();
+  let currentCat = 'all';
+
+  function loadData() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+      const parsed = JSON.parse(saved);
+      // merge: keep user checks & custom items, add any new preset items
+      const merged = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      for (const cat in merged) {
+        if (!parsed[cat]) continue;
+        // restore check states for preset items
+        const savedMap = {};
+        parsed[cat].items.forEach(i => savedMap[i.id] = i);
+        merged[cat].items.forEach(item => {
+          if (savedMap[item.id]) item.checked = savedMap[item.id].checked;
+        });
+        // add custom (non-preset) items
+        parsed[cat].items.forEach(i => {
+          if (!i.preset) merged[cat].items.push(i);
+        });
+      }
+      // restore any fully custom categories' items
+      if (parsed.custom && parsed.custom.items) {
+        const presetIds = new Set(merged.custom.items.map(i=>i.id));
+        parsed.custom.items.forEach(i => {
+          if (!presetIds.has(i.id)) merged.custom.items.push(i);
+        });
+      }
+      return merged;
+    } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
+  }
+
+  function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function render() {
+    const container = document.getElementById('checklist-container');
+    container.innerHTML = '';
+    let totalAll = 0, checkedAll = 0;
+    const cats = currentCat === 'all' ? Object.keys(data) : [currentCat];
+    
+    cats.forEach(cat => {
+      const grp = data[cat];
+      if (!grp || grp.items.length === 0 && cat !== 'custom') return;
+      const checked = grp.items.filter(i => i.checked).length;
+      totalAll += grp.items.length;
+      checkedAll += checked;
+
+      const div = document.createElement('div');
+      div.className = 'cl-group';
+      div.dataset.cat = cat;
+      let rows = grp.items.map((item, idx) => 
+        `<div class="cl-row ${item.checked?'checked':''}" onclick="window._clToggle('${cat}',${idx})" data-cat="${cat}">
+          <div class="cl-box">${item.checked?'✓':''}</div>
+          <div class="cl-text">${item.text}</div>
+          ${!item.preset ? '<div class="cl-del" onclick="event.stopPropagation();window._clDel(\''+cat+'\','+idx+')" title="删除">✕</div>' : ''}
+        </div>`
+      ).join('');
+
+      div.innerHTML = `
+        <div class="cl-group-hd" style="border-left:3px solid ${grp.color};">
+          <h4>${grp.label}</h4>
+          <span class="cnt" style="color:${checked===grp.items.length&&grp.items.length>0?'var(--palm)':'var(--text2)'}">${checked}/${grp.items.length} ${checked===grp.items.length&&grp.items.length>0?'✅':''}</span>
+        </div>
+        <div class="cl-group-bd">${rows || '<div style="padding:14px;color:var(--text2);font-size:13px;text-align:center;">暂无项目，在上方输入框添加 ✨</div>'}</div>
+      `;
+      container.appendChild(div);
+    });
+
+    // progress
+    const pct = totalAll > 0 ? Math.round(checkedAll / totalAll * 100) : 0;
+    document.getElementById('progress-text').textContent = `${checkedAll} / ${totalAll}（${pct}%）`;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    const emoji = pct === 100 ? '🎉 全部准备好了！薄荷岛我来啦～' : pct >= 80 ? '🔥 快完成了，加油！' : pct >= 50 ? '💪 已经过半，继续收拾～' : pct >= 20 ? '📦 开始收拾了，保持节奏～' : '🏝️ 出发倒计时，该准备啦！';
+    document.getElementById('progress-emoji').textContent = emoji;
+
+    // update filter button counts
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      const c = btn.dataset.cat;
+      if (c === 'all') {
+        btn.textContent = `📋 全部 (${checkedAll}/${totalAll})`;
+      } else if (data[c]) {
+        const gc = data[c].items.filter(i=>i.checked).length;
+        const gt = data[c].items.length;
+        const lbl = data[c].label;
+        btn.textContent = `${lbl} (${gc}/${gt})`;
+      }
+    });
+  }
+
+  window._clToggle = function(cat, idx) {
+    data[cat].items[idx].checked = !data[cat].items[idx].checked;
+    saveData(); render();
+  };
+
+  window._clDel = function(cat, idx) {
+    data[cat].items.splice(idx, 1);
+    saveData(); render();
+  };
+
+  window.filterCat = function(cat) {
+    currentCat = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+    render();
+  };
+
+  window.addCustomItem = function() {
+    const input = document.getElementById('new-item-input');
+    const catSel = document.getElementById('new-item-cat');
+    const text = input.value.trim();
+    if (!text) { input.focus(); return; }
+    const cat = catSel.value;
+    const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+    data[cat].items.push({ id, text: '📌 <strong>' + text + '</strong>', checked:false, preset:false });
+    input.value = '';
+    saveData(); render();
+    // auto switch to the category
+    if (currentCat !== 'all' && currentCat !== cat) filterCat(cat);
+  };
+
+  render();
+})();
+</script>
+
 <div class="footer">
-  <p>🏝️ 五一薄荷岛攻略 v10 · 更新时间：2026-04-24 · 两人出行均摊版（含岛屿特色+顺路美食+深潜保障+行前清单）</p>
+  <p>🏝️ 五一薄荷岛攻略 v11 · 更新时间：2026-04-24 · 两人出行均摊版（含交互式勾选清单+免签更新+自定义添加）</p>
   <p style="margin-top:4px;">去程 UO516 ¥955 + 回程 UO535 ¥515 = <strong>往返仅¥1,470</strong> · ✅ 已出票</p>
 </div>
 
