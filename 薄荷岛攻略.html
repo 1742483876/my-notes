@@ -119,11 +119,31 @@
   .route-card .bottom .time { font-size:12px; color:var(--text2); }
   .divider { height:1px; background:linear-gradient(to right, transparent, var(--border), transparent); margin:36px 0; }
   .footer { text-align:center; padding:40px 0 20px; color:var(--text2); font-size:12px; }
+  /* Tab导航 */
+  .tab-nav { position:sticky; top:0; z-index:100; background:rgba(10,14,26,.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0; overflow:hidden; }
+  .tab-nav-inner { display:flex; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; gap:0; padding:0 12px; }
+  .tab-nav-inner::-webkit-scrollbar { display:none; }
+  .tab-btn { flex-shrink:0; padding:12px 16px; font-size:13px; font-weight:500; color:var(--text2); background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:all .2s; white-space:nowrap; }
+  .tab-btn:hover { color:var(--sea); }
+  .tab-btn.active { color:var(--sea); border-bottom-color:var(--sea); font-weight:700; }
+  .tab-section { display:none; }
+  .tab-section.active { display:block; }
+  .scroll-top { position:fixed; bottom:24px; right:24px; width:44px; height:44px; border-radius:50%; background:var(--gradient1); color:#fff; border:none; font-size:20px; cursor:pointer; display:none; z-index:99; box-shadow:0 4px 16px rgba(0,180,216,.3); transition:all .2s; }
+  .scroll-top:hover { transform:scale(1.1); }
+  .table-wrap { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
+  .table-wrap .data-table { margin:0; min-width:520px; }
+
   @media(max-width:600px) {
     .stats { grid-template-columns:repeat(2,1fr); }
     .info-grid { grid-template-columns:1fr; }
     .hero h1 { font-size:28px; }
     .flight-card { flex-direction:column; align-items:stretch; }
+    .tab-btn { padding:10px 12px; font-size:12px; }
+    .budget-bar { flex-wrap:wrap; }
+    .budget-label { min-width:auto; width:100%; margin-bottom:4px; }
+    .budget-amt { min-width:auto; text-align:left; width:100%; font-size:12px; }
+    .budget-track { min-width:120px; }
+    .scroll-top { bottom:16px; right:16px; width:40px; height:40px; font-size:18px; }
   }
 </style>
 </head>
@@ -145,6 +165,28 @@
   <div class="stat"><div class="icon">✈️</div><div class="val">2h20m</div><div class="lab">香港直飞马尼拉</div></div>
   <div class="stat"><div class="icon">🌡️</div><div class="val">28-33°C</div><div class="lab">5月·旱季末</div></div>
 </div>
+
+<!-- Tab导航 -->
+<nav class="tab-nav" id="tabNav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="flights" onclick="switchTab('flights')">✈️ 机票</button>
+    <button class="tab-btn" data-tab="hotel" onclick="switchTab('hotel')">🏨 住宿</button>
+    <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">📋 行程</button>
+    <button class="tab-btn" data-tab="activities" onclick="switchTab('activities')">🎯 活动</button>
+    <button class="tab-btn" data-tab="diving" onclick="switchTab('diving')">🤿 潜水</button>
+    <button class="tab-btn" data-tab="return" onclick="switchTab('return')">🏠 回程</button>
+    <button class="tab-btn" data-tab="budget" onclick="switchTab('budget')">💰 预算</button>
+    <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')">🌤️ 天气</button>
+    <button class="tab-btn" data-tab="info" onclick="switchTab('info')">📝 实用</button>
+    <button class="tab-btn" data-tab="checklist" onclick="switchTab('checklist')">✅ 清单</button>
+  </div>
+</nav>
+
+<!-- 回到顶部按钮 -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- Tab: 机票 -->
+<div class="tab-section active" id="tab-flights">
 
 <!-- ✈️ 已确定的机票 -->
 <div class="section">
@@ -183,7 +225,7 @@
     5/6下午从薄荷岛飞回马尼拉，赶21:10晚班回港。<strong>菲律宾国内航班约¥150-250/程。</strong></p>
   </div>
 
-  <table class="data-table">
+  <div class="table-wrap"><table class="data-table">
     <thead><tr><th>方向</th><th>航班</th><th>时刻</th><th>飞行</th><th>约价</th><th>建议</th></tr></thead>
     <tbody>
       <tr><td><span class="tag tag-g">去</span> MNL→TAG</td><td>宿太 5J619</td><td>05:20→06:55</td><td>1h35m</td><td class="price">¥150</td><td>凌晨到马尼拉后最早班，少睡会儿但最快到</td></tr>
@@ -194,17 +236,17 @@
       <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>菲航 PR2776</td><td>18:50→20:25</td><td>1h35m</td><td class="price">¥225</td><td>多玩半天，到马尼拉后直接候机45min</td></tr>
       <tr><td><span class="tag tag-r">回</span> TAG→MNL</td><td>宿太 5J617</td><td>09:35→11:20</td><td>1h45m</td><td class="price">¥180</td><td>上午飞回，马尼拉逛半天再登机</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="info-grid">
     <div class="info-card" style="border-color:var(--palm);"><div class="label">✈️ 全程机票总费用</div><div class="val" style="color:var(--palm);">¥1,770~1,920</div><div class="note">香港↔马尼拉 ¥1,470<br>+ 马尼拉↔薄荷岛 ¥300~450</div></div>
     <div class="info-card"><div class="label">🚆 深圳→香港机场</div><div class="val" style="color:var(--sea);font-size:14px;">高铁到西九龙 + 机场快线</div><div class="note">深圳北/福田→西九龙(20min, ¥75)<br>九龙→机场(24min, HK$115≈¥105)<br>或 蛇口港→香港机场(船, 30min, ¥260)</div></div>
   </div>
 </div>
+</div><!-- /tab-flights -->
 
-<div class="divider"></div>
-
-<!-- 🏨 住宿 -->
+<!-- Tab: 住宿 -->
+<div class="tab-section" id="tab-hotel">
 <div class="section">
   <div class="section-title">🏨 住宿推荐 · 住4晚（5/2、5/3、5/4、5/5）</div>
 
@@ -310,10 +352,10 @@
     <p style="margin-top:8px;"><strong>⚠️ 五一期间是旺季，建议现在就订！选免费取消的先锁房。</strong></p>
   </div>
 </div>
+</div><!-- /tab-hotel -->
 
-<div class="divider"></div>
-
-<!-- 📋 行程 -->
+<!-- Tab: 行程 -->
+<div class="tab-section" id="tab-itinerary">
 <div class="section">
   <div class="section-title">📋 行程安排（适配晚起作息）</div>
 
@@ -557,10 +599,10 @@
     </div>
   </div>
 </div>
+</div><!-- /tab-itinerary -->
 
-<div class="divider"></div>
-
-<!-- 🎯 活动大全 -->
+<!-- Tab: 活动 -->
+<div class="tab-section" id="tab-activities">
 <div class="section">
   <div class="section-title">🎯 核心活动详解 · 价格&预订指南</div>
 
@@ -569,7 +611,7 @@
     <p>这些是薄荷岛最独特、别的地方玩不到的精华体验！</p>
   </div>
 
-  <table class="data-table">
+  <div class="table-wrap"><table class="data-table">
     <thead><tr><th>活动</th><th>价格</th><th>时长</th><th>说明</th></tr></thead>
     <tbody>
       <tr><td>🤿 <strong>体验深潜（拍沙丁鱼！）</strong></td><td class="price">¥400-500</td><td>3-4h</td><td>⭐ 核心活动！无需证，教练1对1，最深12m，含水下拍照。近距离拍摄沙丁鱼群🐟</td></tr>
@@ -577,14 +619,14 @@
       <tr><td>🏝️ <strong>跳岛一日游</strong><br>（巴里卡萨+处女岛）</td><td class="price">¥250-350</td><td>全天</td><td>⭐ 核心活动！巴里卡萨大断层浮潜看海龟🐢 + 处女岛拖尾沙滩午餐BBQ</td></tr>
       <tr><td>🐬 <strong>追海豚出海（帕米拉坎岛）</strong></td><td class="price">¥70-200</td><td>3-4h</td><td>⭐ 核心活动！清晨6:30出发，80%成功率看到海豚群，帕米拉坎岛浮潜珊瑚花园极美（需早起⚠️）</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="tip sun">
     <h4>🏔️ 陆地活动 · 巧克力山&丛林徒步</h4>
     <p>薄荷岛的山间和丛林也是宝藏，ATV+徒步是最佳组合</p>
   </div>
 
-  <table class="data-table">
+  <div class="table-wrap"><table class="data-table">
     <thead><tr><th>活动</th><th>价格</th><th>时长</th><th>说明</th></tr></thead>
     <tbody>
       <tr><td>🏍️ <strong>巧克力山ATV越野</strong></td><td class="price">¥100-150</td><td>1-2h</td><td>⭐ 核心活动！穿梭1268座山丘间，近距离感受巧克力山🏔️超好玩超出片！</td></tr>
@@ -595,7 +637,7 @@
       <tr><td>🌴 <strong>罗博河竹筏午餐</strong></td><td class="price">¥80-120</td><td>1.5h</td><td>船上自助+歌舞表演+热带丛林景观</td></tr>
       <tr><td>🌟 <strong>萤火虫夜游</strong></td><td class="price">¥100-150</td><td>2h</td><td>阿巴丹河乘船，河岸萤火虫满天✨超浪漫</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="tip green">
     <h4>🌿 Rajah Sikatuna 热带丛林徒步详解</h4>
@@ -619,10 +661,10 @@
     </ul>
   </div>
 </div>
+</div><!-- /tab-activities -->
 
-<div class="divider"></div>
-
-<!-- 🤿 潜水考证指南 -->
+<!-- Tab: 潜水 -->
+<div class="tab-section" id="tab-diving">
 <div class="section">
   <div class="section-title">🤿 PADI OW 潜水考证指南（下次来专门考！）</div>
 
@@ -636,7 +678,7 @@
     </ul>
   </div>
 
-  <table class="data-table">
+  <div class="table-wrap"><table class="data-table">
     <thead><tr><th>潜店</th><th>价格</th><th>语言</th><th>特点</th><th>推荐度</th></tr></thead>
     <tbody>
       <tr><td><strong>海妖潜水</strong></td><td class="price">OW ¥500起<br>OW+3晚住宿 ¥750</td><td>🇨🇳 中文</td><td>淘宝200+好评，Doljo海滩出海超方便，教练专业有趣</td><td><span class="tag tag-g">⭐⭐⭐ 首选</span></td></tr>
@@ -644,7 +686,7 @@
       <tr><td><strong>王者潜水</strong></td><td class="price">OW 约¥2,000-2,500</td><td>🇨🇳 中文</td><td>就在Alona Beach上，位置最方便</td><td><span class="tag tag-b">⭐⭐</span></td></tr>
       <tr><td><strong>Klook PADI五星IDC</strong></td><td class="price">OW 约¥2,500</td><td>🌏 多语</td><td>PADI五星级潜水中心，支持免费取消</td><td><span class="tag tag-y">⭐⭐</span></td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="info-grid">
     <div class="info-card">
@@ -665,10 +707,10 @@
     </div>
   </div>
 </div>
+</div><!-- /tab-diving -->
 
-<div class="divider"></div>
-
-<!-- 🏠 回深圳方案 -->
+<!-- Tab: 回程 -->
+<div class="tab-section" id="tab-return">
 <div class="section">
   <div class="section-title">🏠 香港机场 → 深圳宝安企鹅公寓 · 回家方案</div>
 
@@ -758,10 +800,10 @@
     </ul>
   </div>
 </div>
+</div><!-- /tab-return -->
 
-<div class="divider"></div>
-
-<!-- 💰 预算 -->
+<!-- Tab: 预算 -->
+<div class="tab-section" id="tab-budget">
 <div class="section">
   <div class="section-title">💰 预算明细 · 两人出行版</div>
 
@@ -836,10 +878,10 @@
     </div>
   </div>
 </div>
+</div><!-- /tab-budget -->
 
-<div class="divider"></div>
-
-<!-- 🌤️ 天气预报 -->
+<!-- Tab: 天气 -->
+<div class="tab-section" id="tab-weather">
 <div class="section">
   <div class="section-title">🌤️ 五一期间天气预报</div>
 
@@ -879,7 +921,7 @@
     </p>
   </div>
 
-  <table class="data-table">
+  <div class="table-wrap"><table class="data-table">
     <thead><tr><th>日期</th><th>地点</th><th>天气</th><th>气温</th><th>建议</th></tr></thead>
     <tbody>
       <tr><td><strong>5/1 周四</strong></td><td>🇭🇰 香港</td><td>多云间阴，可能短阵雨</td><td>24-30°C</td><td>带伞，穿轻便舒适衣物逛街</td></tr>
@@ -889,7 +931,7 @@
       <tr><td><strong>5/5 周一</strong></td><td>🏝️ 薄荷岛</td><td>多云，偶有阵雨</td><td>25-31°C</td><td>追海豚需早起！帽子墨镜防晒必带，下午沙滩轻松收尾</td></tr>
       <tr><td><strong>5/6 周三</strong></td><td>🏝️→🇭🇰→🏙️</td><td>薄荷岛晴 / 深圳可能雷雨</td><td>25-31°C</td><td>回到深圳注意带伞</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="tip sun">
     <h4>🌡️ 关键天气提醒</h4>
@@ -901,10 +943,10 @@
     </ul>
   </div>
 </div>
+</div><!-- /tab-weather -->
 
-<div class="divider"></div>
-
-<!-- 📝 实用信息 -->
+<!-- Tab: 实用信息 -->
+<div class="tab-section" id="tab-info">
 <div class="section">
   <div class="section-title">📝 实用信息</div>
 
@@ -938,10 +980,10 @@
     </ul>
   </div>
 </div>
+</div><!-- /tab-info -->
 
-<div class="divider"></div>
-
-<!-- ✅ 行前准备清单（可勾选+自定义添加） -->
+<!-- Tab: 清单 -->
+<div class="tab-section" id="tab-checklist">
 <div class="section" id="checklist-section">
   <div class="section-title">✅ 行前准备清单 · 可勾选 & 自定义添加</div>
 
@@ -1260,12 +1302,45 @@
   render();
 })();
 </script>
+</div><!-- /tab-checklist -->
 
 <div class="footer">
-  <p>🏝️ 五一薄荷岛攻略 v11 · 更新时间：2026-04-24 · 两人出行均摊版（含交互式勾选清单+免签更新+自定义添加）</p>
+  <p>🏝️ 五一薄荷岛攻略 v12 · 更新时间：2026-04-25 · Tab导航版 · 两人出行均摊版</p>
   <p style="margin-top:4px;">去程 UO516 ¥955 + 回程 UO535 ¥515 = <strong>往返仅¥1,470</strong> · ✅ 已出票</p>
 </div>
 
 </div>
+
+<!-- Tab切换 & 回到顶部 -->
+<script>
+function switchTab(tabId) {
+  // 切换tab-section显示
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  // 切换按钮active
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="'+tabId+'"]').classList.add('active');
+  // 滚动到内容顶部（tab导航下方）
+  const nav = document.getElementById('tabNav');
+  const navBottom = nav.getBoundingClientRect().bottom + window.scrollY;
+  window.scrollTo({ top: navBottom - nav.offsetHeight, behavior: 'smooth' });
+  // 保存当前tab到URL hash
+  history.replaceState(null, '', '#' + tabId);
+}
+
+// 回到顶部按钮显隐
+const scrollBtn = document.getElementById('scrollTopBtn');
+window.addEventListener('scroll', () => {
+  scrollBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
+});
+
+// 从URL hash恢复tab
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = location.hash.replace('#','');
+  if (hash && document.getElementById('tab-' + hash)) {
+    switchTab(hash);
+  }
+});
+</script>
 </body>
 </html>
