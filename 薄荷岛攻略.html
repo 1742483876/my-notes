@@ -169,9 +169,10 @@
 <!-- Tab导航 -->
 <nav class="tab-nav" id="tabNav">
   <div class="tab-nav-inner">
-    <button class="tab-btn active" data-tab="flights" onclick="switchTab('flights')">✈️ 机票</button>
+    <button class="tab-btn active" data-tab="route" onclick="switchTab('route')">🗺️ 行程路线</button>
+    <button class="tab-btn" data-tab="flights" onclick="switchTab('flights')">✈️ 机票</button>
     <button class="tab-btn" data-tab="hotel" onclick="switchTab('hotel')">🏨 住宿</button>
-    <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">📋 行程</button>
+    <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">📋 行程详情</button>
     <button class="tab-btn" data-tab="activities" onclick="switchTab('activities')">🎯 活动</button>
     <button class="tab-btn" data-tab="diving" onclick="switchTab('diving')">🤿 潜水</button>
     <button class="tab-btn" data-tab="return" onclick="switchTab('return')">🏠 回程</button>
@@ -185,8 +186,198 @@
 <!-- 回到顶部按钮 -->
 <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+<!-- Tab: 行程路线（总览+交通详情） -->
+<div class="tab-section active" id="tab-route">
+<div class="section">
+  <div class="section-title">🗺️ 行程路线总览 · 各段交通+时间+费用</div>
+
+  <div class="tip hot">
+    <h4>🕐 6天5晚路线总览</h4>
+    <p>
+      <strong>5/1 Thu</strong> 🇭🇰 深圳→香港逛吃→22:40飞马尼拉<br>
+      <strong>5/2 Fri</strong> ✈️ 马尼拉→宿务→🚌墨宝→🏔️卡瓦山溯溪 &nbsp;<span class="tag tag-b">住墨宝</span><br>
+      <strong>5/3 Sat</strong> 🐟 沙丁鱼风暴→🚌🚢杜马盖地→🚢锡基霍尔 &nbsp;<span class="tag tag-g">住锡岛</span><br>
+      <strong>5/4 Sun</strong> 🛵 锡岛全天摩托环岛→22:00船去薄荷岛 &nbsp;<span class="tag tag-y">住薄荷岛</span><br>
+      <strong>5/5 Mon</strong> 🤿 深潜+跳岛+萤火虫 &nbsp;<span class="tag tag-y">住薄荷岛</span><br>
+      <strong>5/6 Tue</strong> 🔫 射击+眼镜猴+罗博河→✈️飞回马尼拉→飞香港→回深圳
+    </p>
+  </div>
+
+  <!-- ====== Day 1 路线 ====== -->
+  <div style="margin:24px 0 8px;font-size:16px;font-weight:700;color:var(--sea);">📅 Day 1 · 5/1（周四）深圳→香港→马尼拉</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>段</th><th>路线</th><th>交通</th><th>时间</th><th>耗时</th><th>费用/人</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td>深圳北/福田 → 西九龙</td><td>🚄 高铁</td><td>15:00出发</td><td>20min</td><td class="price">¥75</td></tr>
+      <tr><td>②</td><td>尖沙咀逛街+晚餐</td><td>🚶 步行</td><td>15:45~18:30</td><td>3h</td><td class="price">¥200~400</td></tr>
+      <tr><td>③</td><td>九龙站 → 香港机场T1</td><td>🚄 机场快线</td><td>19:00出发</td><td>24min</td><td class="price">HK$115≈¥105</td></tr>
+      <tr><td>④</td><td>香港T1 → 马尼拉T3</td><td>✈️ UO516 <span class="badge">✅已购</span></td><td>22:40→01:00+1</td><td>2h20m</td><td class="price">¥955</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tip green" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">💡 <strong>Day 1 总费用</strong>：¥1,135~1,335/人（高铁¥75+机场快线¥105+机票¥955+逛吃¥200~400均摊）</p>
+  </div>
+
+  <!-- ====== Day 2 路线 ====== -->
+  <div style="margin:24px 0 8px;font-size:16px;font-weight:700;color:var(--sea);">📅 Day 2 · 5/2（周五）马尼拉→宿务→墨宝→卡瓦山溯溪</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>段</th><th>路线</th><th>交通</th><th>时间</th><th>耗时</th><th>费用/人</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td>马尼拉T3 → 宿务机场</td><td>✈️ 宿太/亚航</td><td>07:00→08:30</td><td>1.5h</td><td class="price">¥95~250</td></tr>
+      <tr><td>②</td><td>宿务机场 → South Bus Terminal</td><td>🚕 Grab</td><td>09:00出发</td><td>30~50min</td><td class="price">₱300-450≈¥38~56</td></tr>
+      <tr><td>③</td><td>South Bus Terminal → 墨宝</td><td>🚌 Ceres Liner<br><small>(Bato via Barili线)</small></td><td>09:45出发</td><td>2.5~3h</td><td class="price">₱209≈¥26</td></tr>
+      <tr><td>④</td><td>墨宝下车 → Panagsama Beach</td><td>🛺 三轮车</td><td>12:15</td><td>5min</td><td class="price">₱100≈¥13</td></tr>
+      <tr><td>⑤</td><td>墨宝 → 卡瓦山溯溪（含接送）</td><td>🚗 套餐含</td><td>14:00~18:00</td><td>4h</td><td class="price">₱1,500≈¥190<br><small>含装备+午餐+接送</small></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tip green" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">💡 <strong>Day 2 总费用</strong>：¥462~635/人（内航+Grab+巴士+三轮+溯溪）+ 住宿均摊¥50~200 + 餐饮¥50~100</p>
+  </div>
+
+  <!-- ====== Day 3 路线 ====== -->
+  <div style="margin:24px 0 8px;font-size:16px;font-weight:700;color:var(--sea);">📅 Day 3 · 5/3（周六）沙丁鱼→杜马盖地→锡基霍尔 ⚠️需早起</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>段</th><th>路线</th><th>交通</th><th>时间</th><th>耗时</th><th>费用/人</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(0,180,216,.06);"><td>🐟</td><td>Panagsama Beach 浮潜沙丁鱼</td><td>🏊 岸潜</td><td>06:00~07:30</td><td>1.5h</td><td class="price">₱300≈¥38~44<br><small>环保费+装备租赁</small></td></tr>
+      <tr><td>①</td><td>墨宝 → Bato</td><td>🚌 Ceres Liner（南行）</td><td>11:00出发</td><td>1.5h</td><td class="price">₱140≈¥18</td></tr>
+      <tr><td>②</td><td>Bato → Liloan码头</td><td>🛺 三轮车</td><td>12:30</td><td>10min</td><td class="price">₱150≈¥19</td></tr>
+      <tr><td>③</td><td>Liloan → Sibulan（杜马盖地）</td><td>🚢 Maayo渡轮</td><td>12:45出发</td><td>25~30min</td><td class="price">₱130~190≈¥16~24</td></tr>
+      <tr><td>④</td><td>Sibulan → 杜马盖地码头</td><td>🛺 三轮车</td><td>13:15</td><td>15min</td><td class="price">₱100~180≈¥13~23</td></tr>
+      <tr><td>⑤</td><td>杜马盖地 → 锡基霍尔</td><td>🚢 OceanJet</td><td>15:00出发<br><small>（或赶13:00班更好）</small></td><td>40~50min</td><td class="price">₱455≈¥57</td></tr>
+      <tr><td>⑥</td><td>锡基霍尔码头 → 酒店</td><td>🛺 三轮车/🛵摩托</td><td>15:40~16:00</td><td>15~20min</td><td class="price">₱150≈¥19<br><small>或租摩托₱350-500/天</small></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tip green" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">💡 <strong>Day 3 交通总费用</strong>：¥180~204/人（浮潜¥38~44 + 巴士¥18 + 三轮¥19 + 渡轮¥16~24 + 三轮¥13~23 + OceanJet¥57 + 三轮¥19）+ 住宿均摊¥155~500</p>
+  </div>
+
+  <!-- ====== Day 4 路线 ====== -->
+  <div style="margin:24px 0 8px;font-size:16px;font-weight:700;color:var(--sea);">📅 Day 4 · 5/4（周日）锡岛全天环岛→薄荷岛 🛵最松的一天！</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>段</th><th>路线</th><th>交通</th><th>时间</th><th>耗时</th><th>费用/人</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(6,214,160,.06);"><td>🛵</td><td>锡基霍尔全天摩托环岛<br><small>鱼疗→树藤跳水→悬崖跳海→日落</small></td><td>🛵 租摩托自驾</td><td>10:30~18:00</td><td>全天</td><td class="price">₱350~500≈¥44~63/天<br><small>+景点门票约₱170≈¥21</small></td></tr>
+      <tr><td>①</td><td>酒店 → Larena码头</td><td>🛵 骑摩托/🛺三轮</td><td>~21:00出发</td><td>20~25min</td><td class="price">已含在租摩托费用中</td></tr>
+      <tr><td>②</td><td>锡基霍尔Larena → 薄荷岛Tagbilaran</td><td>🚢 Lite Shipping<br><small>⚠️周日22:00出发！</small></td><td>22:00→01:00+1</td><td>3h</td><td class="price">₱475~860≈¥59~108</td></tr>
+      <tr><td>③</td><td>Tagbilaran码头 → Alona Beach</td><td>🚕 打车/Grab</td><td>01:00+1到达</td><td>20min</td><td class="price">₱300~500≈¥38~63</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tip sun" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">⚠️ <strong>注意</strong>：5/4是周日，Lite Shipping从<strong>Larena码头</strong>（不是Siquijor码头）<strong>22:00出发</strong>，01:00到Tagbilaran。船上有空调座位可以睡觉。提前在12Go.asia或码头买票。</p>
+  </div>
+
+  <div class="tip green" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">💡 <strong>Day 4 总费用</strong>：¥162~255/人（摩托+门票+船票+打车）+ 住宿均摊¥65~460</p>
+  </div>
+
+  <!-- ====== Day 5 路线 ====== -->
+  <div style="margin:24px 0 8px;font-size:16px;font-weight:700;color:var(--sea);">📅 Day 5 · 5/5（周一）深潜+跳岛+萤火虫 🤿 薄荷岛最精华！</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>段</th><th>路线</th><th>交通</th><th>时间</th><th>耗时</th><th>费用/人</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(0,180,216,.06);"><td>🤿</td><td>Alona Beach → 深潜体验<br><small>教练1对1·12m·拍沙丁鱼</small></td><td>🚤 潜店安排</td><td>10:30~13:30</td><td>3h</td><td class="price">¥400~500<br><small>海妖/王者潜水·含拍照</small></td></tr>
+      <tr style="background:rgba(6,214,160,.06);"><td>🏝️</td><td>Alona Beach → 巴里卡萨岛<br><small>大断层浮潜+海龟🐢</small></td><td>🚤 螃蟹船（包船）</td><td>14:00→15:30</td><td>40min船程</td><td class="price">包船¥350→均摊¥175<br><small>含巴里卡萨+处女岛</small></td></tr>
+      <tr style="background:rgba(6,214,160,.06);"><td>🏖️</td><td>巴里卡萨 → 处女岛<br><small>拖尾沙滩+果冻海</small></td><td>🚤 同一条船</td><td>15:30→17:00</td><td>30min船程</td><td class="price">含在包船费中</td></tr>
+      <tr><td>🌟</td><td>Alona → 阿巴丹河萤火虫</td><td>🚕 酒店安排接送</td><td>20:30~22:30</td><td>2h</td><td class="price">约¥120/人</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tip green" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">💡 <strong>Day 5 总费用</strong>：¥695~795/人（深潜¥400-500 + 跳岛均摊¥175 + 萤火虫¥120）+ 住宿均摊¥65~460 + 餐饮¥100</p>
+  </div>
+
+  <!-- ====== Day 6 路线 ====== -->
+  <div style="margin:24px 0 8px;font-size:16px;font-weight:700;color:var(--sea);">📅 Day 6 · 5/6（周二）陆地日+回程 ✈️</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>段</th><th>路线</th><th>交通</th><th>时间</th><th>耗时</th><th>费用/人</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(239,71,111,.06);"><td>🔫</td><td>Alona → Tagbilaran射击场</td><td>🚗 包车</td><td>09:00→09:15</td><td>15min</td><td class="price">射击¥200/人<br><small>2-3种枪+50发套餐</small></td></tr>
+      <tr style="background:rgba(6,214,160,.06);"><td>🐵</td><td>射击场 → 眼镜猴保护区</td><td>🚗 包车</td><td>10:00→10:30</td><td>30min</td><td class="price">₱100≈¥12/人</td></tr>
+      <tr style="background:rgba(6,214,160,.06);"><td>🌴</td><td>眼镜猴 → 罗博河竹筏午餐</td><td>🚗 包车</td><td>11:00→11:20</td><td>20min</td><td class="price">¥100~120/人</td></tr>
+      <tr><td>①</td><td>罗博河 → 邦劳机场TAG</td><td>🚗 包车</td><td>12:00出发</td><td>50min</td><td class="price">包车全程¥300→均摊¥150</td></tr>
+      <tr><td>②</td><td>薄荷岛TAG → 马尼拉T3</td><td>✈️ 宿太5J615</td><td>16:05→17:45</td><td>1h40m</td><td class="price">¥150~225</td></tr>
+      <tr><td>③</td><td>马尼拉T3 → 香港T1</td><td>✈️ UO535 <span class="badge">✅已购</span></td><td>21:10→23:30</td><td>2h20m</td><td class="price">¥515</td></tr>
+      <tr><td>④</td><td>香港机场 → 深圳宝安</td><td>🚌 N21+跨境巴士<br><small>或其他方案</small></td><td>00:00~03:00</td><td>2~3h</td><td class="price">¥115~500<br><small>视方案而定</small></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tip green" style="padding:10px 14px;">
+    <p style="font-size:12px;margin:0;">💡 <strong>Day 6 总费用</strong>：¥1,242~1,722/人（射击¥200+眼镜猴¥12+罗博河¥120+包车均摊¥150+内航¥150~225+国际¥515+回深¥115~500）</p>
+  </div>
+
+  <!-- ====== 全程交通费用汇总 ====== -->
+  <div class="divider"></div>
+
+  <div class="section-title">💰 全程交通费用汇总</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>类别</th><th>路段</th><th>费用/人</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(0,180,216,.06);"><td colspan="4" style="font-weight:700;color:var(--sea);">✈️ 机票</td></tr>
+      <tr><td>国际往返</td><td>香港↔马尼拉 UO516+UO535</td><td class="price">¥1,470</td><td>✅ 已购</td></tr>
+      <tr><td>内航去程</td><td>马尼拉→宿务</td><td class="price">¥95~250</td><td>宿太/亚航 待购</td></tr>
+      <tr><td>内航回程</td><td>薄荷岛→马尼拉</td><td class="price">¥150~225</td><td>宿太5J615 待购</td></tr>
+
+      <tr style="background:rgba(6,214,160,.06);"><td colspan="4" style="font-weight:700;color:var(--palm);">🚢 船票</td></tr>
+      <tr><td>渡轮</td><td>Liloan→Sibulan</td><td class="price">₱130~190≈¥16~24</td><td>Maayo Shipping·每30min一班</td></tr>
+      <tr><td>快船</td><td>杜马盖地→锡基霍尔</td><td class="price">₱455≈¥57</td><td>OceanJet·40min·4班/天</td></tr>
+      <tr><td>慢船</td><td>锡基霍尔→薄荷岛</td><td class="price">₱475~860≈¥59~108</td><td>Lite Shipping·3h·周日22:00出发</td></tr>
+
+      <tr style="background:rgba(255,209,102,.06);"><td colspan="4" style="font-weight:700;color:var(--sand);">🚌 陆路</td></tr>
+      <tr><td>巴士</td><td>宿务→墨宝</td><td class="price">₱209≈¥26</td><td>Ceres Liner·2.5~3h</td></tr>
+      <tr><td>巴士</td><td>墨宝→Bato</td><td class="price">₱140≈¥18</td><td>Ceres Liner·1.5h</td></tr>
+      <tr><td>Grab</td><td>宿务机场→South Bus Terminal</td><td class="price">₱300~450≈¥38~56</td><td>30~50min</td></tr>
+      <tr><td>打车</td><td>Tagbilaran码头→Alona Beach</td><td class="price">₱300~500≈¥38~63</td><td>凌晨到·20min</td></tr>
+
+      <tr style="background:rgba(239,71,111,.06);"><td colspan="4" style="font-weight:700;color:var(--coral);">🛺 短途接驳</td></tr>
+      <tr><td>三轮车×4程</td><td>墨宝/Bato/Sibulan/锡岛码头</td><td class="price">约₱580≈¥73</td><td>各段₱100~180不等</td></tr>
+      <tr><td>租摩托</td><td>锡基霍尔全天环岛</td><td class="price">₱350~500≈¥44~63</td><td>自动挡·护照抵押</td></tr>
+      <tr><td>包车</td><td>Day 6陆地日全程</td><td class="price">包车¥300→均摊¥150</td><td>射击→眼镜猴→罗博河→机场</td></tr>
+
+      <tr style="background:rgba(0,180,216,.08);"><td colspan="2" style="font-weight:700;font-size:14px;color:var(--palm);">🏷️ 全程交通合计</td><td class="price" style="font-size:16px;font-weight:800;">¥2,234~2,633</td><td style="color:var(--text2);font-size:12px;">= 机票¥1,715~1,945 + 船票¥132~189 + 陆路¥120~163 + 短途接驳¥267~336</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="info-grid" style="margin-top:16px;">
+    <div class="info-card" style="border-color:var(--palm);border-width:2px;">
+      <div class="label">🗺️ 路线图</div>
+      <div style="font-size:13px;color:var(--text2);line-height:2.2;">
+        🏙️ 深圳 → 🇭🇰 香港 → <span style="color:var(--sea);">✈️</span> → 🇵🇭 马尼拉<br>
+        → <span style="color:var(--sea);">✈️</span> → 宿务 → <span style="color:var(--sand);">🚌2.5h</span> → <strong style="color:var(--sea);">🐟 墨宝</strong>（住1晚）<br>
+        → <span style="color:var(--sand);">🚌🚢3.5h</span> → 杜马盖地 → <span style="color:var(--sea);">🚢40min</span> → <strong style="color:var(--palm);">🏝️ 锡基霍尔</strong>（住1晚）<br>
+        → <span style="color:var(--sea);">🚢3h</span> → <strong style="color:var(--sand);">🤿 薄荷岛</strong>（住2晚）<br>
+        → <span style="color:var(--sea);">✈️</span> → 马尼拉 → <span style="color:var(--sea);">✈️</span> → 🇭🇰 香港 → 🏙️ 深圳
+      </div>
+    </div>
+    <div class="info-card" style="border-color:var(--sea);">
+      <div class="label">⏰ 每日起床时间</div>
+      <div style="font-size:13px;color:var(--text2);line-height:2.2;">
+        Day 1：<span class="tag tag-g">下午出发</span> 不用早起<br>
+        Day 2：<span class="tag tag-r">⚠️ 07:00</span> 赶飞机（没睡好）<br>
+        Day 3：<span class="tag tag-r">⚠️ 05:30</span> 看沙丁鱼<br>
+        Day 4：<span class="tag tag-g">😴 自然醒</span> 全天环岛<br>
+        Day 5：<span class="tag tag-g">😴 自然醒</span> 深潜跳岛<br>
+        Day 6：<span class="tag tag-y">08:30</span> 陆地日+回程
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-route -->
+
 <!-- Tab: 机票 -->
-<div class="tab-section active" id="tab-flights">
+<div class="tab-section" id="tab-flights">
 
 <!-- ✈️ 已确定的机票 -->
 <div class="section">
@@ -1493,7 +1684,7 @@
 </div><!-- /tab-checklist -->
 
 <div class="footer">
-    <p>🏝️ 五一菲律宾跳岛攻略 v20 · 更新时间：2026-04-28 · 终极版：墨宝+锡基霍尔+薄荷岛三岛跳岛 · 两人出行均摊版</p>
+    <p>🏝️ 五一菲律宾跳岛攻略 v21 · 更新时间：2026-04-28 · 终极版：墨宝+锡基霍尔+薄荷岛三岛跳岛 · 两人出行均摊版</p>
   <p style="margin-top:4px;">去程 UO516 ¥955 + 回程 UO535 ¥515 = <strong>往返仅¥1,470</strong> · ✅ 已出票</p>
 </div>
 
