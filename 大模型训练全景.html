@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 大模型训练全景 · 从团队到部署</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a12;--card:#12121e;--card2:#1a1a2e;--card3:#16162a;
+  --border:rgba(99,102,241,.2);--border2:rgba(139,92,246,.15);
+  --t1:#f0f0ff;--t2:#8888aa;--t3:#555577;
+  --p1:#818cf8;--p2:#a78bfa;--p3:#c084fc;--p4:#e879f9;
+  --g1:linear-gradient(135deg,#818cf8,#a78bfa);
+  --g2:linear-gradient(135deg,#06b6d4,#3b82f6);
+  --g3:linear-gradient(135deg,#f59e0b,#ef4444);
+  --g4:linear-gradient(135deg,#10b981,#06b6d4);
+  --g5:linear-gradient(135deg,#e879f9,#818cf8);
+  --glow1:rgba(129,140,248,.15);--glow2:rgba(167,139,250,.1);
+}
+body{background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto;padding:20px 24px 80px}
+a{color:var(--p1);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Hero */
+.hero{text-align:center;padding:60px 0 40px;position:relative}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(129,140,248,.08) 0%,rgba(167,139,250,.04) 40%,transparent 70%);pointer-events:none}
+.hero-icon{font-size:72px;margin-bottom:16px;filter:drop-shadow(0 4px 30px rgba(129,140,248,.5));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero h1{font-size:42px;font-weight:900;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;line-height:1.2}
+.hero .sub{color:var(--t2);font-size:15px;margin-top:12px;max-width:600px;margin-left:auto;margin-right:auto}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:6px 16px;border-radius:24px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3);color:var(--p1);font-size:13px;font-weight:600}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:32px 0}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;transition:all .2s}
+.stat:hover{border-color:var(--p1);transform:translateY(-2px);box-shadow:0 8px 30px rgba(129,140,248,.1)}
+.stat .ico{font-size:24px;margin-bottom:4px}
+.stat .val{font-size:18px;font-weight:800;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lab{font-size:11px;color:var(--t2);margin-top:2px}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin:30px 0 20px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.tab-btn{padding:8px 18px;border-radius:24px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
+.tab-btn.active,.tab-btn:hover{background:rgba(129,140,248,.15);color:var(--p1);border-color:var(--p1)}
+.tab-section{display:none}
+.tab-section.active{display:block}
+
+/* Section */
+.section{margin:32px 0}
+.section-title{font-size:20px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+
+/* Cards */
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin:16px 0;transition:all .2s}
+.info-card:hover{border-color:var(--p1);box-shadow:0 4px 20px rgba(129,140,248,.08)}
+.info-card h3{font-size:17px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.info-card p,.info-card li{font-size:14px;color:var(--t2);line-height:1.8}
+.info-card ul{padding-left:20px;margin:8px 0}
+.info-card li{margin:4px 0}
+.info-card strong{color:var(--t1)}
+
+/* Highlight box */
+.highlight{background:var(--card2);border-left:3px solid var(--p1);border-radius:0 12px 12px 0;padding:16px 20px;margin:16px 0;font-size:14px;color:var(--t2);line-height:1.8}
+.highlight.warn{border-left-color:#f59e0b}
+.highlight.hot{border-left-color:#ef4444}
+.highlight.ok{border-left-color:#10b981}
+.highlight strong{color:var(--t1)}
+
+/* Tables */
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:12px;border:1px solid var(--border)}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{background:var(--card2);color:var(--p1);font-weight:600;text-align:left;padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--t2)}
+.data-table tr:hover td{background:rgba(129,140,248,.03);color:var(--t1)}
+.data-table .em{color:var(--p1);font-weight:600}
+.data-table .hot{color:#ef4444;font-weight:600}
+.data-table .ok{color:#10b981;font-weight:600}
+.data-table .warn{color:#f59e0b;font-weight:600}
+
+/* Pipeline */
+.pipeline{display:flex;gap:0;margin:20px 0;overflow-x:auto;padding:10px 0}
+.pipe-step{flex:0 0 auto;min-width:150px;padding:16px;text-align:center;position:relative;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.pipe-step::after{content:'→';position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:var(--p1);font-size:18px;font-weight:700}
+.pipe-step:last-child::after{display:none}
+.pipe-step .step-icon{font-size:28px;margin-bottom:6px}
+.pipe-step .step-name{font-size:13px;font-weight:700;color:var(--t1)}
+.pipe-step .step-sub{font-size:11px;color:var(--t2);margin-top:4px}
+.pipe-step .step-bar{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+.pipe-gap{flex:0 0 30px}
+
+/* Tag */
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.tag-p{background:rgba(129,140,248,.15);color:var(--p1)}
+.tag-g{background:rgba(16,185,129,.15);color:#10b981}
+.tag-r{background:rgba(239,71,111,.15);color:#ef4444}
+.tag-y{background:rgba(245,158,11,.15);color:#f59e0b}
+.tag-b{background:rgba(6,182,212,.15);color:#06b6d4}
+
+/* Org chart */
+.org-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.org-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s}
+.org-card:hover{border-color:var(--p2);transform:translateY(-2px)}
+.org-card h4{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.org-card .role{font-size:12px;color:var(--t2);line-height:1.7}
+.org-card .count{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(129,140,248,.12);color:var(--p1);margin-top:8px}
+
+/* Flow diagram */
+.flow{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin:20px 0;font-family:'Courier New',monospace;font-size:12px;color:var(--t2);line-height:1.6;overflow-x:auto;white-space:pre}
+
+/* Grid 2-col */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+@media(max-width:700px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .org-grid,.grid2{grid-template-columns:1fr}
+  .hero h1{font-size:28px}
+  .pipeline{flex-direction:column;align-items:center}
+  .pipe-step::after{content:'↓';right:auto;bottom:-16px;top:auto;left:50%;transform:translateX(-50%)}
+  .pipe-gap{flex:0 0 20px}
+}
+
+/* Scroll to top */
+.back-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--g1);color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 16px rgba(129,140,248,.3);display:none;z-index:999;transition:all .2s}
+.back-top:hover{transform:scale(1.1)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-icon">🧠</div>
+  <h1>大模型训练全景</h1>
+  <p class="sub">从团队架构 → 数据工程 → 预训练 → Mid-train → 后训练 → 原生多模态 → 部署，深度拆解 LLM 全生命周期</p>
+  <div class="badge">📖 2024-2025 前沿实践 · DeepSeek / Qwen / LLaMA / GPT 系列参考</div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="ico">🏗️</div><div class="val">6大阶段</div><div class="lab">训练全流程</div></div>
+  <div class="stat"><div class="ico">🔢</div><div class="val">15T+ Tokens</div><div class="lab">主流预训练数据量</div></div>
+  <div class="stat"><div class="ico">💰</div><div class="val">$78M~$192M</div><div class="lab">前沿模型训练成本</div></div>
+  <div class="stat"><div class="ico">🖥️</div><div class="val">数千~万+</div><div class="lab">GPU 卡数（H100/H200）</div></div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('team')">👥 团队架构</button>
+  <button class="tab-btn" onclick="switchTab('pipeline')">🔄 训练流程总览</button>
+  <button class="tab-btn" onclick="switchTab('pretrain')">📚 预训练</button>
+  <button class="tab-btn" onclick="switchTab('midtrain')">🎯 Mid-train</button>
+  <button class="tab-btn" onclick="switchTab('posttrain')">🎓 后训练</button>
+  <button class="tab-btn" onclick="switchTab('multimodal')">👁️ 原生多模态</button>
+  <button class="tab-btn" onclick="switchTab('infra')">⚙️ 基础设施&成本</button>
+</div>
+
+<!-- ============ Tab: 团队架构 ============ -->
+<div class="tab-section active" id="tab-team">
+<div class="section">
+  <div class="section-title">👥 大模型团队典型组织架构</div>
+
+  <div class="highlight">
+    一个完整的大模型团队通常包含 <strong>200-2000+ 人</strong>，分为 <strong>基础设施、数据、模型、对齐、评测、应用</strong> 六大核心方向。<br>
+    下面以 <strong>业界主流一线团队</strong>（OpenAI / Anthropic / DeepSeek / Qwen / Meta AI）的公开披露为参考。
+  </div>
+
+  <div class="org-grid">
+    <div class="org-card">
+      <h4>🏗️ 基础设施团队 (Infra)</h4>
+      <div class="role">
+        • <strong>GPU 集群管理</strong>：千卡集群搭建、调度、故障恢复<br>
+        • <strong>分布式训练框架</strong>：3D 并行、通信优化、MFU 调优<br>
+        • <strong>存储与网络</strong>：高速文件系统、InfiniBand/NVLink<br>
+        • <strong>MLOps</strong>：checkpoint 管理、实验追踪、自动化部署
+      </div>
+      <div class="count">👤 40-200人 · 占比 20-30%</div>
+    </div>
+    <div class="org-card">
+      <h4>📊 数据团队 (Data Engineering)</h4>
+      <div class="role">
+        • <strong>数据采集</strong>：网页爬取、PDF 提取、多语言语料<br>
+        • <strong>数据清洗</strong>：去重、毒性过滤、质量打分、配比优化<br>
+        • <strong>合成数据</strong>：用大模型生成高质量训练数据<br>
+        • <strong>标注管理</strong>：SFT/RLHF 人工标注、偏好对排、质检
+      </div>
+      <div class="count">👤 50-300人 · 占比 25-35%</div>
+    </div>
+    <div class="org-card">
+      <h4>🧬 模型团队 (Model / Research)</h4>
+      <div class="role">
+        • <strong>架构研究</strong>：Transformer 变体、MoE、Attention 优化<br>
+        • <strong>预训练</strong>：loss 监控、lr schedule、数据配比实验<br>
+        • <strong>Scaling Law</strong>：参数量-数据量-算力最优配比<br>
+        • <strong>能力增强</strong>：长上下文、推理能力、代码/数学强化
+      </div>
+      <div class="count">👤 30-100人 · 占比 15-20%</div>
+    </div>
+    <div class="org-card">
+      <h4>🎯 对齐团队 (Alignment)</h4>
+      <div class="role">
+        • <strong>SFT</strong>：指令微调、对话格式训练<br>
+        • <strong>RLHF/DPO</strong>：Reward Model、PPO/GRPO 训练<br>
+        • <strong>安全</strong>：Red Teaming、拒答策略、有害内容过滤<br>
+        • <strong>推理增强</strong>：CoT、o1/R1 范式的强化学习训练
+      </div>
+      <div class="count">👤 20-80人 · 占比 10-15%</div>
+    </div>
+    <div class="org-card">
+      <h4>📈 评测团队 (Evaluation)</h4>
+      <div class="role">
+        • <strong>Benchmark</strong>：MMLU、HumanEval、MATH、C-Eval<br>
+        • <strong>人工评测</strong>：Chatbot Arena、人类偏好评分<br>
+        • <strong>安全评测</strong>：毒性检测、偏见测试、对抗攻击<br>
+        • <strong>AB Test</strong>：线上灰度、用户反馈闭环
+      </div>
+      <div class="count">👤 10-40人 · 占比 5-10%</div>
+    </div>
+    <div class="org-card">
+      <h4>🚀 应用与推理团队 (Serving)</h4>
+      <div class="role">
+        • <strong>推理优化</strong>：量化(FP8/INT4)、KV Cache、FlashAttention<br>
+        • <strong>模型蒸馏</strong>：大→小蒸馏、推理链蒸馏<br>
+        • <strong>API 服务</strong>：高并发、负载均衡、cost-per-token 优化<br>
+        • <strong>产品集成</strong>：Agent、RAG、Function Calling
+      </div>
+      <div class="count">👤 20-80人 · 占比 10-15%</div>
+    </div>
+  </div>
+
+  <div class="highlight ok">
+    <strong>💡 核心洞察</strong>：<br>
+    • <strong>数据团队占比最大</strong>（25-35%），这与直觉不同——大模型的能力上限由数据决定<br>
+    • <strong>Infra 团队是隐形基石</strong>，千卡训练的稳定性直接决定几千万美金是否打水漂<br>
+    • <strong>对齐团队工程复杂度最高</strong>，虽然算力占比小，但链路最长：数据→RM→PPO→评测→反馈
+  </div>
+
+  <div class="section-title">🏢 团队协作流程</div>
+  <div class="flow">数据团队                模型团队               对齐团队              评测团队
+  │                    │                    │                   │
+  │ 采集+清洗+配比      │                    │                   │
+  │────────────────→  │ 预训练(数周~数月)     │                   │
+  │                    │──────────────────→ │                   │
+  │ 合成SFT数据        │                    │ SFT微调            │
+  │────────────────→  │                    │──────────────────→│
+  │                    │                    │                   │ Benchmark
+  │ 标注偏好对          │                    │                   │ + 人工评测
+  │────────────────→  │                    │ RLHF/DPO对齐       │
+  │                    │                    │──────────────────→│
+  │                    │                    │                   │ 反馈改进
+  │←───────────────────────────────────────────────────────────│
+  │                    │                    │                   │
+  ▼                    ▼                    ▼                   ▼
+                  Infra 团队全程支撑（集群、调度、容错、checkpoint）</div>
+</div>
+</div>
+
+<!-- ============ Tab: 训练流程总览 ============ -->
+<div class="tab-section" id="tab-pipeline">
+<div class="section">
+  <div class="section-title">🔄 大模型训练四阶段流水线</div>
+
+  <div class="highlight">
+    以 2024-2025 年 <strong>DeepSeek-V3、Qwen3、LLaMA-3.1、Kimi K2</strong> 的公开披露为参考，现代大模型训练是一条四段式流水线。
+  </div>
+
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="step-icon">📚</div>
+      <div class="step-name">Pre-train</div>
+      <div class="step-sub">预训练</div>
+      <div class="step-bar tag-r">90%+ 算力</div>
+    </div>
+    <div class="pipe-gap"></div>
+    <div class="pipe-step">
+      <div class="step-icon">🎯</div>
+      <div class="step-name">Mid-train</div>
+      <div class="step-sub">中训 / 继续预训练</div>
+      <div class="step-bar tag-y">3-8% 算力</div>
+    </div>
+    <div class="pipe-gap"></div>
+    <div class="pipe-step">
+      <div class="step-icon">🎓</div>
+      <div class="step-name">SFT</div>
+      <div class="step-sub">监督微调</div>
+      <div class="step-bar tag-g">&lt;1% 算力</div>
+    </div>
+    <div class="pipe-gap"></div>
+    <div class="pipe-step">
+      <div class="step-icon">⚖️</div>
+      <div class="step-name">Alignment</div>
+      <div class="step-sub">RLHF / DPO / GRPO</div>
+      <div class="step-bar tag-p">1-3% 算力</div>
+    </div>
+    <div class="pipe-gap"></div>
+    <div class="pipe-step">
+      <div class="step-icon">🔬</div>
+      <div class="step-name">Distillation</div>
+      <div class="step-sub">蒸馏 (旁路)</div>
+      <div class="step-bar tag-b">可选</div>
+    </div>
+  </div>
+
+  <div class="section-title">📊 四阶段速查对比</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>阶段</th><th>典型数据量</th><th>算力占比</th><th>主要瓶颈</th><th>Wall-clock 时间</th><th>核心目标</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Pre-train</strong></td><td class="em">5T ~ 36T tokens</td><td class="hot">90%+</td><td>3D并行 + 故障容忍</td><td>数周 ~ 数月</td><td>学习语言+世界知识</td></tr>
+      <tr><td><strong>Mid-train</strong></td><td class="em">500B ~ 5T tokens</td><td class="warn">3%~8%</td><td>数据配比 + 长上下文扩展</td><td>几天 ~ 几周</td><td>强化数学/代码/推理</td></tr>
+      <tr><td><strong>SFT</strong></td><td class="em">10M ~ 1B tokens</td><td class="ok">&lt;1%</td><td>数据质量 + 格式</td><td>几小时 ~ 几天</td><td>从「续写」到「听话」</td></tr>
+      <tr><td><strong>Alignment</strong></td><td class="em">1M ~ 100M 偏好对</td><td class="warn">1%~3%</td><td>RM训练 + PPO稳定性</td><td>几天 ~ 几周</td><td>有用、无害、诚实</td></tr>
+      <tr><td><strong>Distillation</strong></td><td class="em">按需</td><td>可选</td><td>Teacher质量 + 数据量</td><td>几天</td><td>大→小模型知识迁移</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="section-title">🏭 各大模型训练数据对比</div>
+
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>模型</th><th>参数量</th><th>预训练 Tokens</th><th>架构</th><th>训练特色</th></tr></thead>
+    <tbody>
+      <tr><td><strong>GPT-4</strong></td><td>~1.8T (MoE)</td><td>~13T</td><td>Dense MoE</td><td>$78-100M+ 训练成本</td></tr>
+      <tr><td><strong>Qwen3</strong></td><td>0.6B~235B(MoE)</td><td class="em">36T tokens</td><td>Dense + MoE</td><td>3阶段预训练·119种语言·VL提取PDF</td></tr>
+      <tr><td><strong>DeepSeek-V3</strong></td><td>671B (MoE, 37B激活)</td><td class="em">14.8T tokens</td><td>MoE + MLA</td><td>七级质量过滤·FP8训练·Muon优化器</td></tr>
+      <tr><td><strong>LLaMA-3.1</strong></td><td>8B/70B/405B</td><td class="em">15T+ tokens</td><td>Dense</td><td>Annealing阶段换配比·128K长上下文</td></tr>
+      <tr><td><strong>Kimi K2</strong></td><td>1T (MoE, 32B激活)</td><td class="em">15.5T tokens</td><td>MoE</td><td>Muon优化器·可扩展数据pipeline</td></tr>
+      <tr><td><strong>Qwen2.5</strong></td><td>0.5B~72B</td><td class="em">18T tokens</td><td>Dense</td><td>分阶段预训练·数据分布重构</td></tr>
+    </tbody>
+  </table></div>
+</div>
+</div>
+
+<!-- ============ Tab: 预训练 ============ -->
+<div class="tab-section" id="tab-pretrain">
+<div class="section">
+  <div class="section-title">📚 预训练 (Pre-training) 深度解析</div>
+
+  <div class="info-card">
+    <h3>🎯 核心目标：Next Token Prediction</h3>
+    <p>给定文本前缀，预测下一个 token。损失函数是标准交叉熵。<br>
+    <strong>目标极其简单，但工程挑战极其复杂。</strong></p>
+    <div class="highlight" style="margin-top:12px">
+      输入: "The cat sat on the"<br>
+      目标: 预测下一个 Token 是 "mat" (概率最高)<br><br>
+      模型通过最小化交叉熵损失来学习语言：<br>
+      <strong>L = -Σ log P(x_t | x_1, x_2, ..., x_{t-1})</strong>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>📊 数据工程：预训练的第一战场</h3>
+    <p>数据出错一轮，损失的是<strong>几千万美金</strong>。以 Qwen 系列为例：</p>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>版本</th><th>Tokens</th><th>关键进化</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Qwen 1.0</strong></td><td>3T</td><td>基础多语言语料·MinHash+LSH去重·规则+ML过滤</td></tr>
+        <tr><td><strong>Qwen 2.0</strong></td><td>7T</td><td>用 Qwen1 作过滤器·合成数据·30种语言·代码/数学加量</td></tr>
+        <tr><td><strong>Qwen 2.5</strong></td><td>18T</td><td>Qwen2-Instruct做多维打分·领域专家数据融合·数据分布重构(下采样低质域/上采样高质域)</td></tr>
+        <tr><td><strong>Qwen 3</strong></td><td class="em">36T</td><td>119种语言·Qwen2.5-VL提取PDF·合成教科书/QA/代码</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:8px"><strong>数据清洗 7 级流水线</strong>（以 DeepSeek-V3 为参考）：</p>
+    <ul>
+      <li>① 原始去重（MinHash/SimHash）</li>
+      <li>② 低质量过滤（标点比例/字符长度/规则）</li>
+      <li>③ NSFW 过滤（暴力/色情/有害）</li>
+      <li>④ 基于模型的质量打分（用前代模型当评委）</li>
+      <li>⑤ 领域识别与分类</li>
+      <li>⑥ 数据配比优化（小模型实验验证最优比例）</li>
+      <li>⑦ 最终采样 & Tokenization（BPE/SentencePiece）</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3>⚙️ 分布式训练：3D 并行</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>并行策略</th><th>核心思想</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td><strong>数据并行 (DP)</strong></td><td>每张 GPU 一份模型副本，各自处理不同数据，梯度同步</td><td>模型放得下单卡</td></tr>
+        <tr><td><strong>张量并行 (TP)</strong></td><td>把一个矩阵运算拆到多张 GPU 上</td><td>单层太大，放不下一张卡</td></tr>
+        <tr><td><strong>流水线并行 (PP)</strong></td><td>不同层放在不同 GPU 上，数据像流水线一样流过</td><td>层数太多</td></tr>
+        <tr><td><strong>ZeRO (1/2/3)</strong></td><td>优化器状态/梯度/参数分片存储</td><td>内存优化</td></tr>
+        <tr><td><strong>序列并行 (SP)</strong></td><td>把长序列拆分到多 GPU 处理</td><td>长上下文训练</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:8px"><strong>实际配置示例</strong>：训练 70B 模型，256× H100 集群<br>
+    → TP=8（8卡拆一层）× PP=4（4组流水线）× DP=8（8份数据并行）</p>
+  </div>
+
+  <div class="info-card">
+    <h3>🔥 预训练工程四大挑战</h3>
+    <ul>
+      <li><strong>① 数据够不够、干不干净</strong>：13T tokens 的预训练，数据出错一轮 = 几千万美金打水漂</li>
+      <li><strong>② 训练稳不稳</strong>：loss spike、NaN、grad norm 爆炸 → checkpoint + 回滚 + 跳 batch</li>
+      <li><strong>③ 吞吐能不能打满</strong>：3D 并行 + 通信重叠 + FP8/BF16 混合精度 → MFU 从 30% 抠到 50%+</li>
+      <li><strong>④ 故障能不能容忍</strong>：千卡训练几十天，单卡 MTBF 几千小时 → <strong>每天都有卡挂</strong> → 自动检测 + 替换 + 恢复</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3>⏱️ 预训练时间和资源估算</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>模型规模</th><th>GPU 需求</th><th>训练时长</th><th>数据量</th><th>估算成本</th></tr></thead>
+      <tbody>
+        <tr><td><strong>7B Dense</strong></td><td>32-64× H100</td><td>1-2 周</td><td>1-2T tokens</td><td class="warn">$200K-$500K</td></tr>
+        <tr><td><strong>70B Dense</strong></td><td>256-512× H100</td><td>1-3 个月</td><td>10-15T tokens</td><td class="hot">$3M-$8M</td></tr>
+        <tr><td><strong>405B Dense</strong> (LLaMA-3.1)</td><td>16,000× H100</td><td>~54 天</td><td>15T+ tokens</td><td class="hot">$30M-$60M</td></tr>
+        <tr><td><strong>671B MoE</strong> (DeepSeek-V3)</td><td>2,048× H800</td><td>~2 个月</td><td>14.8T tokens</td><td class="hot">$5.6M (FP8优化)</td></tr>
+        <tr><td><strong>~1.8T MoE</strong> (GPT-4 级)</td><td>10,000-25,000× H100</td><td>3-6 个月</td><td>~13T tokens</td><td class="hot">$78M-$192M</td></tr>
+      </tbody>
+    </table></div>
+    <div class="highlight warn" style="margin-top:8px">
+      ⚠️ <strong>以上成本仅为 GPU 计算成本</strong>，不含人力（$100K-$500K/人·年×200-2000人）、数据标注（前沿模型标注成本可达计算成本的 28 倍）、存储（5-50TB）、电力冷却等。
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ Tab: Mid-train ============ -->
+<div class="tab-section" id="tab-midtrain">
+<div class="section">
+  <div class="section-title">🎯 Mid-train / 继续预训练 (Continued PT)</div>
+
+  <div class="info-card">
+    <h3>💡 核心理念：用 5-10% 额外算力，换取显著能力跃升</h3>
+    <p>Mid-train 是 <strong>2024 年后越来越标准化</strong>的训练阶段。在 base model 快训完时，调整数据配比，大幅加权 <strong>数学、代码、STEM、推理</strong> 类数据，同时扩展上下文窗口。</p>
+    <div class="highlight ok">
+      <strong>为什么需要 Mid-train？</strong><br>
+      预训练语料以网页为主，数学/代码/推理数据占比天然不足。Mid-train 就是在不重新花一遍预训练钱的前提下，定向补强弱势能力。
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>📋 各家 Mid-train 实践</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>模型</th><th>Mid-train 做了什么</th><th>效果</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Qwen3</strong></td><td>S1: 30T通用 → S2: 5T加码STEM/代码/推理 → S3: 长上下文32K</td><td>三阶段递进，逐步强化</td></tr>
+        <tr><td><strong>DeepSeek-V3</strong></td><td>后期把上下文从 4K → 32K → 128K，配合 YaRN</td><td>长文本能力飞跃</td></tr>
+        <tr><td><strong>Qwen2.5</strong></td><td>大幅提高代码/数学数据占比，融合 Qwen2.5-Math/Coder 数据</td><td>MATH/HumanEval 分数大幅上升</td></tr>
+        <tr><td><strong>LLaMA-3.1</strong></td><td>Annealing 阶段：降低 lr、换数据配比、刷高质量数据</td><td>128K 上下文支持</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>🧪 Mid-train 的关键技术</h3>
+    <ul>
+      <li><strong>数据配比调整</strong>：数学/代码从预训练的 5-10% → Mid-train 的 30-50%</li>
+      <li><strong>长上下文扩展</strong>：
+        <ul>
+          <li>RoPE 频率调整（NTK-aware / YaRN / Dynamic NTK）</li>
+          <li>渐进式扩展：4K → 8K → 32K → 128K → 1M</li>
+          <li>长文本数据注入（书籍、代码仓库、学术论文全文）</li>
+        </ul>
+      </li>
+      <li><strong>学习率策略</strong>：通常从预训练末尾的 lr 继续，或用 cosine decay 缓降</li>
+      <li><strong>领域专家数据融合</strong>：将 Math-Instruct / Code-Instruct 模型生成的高质量数据混入</li>
+    </ul>
+  </div>
+
+  <div class="grid2">
+    <div class="info-card">
+      <h3>📊 资源消耗</h3>
+      <ul>
+        <li><strong>Tokens</strong>：500B ~ 5T</li>
+        <li><strong>算力占比</strong>：预训练的 3-8%</li>
+        <li><strong>时间</strong>：几天到几周</li>
+        <li><strong>GPU</strong>：与预训练同集群</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>🎯 核心产出</h3>
+      <ul>
+        <li>✅ 数学/推理/代码能力显著提升</li>
+        <li>✅ 长上下文支持（32K→128K+）</li>
+        <li>✅ 为下游 SFT 提供更强底座</li>
+        <li>✅ 性价比极高（小投入大回报）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ Tab: 后训练 ============ -->
+<div class="tab-section" id="tab-posttrain">
+<div class="section">
+  <div class="section-title">🎓 后训练 (Post-training)</div>
+
+  <div class="highlight">
+    后训练 = <strong>SFT（教模型听话）+ Alignment（教模型什么是好的回答）</strong><br>
+    算力占比小（&lt;5%），但<strong>工程链路最长、人力投入最大</strong>。
+  </div>
+
+  <div class="info-card">
+    <h3>📝 第一步：SFT（监督微调）</h3>
+    <p><strong>目标</strong>：让模型从「续写模式」切换到「指令遵循模式」</p>
+    <div class="highlight">
+      <strong>预训练模型</strong>：你问「北京有什么好吃的？」→ 它续写「北京有什么好玩的？上海有什么好吃的？」<br>
+      <strong>SFT 之后</strong>：你问「北京有什么好吃的？」→ 它回答「北京烤鸭、炸酱面、豆汁儿...」
+    </div>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>维度</th><th>详情</th></tr></thead>
+      <tbody>
+        <tr><td><strong>数据格式</strong></td><td>(指令, 回答) 对 / 多轮对话</td></tr>
+        <tr><td><strong>数据量</strong></td><td>数十万 ~ 数百万条（10M ~ 1B tokens）</td></tr>
+        <tr><td><strong>训练方式</strong></td><td>全参微调 或 LoRA/QLoRA（参数高效微调）</td></tr>
+        <tr><td><strong>关键技巧</strong></td><td>Chat Template 格式对齐、数据质量>数量、Packing 提升吞吐</td></tr>
+        <tr><td><strong>耗时</strong></td><td>几小时 ~ 几天</td></tr>
+        <tr><td><strong>算力</strong></td><td>8-64× GPU，预训练的 &lt;1%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>⚖️ 第二步：Alignment（对齐）</h3>
+    <p><strong>目标</strong>：让模型的回答<strong>有用 (Helpful)、无害 (Harmless)、诚实 (Honest)</strong></p>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>方法</th><th>核心思路</th><th>优缺点</th></tr></thead>
+      <tbody>
+        <tr><td><strong>RLHF (PPO)</strong></td><td>训练 Reward Model → PPO 策略优化<br>需要：SFT模型 + RM + PPO Actor/Critic</td><td class="em">上限最高但复杂，吃显存，超参敏感</td></tr>
+        <tr><td><strong>DPO</strong></td><td>不用 RL，直接在偏好对 (chosen, rejected) 上做对比损失</td><td class="ok">训练稳定、成本低，开源社区主力</td></tr>
+        <tr><td><strong>GRPO</strong></td><td>Group Relative Policy Optimization<br>DeepSeek-R1 核心方法</td><td class="em">适合推理增强，不需要 RM</td></tr>
+        <tr><td><strong>KTO</strong></td><td>只需要好/坏标签，不需要成对偏好</td><td class="ok">数据需求最少</td></tr>
+        <tr><td><strong>RLAIF</strong></td><td>用更强 LLM 做 Reward，替代人工标注</td><td class="warn">便宜但有偏差（LLM 自己对齐自己）</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>🧠 推理增强训练（o1/R1 范式）</h3>
+    <p>2024-2025 年最重要的突破：让模型<strong>学会「思考」</strong>，而不仅仅是「回答」。</p>
+    <ul>
+      <li><strong>核心思路</strong>：用 RL（GRPO/PPO）训练模型生成 Chain-of-Thought，奖励正确推理过程</li>
+      <li><strong>代表模型</strong>：OpenAI o1/o3、DeepSeek-R1、Kimi K1.5</li>
+      <li><strong>关键技术</strong>：
+        <ul>
+          <li>Rule-based Reward：格式正确性 + 答案准确性（简单稀疏奖励即可）</li>
+          <li>Process Reward Model (PRM)：对推理过程每一步打分</li>
+          <li>推理蒸馏：把大模型的思维链蒸馏给小模型（DeepSeek-R1 → 7B/14B/32B）</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="highlight">
+      <strong>DeepSeek-R1 训练路径</strong>：<br>
+      ① 671B MoE base → ② GRPO 大规模 RL 训练（数学/代码/推理奖励）→ ③ 模型学会 CoT 推理 → ④ 蒸馏到 Qwen/LLaMA 7B~32B
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>🔬 蒸馏 (Distillation)</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>类型</th><th>做法</th><th>典型案例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>能力蒸馏</strong></td><td>大模型生成响应，小模型模仿</td><td>DeepSeek-R1 671B → 7B/14B/32B</td></tr>
+        <tr><td><strong>行为蒸馏</strong></td><td>推理模型的 CoT → 非推理模型</td><td>o1 范式 → 生产级模型</td></tr>
+        <tr><td><strong>Logit 蒸馏</strong></td><td>让学生模型拟合教师模型的概率分布</td><td>经典 KD 方法</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+</div>
+
+<!-- ============ Tab: 原生多模态 ============ -->
+<div class="tab-section" id="tab-multimodal">
+<div class="section">
+  <div class="section-title">👁️ 原生多模态大模型 (Native Multimodal)</div>
+
+  <div class="info-card">
+    <h3>🔀 两种范式对比</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>维度</th><th>组合式 (Compositional)</th><th>原生式 (Native)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>代表</strong></td><td>LLaVA、Qwen2-VL、InternVL</td><td>Emu3、Chameleon、NaViL、Gemini</td></tr>
+        <tr><td><strong>做法</strong></td><td>预训练好的 Vision Encoder + 预训练好的 LLM，通过 Projector 连接，多模态训练对齐</td><td>Vision Encoder 和 LLM <strong>端到端联合训练</strong>，视觉和语言在统一空间中优化</td></tr>
+        <tr><td><strong>优点</strong></td><td>工程简单、可复用现成组件、迭代快</td><td>视觉-语言对齐更深入、Scaling Law 更清晰、统一理解+生成</td></tr>
+        <tr><td><strong>缺点</strong></td><td>视觉编码器大小固定不随 LLM 缩放、对齐有天花板</td><td>训练成本高、数据需求大、工程复杂</td></tr>
+        <tr><td><strong>趋势</strong></td><td>当前主流</td><td class="em">未来方向 🔥</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>🏗️ 组合式多模态架构（当前主流）</h3>
+    <div class="flow" style="font-size:13px">
+┌─────────────┐     ┌──────────┐     ┌──────────────────────┐
+│ 图像/视频    │     │ Projector│     │  预训练 LLM          │
+│             │──→  │ (MLP)    │──→  │  (Qwen/LLaMA/...)    │──→ 文本输出
+│ Vision      │     │ 映射到    │     │  把视觉token当作     │
+│ Encoder     │     │ LLM空间  │     │  特殊文本token处理    │
+│ (ViT/CLIP)  │     │          │     │                      │
+└─────────────┘     └──────────┘     └──────────────────────┘
+  ↑ 预训练冻结                          ↑ 预训练冻结或微调
+  (CLIP/SigLIP/EVA)                   (解冻全部或仅MoE Expert)</div>
+    <p style="margin-top:12px"><strong>典型训练流程（3阶段）</strong>：</p>
+    <ul>
+      <li><strong>Stage 1 - Projector 预训练</strong>：冻结 Vision Encoder + LLM，只训练 Projector（百万级图文对）</li>
+      <li><strong>Stage 2 - 多模态预训练</strong>：解冻部分/全部参数，在大规模图文数据上训练对齐</li>
+      <li><strong>Stage 3 - 指令微调</strong>：用高质量多模态指令数据做 SFT</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3>🧬 原生多模态架构（前沿方向）</h3>
+    <p><strong>核心区别</strong>：Vision Encoder 不是冻结的外挂，而是<strong>和 LLM 一起从头训练或联合优化</strong>。</p>
+    <div class="flow" style="font-size:13px">
+┌─────────────────────────────────────────────────────────────┐
+│                    统一 Transformer                         │
+│                                                             │
+│  图像 → ViT Encoder ─┐                                     │
+│                      ├─→ 统一序列 → Transformer Layers → 输出│
+│  文本 → Tokenizer ───┘     (视觉token + 文本token混合)      │
+│                                                             │
+│  ⭐ MoE: 视觉专用Expert + 文本专用Expert + 共享Expert        │
+│  ⭐ 端到端联合训练，Vision Encoder 权重也在更新               │
+└─────────────────────────────────────────────────────────────┘</div>
+
+    <div class="highlight ok" style="margin-top:12px">
+      <strong>NaViL 的关键发现（NeurIPS 2025）</strong>：<br>
+      ① 从预训练 LLM 初始化显著加速多模态收敛（优于完全从头训练）<br>
+      ② MoE 架构（视觉专用 + 语言专用 Expert）显著提升性能，不增加推理成本<br>
+      ③ <strong>视觉编码器的最优规模与 LLM 规模成对数线性关系</strong>——应该联合缩放！<br>
+      ④ LLM 扩大持续提升性能，但视觉编码器扩大有递减收益（被 LLM 容量限制）
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>🔑 关键组件详解</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>组件</th><th>作用</th><th>主流选择</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Vision Encoder</strong></td><td>将图像编码为视觉特征向量</td><td>ViT、CLIP ViT-L、SigLIP、EVA-CLIP</td></tr>
+        <tr><td><strong>Projector</strong></td><td>将视觉特征映射到 LLM 的 embedding 空间</td><td>MLP (2层)、Cross-Attention、Perceiver Resampler</td></tr>
+        <tr><td><strong>Visual Tokenizer</strong></td><td>将图像离散化为 token（用于理解+生成统一）</td><td>MoVQGAN、VQGAN、MingTok</td></tr>
+        <tr><td><strong>MoE Expert</strong></td><td>模态专用 Expert 处理异构数据</td><td>视觉 FFN Expert + 文本 FFN Expert + Attention Expert</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>🌐 前沿统一架构：理解+生成一体化</h3>
+    <ul>
+      <li><strong>Transfusion</strong>：在单个 Transformer 中同时处理离散文本 token 和连续图像向量</li>
+      <li><strong>Emu3</strong>：把图像也转成离散 token，所有模态统一做 next-token prediction</li>
+      <li><strong>Janus-Pro (DeepSeek)</strong>：解耦理解和生成的视觉编码（理解用高维语义特征，生成用低维像素码）</li>
+      <li><strong>NaViL</strong>：MoE + 原生端到端训练，支持任意分辨率图片</li>
+    </ul>
+    <div class="highlight">
+      <strong>多模态对齐训练方法</strong>：<br>
+      • <strong>对比学习</strong>（CLIP 范式）：拉近配对图文、推远非配对图文<br>
+      • <strong>生成式预训练</strong>：在图文交替序列上做 Next Token Prediction<br>
+      • <strong>RL 对齐</strong>：MM-RLHF / Vision-R1 / MM-Eureka — 用 GRPO/DPO 提升 VLM 推理能力
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ Tab: 基础设施&成本 ============ -->
+<div class="tab-section" id="tab-infra">
+<div class="section">
+  <div class="section-title">⚙️ 训练基础设施 & 成本分析</div>
+
+  <div class="info-card">
+    <h3>🖥️ GPU 硬件选型（2025-2026）</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>GPU</th><th>显存</th><th>带宽</th><th>算力</th><th>单卡价格</th><th>云租价格</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td><strong>H100 SXM</strong></td><td>80GB HBM3</td><td>3.35 TB/s</td><td>990 TFLOPS (FP8)</td><td>$25-40K</td><td>$2.85-3.90/hr</td><td>主流训练+推理</td></tr>
+        <tr><td><strong>H200 SXM</strong></td><td>141GB HBM3e</td><td>4.8 TB/s</td><td>990 TFLOPS (FP8)</td><td>$30-40K</td><td>$2.15-6.00/hr</td><td>大模型训练·1.9x性能</td></tr>
+        <tr><td><strong>B200/B300</strong></td><td>192-288GB HBM3e</td><td>8+ TB/s</td><td>4,500+ TFLOPS (FP4)</td><td>$40-60K</td><td>待定</td><td>下一代前沿训练</td></tr>
+        <tr><td><strong>A100 80GB</strong></td><td>80GB HBM2e</td><td>2.0 TB/s</td><td>624 TFLOPS (FP8)</td><td>$15-17K</td><td>$1.50-2.75/hr</td><td>性价比训练</td></tr>
+        <tr><td><strong>AMD MI300X</strong></td><td>192GB HBM3</td><td>5.3 TB/s</td><td>—</td><td>H100的60%</td><td>—</td><td>高显存需求</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>🏗️ 集群网络架构</h3>
+    <ul>
+      <li><strong>节点内互联</strong>：NVLink/NVSwitch — 8卡 H100 全互联 900 GB/s</li>
+      <li><strong>节点间互联</strong>：InfiniBand HDR/NDR — 400-800 Gbps</li>
+      <li><strong>存储</strong>：GPFS/Lustre 并行文件系统 — 100+ GB/s 聚合带宽</li>
+      <li><strong>规模</strong>：千卡训练集群 = 100-500 个节点 × 8 GPU/节点</li>
+    </ul>
+    <div class="highlight warn">
+      <strong>故障率</strong>：千卡集群训练几十天，单卡 MTBF 约几千小时 → <strong>平均每天 1-3 张卡故障</strong><br>
+      必须有自动故障检测、热替换、checkpoint 恢复机制。
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>💰 前沿模型训练成本（已公开数据）</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>模型</th><th>纯计算成本</th><th>GPU 配置</th><th>训练时长</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GPT-4</strong></td><td class="hot">$78M-$100M+</td><td>~25,000× H100 (估)</td><td>~3-6个月</td><td>Stanford AI Index 报告</td></tr>
+        <tr><td><strong>Gemini Ultra 1.0</strong></td><td class="hot">$192M</td><td>TPU v5p 集群</td><td>数月</td><td>历史最贵单模型</td></tr>
+        <tr><td><strong>DeepSeek-V3</strong></td><td class="ok">$5.6M</td><td>2,048× H800</td><td>~2个月</td><td>FP8 优化极致压缩成本</td></tr>
+        <tr><td><strong>LLaMA-3.1 405B</strong></td><td class="warn">$30-60M (估)</td><td>16,000× H100</td><td>~54天</td><td>15T+ tokens</td></tr>
+        <tr><td><strong>Claude 3/3.5</strong></td><td class="warn">数千万美金</td><td>未公开</td><td>未公开</td><td>Dario Amodei 表述</td></tr>
+      </tbody>
+    </table></div>
+    <div class="highlight hot">
+      <strong>趋势</strong>：前沿模型训练成本预计 2025-2026 年达到 <strong>$5-10B</strong>，3 年内可能到 <strong>$10-100B</strong>。<br>
+      但 <strong>DeepSeek-V3 证明了通过工程优化（FP8、MoE、Muon优化器），成本可以降低 10-20 倍</strong>。
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>📊 关键效率指标</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>指标</th><th>含义</th><th>典型值</th><th>优化目标</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MFU</strong></td><td>Model FLOPs Utilization — GPU 算力实际利用率</td><td>30-55%</td><td class="em">越高越好，&gt;50% 算优秀</td></tr>
+        <tr><td><strong>Tokens/sec/GPU</strong></td><td>单卡每秒处理 token 数</td><td>2K-50K</td><td>越高越好</td></tr>
+        <tr><td><strong>GPU-hours</strong></td><td>总 GPU 小时数 = 卡数 × 训练小时</td><td>5K-数百万</td><td>越少越好</td></tr>
+        <tr><td><strong>MTBF</strong></td><td>Mean Time Between Failures — GPU 故障间隔</td><td>~数千小时/卡</td><td>越长越好</td></tr>
+        <tr><td><strong>Checkpoint 频率</strong></td><td>保存模型快照间隔</td><td>每 1-2 小时</td><td>平衡安全性和开销</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>🔧 关键训练优化技术</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>技术</th><th>效果</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>混合精度 (BF16/FP8)</strong></td><td class="ok">2-4x 吞吐提升</td><td>DeepSeek-V3 首次大规模使用 FP8 训练</td></tr>
+        <tr><td><strong>FlashAttention-2/3</strong></td><td class="ok">2-3x Attention 加速</td><td>减少显存访问，IO-aware 算法</td></tr>
+        <tr><td><strong>ZeRO-3 + Offload</strong></td><td>大幅降低显存占用</td><td>优化器/梯度/参数分片 + CPU Offload</td></tr>
+        <tr><td><strong>梯度累积</strong></td><td>支持超大 Batch Size</td><td>多个 micro-batch 累积后再更新</td></tr>
+        <tr><td><strong>通信-计算重叠</strong></td><td class="ok">15-30% 训练加速</td><td>All-Reduce 与前向/反向计算并行</td></tr>
+        <tr><td><strong>MoE (Mixture of Experts)</strong></td><td class="em">同参数量 3x 效果提升</td><td>每次只激活部分参数，省算力不省参数</td></tr>
+        <tr><td><strong>Muon 优化器</strong></td><td>训练更稳定</td><td>Kimi K2/DeepSeek 使用，优于 AdamW</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="info-card">
+    <h3>💵 推理成本（2026 年现状）</h3>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>模型</th><th>每百万 Token 成本</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GPT-4 (OpenAI)</strong></td><td class="hot">$2.50 输入 / $10 输出</td><td>前沿闭源</td></tr>
+        <tr><td><strong>GPT-4o mini</strong></td><td>$0.40 / $1.60</td><td>性价比之选</td></tr>
+        <tr><td><strong>DeepSeek-V3</strong></td><td class="ok">$0.40</td><td>GPT-4 级性能 1/25 价格</td></tr>
+        <tr><td><strong>Llama 3.1 70B (自建)</strong></td><td class="ok">$0.80</td><td>开源自建</td></tr>
+        <tr><td><strong>Llama 3.2 3B (API)</strong></td><td class="ok">$0.06</td><td>最便宜</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:8px;font-size:13px;color:var(--t2)">
+      推理成本 <strong>年降 10 倍</strong>：2021年 GPT-3 级别 $60/百万token → 2026年 $0.06/百万token，降了 <strong>1000 倍</strong>。
+    </p>
+  </div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:document.querySelector('.tabs').offsetTop-20,behavior:'smooth'});
+}
+window.addEventListener('scroll',()=>{
+  document.querySelector('.back-top').style.display=window.scrollY>400?'block':'none';
+});
+</script>
+</body>
+</html>
