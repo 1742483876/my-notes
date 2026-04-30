@@ -169,16 +169,11 @@
 <!-- Tab导航 -->
 <nav class="tab-nav" id="tabNav">
   <div class="tab-nav-inner">
-    <button class="tab-btn active" data-tab="route" onclick="switchTab('route')">🗺️ 行程路线</button>
-    <button class="tab-btn" data-tab="flights" onclick="switchTab('flights')">✈️ 机票</button>
-    <button class="tab-btn" data-tab="hotel" onclick="switchTab('hotel')">🏨 住宿</button>
-    <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">📋 行程详情</button>
-    <button class="tab-btn" data-tab="activities" onclick="switchTab('activities')">🎯 活动</button>
-    <button class="tab-btn" data-tab="diving" onclick="switchTab('diving')">🤿 潜水</button>
-    <button class="tab-btn" data-tab="return" onclick="switchTab('return')">🏠 回程</button>
-    <button class="tab-btn" data-tab="budget" onclick="switchTab('budget')">💰 预算</button>
-    <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')">🌤️ 天气</button>
-    <button class="tab-btn" data-tab="info" onclick="switchTab('info')">📝 实用</button>
+    <button class="tab-btn active" data-tab="route" onclick="switchTab('route')">🗺️ 行程总览</button>
+    <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">📋 每日详情</button>
+    <button class="tab-btn" data-tab="transport" onclick="switchTab('transport')">✈️ 交通住宿</button>
+    <button class="tab-btn" data-tab="activities" onclick="switchTab('activities')">🎯 活动攻略</button>
+    <button class="tab-btn" data-tab="info" onclick="switchTab('info')">📝 实用信息</button>
     <button class="tab-btn" data-tab="checklist" onclick="switchTab('checklist')">✅ 清单</button>
   </div>
 </nav>
@@ -502,8 +497,8 @@
 </div>
 </div><!-- /tab-route -->
 
-<!-- Tab: 机票 -->
-<div class="tab-section" id="tab-flights">
+<!-- Tab: 交通住宿 -->
+<div class="tab-section" id="tab-transport">
 
 <!-- ✈️ 已确定的机票 -->
 <div class="section">
@@ -557,12 +552,10 @@
     <div class="info-card"><div class="label">🚆 深圳→香港机场</div><div class="val" style="color:var(--sea);font-size:14px;">高铁到西九龙 + 机场快线</div><div class="note">深圳北/福田→西九龙(20min, ¥75)<br>九龙→机场(24min, HK$115≈¥105)<br>或 蛇口港→香港机场(船, 30min, ¥260)</div></div>
   </div>
 </div>
-</div><!-- /tab-flights -->
 
-<!-- Tab: 住宿 -->
-<div class="tab-section" id="tab-hotel">
+<!-- 住宿部分 -->
 <div class="section">
-  <div class="section-title">🏨 住宿推荐 · 住5晚（锡基霍尔1晚+墨宝1晚+薄荷岛2晚）</div>
+  <div class="section-title">🏨 住宿推荐 · 住4晚（墨宝1晚+锡基霍尔1晚+薄荷岛2晚）</div>
 
   <div class="tip sea">
     <h4>📍 住宿区域 · 三地分住</h4>
@@ -790,7 +783,61 @@
     <p style="margin-top:8px;"><strong>⚠️ 五一期间是旺季，建议现在就订！选免费取消的先锁房。</strong></p>
   </div>
 </div>
-</div><!-- /tab-hotel -->
+
+<!-- 回程方案部分 -->
+<div class="section">
+  <div class="section-title">🏠 回程方案 · 香港机场→深圳宝安</div>
+
+  <div class="tip hot">
+    <h4>⏰ 时间背景</h4>
+    <p>5/6 <strong>23:30到达香港机场T1</strong>，入境取行李预计 <strong>00:00-00:30</strong>。<br>
+    此时已是凌晨，高铁和大部分跨境巴士已停运。</p>
+  </div>
+
+  <div class="route-card best">
+    <h5>🅰️ 24h跨境巴士经皇岗口岸 <span class="badge">⭐ 推荐</span></h5>
+    <div class="steps">
+      <strong>00:30</strong> T1 → <strong>N21夜间巴士</strong>（HK$23）→ <strong>01:30</strong> 旺角警署站 → <strong>全日通24h跨境巴士</strong>（HK$45）→ <strong>02:20</strong> 皇岗口岸 → 打车 → <strong>03:10</strong> 🏠到家
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--palm);">≈ ¥115</span></div>
+      <div class="time">⏱️ 约2.5h</div>
+    </div>
+  </div>
+
+  <div class="route-card">
+    <h5>🅱️ 机场过夜 + 早班高铁（最舒适）</h5>
+    <div class="steps">
+      <strong>00:30</strong> 机场休息 → <strong>05:30</strong> 机场快线→九龙（HK$115）→ <strong>07:01</strong> 首班高铁→深圳北（¥82）→ <strong>08:00</strong> 🏠到家
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--sand);">≈ ¥225</span></div>
+      <div class="time">⏱️ 等到早班 · 不折腾</div>
+    </div>
+  </div>
+
+  <div class="route-card">
+    <h5>🅳 7座中港车直达（最省事）</h5>
+    <div class="steps">
+      <strong>00:30</strong> 预约中港车在T1等候 → 走皇岗24h通关 → <strong>01:30~02:00</strong> 🏠直达门口
+    </div>
+    <div class="bottom">
+      <div><span class="cost" style="color:var(--coral);">≈ ¥400-500</span></div>
+      <div class="time">⏱️ 最快1-1.5h · 💎</div>
+    </div>
+  </div>
+
+  <div class="tip green">
+    <h4>💡 推荐策略</h4>
+    <ul>
+      <li><strong>首选方案A</strong>：最经济，深夜唯一确定有车</li>
+      <li>不差钱 → <strong>方案D</strong>（中港车）最省心</li>
+      <li>不赶时间 → <strong>方案B</strong>（机场过夜+早班高铁）最舒服</li>
+      <li>⚠️ 凌晨只能走<strong>皇岗口岸</strong>（24h），深圳湾6:30才开</li>
+    </ul>
+  </div>
+</div>
+</div><!-- /tab-transport -->
 
 <!-- Tab: 行程 -->
 <div class="tab-section" id="tab-itinerary">
@@ -1259,10 +1306,8 @@
     </ul>
   </div>
 </div>
-</div><!-- /tab-activities -->
 
-<!-- Tab: 潜水 -->
-<div class="tab-section" id="tab-diving">
+<!-- 潜水考证参考 -->
 <div class="section">
   <div class="section-title">🤿 PADI OW 潜水考证指南（下次来专门考！）</div>
 
@@ -1305,103 +1350,10 @@
     </div>
   </div>
 </div>
-</div><!-- /tab-diving -->
+</div><!-- /tab-activities -->
 
-<!-- Tab: 回程 -->
-<div class="tab-section" id="tab-return">
-<div class="section">
-  <div class="section-title">🏠 香港机场 → 深圳宝安企鹅公寓 · 回家方案</div>
-
-  <div class="tip hot">
-    <h4>⏰ 时间背景</h4>
-    <p>5/6 <strong>23:30到达香港机场T1</strong>，入境取行李预计 <strong>00:00-00:30</strong>。<br>
-    此时已是凌晨，高铁和大部分跨境巴士已停运。<br>
-    目的地：<strong>深圳市宝安区新安街道企鹅公寓</strong></p>
-  </div>
-
-  <!-- 方案1：推荐 -->
-  <div class="route-card best">
-    <h5>🅰️ 24h跨境巴士经皇岗口岸 <span class="badge">⭐ 推荐！深夜唯一方案</span></h5>
-    <div class="steps">
-      <strong>00:30</strong> 香港机场T1 → 乘坐 <strong>N21夜间巴士</strong>（00:20发车，每20min一班）<br>
-      &nbsp;&nbsp;&nbsp;· 票价 HK$23（约¥21），从机场地面交通中心上车<br>
-      <strong>01:30</strong> 约25站后在 <strong>旺角警署站</strong> 下车<br>
-      <strong>01:35</strong> 步行至 <strong>太子砵兰街364号</strong>（旺角维景酒店对面），乘坐 <strong>全日通24h跨境巴士</strong><br>
-      &nbsp;&nbsp;&nbsp;· <strong>旺角线→皇岗口岸</strong>，深夜每20-30min一班，票价 HK$45（约¥40）<br>
-      <strong>02:20</strong> 到达 <strong>皇岗口岸</strong>（24小时通关），过关入境深圳<br>
-      <strong>02:40</strong> 皇岗口岸深圳侧 → 打车/网约车到<strong>宝安新安企鹅公寓</strong><br>
-      &nbsp;&nbsp;&nbsp;· 皇岗→宝安新安约 <strong>25-30分钟</strong>，打车约 <strong>¥50-60</strong><br>
-      <strong>03:10</strong> 🏠 到家！洗澡睡觉 💤
-    </div>
-    <div class="bottom">
-      <div><span class="cost" style="color:var(--palm);">≈ ¥115</span> <span style="font-size:11px;color:var(--text2);">（N21 ¥21 + 跨境巴 ¥40 + 打车 ¥55）</span></div>
-      <div class="time">⏱️ 全程约2.5h</div>
-    </div>
-  </div>
-
-  <!-- 方案2 -->
-  <div class="route-card">
-    <h5>🅱️ 香港机场跨境巴士直达皇岗（如赶上末班）</h5>
-    <div class="steps">
-      <strong>00:30</strong> 香港机场T1内地交通服务中心 → 查看是否有 <strong>中旅/环岛跨境巴士</strong> 最晚班次<br>
-      &nbsp;&nbsp;&nbsp;· 正常末班约22:00，五一期间可能延长运营，到了机场碰碰运气<br>
-      &nbsp;&nbsp;&nbsp;· 如有班次：HK$130（约¥120），50分钟直达皇岗口岸<br>
-      <strong>01:30</strong> 皇岗口岸过关 → 打车到宝安新安企鹅公寓<br>
-      <strong>02:00</strong> 🏠 到家
-    </div>
-    <div class="bottom">
-      <div><span class="cost" style="color:var(--sky);">≈ ¥175</span> <span style="font-size:11px;color:var(--text2);">（跨境巴 ¥120 + 打车 ¥55）</span></div>
-      <div class="time">⏱️ 全程约1.5h · ⚠️ 不确定有无班次</div>
-    </div>
-  </div>
-
-  <!-- 方案3 -->
-  <div class="route-card">
-    <h5>🅲 机场过夜 + 早班高铁回深圳（最舒适）</h5>
-    <div class="steps">
-      <strong>00:30</strong> 香港机场T1 → 找个舒适位置休息（有付费贵宾室约HK$200/3h）<br>
-      &nbsp;&nbsp;&nbsp;· 或者机场星巴克/麦当劳坐到天亮<br>
-      <strong>05:30</strong> 乘坐 <strong>机场快线</strong> 到九龙站（24min, HK$115≈¥105）<br>
-      <strong>06:00</strong> 步行到 <strong>西九龙高铁站</strong><br>
-      <strong>07:01</strong> 坐 <strong>首班高铁</strong> → <strong>深圳北站</strong>（18min, ¥82）<br>
-      <strong>07:20</strong> 深圳北 → 地铁5号线到<strong>宝安中心</strong>或打车（约¥30-40）<br>
-      <strong>08:00</strong> 🏠 到家！正好睡个回笼觉
-    </div>
-    <div class="bottom">
-      <div><span class="cost" style="color:var(--sand);">≈ ¥225</span> <span style="font-size:11px;color:var(--text2);">（机场快线 ¥105 + 高铁 ¥82 + 打车 ¥40）</span></div>
-      <div class="time">⏱️ 凌晨等候+早班 · 💤 最不折腾但要等</div>
-    </div>
-  </div>
-
-  <!-- 方案4 -->
-  <div class="route-card">
-    <h5>🅳 直接打7座中港车（最省事·土豪方案）</h5>
-    <div class="steps">
-      <strong>00:30</strong> 香港机场T1出来 → 提前预约好的<strong>中港车</strong>已在等候<br>
-      &nbsp;&nbsp;&nbsp;· 7座商务车，走皇岗口岸24h通关，<strong>无需下车过关</strong><br>
-      &nbsp;&nbsp;&nbsp;· 直送到宝安企鹅公寓门口<br>
-      <strong>01:30~02:00</strong> 🏠 到家！全程躺着
-    </div>
-    <div class="bottom">
-      <div><span class="cost" style="color:var(--coral);">≈ ¥400-500</span> <span style="font-size:11px;color:var(--text2);">（含过关·直达门口）</span></div>
-      <div class="time">⏱️ 最快1-1.5h · 💎 VIP体验</div>
-    </div>
-  </div>
-
-  <div class="tip green">
-    <h4>💡 推荐策略</h4>
-    <ul>
-      <li><strong>首选方案A</strong>（N21+全日通）：最经济，深夜唯一确定有车的方案，凌晨3点到家</li>
-      <li>如果不差钱 → <strong>方案D</strong>（中港车）最省心，提前微信约好司机</li>
-      <li>如果不赶时间 → <strong>方案C</strong>（机场过夜+早班高铁）最舒服</li>
-      <li>⚠️ 注意：<strong>深圳湾口岸不是24h的</strong>（6:30-24:00），凌晨只能走<strong>皇岗口岸</strong></li>
-    </ul>
-  </div>
-</div>
-</div><!-- /tab-return -->
-
-<!-- Tab: 预算 -->
-<div class="tab-section" id="tab-budget">
+<!-- Tab: 实用信息（预算+天气+实用） -->
+<div class="tab-section" id="tab-info">
 <div class="section">
   <div class="section-title">💰 预算明细 · 两人出行版</div>
 
@@ -1484,10 +1436,8 @@
     </div>
   </div>
 </div>
-</div><!-- /tab-budget -->
 
-<!-- Tab: 天气 -->
-<div class="tab-section" id="tab-weather">
+<!-- 天气部分 -->
 <div class="section">
   <div class="section-title">🌤️ 五一期间天气预报</div>
 
@@ -1549,10 +1499,8 @@
     </ul>
   </div>
 </div>
-</div><!-- /tab-weather -->
 
-<!-- Tab: 实用信息 -->
-<div class="tab-section" id="tab-info">
+<!-- 实用信息部分 -->
 <div class="section">
   <div class="section-title">📝 实用信息</div>
 
@@ -1919,7 +1867,7 @@
 </div><!-- /tab-checklist -->
 
 <div class="footer">
-<p>🏝️ 五一菲律宾跳岛攻略 v24 · 更新时间：2026-04-30 · 终极版：墨宝+🐋鲸鲨+锡基霍尔+薄荷岛三岛跳岛 · 两人出行均摊版</p>
+<p>🏝️ 五一菲律宾跳岛攻略 v26 · 更新时间：2026-05-01 · 终极版：墨宝+🐋鲸鲨+锡基霍尔+薄荷岛三岛跳岛 · 两人出行均摊版</p>
   <p style="margin-top:4px;">去程 UO516 ¥955 + 回程 UO535 ¥515 = <strong>往返仅¥1,470</strong> · ✅ 已出票</p>
 </div>
 
@@ -1948,9 +1896,11 @@ window.addEventListener('scroll', () => {
   scrollBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
 });
 
-// 从URL hash恢复tab
+// 从URL hash恢复tab（含旧Tab兼容映射）
 window.addEventListener('DOMContentLoaded', () => {
-  const hash = location.hash.replace('#','');
+  const hashMap = {flights:'transport',hotel:'transport',return:'transport',diving:'activities',budget:'info',weather:'info'};
+  let hash = location.hash.replace('#','');
+  if (hashMap[hash]) hash = hashMap[hash];
   if (hash && document.getElementById('tab-' + hash)) {
     switchTab(hash);
   }
