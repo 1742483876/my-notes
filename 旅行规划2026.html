@@ -63,6 +63,7 @@
   .plan-btn.active-a { border-color: #48bb78; color: #48bb78; background: rgba(72,187,120,0.1); }
   .plan-btn.active-b { border-color: #f6ad55; color: #f6ad55; background: rgba(246,173,85,0.1); }
   .plan-btn.active-c { border-color: #38b2ac; color: #38b2ac; background: rgba(56,178,172,0.1); }
+  .plan-btn.active-d { border-color: #e53e3e; color: #e53e3e; background: rgba(229,62,62,0.1); }
   .plan-detail { display: none; }
   .plan-detail.active { display: block; }
 
@@ -748,6 +749,7 @@
       <div class="plan-btn active-a" onclick="switchPlan('shiyi','a')">🍁 方案A<br>日本赏枫</div>
       <div class="plan-btn" onclick="switchPlan('shiyi','b')">🏝️ 方案B<br>巴厘岛度假</div>
       <div class="plan-btn" onclick="switchPlan('shiyi','c')">🐠 方案C<br>马尔代夫</div>
+      <div class="plan-btn" onclick="switchPlan('shiyi','d')">🇲🇾 方案D<br>马来西亚</div>
     </div>
 
     <!-- ========== 十一方案A: 日本赏枫 ========== -->
@@ -1356,7 +1358,462 @@
       </div>
     </div>
 
-  </div>
+    <!-- ========== 十一方案D: 马来西亚 ========== -->
+    <div id="shiyi-plan-d" class="plan-detail">
+
+      <div class="plan-overview">
+        <h3>🇲🇾 马来西亚 7天6晚深度游</h3>
+        <div class="subtitle">吉隆坡 · 马六甲 · 兰卡威 · 美食天堂 · 多元文化</div>
+        <div class="pros-row">
+          <span class="pro-tag green">✅ 免签30天（至2026年底）</span>
+          <span class="pro-tag blue">✅ 深圳直飞4h·机票¥1000起</span>
+          <span class="pro-tag yellow">✅ 物价友好·人均¥4000-6000</span>
+          <span class="pro-tag pink">✅ 华人占比高·沟通零障碍</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-item">📅 <strong>7天6晚</strong></span>
+          <span class="meta-item">✈️ <strong>深圳→吉隆坡</strong></span>
+          <span class="meta-item">💰 <strong>人均¥4,000-6,000</strong></span>
+        </div>
+      </div>
+
+      <!-- 最佳季节 -->
+      <div class="spot-card">
+        <h4>📅 最佳旅行季节</h4>
+        <p>
+          🏆 <strong>5-7月</strong>（西马最佳）：降雨少，天气干燥舒适，是西马（吉隆坡/马六甲/槟城/兰卡威）的黄金季<br>
+          ⭐ <strong>十一（10月初）</strong>：西马秋季，气温27°C，偶有阵雨但不影响游玩，属于<strong>平季，性价比高</strong><br>
+          🌊 <strong>3-10月</strong>（东马最佳）：沙巴/仙本那海水最清澈，潜水能见度最高<br>
+          🎄 <strong>12-2月</strong>：雨季但商场圣诞+新年档期热闹；春节唐人街超有氛围<br>
+          ⚠️ <strong>最贵时段</strong>：春节、暑假7-8月、圣诞新年
+        </p>
+      </div>
+
+      <div class="weather-card">
+        <h4>🌤️ 马来西亚10月天气</h4>
+        <div class="weather-row">
+          <div class="weather-item"><div class="w-icon">🌡️</div><div class="w-label">气温</div><div class="w-value">25-31°C</div></div>
+          <div class="weather-item"><div class="w-icon">🌧️</div><div class="w-label">降雨</div><div class="w-value">阵雨渐多</div></div>
+          <div class="weather-item"><div class="w-icon">💧</div><div class="w-label">湿度</div><div class="w-value">70-80%</div></div>
+          <div class="weather-item"><div class="w-icon">💰</div><div class="w-label">价位</div><div class="w-value">平季实惠</div></div>
+        </div>
+      </div>
+
+      <!-- 推荐目的地 -->
+      <div class="spot-card">
+        <h4>🗺️ 推荐目的地 & 选城指南</h4>
+        <p>
+          <strong>🏙️ 吉隆坡（2天）</strong>—— 必去！双子塔、黑风洞、阿罗街夜市、茨厂街<br>
+          多元文化碰撞的首都，现代与传统完美融合，华人美食天堂<br><br>
+          <strong>🏛️ 马六甲（1天）</strong>—— 世界遗产古城<br>
+          荷兰红屋、鸡场街夜市、古堡遗址，感受600年殖民历史交融<br><br>
+          <strong>🏖️ 兰卡威（3天）</strong>—— 免税海岛天堂 ⭐最推荐！<br>
+          天空之桥、跳岛游、红树林探险、珍南海滩日落，全岛免税购物<br><br>
+          <strong>🍜 槟城（2-3天·备选）</strong>—— 亚洲美食之都<br>
+          乔治市壁画、升旗山、亚参叻沙、炒粿条，联合国美食遗产<br><br>
+          <strong>🐠 沙巴/仙本那（3-4天·备选）</strong>—— 潜水圣地<br>
+          京那巴鲁山、海岛浮潜、世界级潜点，东马自然奇观
+        </p>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&h=400&fit=crop&q=80" alt="吉隆坡" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 1</span>
+            <div class="day-banner-title">深圳 → 吉隆坡</div>
+            <div class="day-banner-sub">抵达·探索多元首都</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">✈️ 深圳 → 吉隆坡（亚航直飞4h）</div>
+              <div class="tl-desc">
+                亚航深圳直飞吉隆坡，约4小时，往返含税¥1,000-1,500<br>
+                落地KLIA2 → 机场快线KLIA Ekspres（RM55·30min）或Grab到市区（RM80-100）
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🏨 入住武吉免登/KLCC区域</div>
+              <div class="tl-desc">推荐住武吉免登（Bukit Bintang）或KLCC附近，交通方便，周边餐饮购物丰富，人均¥150-250/晚</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">🍗 阿罗街夜市（Jalan Alor）🔥</div>
+              <div class="tl-desc">
+                吉隆坡最著名的美食街！必吃：<br>
+                🔹 黄亚华烤鸡翅（RM8/对）<br>
+                🔹 沙嗲烤串（RM16/10串）<br>
+                🔹 炒粿条 + 福建面 + 椰浆饭<br>
+                💰 人均 RM30-50（≈¥50-80）
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1508264443919-15a31e1d9c2a?w=800&h=400&fit=crop&q=80" alt="双子塔" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-blue">DAY 2</span>
+            <div class="day-banner-title">吉隆坡经典一日游</div>
+            <div class="day-banner-sub">双子塔·黑风洞·茨厂街</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🕌 黑风洞（Batu Caves）🔥</div>
+              <div class="tl-desc">
+                272级彩色台阶+印度教石窟寺庙，免门票！<br>
+                Grab从市区RM15-20（15min），或坐KTM火车到Batu Caves站<br>
+                ⚠️ 穿长裤/过膝裙（宗教场所），注意猴子抢食
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">中午</div>
+              <div class="tl-title">🍜 茨厂街（Petaling Street）</div>
+              <div class="tl-desc">
+                吉隆坡唐人街！福建面、肉骨茶、猪肠粉、冷饮，边吃边逛<br>
+                附近打卡：独立广场 + 占美清真寺 + 中央市场
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🏙️ 双子塔 KLCC + 城中城公园</div>
+              <div class="tl-desc">
+                外观免费拍照（标志性打卡！），登塔门票RM127/人<br>
+                KLCC公园免费，有音乐喷泉（19:00/21:00），椰子树下休息超惬意<br>
+                Suria KLCC商场：逛街+下午茶
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">🌃 吉隆坡塔 + 夜景</div>
+              <div class="tl-desc">
+                吉隆坡塔观景台RM127/人，360°旋转餐厅可用晚餐（RM118/人含自助）<br>
+                或去十号胡同（Lot 10 Hutong）吃地道华人美食，人均RM30-50
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800&h=400&fit=crop&q=80" alt="马六甲" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-green">DAY 3</span>
+            <div class="day-banner-title">马六甲世界遗产一日游</div>
+            <div class="day-banner-sub">荷兰红屋·鸡场街·600年古城</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">早上</div>
+              <div class="tl-title">🚌 吉隆坡 → 马六甲（巴士2h）</div>
+              <div class="tl-desc">
+                TBS车站坐大巴到马六甲Melaka Sentral，RM15-20（≈¥25-30），约2小时<br>
+                💡 提前在12Go或TBS官网订票，班次密集每15-30min一班
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🏛️ 荷兰红屋 + 圣保罗教堂 + 古城门</div>
+              <div class="tl-desc">
+                荷兰红屋（免费外观，博物馆RM10）→ 圣保罗山（免费）→ 圣地亚哥古城门<br>
+                一路步行，感受葡萄牙→荷兰→英国殖民历史的叠加
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🍗 鸡场街（Jonker Street）🔥</div>
+              <div class="tl-desc">
+                华人老街！娘惹菜+鸡粒饭+榴莲泡芙+椰子冰沙<br>
+                必吃：和记鸡粒饭（RM8）、Klebang椰子冰沙（RM5）<br>
+                马六甲河游船（RM30/人），两岸壁画超美
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🌅 马六甲海峡清真寺日落</div>
+              <div class="tl-desc">
+                建在海上的清真寺，日落时金光洒在水面上超美！<br>
+                Grab从鸡场街过去RM8-10（10min），看完日落坐巴士回吉隆坡
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 4 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1609946860441-a51ffcf22208?w=800&h=400&fit=crop&q=80" alt="兰卡威" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-purple">DAY 4</span>
+            <div class="day-banner-title">飞兰卡威 · 免税海岛</div>
+            <div class="day-banner-sub">天空之桥·东方村·珍南海滩日落</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">✈️ 吉隆坡 → 兰卡威（飞机1h）</div>
+              <div class="tl-desc">
+                亚航内航KUL→LGK，早鸟RM80-200（≈¥120-300），约1小时<br>
+                到达后租车（RM120-180/天）或Grab，兰卡威公共交通不便，建议租摩托或汽车
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🌉 天空之桥 + 东方村缆车 🔥</div>
+              <div class="tl-desc">
+                兰卡威地标！缆车+天空之桥门票RM85/人<br>
+                660米高空悬挂式天桥，360°俯瞰安达曼海和群岛<br>
+                东方村可逛免税店，巧克力和酒水超便宜
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">傍晚-晚上</div>
+              <div class="tl-title">🌅 珍南海滩日落 + 免税购物</div>
+              <div class="tl-desc">
+                兰卡威最热闹的海滩，看日落+海边酒吧<br>
+                全岛免税：巧克力、酒、烟、化妆品比市区便宜20-40%<br>
+                推荐 Coco Valley免税店、The Zon免税店
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 5 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1500395235658-f87dff62cbf3?w=800&h=400&fit=crop&q=80" alt="跳岛游" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 5</span>
+            <div class="day-banner-title">兰卡威跳岛游 + 水上活动</div>
+            <div class="day-banner-sub">湿米岛·孕妇岛·浮潜·皮划艇</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🏝️ 跳岛游（Island Hopping）🔥</div>
+              <div class="tl-desc">
+                兰卡威必玩！半天跳3-4个岛，RM40-60/人（≈¥60-90）<br>
+                🔹 湿米岛（Pulau Beras Basah）—— 纯白沙滩<br>
+                🔹 孕妇岛（Pulau Dayang Bunting）—— 淡水湖游泳<br>
+                🔹 狮子岛 —— 喂老鹰（船上观赏）<br>
+                💡 码头在Kuah镇或珍南海滩报团
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🌿 红树林生态游（Mangrove Tour）</div>
+              <div class="tl-desc">
+                皮划艇穿越红树林+蝙蝠洞+喂老鹰+鳄鱼观赏<br>
+                半天行程RM120-180/人（≈¥180-270），含午餐<br>
+                或选择：浮潜 / 水上摩托 / 滑翔伞
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">🦞 海鲜大餐！</div>
+              <div class="tl-desc">
+                推荐 Wonderland Food Store / Orkid Ria 海鲜餐厅<br>
+                老虎虾+奶油螃蟹+烧鱿鱼，两人RM100-150（≈¥150-225）<br>
+                兰卡威海鲜新鲜又便宜！
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 6 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=800&h=400&fit=crop&q=80" alt="海滩" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-blue">DAY 6</span>
+            <div class="day-banner-title">兰卡威自由日 · 慢享海岛</div>
+            <div class="day-banner-sub">海滩放松·SPA·免税扫货</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🏖️ 丹绒鲁海滩（Tanjung Rhu）</div>
+              <div class="tl-desc">
+                兰卡威最美海滩！人少水清，适合安静发呆<br>
+                或者去黑沙滩（Pantai Pasir Hitam）拍照打卡
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">💆 做SPA + 免税店扫货</div>
+              <div class="tl-desc">
+                传统马来按摩RM80-150/60min（≈¥120-225）<br>
+                扫货清单：巧克力（Beryl's/Cadbury）、红酒、烟、化妆品、手工艺品
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">🌅 最后的海岛日落 + 海边BBQ</div>
+              <div class="tl-desc">海边BBQ自助RM60-80/人，配着日落和啤酒，完美告别兰卡威！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 7 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=800&h=400&fit=crop&q=80" alt="返程" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-green">DAY 7</span>
+            <div class="day-banner-title">兰卡威 → 吉隆坡 → 深圳</div>
+            <div class="day-banner-sub">最后的购物·返程回家</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">✈️ 兰卡威 → 吉隆坡</div>
+              <div class="tl-desc">亚航内航1h返回吉隆坡，如果时间充裕可在KLIA2买伴手礼</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🛍️ 最后一搏购物（可选）</div>
+              <div class="tl-desc">
+                KLIA2有很多免税店和餐厅<br>
+                或中转去市区逛 Pavilion KL / Mid Valley Megamall
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">✈️ 吉隆坡 → 深圳</div>
+              <div class="tl-desc">亚航直飞4h回家！带着满满的回忆和免税巧克力 🍫✈️</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 费用 -->
+      <div class="cost-card">
+        <h3>💰 方案D 费用预估（人均·7天6晚）</h3>
+        <div class="cost-grid">
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">机票（深圳↔吉隆坡往返）</div><div class="value">¥1,000-1,500</div></div>
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">内航（吉隆坡↔兰卡威往返）</div><div class="value">¥200-500</div></div>
+          <div class="cost-item"><span class="icon">🏨</span><div class="label">住宿（6晚·中档酒店）</div><div class="value">¥900-1,500</div></div>
+          <div class="cost-item"><span class="icon">🚗</span><div class="label">交通（Grab+巴士+机场快线）</div><div class="value">¥300-500</div></div>
+          <div class="cost-item"><span class="icon">🍽️</span><div class="label">餐饮（小贩中心+餐厅）</div><div class="value">¥600-1,000</div></div>
+          <div class="cost-item"><span class="icon">🎯</span><div class="label">活动（跳岛+缆车+门票）</div><div class="value">¥400-800</div></div>
+          <div class="cost-item"><span class="icon">🛍️</span><div class="label">购物（免税品+伴手礼）</div><div class="value">¥300-500</div></div>
+          <div class="cost-item"><span class="icon">💵</span><div class="label">杂费（SIM卡+小费等）</div><div class="value">¥100-200</div></div>
+        </div>
+        <div class="cost-total">
+          <div class="label">💰 省钱模式（背包客/小贩中心）</div>
+          <div class="value" style="font-size:16px">人均 ¥3,000 ~ 4,000</div>
+        </div>
+        <div class="cost-total" style="margin-top:8px">
+          <div class="label">⭐ 舒适模式（推荐！中档酒店+正餐）</div>
+          <div class="value" style="font-size:16px">人均 ¥4,000 ~ 6,000</div>
+        </div>
+        <div class="cost-total" style="margin-top:8px">
+          <div class="label">🏆 奢华模式（五星+度假村）</div>
+          <div class="value" style="font-size:16px">人均 ¥8,000 ~ 12,000</div>
+        </div>
+      </div>
+
+      <!-- 美食指南 -->
+      <div class="spot-card">
+        <h4>🍜 马来西亚必吃美食</h4>
+        <p>
+          1️⃣ <strong>椰浆饭（Nasi Lemak）</strong> —— 马来西亚国饭，椰香米饭+参巴辣酱+炸鸡/煎蛋，RM5-15<br>
+          2️⃣ <strong>肉骨茶（Bak Kut Teh）</strong> —— 药材猪骨汤，配油条+茶，华人灵魂美食，RM15-25<br>
+          3️⃣ <strong>炒粿条（Char Kway Teow）</strong> —— 大火镬气，虾+血蛤+豆芽，槟城最正宗，RM8-15<br>
+          4️⃣ <strong>沙嗲（Satay）</strong> —— 烤肉串蘸花生酱，阿罗街10串RM16<br>
+          5️⃣ <strong>叻沙（Laksa）</strong> —— 咖喱椰浆汤面，浓郁鲜辣，RM8-15<br>
+          6️⃣ <strong>拉茶（Teh Tarik）</strong> —— 拉出的奶茶，丝滑浓香，RM3-5<br>
+          7️⃣ <strong>榴莲（Durian）🔥</strong> —— 猫山王RM80-150/kg，马来西亚是榴莲天堂！<br>
+          8️⃣ <strong>鸡粒饭</strong> —— 马六甲特色，米饭搓成球状配白斩鸡，RM8-12
+        </p>
+      </div>
+
+      <!-- 省钱攻略 -->
+      <div class="spot-card">
+        <h4>💡 省钱攻略</h4>
+        <p>
+          1️⃣ <strong>机票</strong>：亚航大促往返¥800-1200可拿下！关注亚航官网0元机票活动，提前2-3月买<br>
+          2️⃣ <strong>吃饭</strong>：去小贩中心（Hawker Centre）和大排档，人均RM15-25搞定一餐，是当地人的吃法<br>
+          3️⃣ <strong>住宿</strong>：吉隆坡中档酒店人均¥100-200/晚，兰卡威度假村淡季¥200-300/晚<br>
+          4️⃣ <strong>交通</strong>：吉隆坡市内靠LRT/MRT（RM2-5），打Grab比出租车便宜且透明<br>
+          5️⃣ <strong>兰卡威免税</strong>：酒水、巧克力、化妆品在兰卡威买最便宜，比机场免税店还划算<br>
+          6️⃣ <strong>汇率</strong>：1 MYR ≈ 1.5-1.6 CNY，马来西亚物价约国内一线城市的60-70%
+        </p>
+      </div>
+
+      <!-- 实用信息 -->
+      <div class="tips-card">
+        <h4>⚠️ 实用信息 & 注意事项</h4>
+        <ul>
+          <li>🛂 <strong>免签30天</strong>：2025年7月起中马正式互免签证，持护照（≥6月有效期）+往返机票即可入境</li>
+          <li>📝 <strong>MDAC必填</strong>：入境前3天内在 <a href="https://imigresen-online.imi.gov.my/mdac/main" target="_blank">马来西亚移民局官网</a> 填写电子入境卡（免费！警惕假网站收费）</li>
+          <li>💵 <strong>资金证明</strong>：随身携带等值1000美元以上（含现金/银行卡/电子钱包），入境可能抽查</li>
+          <li>⏰ <strong>时差</strong>：与中国同一时区，零时差！</li>
+          <li>💰 <strong>货币</strong>：马来西亚令吉（MYR/RM），1 RM ≈ ¥1.5-1.6，到了当地用Grab或换钱所兑换最划算</li>
+          <li>📶 <strong>网络</strong>：机场买Hotlink/Digi SIM卡，7天RM20-35（含流量+通话），推荐Hotlink Tourist Plan</li>
+          <li>🚗 <strong>交通</strong>：Grab打车（马来版滴滴），价格透明不被坑；兰卡威建议租车/摩托</li>
+          <li>☀️ <strong>防晒</strong>：赤道附近紫外线强，SPF50+防晒霜必备</li>
+          <li>🕌 <strong>穿着</strong>：进清真寺需穿长袖长裤（门口有免费借用罩袍）；普通场所随意穿</li>
+          <li>🗣️ <strong>语言</strong>：华人占23%，吉隆坡/马六甲/槟城普通话+粤语很通用，沟通几乎零障碍</li>
+          <li>🔌 <strong>插座</strong>：英标三脚（同香港），需带转换头</li>
+        </ul>
+      </div>
+
+      <div class="visa-card">
+        <h4>🛂 签证信息</h4>
+        <p>🇲🇾 中马已于2025年7月正式签署<strong>互免签证协定</strong>（有效期5年），中国公民持护照可<strong>免签入境马来西亚30天</strong>（每180天累计不超90天）。入境前需在线填写免费的MDAC电子入境卡，携带往返机票、酒店订单和1000美元等值资金证明即可。吉隆坡KLIA支持自助通关闸机，刷护照+人脸识别，通关超快！</p>
+      </div>
+    </div>
 
   <!-- 底部 -->
   <div class="footer">
@@ -1382,13 +1839,14 @@ function switchPlan(holiday, plan) {
   const container = document.getElementById('tab-' + holiday);
   container.querySelectorAll('.plan-detail').forEach(el => el.classList.remove('active'));
   container.querySelectorAll('.plan-btn').forEach(el => {
-    el.classList.remove('active-a', 'active-b', 'active-c');
+    el.classList.remove('active-a', 'active-b', 'active-c', 'active-d');
   });
   document.getElementById(holiday + '-plan-' + plan).classList.add('active');
   const btns = container.querySelectorAll('.plan-btn');
   if (plan === 'a') btns[0].classList.add('active-a');
   else if (plan === 'b') btns[1].classList.add('active-b');
   else if (plan === 'c' && btns[2]) btns[2].classList.add('active-c');
+  else if (plan === 'd' && btns[3]) btns[3].classList.add('active-d');
 }
 </script>
 </body>
