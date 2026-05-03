@@ -62,6 +62,7 @@
   }
   .plan-btn.active-a { border-color: #48bb78; color: #48bb78; background: rgba(72,187,120,0.1); }
   .plan-btn.active-b { border-color: #f6ad55; color: #f6ad55; background: rgba(246,173,85,0.1); }
+  .plan-btn.active-c { border-color: #38b2ac; color: #38b2ac; background: rgba(56,178,172,0.1); }
   .plan-detail { display: none; }
   .plan-detail.active { display: block; }
 
@@ -746,6 +747,7 @@
     <div class="plan-selector">
       <div class="plan-btn active-a" onclick="switchPlan('shiyi','a')">🍁 方案A<br>日本赏枫</div>
       <div class="plan-btn" onclick="switchPlan('shiyi','b')">🏝️ 方案B<br>巴厘岛度假</div>
+      <div class="plan-btn" onclick="switchPlan('shiyi','c')">🐠 方案C<br>马尔代夫</div>
     </div>
 
     <!-- ========== 十一方案A: 日本赏枫 ========== -->
@@ -1072,6 +1074,288 @@
       </div>
     </div>
 
+    <!-- ========== 十一方案C: 马尔代夫 ========== -->
+    <div id="shiyi-plan-c" class="plan-detail">
+
+      <div class="plan-overview">
+        <h3>🐠 马尔代夫海岛度假</h3>
+        <div class="subtitle">水上别墅 · 果冻海 · 浮潜天堂 · 一岛一酒店</div>
+        <div class="pros-row">
+          <span class="pro-tag green">✅ 10月淡季价格低30-50%</span>
+          <span class="pro-tag blue">✅ 落地免签30天</span>
+          <span class="pro-tag yellow">✅ 世界级浮潜/深潜</span>
+          <span class="pro-tag pink">✅ 水上别墅终极浪漫</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-item">📅 <strong>6天5晚</strong></span>
+          <span class="meta-item">✈️ <strong>深圳/香港→马累</strong></span>
+          <span class="meta-item">💰 <strong>¥8,000-20,000</strong></span>
+        </div>
+      </div>
+
+      <!-- 最佳季节 -->
+      <div class="spot-card">
+        <h4>📅 最佳旅行季节</h4>
+        <p>
+          🏆 <strong>旱季 11月-4月</strong>（最佳！）：天气晴朗，海面平静如镜，潜水能见度最高，但价格最贵<br>
+          💰 <strong>雨季 5月-10月</strong>（性价比最高！）：价格比旺季低30-50%，多阵雨但来得快去得快，大部分时间仍晴朗<br>
+          ⭐ <strong>十一出行（10月初）</strong>：属于雨季尾声，天气已在好转，且价格仍为淡季水平——<strong>性价比最佳窗口！</strong><br>
+          ⚠️ <strong>最贵时段</strong>：圣诞+新年（12/22-1/4）、春节，价格翻倍，机票过万
+        </p>
+      </div>
+
+      <div class="weather-card">
+        <h4>🌤️ 马尔代夫10月天气</h4>
+        <div class="weather-row">
+          <div class="weather-item"><div class="w-icon">🌡️</div><div class="w-label">气温</div><div class="w-value">28-31°C</div></div>
+          <div class="weather-item"><div class="w-icon">🌧️</div><div class="w-label">降雨</div><div class="w-value">阵雨为主</div></div>
+          <div class="weather-item"><div class="w-icon">🌊</div><div class="w-label">海温</div><div class="w-value">28°C</div></div>
+          <div class="weather-item"><div class="w-icon">💰</div><div class="w-label">价位</div><div class="w-value">淡季低价</div></div>
+        </div>
+      </div>
+
+      <!-- 选岛指南 -->
+      <div class="spot-card">
+        <h4>🏝️ 选岛指南（一岛一酒店，选岛=选酒店）</h4>
+        <p>
+          <strong>💰 经济型（四星·人均¥8,000-12,000）</strong><br>
+          🔹 <strong>班度士岛 Bandos</strong>：快艇15min上岛，浮潜A级，中文服务，性价比之王<br>
+          🔹 <strong>蓝色美人蕉岛</strong>：环境清幽，适合安静度假，一价全包<br><br>
+          <strong>⭐ 中端推荐（五星·人均¥12,000-18,000）</strong><br>
+          🔸 <strong>中央格兰德岛 Centara Grand</strong>：一价全包（吃喝玩乐全含），水上别墅+浮潜A级，两人¥2.5-3.5万 ⭐最推荐！<br>
+          🔸 <strong>奥静岛 OBLU</strong>：快艇上岛，全包套餐，现代简约风格<br>
+          🔸 <strong>芙拉瓦丽岛</strong>：拖尾沙滩+水下餐厅，出片神器<br><br>
+          <strong>🏆 高端奢华（六星·人均¥18,000-30,000+）</strong><br>
+          🔶 <strong>阿雅达岛 Ayada</strong>：中文管家，蜜月圣地，私人泳池<br>
+          🔶 <strong>索尼娃贾尼岛</strong>：水上滑梯别墅，天文台看星星，极致奢华
+        </p>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&h=400&fit=crop&q=80" alt="马尔代夫" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-pink">DAY 1</span>
+            <div class="day-banner-title">深圳 → 马累 → 上岛</div>
+            <div class="day-banner-sub">10月1日 · 飞向印度洋上的珍珠</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午/下午</div>
+              <div class="tl-title">✈️ 深圳/香港 → 马累</div>
+              <div class="tl-desc">
+                深圳直飞马累约8h（亚航经吉隆坡转机，往返¥2,500-4,000）<br>
+                香港直飞马累约6-7h（大湾区航空/香港航空有直飞，往返¥2,500-5,000）<br>
+                💡 淡季提前2-3月订，往返含税¥2,500-3,500可拿下
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">抵达后</div>
+              <div class="tl-title">🚤 快艇/水飞上岛</div>
+              <div class="tl-desc">
+                快艇岛：马累机场15-45min直达（免费或$80-150/人）<br>
+                水飞岛：水上飞机$300-600/人往返，空中俯瞰环礁超震撼！<br>
+                💡 选快艇岛省钱省时间，水飞岛贵但体验拉满
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">傍晚</div>
+              <div class="tl-title">🏝️ 入住沙滩别墅 + 环岛探索</div>
+              <div class="tl-desc">先入住沙屋，傍晚环岛走一圈（多数岛步行20min即可环岛），找到最美的拍照点和浮潜入水点</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2-3 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=800&h=400&fit=crop&q=80" alt="浮潜" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-blue">DAY 2-3</span>
+            <div class="day-banner-title">沙屋时光 · 浮潜 + 水上运动</div>
+            <div class="day-banner-sub">10月2-3日 · 果冻海里尽情玩</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">早晨</div>
+              <div class="tl-title">🌅 沙滩日出 + 自助早餐</div>
+              <div class="tl-desc">马尔代夫日出约6:00，推开门就是大海！全包岛自助早餐种类超丰富</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">🤿 浮潜/深潜！🔥🔥🔥</div>
+              <div class="tl-desc">
+                🐠 岛屿house reef（岸边下水就能浮潜，免费！）<br>
+                🐢 出海浮潜看海龟、魔鬼鱼、珊瑚花园（$50-80/次）<br>
+                🦈 深潜看鲨鱼墙（$80-150/次，有OW证更棒）<br>
+                💡 你在菲律宾浮潜过，马尔代夫的能见度更高！
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">下午</div>
+              <div class="tl-title">🏄 水上运动 + SPA</div>
+              <div class="tl-desc">
+                皮划艇、桨板SUP、风帆冲浪（全包岛通常免费！）<br>
+                累了做个水疗SPA（$100-200/人·60min）<br>
+                或者就躺在沙滩上发呆，享受什么都不做的奢侈
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">晚上</div>
+              <div class="tl-title">🌙 沙滩烛光晚餐 + 看星星</div>
+              <div class="tl-desc">马尔代夫远离光污染，银河肉眼可见！沙滩躺椅上看星星，幸运的话还能看到荧光海✨</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 4-5 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&h=400&fit=crop&q=80" alt="水上别墅" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-green">DAY 4-5</span>
+            <div class="day-banner-title">升级水上别墅 · 极致体验</div>
+            <div class="day-banner-sub">10月4-5日 · 住在海上的感觉</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">DAY 4</div>
+              <div class="tl-title">🏠 换房！沙屋 → 水上别墅</div>
+              <div class="tl-desc">
+                经典玩法「2沙+2水」：前两晚住沙屋，后两晚升级水屋<br>
+                水屋亮点：玻璃地板看鱼、阳台直接跳下海、私人无边泳池（高端岛）<br>
+                💡 这就是马尔代夫的精髓！
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">DAY 4 下午</div>
+              <div class="tl-title">🐬 出海看海豚</div>
+              <div class="tl-desc">日落时分出海追海豚，成群的海豚在船边跳跃，绝对是highlight！（$60-100/人）</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-time">DAY 5</div>
+              <div class="tl-title">🏖️ 无人沙洲 + 终极放松</div>
+              <div class="tl-desc">
+                参加无人沙洲野餐（$100-200/对），在一片纯白沙滩上享受香槟+美食<br>
+                或者直接在水屋阳台上躺一整天，把脚伸进清澈的海水里<br>
+                🌅 最后一个日落，好好告别这片果冻海
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 6 -->
+      <div class="day-card">
+        <div class="day-banner">
+          <img src="https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&h=400&fit=crop&q=80" alt="返程" loading="lazy">
+          <div class="day-banner-overlay">
+            <span class="day-badge badge-purple">DAY 6</span>
+            <div class="day-banner-title">离岛 → 马累 → 返程</div>
+            <div class="day-banner-sub">10月6日 · 带着蓝色记忆回家</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green"></div>
+              <div class="tl-time">上午</div>
+              <div class="tl-title">📸 最后的水屋时光</div>
+              <div class="tl-desc">早起在水屋拍最后的照片，吃完早餐收拾行李</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot yellow"></div>
+              <div class="tl-time">中午</div>
+              <div class="tl-title">🚤 离岛 → 马累机场</div>
+              <div class="tl-desc">快艇/水飞返回马累。如果航班是晚上的，可以去马累逛逛（苏丹公园、鱼市场、清真寺）</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot red"></div>
+              <div class="tl-time">下午/晚上</div>
+              <div class="tl-title">✈️ 马累 → 深圳/香港</div>
+              <div class="tl-desc">回家！机场免税店可以买椰子油、茶叶、纪念品</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 费用 -->
+      <div class="cost-card">
+        <h3>💰 方案C 费用预估（人均）</h3>
+        <div class="cost-grid">
+          <div class="cost-item"><span class="icon">✈️</span><div class="label">机票（往返含税）</div><div class="value">¥2,500-4,000</div></div>
+          <div class="cost-item"><span class="icon">🏨</span><div class="label">住宿（5晚·2沙+2水+1马累）</div><div class="value">¥4,000-12,000</div></div>
+          <div class="cost-item"><span class="icon">🚤</span><div class="label">上岛交通</div><div class="value">¥500-3,000</div></div>
+          <div class="cost-item"><span class="icon">🤿</span><div class="label">活动（潜水/出海）</div><div class="value">¥500-2,000</div></div>
+          <div class="cost-item"><span class="icon">🍽️</span><div class="label">餐饮（非全包岛）</div><div class="value">¥500-2,000</div></div>
+          <div class="cost-item"><span class="icon">💵</span><div class="label">小费+杂费</div><div class="value">¥300-500</div></div>
+        </div>
+        <div class="cost-total">
+          <div class="label">💰 经济型（四星岛·十一淡季）</div>
+          <div class="value" style="font-size:16px">人均 ¥8,000 ~ 12,000</div>
+        </div>
+        <div class="cost-total" style="margin-top:8px">
+          <div class="label">⭐ 中端推荐（五星全包岛·推荐！）</div>
+          <div class="value" style="font-size:16px">人均 ¥12,000 ~ 18,000</div>
+        </div>
+        <div class="cost-total" style="margin-top:8px">
+          <div class="label">🏆 高端奢华（六星私人岛）</div>
+          <div class="value" style="font-size:16px">人均 ¥18,000 ~ 30,000+</div>
+        </div>
+      </div>
+
+      <!-- 省钱攻略 -->
+      <div class="spot-card">
+        <h4>💡 省钱攻略</h4>
+        <p>
+          1️⃣ <strong>选十一出行（10月）</strong>：淡季尾声，比旺季（12-3月）便宜30-50%<br>
+          2️⃣ <strong>选「一价全包」岛</strong>：餐饮酒水全含，不用额外花钱，总体更划算（推荐中央格兰德岛）<br>
+          3️⃣ <strong>选快艇岛</strong>：水飞往返$500-1000/人，快艇岛省一大笔<br>
+          4️⃣ <strong>提前3-6个月订</strong>：早鸟价通常有15-25%折扣<br>
+          5️⃣ <strong>5-7月最便宜</strong>：如果时间灵活，暑假前（5-6月）是全年最低价
+        </p>
+      </div>
+
+      <!-- 实用信息 -->
+      <div class="tips-card">
+        <h4>⚠️ 实用信息 & 注意事项</h4>
+        <ul>
+          <li>🛂 <strong>免签</strong>：中国护照落地免签30天，只需护照（≥6月有效期）+往返机票+酒店预订单</li>
+          <li>⏰ <strong>时差</strong>：比北京时间慢3小时（北京12:00=马尔代夫9:00）</li>
+          <li>💵 <strong>货币</strong>：美元通用，岛上可刷Visa/Master，建议备$300-500现金（小费用）</li>
+          <li>📶 <strong>网络</strong>：度假村有WiFi，也可在机场买当地SIM卡（Dhiraagu/Ooredoo）</li>
+          <li>🐠 <strong>潜水后飞行</strong>：深潜后至少等18小时才能坐飞机！安排好最后一潜时间</li>
+          <li>☀️ <strong>防晒</strong>：赤道直射，SPF50+必备！浮潜穿水母衣防晒</li>
+          <li>🍺 <strong>酒精</strong>：度假村可饮酒，居民岛禁酒（伊斯兰教国家）</li>
+          <li>👙 <strong>穿着</strong>：度假村随意穿比基尼，居民岛需保守着装</li>
+        </ul>
+      </div>
+
+      <div class="visa-card">
+        <h4>🛂 签证信息</h4>
+        <p>🇲🇻 马尔代夫对中国公民实行<strong>落地免签</strong>，可停留30天。只需持有效护照（6个月以上）、往返机票和酒店预订确认单即可入境。无需提前办理签证，非常方便！</p>
+      </div>
+    </div>
+
   </div>
 
   <!-- 底部 -->
@@ -1098,12 +1382,13 @@ function switchPlan(holiday, plan) {
   const container = document.getElementById('tab-' + holiday);
   container.querySelectorAll('.plan-detail').forEach(el => el.classList.remove('active'));
   container.querySelectorAll('.plan-btn').forEach(el => {
-    el.classList.remove('active-a', 'active-b');
+    el.classList.remove('active-a', 'active-b', 'active-c');
   });
   document.getElementById(holiday + '-plan-' + plan).classList.add('active');
   const btns = container.querySelectorAll('.plan-btn');
   if (plan === 'a') btns[0].classList.add('active-a');
-  else btns[1].classList.add('active-b');
+  else if (plan === 'b') btns[1].classList.add('active-b');
+  else if (plan === 'c' && btns[2]) btns[2].classList.add('active-c');
 }
 </script>
 </body>
