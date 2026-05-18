@@ -1,75 +1,85 @@
 {
-  "date": "2026-05-15",
+  "date": "2026-05-18",
   "stocks": [
     {
-      "code": "603052",
-      "name": "可川科技",
-      "score": 99.62,
-      "strategies": [],
-      "close": 113.47,
-      "chg_1d": -1.66,
-      "analysis": "5日暴涨27%后缩量回调洗盘，强势整理不改多头格局，多头",
-      "sentiment": "bullish",
-      "news": [],
-      "news_fetched_at": "2026-05-15 15:48"
-    },
-    {
-      "code": "300959",
-      "name": "线上线下",
-      "score": 97.15,
+      "code": "688143",
+      "name": "长盈通",
+      "score": 93.91,
       "strategies": [
-        "CORR20",
+        "KSFT2",
         "KMID2"
       ],
-      "close": 166.0,
-      "chg_1d": 10.81,
-      "analysis": "5日飙涨75%连续放量突破，短线极度超买需警惕回调，震荡",
-      "sentiment": "neutral",
-      "news": [],
-      "news_fetched_at": "2026-05-15 15:48"
-    },
-    {
-      "code": "002547",
-      "name": "春兴精工",
-      "score": 94.08,
-      "strategies": [
-        "KSFT2"
-      ],
-      "close": 3.43,
-      "chg_1d": 4.26,
-      "analysis": "低价股放量突破平台，KSFT动量因子共振，偏多",
+      "close": 129.84,
+      "chg_1d": 20.0,
+      "analysis": "5日暴涨81%连续涨停，动量极强但严重超买，追高风险大，多头",
       "sentiment": "bullish",
       "news": [],
-      "news_fetched_at": "2026-05-15 15:48"
+      "news_fetched_at": "2026-05-18 15:36"
     },
     {
-      "code": "002081",
-      "name": "金螳螂",
-      "score": 94.01,
+      "code": "003018",
+      "name": "金富科技",
+      "score": 89.02,
+      "strategies": [
+        "KSFT2",
+        "KMID2"
+      ],
+      "close": 65.05,
+      "chg_1d": 9.99,
+      "analysis": "涨停放量突破，5日涨37%趋势确立，短线多头强势",
+      "sentiment": "bullish",
+      "news": [],
+      "news_fetched_at": "2026-05-18 15:36"
+    },
+    {
+      "code": "300302",
+      "name": "同有科技",
+      "score": 84.01,
+      "strategies": [
+        "KSFT2",
+        "KMID2",
+        "RSQR20"
+      ],
+      "close": 53.47,
+      "chg_1d": 20.0,
+      "analysis": "三因子共振涨停封板，存储概念资金集中，多头加速",
+      "sentiment": "bullish",
+      "news": [],
+      "news_fetched_at": "2026-05-18 15:36"
+    },
+    {
+      "code": "300721",
+      "name": "怡达股份",
+      "score": 83.79,
       "strategies": [
         "KUP2",
-        "CORR20"
+        "KSFT2",
+        "RSQR20"
       ],
-      "close": 7.85,
-      "chg_1d": -1.01,
-      "analysis": "装饰龙头5日涨15%后小幅回调，KUP因子支撑，震荡偏多",
-      "sentiment": "bullish",
+      "close": 30.99,
+      "chg_1d": 5.55,
+      "analysis": "冲高回落显分歧，5日涨43%后抛压加重，震荡偏空",
+      "sentiment": "neutral",
       "news": [],
-      "news_fetched_at": "2026-05-15 15:48"
+      "news_fetched_at": "2026-05-18 15:36"
     },
     {
-      "code": "002514",
-      "name": "宝馨科技",
-      "score": 93.79,
-      "strategies": [],
-      "close": 3.73,
-      "chg_1d": 5.07,
-      "analysis": "一字涨停封板，光伏概念资金抢筹，短线多头强势",
+      "code": "688668",
+      "name": "鼎通科技",
+      "score": 83.3,
+      "strategies": [
+        "KSFT2",
+        "KMID2",
+        "RSQR20"
+      ],
+      "close": 283.6,
+      "chg_1d": 15.29,
+      "analysis": "连接器龙头放量涨15%，5日涨23%趋势完好，多头",
       "sentiment": "bullish",
       "news": [],
-      "news_fetched_at": "2026-05-15 15:48"
+      "news_fetched_at": "2026-05-18 15:36"
     }
   ],
-  "generated_at": "2026-05-15 15:48",
+  "generated_at": "2026-05-18 15:48",
   "llm_model": "knot-agent"
 }
