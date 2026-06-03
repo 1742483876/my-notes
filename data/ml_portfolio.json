@@ -1,0 +1,2859 @@
+{
+  "config": {
+    "top_k": 10,
+    "hold_n": 10,
+    "lookback_days": 250,
+    "allowed_boards": [
+      "沪主板",
+      "深主板"
+    ],
+    "filter_note": "已过滤创业板(30)/科创板(688)/北交所(8/4)/ST退"
+  },
+  "update_time": "2026-05-29T15:57:52.833438",
+  "latest_date": "2026-05-29",
+  "stock_count": 3124,
+  "metrics": {
+    "total_return": -12.15,
+    "annual_return": -12.22,
+    "sharpe": -0.15,
+    "max_drawdown": 37.23,
+    "period_win_rate": 41.7,
+    "stock_win_rate": 37.5,
+    "n_periods": 24,
+    "n_picks_total": 208,
+    "final_equity": 87.85
+  },
+  "equity_curve": [
+    {
+      "date": "2025-05-20",
+      "equity": 89.34
+    },
+    {
+      "date": "2025-06-04",
+      "equity": 91.8
+    },
+    {
+      "date": "2025-06-18",
+      "equity": 91.62
+    },
+    {
+      "date": "2025-07-02",
+      "equity": 84.03
+    },
+    {
+      "date": "2025-07-16",
+      "equity": 80.55
+    },
+    {
+      "date": "2025-07-30",
+      "equity": 78.44
+    },
+    {
+      "date": "2025-08-13",
+      "equity": 79.7
+    },
+    {
+      "date": "2025-08-27",
+      "equity": 83.07
+    },
+    {
+      "date": "2025-09-10",
+      "equity": 88.22
+    },
+    {
+      "date": "2025-09-24",
+      "equity": 80.42
+    },
+    {
+      "date": "2025-10-16",
+      "equity": 76.59
+    },
+    {
+      "date": "2025-10-30",
+      "equity": 71.71
+    },
+    {
+      "date": "2025-11-13",
+      "equity": 62.77
+    },
+    {
+      "date": "2025-11-27",
+      "equity": 67.57
+    },
+    {
+      "date": "2025-12-11",
+      "equity": 68.28
+    },
+    {
+      "date": "2025-12-25",
+      "equity": 80.02
+    },
+    {
+      "date": "2026-01-12",
+      "equity": 76.12
+    },
+    {
+      "date": "2026-01-26",
+      "equity": 83.01
+    },
+    {
+      "date": "2026-02-09",
+      "equity": 77.17
+    },
+    {
+      "date": "2026-03-03",
+      "equity": 76.46
+    },
+    {
+      "date": "2026-03-17",
+      "equity": 72.13
+    },
+    {
+      "date": "2026-03-31",
+      "equity": 69.65
+    },
+    {
+      "date": "2026-04-15",
+      "equity": 81.94
+    },
+    {
+      "date": "2026-04-29",
+      "equity": 87.85
+    }
+  ],
+  "benchmark_curve": [
+    {
+      "date": "2025-05-20",
+      "value": 100.0
+    },
+    {
+      "date": "2025-05-21",
+      "value": 100.83
+    },
+    {
+      "date": "2025-05-22",
+      "value": 101.48
+    },
+    {
+      "date": "2025-05-23",
+      "value": 100.65
+    },
+    {
+      "date": "2025-05-26",
+      "value": 100.28
+    },
+    {
+      "date": "2025-05-27",
+      "value": 100.93
+    },
+    {
+      "date": "2025-05-28",
+      "value": 101.3
+    },
+    {
+      "date": "2025-05-29",
+      "value": 100.65
+    },
+    {
+      "date": "2025-05-30",
+      "value": 101.58
+    },
+    {
+      "date": "2025-06-03",
+      "value": 103.89
+    },
+    {
+      "date": "2025-06-04",
+      "value": 104.17
+    },
+    {
+      "date": "2025-06-05",
+      "value": 102.59
+    },
+    {
+      "date": "2025-06-06",
+      "value": 102.87
+    },
+    {
+      "date": "2025-06-09",
+      "value": 102.97
+    },
+    {
+      "date": "2025-06-10",
+      "value": 103.89
+    },
+    {
+      "date": "2025-06-11",
+      "value": 104.26
+    },
+    {
+      "date": "2025-06-12",
+      "value": 106.02
+    },
+    {
+      "date": "2025-06-13",
+      "value": 105.1
+    },
+    {
+      "date": "2025-06-16",
+      "value": 107.04
+    },
+    {
+      "date": "2025-06-17",
+      "value": 106.77
+    },
+    {
+      "date": "2025-06-18",
+      "value": 106.86
+    },
+    {
+      "date": "2025-06-19",
+      "value": 106.21
+    },
+    {
+      "date": "2025-06-20",
+      "value": 107.51
+    },
+    {
+      "date": "2025-06-23",
+      "value": 108.34
+    },
+    {
+      "date": "2025-06-24",
+      "value": 108.34
+    },
+    {
+      "date": "2025-06-25",
+      "value": 109.55
+    },
+    {
+      "date": "2025-06-26",
+      "value": 112.79
+    },
+    {
+      "date": "2025-06-27",
+      "value": 110.84
+    },
+    {
+      "date": "2025-06-30",
+      "value": 109.64
+    },
+    {
+      "date": "2025-07-01",
+      "value": 111.77
+    },
+    {
+      "date": "2025-07-02",
+      "value": 111.96
+    },
+    {
+      "date": "2025-07-03",
+      "value": 112.23
+    },
+    {
+      "date": "2025-07-04",
+      "value": 114.55
+    },
+    {
+      "date": "2025-07-07",
+      "value": 116.22
+    },
+    {
+      "date": "2025-07-08",
+      "value": 115.38
+    },
+    {
+      "date": "2025-07-09",
+      "value": 116.77
+    },
+    {
+      "date": "2025-07-10",
+      "value": 119.93
+    },
+    {
+      "date": "2025-07-11",
+      "value": 117.42
+    },
+    {
+      "date": "2025-07-14",
+      "value": 118.07
+    },
+    {
+      "date": "2025-07-15",
+      "value": 115.76
+    },
+    {
+      "date": "2025-07-16",
+      "value": 114.92
+    },
+    {
+      "date": "2025-07-17",
+      "value": 114.46
+    },
+    {
+      "date": "2025-07-18",
+      "value": 115.48
+    },
+    {
+      "date": "2025-07-21",
+      "value": 114.64
+    },
+    {
+      "date": "2025-07-22",
+      "value": 113.53
+    },
+    {
+      "date": "2025-07-23",
+      "value": 113.9
+    },
+    {
+      "date": "2025-07-24",
+      "value": 112.23
+    },
+    {
+      "date": "2025-07-25",
+      "value": 112.23
+    },
+    {
+      "date": "2025-07-28",
+      "value": 113.25
+    },
+    {
+      "date": "2025-07-29",
+      "value": 112.14
+    },
+    {
+      "date": "2025-07-30",
+      "value": 113.53
+    },
+    {
+      "date": "2025-07-31",
+      "value": 111.12
+    },
+    {
+      "date": "2025-08-01",
+      "value": 111.58
+    },
+    {
+      "date": "2025-08-04",
+      "value": 111.77
+    },
+    {
+      "date": "2025-08-05",
+      "value": 113.35
+    },
+    {
+      "date": "2025-08-06",
+      "value": 113.25
+    },
+    {
+      "date": "2025-08-07",
+      "value": 113.35
+    },
+    {
+      "date": "2025-08-08",
+      "value": 112.7
+    },
+    {
+      "date": "2025-08-11",
+      "value": 111.77
+    },
+    {
+      "date": "2025-08-12",
+      "value": 112.05
+    },
+    {
+      "date": "2025-08-13",
+      "value": 111.4
+    },
+    {
+      "date": "2025-08-14",
+      "value": 110.84
+    },
+    {
+      "date": "2025-08-15",
+      "value": 109.73
+    },
+    {
+      "date": "2025-08-18",
+      "value": 109.73
+    },
+    {
+      "date": "2025-08-19",
+      "value": 109.55
+    },
+    {
+      "date": "2025-08-20",
+      "value": 109.64
+    },
+    {
+      "date": "2025-08-21",
+      "value": 110.38
+    },
+    {
+      "date": "2025-08-22",
+      "value": 109.55
+    },
+    {
+      "date": "2025-08-25",
+      "value": 113.16
+    },
+    {
+      "date": "2025-08-26",
+      "value": 112.33
+    },
+    {
+      "date": "2025-08-27",
+      "value": 109.55
+    },
+    {
+      "date": "2025-08-28",
+      "value": 109.73
+    },
+    {
+      "date": "2025-08-29",
+      "value": 109.45
+    },
+    {
+      "date": "2025-09-01",
+      "value": 107.97
+    },
+    {
+      "date": "2025-09-02",
+      "value": 108.8
+    },
+    {
+      "date": "2025-09-03",
+      "value": 106.67
+    },
+    {
+      "date": "2025-09-04",
+      "value": 106.58
+    },
+    {
+      "date": "2025-09-05",
+      "value": 106.39
+    },
+    {
+      "date": "2025-09-08",
+      "value": 106.21
+    },
+    {
+      "date": "2025-09-09",
+      "value": 106.67
+    },
+    {
+      "date": "2025-09-10",
+      "value": 106.86
+    },
+    {
+      "date": "2025-09-11",
+      "value": 107.6
+    },
+    {
+      "date": "2025-09-12",
+      "value": 106.39
+    },
+    {
+      "date": "2025-09-15",
+      "value": 105.75
+    },
+    {
+      "date": "2025-09-16",
+      "value": 105.65
+    },
+    {
+      "date": "2025-09-17",
+      "value": 105.65
+    },
+    {
+      "date": "2025-09-18",
+      "value": 103.52
+    },
+    {
+      "date": "2025-09-19",
+      "value": 103.89
+    },
+    {
+      "date": "2025-09-22",
+      "value": 103.24
+    },
+    {
+      "date": "2025-09-23",
+      "value": 104.54
+    },
+    {
+      "date": "2025-09-24",
+      "value": 103.99
+    },
+    {
+      "date": "2025-09-25",
+      "value": 103.43
+    },
+    {
+      "date": "2025-09-26",
+      "value": 103.43
+    },
+    {
+      "date": "2025-09-29",
+      "value": 103.15
+    },
+    {
+      "date": "2025-09-30",
+      "value": 102.87
+    },
+    {
+      "date": "2025-10-09",
+      "value": 103.43
+    },
+    {
+      "date": "2025-10-10",
+      "value": 103.71
+    },
+    {
+      "date": "2025-10-13",
+      "value": 103.43
+    },
+    {
+      "date": "2025-10-14",
+      "value": 105.0
+    },
+    {
+      "date": "2025-10-15",
+      "value": 105.65
+    },
+    {
+      "date": "2025-10-16",
+      "value": 106.95
+    },
+    {
+      "date": "2025-10-17",
+      "value": 105.65
+    },
+    {
+      "date": "2025-10-20",
+      "value": 105.84
+    },
+    {
+      "date": "2025-10-21",
+      "value": 105.93
+    },
+    {
+      "date": "2025-10-22",
+      "value": 106.77
+    },
+    {
+      "date": "2025-10-23",
+      "value": 107.78
+    },
+    {
+      "date": "2025-10-24",
+      "value": 107.14
+    },
+    {
+      "date": "2025-10-27",
+      "value": 106.77
+    },
+    {
+      "date": "2025-10-28",
+      "value": 106.3
+    },
+    {
+      "date": "2025-10-29",
+      "value": 105.56
+    },
+    {
+      "date": "2025-10-30",
+      "value": 105.47
+    },
+    {
+      "date": "2025-10-31",
+      "value": 104.91
+    },
+    {
+      "date": "2025-11-03",
+      "value": 105.93
+    },
+    {
+      "date": "2025-11-04",
+      "value": 107.41
+    },
+    {
+      "date": "2025-11-05",
+      "value": 106.77
+    },
+    {
+      "date": "2025-11-06",
+      "value": 106.67
+    },
+    {
+      "date": "2025-11-07",
+      "value": 107.04
+    },
+    {
+      "date": "2025-11-10",
+      "value": 107.78
+    },
+    {
+      "date": "2025-11-11",
+      "value": 108.16
+    },
+    {
+      "date": "2025-11-12",
+      "value": 108.25
+    },
+    {
+      "date": "2025-11-13",
+      "value": 108.43
+    },
+    {
+      "date": "2025-11-14",
+      "value": 108.9
+    },
+    {
+      "date": "2025-11-17",
+      "value": 108.16
+    },
+    {
+      "date": "2025-11-18",
+      "value": 107.41
+    },
+    {
+      "date": "2025-11-19",
+      "value": 109.36
+    },
+    {
+      "date": "2025-11-20",
+      "value": 109.82
+    },
+    {
+      "date": "2025-11-21",
+      "value": 108.34
+    },
+    {
+      "date": "2025-11-24",
+      "value": 107.51
+    },
+    {
+      "date": "2025-11-25",
+      "value": 109.36
+    },
+    {
+      "date": "2025-11-26",
+      "value": 108.34
+    },
+    {
+      "date": "2025-11-27",
+      "value": 108.53
+    },
+    {
+      "date": "2025-11-28",
+      "value": 107.6
+    },
+    {
+      "date": "2025-12-01",
+      "value": 108.34
+    },
+    {
+      "date": "2025-12-02",
+      "value": 107.88
+    },
+    {
+      "date": "2025-12-03",
+      "value": 107.04
+    },
+    {
+      "date": "2025-12-04",
+      "value": 106.49
+    },
+    {
+      "date": "2025-12-05",
+      "value": 106.86
+    },
+    {
+      "date": "2025-12-08",
+      "value": 106.77
+    },
+    {
+      "date": "2025-12-09",
+      "value": 105.93
+    },
+    {
+      "date": "2025-12-10",
+      "value": 105.0
+    },
+    {
+      "date": "2025-12-11",
+      "value": 105.38
+    },
+    {
+      "date": "2025-12-12",
+      "value": 105.19
+    },
+    {
+      "date": "2025-12-15",
+      "value": 106.67
+    },
+    {
+      "date": "2025-12-16",
+      "value": 106.39
+    },
+    {
+      "date": "2025-12-17",
+      "value": 106.86
+    },
+    {
+      "date": "2025-12-18",
+      "value": 107.88
+    },
+    {
+      "date": "2025-12-19",
+      "value": 107.69
+    },
+    {
+      "date": "2025-12-22",
+      "value": 106.77
+    },
+    {
+      "date": "2025-12-23",
+      "value": 107.14
+    },
+    {
+      "date": "2025-12-24",
+      "value": 106.95
+    },
+    {
+      "date": "2025-12-25",
+      "value": 107.14
+    },
+    {
+      "date": "2025-12-26",
+      "value": 106.95
+    },
+    {
+      "date": "2025-12-29",
+      "value": 107.14
+    },
+    {
+      "date": "2025-12-30",
+      "value": 106.39
+    },
+    {
+      "date": "2025-12-31",
+      "value": 105.75
+    },
+    {
+      "date": "2026-01-05",
+      "value": 106.58
+    },
+    {
+      "date": "2026-01-06",
+      "value": 108.16
+    },
+    {
+      "date": "2026-01-07",
+      "value": 107.88
+    },
+    {
+      "date": "2026-01-08",
+      "value": 106.67
+    },
+    {
+      "date": "2026-01-09",
+      "value": 106.21
+    },
+    {
+      "date": "2026-01-12",
+      "value": 106.39
+    },
+    {
+      "date": "2026-01-13",
+      "value": 106.3
+    },
+    {
+      "date": "2026-01-14",
+      "value": 105.28
+    },
+    {
+      "date": "2026-01-15",
+      "value": 104.82
+    },
+    {
+      "date": "2026-01-16",
+      "value": 103.71
+    },
+    {
+      "date": "2026-01-19",
+      "value": 103.06
+    },
+    {
+      "date": "2026-01-20",
+      "value": 103.43
+    },
+    {
+      "date": "2026-01-21",
+      "value": 102.59
+    },
+    {
+      "date": "2026-01-22",
+      "value": 102.59
+    },
+    {
+      "date": "2026-01-23",
+      "value": 101.85
+    },
+    {
+      "date": "2026-01-26",
+      "value": 101.58
+    },
+    {
+      "date": "2026-01-27",
+      "value": 101.39
+    },
+    {
+      "date": "2026-01-28",
+      "value": 100.46
+    },
+    {
+      "date": "2026-01-29",
+      "value": 101.58
+    },
+    {
+      "date": "2026-01-30",
+      "value": 100.37
+    },
+    {
+      "date": "2026-02-02",
+      "value": 100.65
+    },
+    {
+      "date": "2026-02-03",
+      "value": 100.46
+    },
+    {
+      "date": "2026-02-04",
+      "value": 101.67
+    },
+    {
+      "date": "2026-02-05",
+      "value": 102.78
+    },
+    {
+      "date": "2026-02-06",
+      "value": 102.41
+    },
+    {
+      "date": "2026-02-09",
+      "value": 102.59
+    },
+    {
+      "date": "2026-02-10",
+      "value": 102.5
+    },
+    {
+      "date": "2026-02-11",
+      "value": 102.59
+    },
+    {
+      "date": "2026-02-12",
+      "value": 101.58
+    },
+    {
+      "date": "2026-02-13",
+      "value": 101.11
+    },
+    {
+      "date": "2026-02-24",
+      "value": 101.11
+    },
+    {
+      "date": "2026-02-25",
+      "value": 100.65
+    },
+    {
+      "date": "2026-02-26",
+      "value": 100.74
+    },
+    {
+      "date": "2026-02-27",
+      "value": 101.02
+    },
+    {
+      "date": "2026-03-02",
+      "value": 100.56
+    },
+    {
+      "date": "2026-03-03",
+      "value": 100.83
+    },
+    {
+      "date": "2026-03-04",
+      "value": 99.26
+    },
+    {
+      "date": "2026-03-05",
+      "value": 100.19
+    },
+    {
+      "date": "2026-03-06",
+      "value": 100.28
+    },
+    {
+      "date": "2026-03-09",
+      "value": 99.72
+    },
+    {
+      "date": "2026-03-10",
+      "value": 100.19
+    },
+    {
+      "date": "2026-03-11",
+      "value": 100.93
+    },
+    {
+      "date": "2026-03-12",
+      "value": 101.39
+    },
+    {
+      "date": "2026-03-13",
+      "value": 101.3
+    },
+    {
+      "date": "2026-03-16",
+      "value": 101.2
+    },
+    {
+      "date": "2026-03-17",
+      "value": 102.22
+    },
+    {
+      "date": "2026-03-18",
+      "value": 101.58
+    },
+    {
+      "date": "2026-03-19",
+      "value": 100.83
+    },
+    {
+      "date": "2026-03-20",
+      "value": 99.81
+    },
+    {
+      "date": "2026-03-23",
+      "value": 96.85
+    },
+    {
+      "date": "2026-03-24",
+      "value": 100.83
+    },
+    {
+      "date": "2026-03-25",
+      "value": 101.39
+    },
+    {
+      "date": "2026-03-26",
+      "value": 101.39
+    },
+    {
+      "date": "2026-03-27",
+      "value": 102.13
+    },
+    {
+      "date": "2026-03-30",
+      "value": 101.85
+    },
+    {
+      "date": "2026-03-31",
+      "value": 102.69
+    },
+    {
+      "date": "2026-04-01",
+      "value": 103.34
+    },
+    {
+      "date": "2026-04-02",
+      "value": 104.45
+    },
+    {
+      "date": "2026-04-03",
+      "value": 103.06
+    },
+    {
+      "date": "2026-04-07",
+      "value": 102.22
+    },
+    {
+      "date": "2026-04-08",
+      "value": 103.99
+    },
+    {
+      "date": "2026-04-09",
+      "value": 102.87
+    },
+    {
+      "date": "2026-04-10",
+      "value": 102.78
+    },
+    {
+      "date": "2026-04-13",
+      "value": 102.59
+    },
+    {
+      "date": "2026-04-14",
+      "value": 103.52
+    },
+    {
+      "date": "2026-04-15",
+      "value": 103.89
+    },
+    {
+      "date": "2026-04-16",
+      "value": 102.78
+    },
+    {
+      "date": "2026-04-17",
+      "value": 102.04
+    },
+    {
+      "date": "2026-04-20",
+      "value": 102.5
+    },
+    {
+      "date": "2026-04-21",
+      "value": 102.69
+    },
+    {
+      "date": "2026-04-22",
+      "value": 101.76
+    },
+    {
+      "date": "2026-04-23",
+      "value": 101.95
+    },
+    {
+      "date": "2026-04-24",
+      "value": 101.95
+    },
+    {
+      "date": "2026-04-27",
+      "value": 105.47
+    },
+    {
+      "date": "2026-04-28",
+      "value": 106.21
+    },
+    {
+      "date": "2026-04-29",
+      "value": 106.77
+    },
+    {
+      "date": "2026-04-30",
+      "value": 106.49
+    },
+    {
+      "date": "2026-05-06",
+      "value": 105.28
+    },
+    {
+      "date": "2026-05-07",
+      "value": 105.38
+    },
+    {
+      "date": "2026-05-08",
+      "value": 104.73
+    },
+    {
+      "date": "2026-05-11",
+      "value": 104.54
+    },
+    {
+      "date": "2026-05-12",
+      "value": 104.26
+    },
+    {
+      "date": "2026-05-13",
+      "value": 103.24
+    },
+    {
+      "date": "2026-05-14",
+      "value": 102.41
+    },
+    {
+      "date": "2026-05-15",
+      "value": 101.85
+    },
+    {
+      "date": "2026-05-18",
+      "value": 100.65
+    },
+    {
+      "date": "2026-05-19",
+      "value": 100.65
+    },
+    {
+      "date": "2026-05-20",
+      "value": 99.81
+    },
+    {
+      "date": "2026-05-21",
+      "value": 99.17
+    },
+    {
+      "date": "2026-05-22",
+      "value": 98.98
+    },
+    {
+      "date": "2026-05-25",
+      "value": 98.98
+    },
+    {
+      "date": "2026-05-26",
+      "value": 100.0
+    },
+    {
+      "date": "2026-05-27",
+      "value": 99.72
+    },
+    {
+      "date": "2026-05-28",
+      "value": 98.8
+    },
+    {
+      "date": "2026-05-29",
+      "value": 101.3
+    }
+  ],
+  "benchmark_name": "平安银行",
+  "current_holdings": {
+    "rebal_date": "2026-04-29",
+    "exit_date": "2026-05-18",
+    "latest_date": "2026-05-29",
+    "days_left": 0,
+    "status": "已到换仓日",
+    "holdings": [
+      {
+        "code": "001266",
+        "name": "宏英智能",
+        "industry": "深主板",
+        "entry_date": "2026-04-29",
+        "entry_price": 39.52,
+        "current_price": 50.31,
+        "return_now": 27.3,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 50.5,
+        "planned_return": 27.78
+      },
+      {
+        "code": "603095",
+        "name": "越剑智能",
+        "industry": "沪主板",
+        "entry_date": "2026-04-29",
+        "entry_price": 23.06,
+        "current_price": 19.91,
+        "return_now": -13.66,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 22.3,
+        "planned_return": -3.3
+      },
+      {
+        "code": "002719",
+        "name": "麦趣尔",
+        "industry": "中小板",
+        "entry_date": "2026-04-29",
+        "entry_price": 8.05,
+        "current_price": 7.5,
+        "return_now": -6.83,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 7.94,
+        "planned_return": -1.37
+      },
+      {
+        "code": "600566",
+        "name": "济川药业",
+        "industry": "沪主板",
+        "entry_date": "2026-04-29",
+        "entry_price": 27.52,
+        "current_price": 27.53,
+        "return_now": 0.04,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 27.68,
+        "planned_return": 0.58
+      },
+      {
+        "code": "600227",
+        "name": "赤天化",
+        "industry": "沪主板",
+        "entry_date": "2026-04-29",
+        "entry_price": 4.21,
+        "current_price": 3.01,
+        "return_now": -28.5,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 3.62,
+        "planned_return": -14.01
+      },
+      {
+        "code": "002297",
+        "name": "博云新材",
+        "industry": "中小板",
+        "entry_date": "2026-04-29",
+        "entry_price": 23.21,
+        "current_price": 20.61,
+        "return_now": -11.2,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 25.38,
+        "planned_return": 9.35
+      },
+      {
+        "code": "002787",
+        "name": "华源控股",
+        "industry": "中小板",
+        "entry_date": "2026-04-29",
+        "entry_price": 19.21,
+        "current_price": 24.85,
+        "return_now": 29.36,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 25.93,
+        "planned_return": 34.98
+      },
+      {
+        "code": "001358",
+        "name": "兴欣新材",
+        "industry": "深主板",
+        "entry_date": "2026-04-29",
+        "entry_price": 28.95,
+        "current_price": 25.84,
+        "return_now": -10.74,
+        "planned_exit_date": "2026-05-18",
+        "planned_exit_price": 30.0,
+        "planned_return": 3.63
+      }
+    ],
+    "avg_return_now": -1.78
+  },
+  "rebalance_history": [
+    {
+      "batch": 5,
+      "rebal_date": "2025-07-16",
+      "exit_date": "2025-07-30",
+      "avg_return": -4.14,
+      "win_rate": 37.5,
+      "count": 8,
+      "picks": [
+        {
+          "code": "603811",
+          "name": "诚意药业",
+          "industry": "沪主板",
+          "entry_price": 12.69,
+          "exit_price": 12.09,
+          "return": -4.73
+        },
+        {
+          "code": "003040",
+          "name": "楚天龙",
+          "industry": "中小板",
+          "entry_price": 28.05,
+          "exit_price": 23.1,
+          "return": -17.65
+        },
+        {
+          "code": "605305",
+          "name": "中际联合",
+          "industry": "沪主板",
+          "entry_price": 35.935,
+          "exit_price": 36.084,
+          "return": 0.41
+        },
+        {
+          "code": "600604",
+          "name": "市北高新",
+          "industry": "沪主板",
+          "entry_price": 7.21,
+          "exit_price": 5.81,
+          "return": -19.42
+        },
+        {
+          "code": "000513",
+          "name": "丽珠集团",
+          "industry": "深主板",
+          "entry_price": 42.47,
+          "exit_price": 41.86,
+          "return": -1.44
+        },
+        {
+          "code": "000880",
+          "name": "潍柴重机",
+          "industry": "深主板",
+          "entry_price": 32.532,
+          "exit_price": 30.67,
+          "return": -5.72
+        },
+        {
+          "code": "000655",
+          "name": "金岭矿业",
+          "industry": "深主板",
+          "entry_price": 8.029,
+          "exit_price": 8.29,
+          "return": 3.25
+        },
+        {
+          "code": "002896",
+          "name": "中大力德",
+          "industry": "中小板",
+          "entry_price": 70.9,
+          "exit_price": 79.53,
+          "return": 12.17
+        }
+      ]
+    },
+    {
+      "batch": 6,
+      "rebal_date": "2025-07-30",
+      "exit_date": "2025-08-13",
+      "avg_return": -2.62,
+      "win_rate": 33.3,
+      "count": 6,
+      "picks": [
+        {
+          "code": "605277",
+          "name": "新亚电子",
+          "industry": "沪主板",
+          "entry_price": 30.0,
+          "exit_price": 26.22,
+          "return": -12.6
+        },
+        {
+          "code": "600579",
+          "name": "中化装备",
+          "industry": "沪主板",
+          "entry_price": 10.12,
+          "exit_price": 8.9,
+          "return": -12.06
+        },
+        {
+          "code": "605268",
+          "name": "王力安防",
+          "industry": "沪主板",
+          "entry_price": 11.75,
+          "exit_price": 9.91,
+          "return": -15.66
+        },
+        {
+          "code": "002565",
+          "name": "顺灏股份",
+          "industry": "中小板",
+          "entry_price": 7.22,
+          "exit_price": 8.42,
+          "return": 16.62
+        },
+        {
+          "code": "002370",
+          "name": "亚太药业",
+          "industry": "中小板",
+          "entry_price": 7.17,
+          "exit_price": 6.95,
+          "return": -3.07
+        },
+        {
+          "code": "002774",
+          "name": "快意电梯",
+          "industry": "中小板",
+          "entry_price": 10.53,
+          "exit_price": 11.69,
+          "return": 11.02
+        }
+      ]
+    },
+    {
+      "batch": 7,
+      "rebal_date": "2025-08-13",
+      "exit_date": "2025-08-27",
+      "avg_return": 1.61,
+      "win_rate": 33.3,
+      "count": 9,
+      "picks": [
+        {
+          "code": "002148",
+          "name": "北纬科技",
+          "industry": "中小板",
+          "entry_price": 12.6,
+          "exit_price": 11.52,
+          "return": -8.57
+        },
+        {
+          "code": "002240",
+          "name": "盛新锂能",
+          "industry": "中小板",
+          "entry_price": 18.28,
+          "exit_price": 16.99,
+          "return": -7.06
+        },
+        {
+          "code": "002052",
+          "name": "同洲电子",
+          "industry": "中小板",
+          "entry_price": 13.16,
+          "exit_price": 18.3,
+          "return": 39.06
+        },
+        {
+          "code": "600246",
+          "name": "万通发展",
+          "industry": "沪主板",
+          "entry_price": 10.15,
+          "exit_price": 12.29,
+          "return": 21.08
+        },
+        {
+          "code": "603617",
+          "name": "君禾股份",
+          "industry": "沪主板",
+          "entry_price": 9.0,
+          "exit_price": 8.95,
+          "return": -0.56
+        },
+        {
+          "code": "000926",
+          "name": "福星股份",
+          "industry": "深主板",
+          "entry_price": 3.19,
+          "exit_price": 2.87,
+          "return": -10.03
+        },
+        {
+          "code": "600053",
+          "name": "九鼎投资",
+          "industry": "沪主板",
+          "entry_price": 21.64,
+          "exit_price": 17.72,
+          "return": -18.11
+        },
+        {
+          "code": "001359",
+          "name": "平安电工",
+          "industry": "深主板",
+          "entry_price": 51.14,
+          "exit_price": 57.58,
+          "return": 12.59
+        },
+        {
+          "code": "000813",
+          "name": "德展健康",
+          "industry": "深主板",
+          "entry_price": 4.39,
+          "exit_price": 3.78,
+          "return": -13.9
+        }
+      ]
+    },
+    {
+      "batch": 8,
+      "rebal_date": "2025-08-27",
+      "exit_date": "2025-09-10",
+      "avg_return": 4.23,
+      "win_rate": 22.2,
+      "count": 9,
+      "picks": [
+        {
+          "code": "603859",
+          "name": "能科科技",
+          "industry": "沪主板",
+          "entry_price": 53.02,
+          "exit_price": 42.76,
+          "return": -19.35
+        },
+        {
+          "code": "605255",
+          "name": "天普股份",
+          "industry": "沪主板",
+          "entry_price": 38.97,
+          "exit_price": 75.942,
+          "return": 94.87
+        },
+        {
+          "code": "603177",
+          "name": "德创环保",
+          "industry": "沪主板",
+          "entry_price": 11.98,
+          "exit_price": 11.3,
+          "return": -5.68
+        },
+        {
+          "code": "001359",
+          "name": "平安电工",
+          "industry": "深主板",
+          "entry_price": 57.58,
+          "exit_price": 50.48,
+          "return": -12.33
+        },
+        {
+          "code": "000036",
+          "name": "华联控股",
+          "industry": "深主板",
+          "entry_price": 4.29,
+          "exit_price": 4.25,
+          "return": -0.93
+        },
+        {
+          "code": "000032",
+          "name": "深桑达A",
+          "industry": "深主板",
+          "entry_price": 26.1,
+          "exit_price": 22.59,
+          "return": -13.45
+        },
+        {
+          "code": "002448",
+          "name": "中原内配",
+          "industry": "中小板",
+          "entry_price": 9.84,
+          "exit_price": 10.24,
+          "return": 4.07
+        },
+        {
+          "code": "002838",
+          "name": "道恩股份",
+          "industry": "中小板",
+          "entry_price": 26.97,
+          "exit_price": 25.472,
+          "return": -5.55
+        },
+        {
+          "code": "002733",
+          "name": "雄韬股份",
+          "industry": "中小板",
+          "entry_price": 21.84,
+          "exit_price": 21.05,
+          "return": -3.62
+        }
+      ]
+    },
+    {
+      "batch": 9,
+      "rebal_date": "2025-09-10",
+      "exit_date": "2025-09-24",
+      "avg_return": 6.19,
+      "win_rate": 66.7,
+      "count": 9,
+      "picks": [
+        {
+          "code": "001331",
+          "name": "胜通能源",
+          "industry": "深主板",
+          "entry_price": 13.28,
+          "exit_price": 13.75,
+          "return": 3.54
+        },
+        {
+          "code": "603119",
+          "name": "浙江荣泰",
+          "industry": "沪主板",
+          "entry_price": 101.38,
+          "exit_price": 108.4,
+          "return": 6.92
+        },
+        {
+          "code": "000700",
+          "name": "模塑科技",
+          "industry": "深主板",
+          "entry_price": 9.888,
+          "exit_price": 11.199,
+          "return": 13.26
+        },
+        {
+          "code": "002164",
+          "name": "宁波东力",
+          "industry": "中小板",
+          "entry_price": 13.91,
+          "exit_price": 15.88,
+          "return": 14.16
+        },
+        {
+          "code": "603516",
+          "name": "淳中科技",
+          "industry": "沪主板",
+          "entry_price": 124.63,
+          "exit_price": 158.01,
+          "return": 26.78
+        },
+        {
+          "code": "002779",
+          "name": "中坚科技",
+          "industry": "中小板",
+          "entry_price": 116.8,
+          "exit_price": 129.12,
+          "return": 10.55
+        },
+        {
+          "code": "002492",
+          "name": "恒基达鑫",
+          "industry": "中小板",
+          "entry_price": 7.77,
+          "exit_price": 7.54,
+          "return": -2.96
+        },
+        {
+          "code": "600807",
+          "name": "济高发展",
+          "industry": "沪主板",
+          "entry_price": 3.42,
+          "exit_price": 3.03,
+          "return": -11.4
+        },
+        {
+          "code": "001223",
+          "name": "欧克科技",
+          "industry": "深主板",
+          "entry_price": 55.4,
+          "exit_price": 52.56,
+          "return": -5.13
+        }
+      ]
+    },
+    {
+      "batch": 10,
+      "rebal_date": "2025-09-24",
+      "exit_date": "2025-10-16",
+      "avg_return": -8.84,
+      "win_rate": 16.7,
+      "count": 6,
+      "picks": [
+        {
+          "code": "002475",
+          "name": "立讯精密",
+          "industry": "中小板",
+          "entry_price": 69.98,
+          "exit_price": 59.015,
+          "return": -15.67
+        },
+        {
+          "code": "605100",
+          "name": "华丰股份",
+          "industry": "沪主板",
+          "entry_price": 28.931,
+          "exit_price": 28.76,
+          "return": -0.59
+        },
+        {
+          "code": "603881",
+          "name": "数据港",
+          "industry": "沪主板",
+          "entry_price": 40.328,
+          "exit_price": 33.371,
+          "return": -17.25
+        },
+        {
+          "code": "600167",
+          "name": "联美控股",
+          "industry": "沪主板",
+          "entry_price": 9.6,
+          "exit_price": 8.65,
+          "return": -9.9
+        },
+        {
+          "code": "002513",
+          "name": "蓝丰生化",
+          "industry": "中小板",
+          "entry_price": 7.1,
+          "exit_price": 8.13,
+          "return": 14.51
+        },
+        {
+          "code": "002453",
+          "name": "华软科技",
+          "industry": "中小板",
+          "entry_price": 8.87,
+          "exit_price": 6.73,
+          "return": -24.13
+        }
+      ]
+    },
+    {
+      "batch": 11,
+      "rebal_date": "2025-10-16",
+      "exit_date": "2025-10-30",
+      "avg_return": -4.76,
+      "win_rate": 22.2,
+      "count": 9,
+      "picks": [
+        {
+          "code": "603778",
+          "name": "国晟科技",
+          "industry": "沪主板",
+          "entry_price": 4.33,
+          "exit_price": 4.7,
+          "return": 8.55
+        },
+        {
+          "code": "002370",
+          "name": "亚太药业",
+          "industry": "中小板",
+          "entry_price": 7.55,
+          "exit_price": 7.21,
+          "return": -4.5
+        },
+        {
+          "code": "000626",
+          "name": "远大控股",
+          "industry": "深主板",
+          "entry_price": 8.87,
+          "exit_price": 8.0,
+          "return": -9.81
+        },
+        {
+          "code": "603959",
+          "name": "百利科技",
+          "industry": "沪主板",
+          "entry_price": 7.51,
+          "exit_price": 6.93,
+          "return": -7.72
+        },
+        {
+          "code": "603938",
+          "name": "三孚股份",
+          "industry": "沪主板",
+          "entry_price": 17.59,
+          "exit_price": 18.11,
+          "return": 2.96
+        },
+        {
+          "code": "002571",
+          "name": "德力股份",
+          "industry": "中小板",
+          "entry_price": 9.15,
+          "exit_price": 8.27,
+          "return": -9.62
+        },
+        {
+          "code": "001206",
+          "name": "依依股份",
+          "industry": "深主板",
+          "entry_price": 34.546,
+          "exit_price": 30.551,
+          "return": -11.56
+        },
+        {
+          "code": "002998",
+          "name": "优彩资源",
+          "industry": "中小板",
+          "entry_price": 9.0,
+          "exit_price": 8.25,
+          "return": -8.33
+        },
+        {
+          "code": "000045",
+          "name": "深纺织A",
+          "industry": "深主板",
+          "entry_price": 13.71,
+          "exit_price": 13.33,
+          "return": -2.77
+        }
+      ]
+    },
+    {
+      "batch": 12,
+      "rebal_date": "2025-10-30",
+      "exit_date": "2025-11-13",
+      "avg_return": -6.37,
+      "win_rate": 11.1,
+      "count": 9,
+      "picks": [
+        {
+          "code": "600362",
+          "name": "江西铜业",
+          "industry": "沪主板",
+          "entry_price": 42.885,
+          "exit_price": 40.036,
+          "return": -6.64
+        },
+        {
+          "code": "603993",
+          "name": "洛阳钼业",
+          "industry": "沪主板",
+          "entry_price": 17.6,
+          "exit_price": 16.84,
+          "return": -4.32
+        },
+        {
+          "code": "600577",
+          "name": "精达股份",
+          "industry": "沪主板",
+          "entry_price": 11.06,
+          "exit_price": 10.29,
+          "return": -6.96
+        },
+        {
+          "code": "002080",
+          "name": "中材科技",
+          "industry": "中小板",
+          "entry_price": 35.33,
+          "exit_price": 35.31,
+          "return": -0.06
+        },
+        {
+          "code": "002156",
+          "name": "通富微电",
+          "industry": "中小板",
+          "entry_price": 44.68,
+          "exit_price": 39.3,
+          "return": -12.04
+        },
+        {
+          "code": "000811",
+          "name": "冰轮环境",
+          "industry": "深主板",
+          "entry_price": 14.8,
+          "exit_price": 14.48,
+          "return": -2.16
+        },
+        {
+          "code": "000969",
+          "name": "安泰科技",
+          "industry": "深主板",
+          "entry_price": 23.25,
+          "exit_price": 20.48,
+          "return": -11.91
+        },
+        {
+          "code": "002460",
+          "name": "赣锋锂业",
+          "industry": "中小板",
+          "entry_price": 72.37,
+          "exit_price": 72.38,
+          "return": 0.01
+        },
+        {
+          "code": "000657",
+          "name": "中钨高新",
+          "industry": "深主板",
+          "entry_price": 26.01,
+          "exit_price": 22.56,
+          "return": -13.26
+        }
+      ]
+    },
+    {
+      "batch": 13,
+      "rebal_date": "2025-11-13",
+      "exit_date": "2025-11-27",
+      "avg_return": -12.48,
+      "win_rate": 11.1,
+      "count": 9,
+      "picks": [
+        {
+          "code": "000407",
+          "name": "胜利股份",
+          "industry": "深主板",
+          "entry_price": 5.03,
+          "exit_price": 4.975,
+          "return": -1.09
+        },
+        {
+          "code": "002691",
+          "name": "冀凯股份",
+          "industry": "中小板",
+          "entry_price": 11.32,
+          "exit_price": 8.7,
+          "return": -23.14
+        },
+        {
+          "code": "003018",
+          "name": "金富科技",
+          "industry": "中小板",
+          "entry_price": 16.89,
+          "exit_price": 18.65,
+          "return": 10.42
+        },
+        {
+          "code": "002309",
+          "name": "中利集团",
+          "industry": "中小板",
+          "entry_price": 4.22,
+          "exit_price": 3.16,
+          "return": -25.12
+        },
+        {
+          "code": "600403",
+          "name": "大有能源",
+          "industry": "沪主板",
+          "entry_price": 9.22,
+          "exit_price": 8.02,
+          "return": -13.02
+        },
+        {
+          "code": "600829",
+          "name": "人民同泰",
+          "industry": "沪主板",
+          "entry_price": 13.75,
+          "exit_price": 12.63,
+          "return": -8.15
+        },
+        {
+          "code": "600815",
+          "name": "厦工股份",
+          "industry": "沪主板",
+          "entry_price": 4.08,
+          "exit_price": 3.5,
+          "return": -14.22
+        },
+        {
+          "code": "000533",
+          "name": "顺钠股份",
+          "industry": "深主板",
+          "entry_price": 10.37,
+          "exit_price": 7.92,
+          "return": -23.63
+        },
+        {
+          "code": "000572",
+          "name": "海马汽车",
+          "industry": "深主板",
+          "entry_price": 10.04,
+          "exit_price": 8.6,
+          "return": -14.34
+        }
+      ]
+    },
+    {
+      "batch": 14,
+      "rebal_date": "2025-11-27",
+      "exit_date": "2025-12-11",
+      "avg_return": 7.65,
+      "win_rate": 66.7,
+      "count": 9,
+      "picks": [
+        {
+          "code": "002702",
+          "name": "海欣食品",
+          "industry": "中小板",
+          "entry_price": 6.58,
+          "exit_price": 8.96,
+          "return": 36.17
+        },
+        {
+          "code": "600191",
+          "name": "华资实业",
+          "industry": "沪主板",
+          "entry_price": 11.32,
+          "exit_price": 11.66,
+          "return": 3.0
+        },
+        {
+          "code": "600868",
+          "name": "梅雁吉祥",
+          "industry": "沪主板",
+          "entry_price": 3.25,
+          "exit_price": 3.58,
+          "return": 10.15
+        },
+        {
+          "code": "600475",
+          "name": "华光环能",
+          "industry": "沪主板",
+          "entry_price": 18.27,
+          "exit_price": 17.74,
+          "return": -2.9
+        },
+        {
+          "code": "003018",
+          "name": "金富科技",
+          "industry": "中小板",
+          "entry_price": 18.65,
+          "exit_price": 19.19,
+          "return": 2.9
+        },
+        {
+          "code": "002960",
+          "name": "青鸟消防",
+          "industry": "中小板",
+          "entry_price": 11.19,
+          "exit_price": 10.31,
+          "return": -7.86
+        },
+        {
+          "code": "000592",
+          "name": "平潭发展",
+          "industry": "深主板",
+          "entry_price": 9.75,
+          "exit_price": 12.85,
+          "return": 31.79
+        },
+        {
+          "code": "000721",
+          "name": "西安饮食",
+          "industry": "深主板",
+          "entry_price": 9.4,
+          "exit_price": 9.41,
+          "return": 0.11
+        },
+        {
+          "code": "000032",
+          "name": "深桑达A",
+          "industry": "深主板",
+          "entry_price": 19.57,
+          "exit_price": 18.69,
+          "return": -4.5
+        }
+      ]
+    },
+    {
+      "batch": 15,
+      "rebal_date": "2025-12-11",
+      "exit_date": "2025-12-25",
+      "avg_return": 1.06,
+      "win_rate": 33.3,
+      "count": 9,
+      "picks": [
+        {
+          "code": "002083",
+          "name": "孚日股份",
+          "industry": "中小板",
+          "entry_price": 10.98,
+          "exit_price": 11.64,
+          "return": 6.01
+        },
+        {
+          "code": "603216",
+          "name": "梦天家居",
+          "industry": "沪主板",
+          "entry_price": 33.23,
+          "exit_price": 39.0,
+          "return": 17.36
+        },
+        {
+          "code": "000936",
+          "name": "华西股份",
+          "industry": "深主板",
+          "entry_price": 8.17,
+          "exit_price": 8.03,
+          "return": -1.71
+        },
+        {
+          "code": "002596",
+          "name": "海南瑞泽",
+          "industry": "中小板",
+          "entry_price": 6.5,
+          "exit_price": 5.79,
+          "return": -10.92
+        },
+        {
+          "code": "600218",
+          "name": "全柴动力",
+          "industry": "沪主板",
+          "entry_price": 11.52,
+          "exit_price": 11.14,
+          "return": -3.3
+        },
+        {
+          "code": "603122",
+          "name": "合富中国",
+          "industry": "沪主板",
+          "entry_price": 26.35,
+          "exit_price": 26.04,
+          "return": -1.18
+        },
+        {
+          "code": "002853",
+          "name": "皮阿诺",
+          "industry": "中小板",
+          "entry_price": 16.24,
+          "exit_price": 20.34,
+          "return": 25.25
+        },
+        {
+          "code": "000953",
+          "name": "河化股份",
+          "industry": "深主板",
+          "entry_price": 8.0,
+          "exit_price": 7.64,
+          "return": -4.5
+        },
+        {
+          "code": "000838",
+          "name": "财信发展",
+          "industry": "深主板",
+          "entry_price": 3.83,
+          "exit_price": 3.16,
+          "return": -17.49
+        }
+      ]
+    },
+    {
+      "batch": 16,
+      "rebal_date": "2025-12-25",
+      "exit_date": "2026-01-12",
+      "avg_return": 17.19,
+      "win_rate": 66.7,
+      "count": 9,
+      "picks": [
+        {
+          "code": "001208",
+          "name": "华菱线缆",
+          "industry": "深主板",
+          "entry_price": 23.16,
+          "exit_price": 31.05,
+          "return": 34.07
+        },
+        {
+          "code": "605598",
+          "name": "上海港湾",
+          "industry": "沪主板",
+          "entry_price": 61.9,
+          "exit_price": 75.78,
+          "return": 22.42
+        },
+        {
+          "code": "002228",
+          "name": "合兴包装",
+          "industry": "中小板",
+          "entry_price": 6.454,
+          "exit_price": 5.01,
+          "return": -22.37
+        },
+        {
+          "code": "002163",
+          "name": "海南发展",
+          "industry": "中小板",
+          "entry_price": 20.68,
+          "exit_price": 20.01,
+          "return": -3.24
+        },
+        {
+          "code": "001331",
+          "name": "胜通能源",
+          "industry": "深主板",
+          "entry_price": 38.27,
+          "exit_price": 58.63,
+          "return": 53.2
+        },
+        {
+          "code": "002201",
+          "name": "九鼎新材",
+          "industry": "中小板",
+          "entry_price": 11.31,
+          "exit_price": 12.13,
+          "return": 7.25
+        },
+        {
+          "code": "600343",
+          "name": "航天动力",
+          "industry": "沪主板",
+          "entry_price": 43.27,
+          "exit_price": 49.6,
+          "return": 14.63
+        },
+        {
+          "code": "603278",
+          "name": "大业股份",
+          "industry": "沪主板",
+          "entry_price": 11.64,
+          "exit_price": 17.72,
+          "return": 52.23
+        },
+        {
+          "code": "000036",
+          "name": "华联控股",
+          "industry": "深主板",
+          "entry_price": 7.1,
+          "exit_price": 6.85,
+          "return": -3.52
+        }
+      ]
+    },
+    {
+      "batch": 17,
+      "rebal_date": "2026-01-12",
+      "exit_date": "2026-01-26",
+      "avg_return": -4.87,
+      "win_rate": 33.3,
+      "count": 9,
+      "picks": [
+        {
+          "code": "600783",
+          "name": "鲁信创投",
+          "industry": "沪主板",
+          "entry_price": 35.85,
+          "exit_price": 24.17,
+          "return": -32.58
+        },
+        {
+          "code": "002044",
+          "name": "美年健康",
+          "industry": "中小板",
+          "entry_price": 6.74,
+          "exit_price": 7.26,
+          "return": 7.72
+        },
+        {
+          "code": "600850",
+          "name": "电科数字",
+          "industry": "沪主板",
+          "entry_price": 35.38,
+          "exit_price": 28.65,
+          "return": -19.02
+        },
+        {
+          "code": "000917",
+          "name": "电广传媒",
+          "industry": "深主板",
+          "entry_price": 13.27,
+          "exit_price": 11.35,
+          "return": -14.47
+        },
+        {
+          "code": "601106",
+          "name": "中国一重",
+          "industry": "沪主板",
+          "entry_price": 5.95,
+          "exit_price": 5.65,
+          "return": -5.04
+        },
+        {
+          "code": "003007",
+          "name": "直真科技",
+          "industry": "中小板",
+          "entry_price": 49.4,
+          "exit_price": 45.05,
+          "return": -8.81
+        },
+        {
+          "code": "000681",
+          "name": "视觉中国",
+          "industry": "深主板",
+          "entry_price": 28.62,
+          "exit_price": 26.94,
+          "return": -5.87
+        },
+        {
+          "code": "002088",
+          "name": "鲁阳节能",
+          "industry": "中小板",
+          "entry_price": 12.49,
+          "exit_price": 13.25,
+          "return": 6.08
+        },
+        {
+          "code": "000670",
+          "name": "盈方微",
+          "industry": "深主板",
+          "entry_price": 7.73,
+          "exit_price": 9.91,
+          "return": 28.2
+        }
+      ]
+    },
+    {
+      "batch": 18,
+      "rebal_date": "2026-01-26",
+      "exit_date": "2026-02-09",
+      "avg_return": 9.04,
+      "win_rate": 55.6,
+      "count": 9,
+      "picks": [
+        {
+          "code": "002009",
+          "name": "天奇股份",
+          "industry": "中小板",
+          "entry_price": 26.11,
+          "exit_price": 32.62,
+          "return": 24.93
+        },
+        {
+          "code": "600531",
+          "name": "豫光金铅",
+          "industry": "沪主板",
+          "entry_price": 18.63,
+          "exit_price": 16.96,
+          "return": -8.96
+        },
+        {
+          "code": "002342",
+          "name": "巨力索具",
+          "industry": "中小板",
+          "entry_price": 13.71,
+          "exit_price": 19.98,
+          "return": 45.73
+        },
+        {
+          "code": "002969",
+          "name": "嘉美包装",
+          "industry": "中小板",
+          "entry_price": 23.17,
+          "exit_price": 27.65,
+          "return": 19.34
+        },
+        {
+          "code": "600986",
+          "name": "浙文互联",
+          "industry": "沪主板",
+          "entry_price": 13.26,
+          "exit_price": 13.81,
+          "return": 4.15
+        },
+        {
+          "code": "601179",
+          "name": "中国西电",
+          "industry": "沪主板",
+          "entry_price": 16.15,
+          "exit_price": 14.72,
+          "return": -8.85
+        },
+        {
+          "code": "000159",
+          "name": "国际实业",
+          "industry": "深主板",
+          "entry_price": 7.18,
+          "exit_price": 7.0,
+          "return": -2.51
+        },
+        {
+          "code": "000987",
+          "name": "越秀资本",
+          "industry": "深主板",
+          "entry_price": 11.69,
+          "exit_price": 9.76,
+          "return": -16.51
+        },
+        {
+          "code": "001316",
+          "name": "润贝航科",
+          "industry": "深主板",
+          "entry_price": 47.7,
+          "exit_price": 59.19,
+          "return": 24.09
+        }
+      ]
+    },
+    {
+      "batch": 19,
+      "rebal_date": "2026-02-09",
+      "exit_date": "2026-03-03",
+      "avg_return": -7.03,
+      "win_rate": 22.2,
+      "count": 9,
+      "picks": [
+        {
+          "code": "003018",
+          "name": "金富科技",
+          "industry": "中小板",
+          "entry_price": 22.59,
+          "exit_price": 27.27,
+          "return": 20.72
+        },
+        {
+          "code": "600884",
+          "name": "杉杉股份",
+          "industry": "沪主板",
+          "entry_price": 15.81,
+          "exit_price": 14.3,
+          "return": -9.55
+        },
+        {
+          "code": "000014",
+          "name": "沙河股份",
+          "industry": "深主板",
+          "entry_price": 14.53,
+          "exit_price": 12.59,
+          "return": -13.35
+        },
+        {
+          "code": "002054",
+          "name": "德美化工",
+          "industry": "中小板",
+          "entry_price": 11.06,
+          "exit_price": 10.33,
+          "return": -6.6
+        },
+        {
+          "code": "603667",
+          "name": "五洲新春",
+          "industry": "沪主板",
+          "entry_price": 88.02,
+          "exit_price": 71.55,
+          "return": -18.71
+        },
+        {
+          "code": "603980",
+          "name": "吉华集团",
+          "industry": "沪主板",
+          "entry_price": 7.21,
+          "exit_price": 7.28,
+          "return": 0.97
+        },
+        {
+          "code": "002326",
+          "name": "永太科技",
+          "industry": "中小板",
+          "entry_price": 28.77,
+          "exit_price": 22.6,
+          "return": -21.45
+        },
+        {
+          "code": "001217",
+          "name": "华尔泰",
+          "industry": "深主板",
+          "entry_price": 14.07,
+          "exit_price": 13.05,
+          "return": -7.25
+        },
+        {
+          "code": "000590",
+          "name": "古汉医药",
+          "industry": "深主板",
+          "entry_price": 12.28,
+          "exit_price": 11.29,
+          "return": -8.06
+        }
+      ]
+    },
+    {
+      "batch": 20,
+      "rebal_date": "2026-03-03",
+      "exit_date": "2026-03-17",
+      "avg_return": -0.92,
+      "win_rate": 55.6,
+      "count": 9,
+      "picks": [
+        {
+          "code": "001337",
+          "name": "四川黄金",
+          "industry": "深主板",
+          "entry_price": 56.79,
+          "exit_price": 53.7,
+          "return": -5.44
+        },
+        {
+          "code": "001267",
+          "name": "汇绿生态",
+          "industry": "深主板",
+          "entry_price": 34.95,
+          "exit_price": 40.32,
+          "return": 15.36
+        },
+        {
+          "code": "603306",
+          "name": "华懋科技",
+          "industry": "沪主板",
+          "entry_price": 87.81,
+          "exit_price": 79.33,
+          "return": -9.66
+        },
+        {
+          "code": "600033",
+          "name": "福建高速",
+          "industry": "沪主板",
+          "entry_price": 3.8,
+          "exit_price": 3.83,
+          "return": 0.79
+        },
+        {
+          "code": "000007",
+          "name": "全新好",
+          "industry": "深主板",
+          "entry_price": 12.6,
+          "exit_price": 14.58,
+          "return": 15.71
+        },
+        {
+          "code": "003035",
+          "name": "南网能源",
+          "industry": "中小板",
+          "entry_price": 8.05,
+          "exit_price": 8.5,
+          "return": 5.59
+        },
+        {
+          "code": "603682",
+          "name": "锦和商管",
+          "industry": "沪主板",
+          "entry_price": 7.59,
+          "exit_price": 6.96,
+          "return": -8.3
+        },
+        {
+          "code": "002155",
+          "name": "湖南黄金",
+          "industry": "中小板",
+          "entry_price": 40.68,
+          "exit_price": 31.55,
+          "return": -22.44
+        },
+        {
+          "code": "002369",
+          "name": "卓翼科技",
+          "industry": "中小板",
+          "entry_price": 7.81,
+          "exit_price": 7.82,
+          "return": 0.13
+        }
+      ]
+    },
+    {
+      "batch": 21,
+      "rebal_date": "2026-03-17",
+      "exit_date": "2026-03-31",
+      "avg_return": -5.67,
+      "win_rate": 33.3,
+      "count": 9,
+      "picks": [
+        {
+          "code": "000639",
+          "name": "西王食品",
+          "industry": "深主板",
+          "entry_price": 3.14,
+          "exit_price": 2.69,
+          "return": -14.33
+        },
+        {
+          "code": "603977",
+          "name": "国泰集团",
+          "industry": "沪主板",
+          "entry_price": 16.2,
+          "exit_price": 16.7,
+          "return": 3.09
+        },
+        {
+          "code": "605277",
+          "name": "新亚电子",
+          "industry": "沪主板",
+          "entry_price": 25.58,
+          "exit_price": 22.25,
+          "return": -13.02
+        },
+        {
+          "code": "000620",
+          "name": "盈新发展",
+          "industry": "深主板",
+          "entry_price": 3.39,
+          "exit_price": 2.83,
+          "return": -16.52
+        },
+        {
+          "code": "000995",
+          "name": "皇台酒业",
+          "industry": "深主板",
+          "entry_price": 16.56,
+          "exit_price": 15.0,
+          "return": -9.42
+        },
+        {
+          "code": "603328",
+          "name": "依顿电子",
+          "industry": "沪主板",
+          "entry_price": 12.3,
+          "exit_price": 11.06,
+          "return": -10.08
+        },
+        {
+          "code": "002980",
+          "name": "华盛昌",
+          "industry": "中小板",
+          "entry_price": 37.91,
+          "exit_price": 42.1,
+          "return": 11.05
+        },
+        {
+          "code": "002543",
+          "name": "万和电气",
+          "industry": "中小板",
+          "entry_price": 9.31,
+          "exit_price": 9.01,
+          "return": -3.22
+        },
+        {
+          "code": "002455",
+          "name": "百川股份",
+          "industry": "中小板",
+          "entry_price": 14.3,
+          "exit_price": 14.5,
+          "return": 1.4
+        }
+      ]
+    },
+    {
+      "batch": 22,
+      "rebal_date": "2026-03-31",
+      "exit_date": "2026-04-15",
+      "avg_return": -3.43,
+      "win_rate": 44.4,
+      "count": 9,
+      "picks": [
+        {
+          "code": "002501",
+          "name": "利源股份",
+          "industry": "中小板",
+          "entry_price": 2.07,
+          "exit_price": 1.8,
+          "return": -13.04
+        },
+        {
+          "code": "000753",
+          "name": "漳州发展",
+          "industry": "深主板",
+          "entry_price": 7.36,
+          "exit_price": 6.69,
+          "return": -9.1
+        },
+        {
+          "code": "605168",
+          "name": "三人行",
+          "industry": "沪主板",
+          "entry_price": 36.2,
+          "exit_price": 36.23,
+          "return": 0.08
+        },
+        {
+          "code": "002773",
+          "name": "康弘药业",
+          "industry": "中小板",
+          "entry_price": 28.9,
+          "exit_price": 27.68,
+          "return": -4.22
+        },
+        {
+          "code": "605008",
+          "name": "长鸿高科",
+          "industry": "沪主板",
+          "entry_price": 11.98,
+          "exit_price": 12.0,
+          "return": 0.17
+        },
+        {
+          "code": "003042",
+          "name": "中农联合",
+          "industry": "中小板",
+          "entry_price": 18.61,
+          "exit_price": 17.23,
+          "return": -7.42
+        },
+        {
+          "code": "001313",
+          "name": "粤海饲料",
+          "industry": "深主板",
+          "entry_price": 7.77,
+          "exit_price": 7.98,
+          "return": 2.7
+        },
+        {
+          "code": "600988",
+          "name": "赤峰黄金",
+          "industry": "沪主板",
+          "entry_price": 43.15,
+          "exit_price": 43.3,
+          "return": 0.35
+        },
+        {
+          "code": "000955",
+          "name": "欣龙控股",
+          "industry": "深主板",
+          "entry_price": 4.92,
+          "exit_price": 4.9,
+          "return": -0.41
+        }
+      ]
+    },
+    {
+      "batch": 23,
+      "rebal_date": "2026-04-15",
+      "exit_date": "2026-04-29",
+      "avg_return": 17.64,
+      "win_rate": 77.8,
+      "count": 9,
+      "picks": [
+        {
+          "code": "002297",
+          "name": "博云新材",
+          "industry": "中小板",
+          "entry_price": 14.62,
+          "exit_price": 23.21,
+          "return": 58.76
+        },
+        {
+          "code": "603950",
+          "name": "长源东谷",
+          "industry": "沪主板",
+          "entry_price": 59.84,
+          "exit_price": 56.24,
+          "return": -6.02
+        },
+        {
+          "code": "600396",
+          "name": "华电辽能",
+          "industry": "沪主板",
+          "entry_price": 8.05,
+          "exit_price": 10.43,
+          "return": 29.57
+        },
+        {
+          "code": "600773",
+          "name": "西藏城投",
+          "industry": "沪主板",
+          "entry_price": 20.36,
+          "exit_price": 28.1,
+          "return": 38.02
+        },
+        {
+          "code": "002979",
+          "name": "雷赛智能",
+          "industry": "中小板",
+          "entry_price": 39.21,
+          "exit_price": 43.47,
+          "return": 10.86
+        },
+        {
+          "code": "002733",
+          "name": "雄韬股份",
+          "industry": "中小板",
+          "entry_price": 30.16,
+          "exit_price": 29.64,
+          "return": -1.72
+        },
+        {
+          "code": "000695",
+          "name": "滨海能源",
+          "industry": "深主板",
+          "entry_price": 14.79,
+          "exit_price": 15.66,
+          "return": 5.88
+        },
+        {
+          "code": "001317",
+          "name": "三羊马",
+          "industry": "深主板",
+          "entry_price": 48.11,
+          "exit_price": 52.7,
+          "return": 9.54
+        },
+        {
+          "code": "000567",
+          "name": "海德股份",
+          "industry": "深主板",
+          "entry_price": 5.32,
+          "exit_price": 6.06,
+          "return": 13.91
+        }
+      ]
+    },
+    {
+      "batch": 24,
+      "rebal_date": "2026-04-29",
+      "exit_date": "2026-05-18",
+      "avg_return": 7.21,
+      "win_rate": 62.5,
+      "count": 8,
+      "picks": [
+        {
+          "code": "001266",
+          "name": "宏英智能",
+          "industry": "深主板",
+          "entry_price": 39.52,
+          "exit_price": 50.5,
+          "return": 27.78
+        },
+        {
+          "code": "603095",
+          "name": "越剑智能",
+          "industry": "沪主板",
+          "entry_price": 23.06,
+          "exit_price": 22.3,
+          "return": -3.3
+        },
+        {
+          "code": "002719",
+          "name": "麦趣尔",
+          "industry": "中小板",
+          "entry_price": 8.05,
+          "exit_price": 7.94,
+          "return": -1.37
+        },
+        {
+          "code": "600566",
+          "name": "济川药业",
+          "industry": "沪主板",
+          "entry_price": 27.52,
+          "exit_price": 27.68,
+          "return": 0.58
+        },
+        {
+          "code": "600227",
+          "name": "赤天化",
+          "industry": "沪主板",
+          "entry_price": 4.21,
+          "exit_price": 3.62,
+          "return": -14.01
+        },
+        {
+          "code": "002297",
+          "name": "博云新材",
+          "industry": "中小板",
+          "entry_price": 23.21,
+          "exit_price": 25.38,
+          "return": 9.35
+        },
+        {
+          "code": "002787",
+          "name": "华源控股",
+          "industry": "中小板",
+          "entry_price": 19.21,
+          "exit_price": 25.93,
+          "return": 34.98
+        },
+        {
+          "code": "001358",
+          "name": "兴欣新材",
+          "industry": "深主板",
+          "entry_price": 28.95,
+          "exit_price": 30.0,
+          "return": 3.63
+        }
+      ]
+    }
+  ],
+  "params_compare": [
+    {
+      "top_k": 10,
+      "hold_n": 10,
+      "total_return": -12.15,
+      "annual_return": -12.22,
+      "sharpe": -0.15,
+      "max_drawdown": 37.23,
+      "period_win_rate": 41.7,
+      "is_main": true
+    },
+    {
+      "top_k": 5,
+      "hold_n": 10,
+      "total_return": 12.92,
+      "annual_return": 13.0,
+      "sharpe": 0.5,
+      "max_drawdown": 25.49,
+      "period_win_rate": 45.8
+    },
+    {
+      "top_k": 20,
+      "hold_n": 10,
+      "total_return": -12.15,
+      "annual_return": -12.22,
+      "sharpe": -0.15,
+      "max_drawdown": 37.23,
+      "period_win_rate": 41.7
+    },
+    {
+      "top_k": 10,
+      "hold_n": 5,
+      "total_return": 31.5,
+      "annual_return": 31.01,
+      "sharpe": 0.82,
+      "max_drawdown": 38.43,
+      "period_win_rate": 49.0
+    },
+    {
+      "top_k": 10,
+      "hold_n": 7,
+      "total_return": 98.24,
+      "annual_return": 96.42,
+      "sharpe": 1.93,
+      "max_drawdown": 18.59,
+      "period_win_rate": 71.4
+    }
+  ]
+}
