@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>请3休13 · 13天旅游攻略（2026 中秋+国庆）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg1:#0b1020;--bg2:#141a33;--bg3:#0e1526;
+  --card:rgba(255,255,255,0.055);
+  --card2:rgba(255,255,255,0.09);
+  --line:rgba(255,255,255,0.12);
+  --tx:#e8ecf5;--tx2:#a3adc4;--tx3:#6d7791;
+  --acc:#5fd4f0;--acc2:#f7b955;--good:#4ade80;--warn:#fbbf24;--bad:#f87171;
+  --r1:#5fd4f0;--r2:#a78bfa;--r3:#fb7185;--r4:#fbbf24;--r5:#4ade80;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;
+  background:linear-gradient(165deg,#0b1020,#161d38 45%,#0d1424);
+  background-attachment:fixed;
+  color:var(--tx);min-height:100vh;line-height:1.6;
+  padding:0 0 60px;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 14px}
+
+/* ── hero ── */
+.hero{padding:30px 0 20px;text-align:center}
+.kicker{font-size:11px;letter-spacing:.24em;color:var(--acc);font-weight:700;margin-bottom:10px}
+.hero h1{font-size:clamp(26px,7vw,40px);font-weight:850;letter-spacing:-.02em;line-height:1.15}
+.hero h1 em{font-style:normal;background:linear-gradient(100deg,#5fd4f0,#a78bfa 50%,#f7b955);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{color:var(--tx2);font-size:14px;margin-top:10px}
+.cd{display:inline-flex;align-items:baseline;gap:7px;margin-top:16px;padding:9px 18px;border-radius:999px;background:rgba(95,212,240,.1);border:1px solid rgba(95,212,240,.3)}
+.cd b{font-size:26px;font-weight:850;color:var(--acc);font-variant-numeric:tabular-nums;line-height:1}
+.cd span{font-size:12px;color:var(--tx2)}
+
+/* ── tabs ── */
+.tabs{position:sticky;top:0;z-index:40;display:flex;gap:4px;padding:8px;margin:18px 0 20px;
+  background:rgba(13,19,38,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:14px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tb{flex:1 0 auto;padding:9px 13px;border:0;border-radius:10px;background:transparent;
+  color:var(--tx3);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}
+.tb:hover{color:var(--tx2)}
+.tb.on{background:rgba(255,255,255,.13);color:#fff}
+.pane{display:none;animation:fade .3s}
+.pane.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── generic ── */
+h2.sec{font-size:19px;font-weight:800;margin:30px 0 12px;display:flex;align-items:center;gap:9px;letter-spacing:-.01em}
+h2.sec:first-child{margin-top:4px}
+h2.sec .bar{width:3px;height:17px;border-radius:2px;background:linear-gradient(180deg,var(--acc),var(--r2))}
+h3.sub{font-size:15px;font-weight:750;margin:22px 0 10px;color:var(--tx)}
+p.lead{color:var(--tx2);font-size:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.muted{color:var(--tx2);font-size:13.5px}
+.tiny{font-size:12px;color:var(--tx3)}
+b.hl{color:var(--acc2)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+
+/* ── callouts ── */
+.note{display:flex;gap:11px;padding:14px;border-radius:14px;margin-bottom:12px;font-size:13.5px;line-height:1.55}
+.note .ic{font-size:19px;flex-shrink:0;line-height:1.3}
+.note strong{display:block;margin-bottom:3px;font-size:14px}
+.n-warn{background:linear-gradient(135deg,rgba(251,113,133,.16),rgba(251,146,60,.1));border:1px solid rgba(251,113,133,.3)}
+.n-good{background:linear-gradient(135deg,rgba(74,222,128,.14),rgba(45,212,191,.09));border:1px solid rgba(74,222,128,.28)}
+.n-info{background:linear-gradient(135deg,rgba(95,212,240,.14),rgba(167,139,250,.1));border:1px solid rgba(95,212,240,.28)}
+
+/* ── calendar ── */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:6px 0 4px}
+.cal .hd{text-align:center;font-size:11px;color:var(--tx3);font-weight:700;padding-bottom:2px}
+.cal .d{aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;background:rgba(255,255,255,.04);color:var(--tx3);position:relative}
+.cal .d small{font-size:8.5px;font-weight:600;opacity:.85;margin-top:1px;letter-spacing:-.02em}
+.cal .d.off{background:rgba(255,255,255,.02);color:rgba(255,255,255,.18)}
+.cal .d.hol{background:rgba(74,222,128,.2);color:#86efac;box-shadow:inset 0 0 0 1px rgba(74,222,128,.35)}
+.cal .d.leave{background:rgba(247,185,85,.22);color:#fcd34d;box-shadow:inset 0 0 0 1px rgba(247,185,85,.5)}
+.cal .d.work{background:rgba(251,113,133,.16);color:#fda4af;box-shadow:inset 0 0 0 1px rgba(251,113,133,.3)}
+.cal .d.today{outline:2px solid var(--acc);outline-offset:1px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:11.5px;color:var(--tx2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* ── map ── */
+.mapbox{background:radial-gradient(ellipse 70% 90% at 40% 20%,rgba(95,212,240,.07),transparent 60%),rgba(6,10,22,.55);
+  border:1px solid var(--line);border-radius:16px;padding:8px;margin-bottom:6px;
+  overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.mapbox svg{display:block;width:100%;height:auto}
+.mapbox.wide svg{min-width:760px}
+.mapbox.tall svg{min-width:540px}
+.swipe{font-size:11px;color:var(--tx3);text-align:right;margin:-2px 4px 10px;display:none}
+@media (max-width:820px){ .swipe{display:block} }
+.mlg{display:flex;flex-wrap:wrap;gap:6px;padding:8px 4px 3px}
+.mlg button{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;cursor:pointer;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--tx2);font-size:12px;font-weight:700;
+  transition:.2s;font-family:inherit}
+.mlg button i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.mlg button.on{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+.mlg button.dim{opacity:.4}
+
+/* ── plan card ── */
+.plan{border-radius:18px;padding:0;margin-bottom:14px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.plan-h{padding:15px 16px 13px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;position:relative}
+.plan-h::after{content:'⌄';position:absolute;right:16px;top:15px;font-size:17px;color:var(--tx3);transition:.25s}
+.plan.open .plan-h::after{transform:rotate(180deg)}
+.rank{flex-shrink:0;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:850;color:#0b1020}
+.plan-t{flex:1;min-width:0;padding-right:20px}
+.plan-t h4{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-bottom:3px}
+.plan-t .why{font-size:12.5px;color:var(--tx2);line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 16px 13px}
+.chip{font-size:11px;font-weight:700;padding:3.5px 9px;border-radius:7px;background:rgba(255,255,255,.07);color:var(--tx2)}
+.chip.g{background:rgba(74,222,128,.15);color:#86efac}
+.chip.y{background:rgba(251,191,36,.15);color:#fcd34d}
+.chip.r{background:rgba(248,113,113,.15);color:#fca5a5}
+.chip.b{background:rgba(95,212,240,.15);color:#7dd3fc}
+.plan-b{display:none;padding:0 16px 16px;border-top:1px solid var(--line);margin-top:2px;padding-top:14px}
+.plan.open .plan-b{display:block}
+
+/* ── itinerary strip ── */
+.days{position:relative;padding-left:22px;margin:10px 0 4px}
+.days::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--acc),rgba(167,139,250,.5),transparent)}
+.day{position:relative;padding:0 0 13px}
+.day::before{content:'';position:absolute;left:-20px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 3px rgba(95,212,240,.16)}
+.day .dn{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:.04em}
+.day .dt{font-size:13.8px;font-weight:700;margin:1px 0 2px}
+.day .dd{font-size:12.8px;color:var(--tx2);line-height:1.5}
+
+/* ── table ── */
+.tw{overflow-x:auto;border-radius:14px;border:1px solid var(--line);margin-bottom:12px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12.8px;min-width:440px}
+th{background:rgba(255,255,255,.07);padding:10px 11px;text-align:left;font-weight:750;color:var(--tx);white-space:nowrap;font-size:12px}
+td{padding:9px 11px;border-top:1px solid rgba(255,255,255,.07);color:var(--tx2);vertical-align:top}
+td b{color:var(--tx);font-weight:700}
+tr:hover td{background:rgba(255,255,255,.025)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ── budget bar ── */
+.bb{margin-bottom:11px}
+.bb-h{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:5px}
+.bb-h b{font-weight:750}
+.bb-h span{font-size:12px;color:var(--tx2);font-variant-numeric:tabular-nums}
+.bb-t{height:9px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden;position:relative}
+.bb-f{position:absolute;top:0;height:100%;border-radius:5px}
+
+/* ── checklist ── */
+.ck{display:flex;gap:10px;padding:11px 13px;border-radius:12px;background:rgba(255,255,255,.045);
+  border:1px solid var(--line);margin-bottom:7px;cursor:pointer;transition:.18s;align-items:flex-start}
+.ck:hover{background:rgba(255,255,255,.075)}
+.ck.done{opacity:.45}
+.ck.done .ck-t{text-decoration:line-through}
+.ck-x{width:19px;height:19px;border-radius:6px;border:1.6px solid var(--tx3);flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:.18s}
+.ck.done .ck-x{background:var(--good);border-color:var(--good);color:#0b1020}
+.ck-b{flex:1;min-width:0}
+.ck-t{font-size:13.5px;font-weight:650}
+.ck-d{font-size:12px;color:var(--tx3);margin-top:1px}
+.ck-w{font-size:10.5px;font-weight:800;padding:2.5px 7px;border-radius:6px;flex-shrink:0;margin-top:1px}
+.w-now{background:rgba(248,113,113,.2);color:#fca5a5}
+.w-soon{background:rgba(251,191,36,.18);color:#fcd34d}
+.w-later{background:rgba(255,255,255,.08);color:var(--tx3)}
+
+/* ── misc ── */
+.quote{background:rgba(255,255,255,.045);border-left:3px solid var(--acc2);border-radius:0 12px 12px 0;
+  padding:13px 15px;font-size:13.2px;color:var(--tx2);line-height:1.65;margin-bottom:10px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.09);font-size:13px}
+.kv:last-child{border:0}
+.kv .k{color:var(--tx3);flex-shrink:0}
+.kv .v{text-align:right;font-weight:650}
+ul.bul{list-style:none;padding-left:2px}
+ul.bul li{position:relative;padding-left:16px;font-size:13.2px;color:var(--tx2);margin-bottom:6px;line-height:1.55}
+ul.bul li::before{content:'';position:absolute;left:3px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:.75}
+ul.bul li b{color:var(--tx)}
+.foot{text-align:center;color:var(--tx3);font-size:11.5px;padding:34px 10px 10px;line-height:1.8}
+.back{position:fixed;right:14px;bottom:18px;z-index:60;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;
+  background:linear-gradient(135deg,#5fd4f0,#a78bfa);color:#0b1020;font-size:19px;font-weight:800;
+  box-shadow:0 6px 20px rgba(95,212,240,.35);display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">2026 · 中秋 + 国庆</div>
+    <h1>请 3 天，休 <em>13 天</em></h1>
+    <div class="sub">9月25日（周五） → 10月7日（周三）　·　深圳出发</div>
+    <div class="cd"><b id="cdN">–</b><span>天后出发</span></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tb on" data-p="p0">总览</button>
+    <button class="tb" data-p="p1">出境 5 选</button>
+    <button class="tb" data-p="p2">国内 4 选</button>
+    <button class="tb" data-p="p3">预算</button>
+    <button class="tb" data-p="p4">行前清单</button>
+  </div>
+
+<!-- ══════════ 总览 ══════════ -->
+<div class="pane on" id="p0">
+
+  <div class="note n-good">
+    <div class="ic">🎯</div>
+    <div><strong>一句话结论</strong>
+    只剩 15 天，申根/日本签基本赌不起，所以答案锁定在「免签或电子签 + 十一天气最稳」这个交集里。
+    <b class="hl">出境首选乌兹别克斯坦 + 哈萨克斯坦</b>（全程免签、10 月初几乎不下雨、13 天刚好走完丝路四城）；
+    <b class="hl">国内首选南疆喀什 + 帕米尔</b>（全国十一天气最通透的一块，且人流只有北疆的三分之一）。</div>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>假期怎么拼</h2>
+  <div class="card">
+    <div class="cal" id="cal"></div>
+    <div class="legend">
+      <span><i style="background:rgba(74,222,128,.45)"></i>法定假日</span>
+      <span><i style="background:rgba(247,185,85,.5)"></i>请年假（3天）</span>
+      <span><i style="background:rgba(251,113,133,.4)"></i>补班上班</span>
+      <span><i style="background:rgba(255,255,255,.1)"></i>普通工作日</span>
+    </div>
+    <div style="margin-top:14px">
+      <div class="kv"><span class="k">中秋</span><span class="v">9/25（五）– 9/27（日）　3 天</span></div>
+      <div class="kv"><span class="k">请年假</span><span class="v">9/28、9/29、9/30　3 天</span></div>
+      <div class="kv"><span class="k">国庆</span><span class="v">10/1（四）– 10/7（三）　7 天</span></div>
+      <div class="kv"><span class="k">连休合计</span><span class="v" style="color:var(--good)">9/25 – 10/7　共 13 天</span></div>
+      <div class="kv"><span class="k">别忘了补班</span><span class="v" style="color:#fca5a5">9/20（周日）、10/10（周六）要上班</span></div>
+    </div>
+  </div>
+
+  <div class="note n-info">
+    <div class="ic">🧾</div>
+    <div><strong>请假话术（可直接抄）</strong>
+    「领导好，我计划利用中秋国庆假期做一次长途出行，行程已定、机票酒店均已支付且不可退改。
+    手上 XX 项目的收尾工作会在 9 月 27 日前完成，后续跟进清单已同步给 XX，假期内紧急事项可随时电话找我。
+    恳请批准 9 月 28–30 日三天年假。」<br>
+    <span class="tiny" style="color:var(--tx3)">关键是先给结果（交接完成 + 已付款不可退），再提诉求。别用「太累了想休息」这类主观理由。</span></div>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>先看天气，再选地方</h2>
+  <p class="lead">你要求天气优先，所以先把 9/25–10/7 这个窗口的气候摊开看。下面是各候选地这段时间的常年气候值（白天 / 夜间，以及降雨概率）。</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>目的地</th><th>白天</th><th>夜间</th><th>降雨</th><th>天气评级</th></tr></thead>
+      <tbody>
+        <tr><td><b>喀什 / 帕米尔</b>（南疆）</td><td class="num">22℃ / 12℃</td><td class="num">9℃ / −2℃</td><td>几乎无雨</td><td><span class="chip g">A+ 极稳</span></td></tr>
+        <tr><td><b>撒马尔罕</b>（乌兹）</td><td class="num">26℃</td><td class="num">11℃</td><td>全月约 2 天</td><td><span class="chip g">A+ 极稳</span></td></tr>
+        <tr><td><b>开罗 / 红海</b>（埃及）</td><td class="num">32℃</td><td class="num">21℃</td><td>基本零雨</td><td><span class="chip g">A+ 极稳</span></td></tr>
+        <tr><td><b>拉萨 / 林芝</b>（西藏）</td><td class="num">19℃</td><td class="num">5℃</td><td>雨季刚结束</td><td><span class="chip g">A 很好</span></td></tr>
+        <tr><td><b>第比利斯 / 埃里温</b></td><td class="num">25℃</td><td class="num">12℃</td><td>偶有阵雨</td><td><span class="chip g">A 很好</span></td></tr>
+        <tr><td><b>马拉喀什</b>（摩洛哥）</td><td class="num">30℃</td><td class="num">16℃</td><td>基本零雨</td><td><span class="chip g">A 很好</span></td></tr>
+        <tr><td><b>卡帕多奇亚</b>（土耳其）</td><td class="num">22℃</td><td class="num">8℃</td><td>偶有阵雨</td><td><span class="chip g">A 很好</span></td></tr>
+        <tr><td><b>西宁 / 敦煌</b>（青甘）</td><td class="num">17℃ / 21℃</td><td class="num">2℃ / 6℃</td><td>干燥少雨</td><td><span class="chip g">A 很好</span></td></tr>
+        <tr><td><b>香格里拉 / 梅里</b></td><td class="num">17℃</td><td class="num">3℃</td><td>雨季末尾</td><td><span class="chip y">B+ 看运气</span></td></tr>
+        <tr><td><b>喀纳斯 / 禾木</b>（北疆）</td><td class="num">12℃</td><td class="num">−1℃</td><td>雨雪风险</td><td><span class="chip y">B 有风险</span></td></tr>
+        <tr><td><b>马尔代夫</b></td><td class="num">30℃</td><td class="num">26℃</td><td>西南季风尾，多雨</td><td><span class="chip r">C 不推荐</span></td></tr>
+        <tr><td><b>菲律宾</b>（宿务等）</td><td class="num">31℃</td><td class="num">25℃</td><td>台风季</td><td><span class="chip r">C 不推荐</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>为什么这些被划掉了</h2>
+  <div class="grid2">
+    <div class="card" style="margin:0">
+      <h3 class="sub" style="margin-top:0">你去过的</h3>
+      <ul class="bul">
+        <li><b>日本关西</b> — 已去。北海道/东北虽好，但旅游签需指定旅行社送签、旺季排队，15 天内出签是赌博。</li>
+        <li><b>芭提雅</b> — 已去。泰国其余海滨此时也是雨季尾，天气本就不占优。</li>
+        <li><b>川西</b> — 已去。且 10 月初折多山一带初雪常见，垭口结冰。</li>
+        <li><b>贵州</b> — 已去。</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <h3 class="sub" style="margin-top:0">因天气 / 签证划掉的</h3>
+      <ul class="bul">
+        <li><b>欧洲申根</b> — 旺季预约排到 4–6 周，审理还要 15 个日历日起。今天递交也来不及。</li>
+        <li><b>马尔代夫 / 菲律宾</b> — 免签且好飞，但正撞雨季与台风季，与「天气优先」冲突。</li>
+        <li><b>额济纳胡杨 / 南疆胡杨</b> — 最佳观赏期在 10 月 15 日以后，国庆去只能看到半黄。</li>
+        <li><b>北疆喀纳斯</b> — 秋色确实在峰值，但拥挤 + 雨雪封路概率高，降为备选。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>三十秒决策</h2>
+  <div class="card">
+    <ul class="bul">
+      <li><b>想要「这辈子没见过的画面」+ 预算 1.5 万左右</b> → 出境，走<b>乌兹别克斯坦（丝路四城）+ 阿拉木图</b>。免签、天气满分、13 天不多不少。</li>
+      <li><b>想潜水 + 想晒太阳</b> → <b>埃及</b>。红海 10 月水温 28℃、能见度全年最佳，还能顺带尼罗河与金字塔。电子签几天出。</li>
+      <li><b>不想折腾签证和时差，就想国内看极致风景</b> → <b>南疆喀什 + 帕米尔高原</b>。天气最稳，人比北疆少一大截。</li>
+      <li><b>想第一次上高原、看日照金山</b> → <b>西藏拉萨 + 林芝</b>。10 月是南迦巴瓦一年中最愿意露脸的月份。</li>
+      <li><b>预算要压到 1 万以内</b> → <b>青甘大环线</b> 或 <b>滇西北雨崩徒步</b>。</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══════════ 出境 ══════════ -->
+<div class="pane" id="p1">
+
+  <div class="note n-warn">
+    <div class="ic">⏰</div>
+    <div><strong>15 天倒计时下的签证现实</strong>
+    下面 5 条线全部是<b>免签或电子签</b>，不需要跑签证中心、不需要面签，这是现在唯一稳妥的选择集。
+    机票方面：9/25–10/7 出入境航线预订量同比涨约 11%，热门线已经没有「临期跳水」，<b>今天看到的价格大概率是这段时间最低的</b>。</div>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>航线全图</h2>
+  <p class="lead">点下面的色块可以单独看某条线。实线弧＝飞机，虚线＝陆路 / 火车。</p>
+  <div class="mapbox wide">
+    <svg id="mapIntl" viewBox="0 0 1000 330" role="img" aria-label="出境路线图"></svg>
+  </div>
+  <div class="swipe">← 左右滑动查看完整地图 →</div>
+  <div class="mlg" id="lgIntl"></div>
+
+  <h2 class="sec"><span class="bar"></span>五套方案</h2>
+  <div id="planIntl"></div>
+
+</div>
+
+<!-- ══════════ 国内 ══════════ -->
+<div class="pane" id="p2">
+
+  <div class="note n-info">
+    <div class="ic">🏔️</div>
+    <div><strong>国内这段时间的规律</strong>
+    秋色由北向南、由高到低推进。9 月底北疆和东北已到峰值但开始变冷；10 月才轮到低海拔地区。
+    而<b>南疆和西藏走的不是「秋色」路线，是「通透晴天 + 雪山」路线</b>——这恰恰是十一期间最不会翻车的选择。</div>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>路线全图</h2>
+  <p class="lead">四条线都从深圳起飞，落地后为陆路。点色块单独查看。</p>
+  <div class="mapbox tall">
+    <svg id="mapCn" viewBox="0 0 1000 700" role="img" aria-label="国内路线图"></svg>
+  </div>
+  <div class="swipe">← 左右滑动查看完整地图 →</div>
+  <div class="mlg" id="lgCn"></div>
+
+  <h2 class="sec"><span class="bar"></span>四套方案</h2>
+  <div id="planCn"></div>
+
+  <h2 class="sec"><span class="bar"></span>备选：北疆喀纳斯</h2>
+  <div class="note n-warn">
+    <div class="ic">🍂</div>
+    <div><strong>秋色满分，但天气是赌局</strong>
+    喀纳斯 / 禾木的白桦林黄叶峰值正好是 9/18–10/5，落在你的假期里。
+    但 10 月初这里白天 12℃、夜里 0℃ 以下，遇上大风或雨雪，叶子几天掉光甚至封路；同时它是全新疆最挤的地方，住宿旺季涨 2–3 倍。
+    <b>如果你把「天气好」放在第一位，这条线只能算备选。</b>要去的话，务必每个环节留一晚弹性，并盯紧景区实时公告。</div>
+  </div>
+
+</div>
+
+<!-- ══════════ 预算 ══════════ -->
+<div class="pane" id="p3">
+
+  <h2 class="sec"><span class="bar"></span>九套方案总价对比</h2>
+  <p class="lead">单人、含往返机票、旺季价格、不含购物。灰条是区间，左端＝精打细算，右端＝住得舒服不将就。</p>
+  <div class="card" id="bars"></div>
+
+  <h2 class="sec"><span class="bar"></span>花在哪了</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>方案</th><th>天数</th><th>机票</th><th>住宿</th><th>地面交通</th><th>吃+门票</th><th>合计</th></tr></thead>
+      <tbody id="btbl"></tbody>
+    </table>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>省钱的几个真杠杆</h2>
+  <div class="grid2">
+    <div class="card" style="margin:0">
+      <h3 class="sub" style="margin-top:0">机票</h3>
+      <ul class="bul">
+        <li><b>错峰首尾两波。</b>13 天假里，9/25–9/26 和 10/5 之后的票价明显低于 10/1–10/3 的峰值，长线往返差价常够补两晚酒店。</li>
+        <li><b>换出发机场。</b>深圳宝安之外，比一下香港、广州、澳门。中亚 / 高加索线经常是香港或广州出发便宜一大截。</li>
+        <li><b>接受中转。</b>去中亚经乌鲁木齐或阿拉木图，去高加索经迪拜或阿斯塔纳，比直飞省 20–35%。</li>
+        <li><b>设价格红线。</b>热门线（日韩、新马泰、欧洲）往返超预算 1.5 倍就直接换方向，不要赌 9 月降价——今年不会降。</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <h3 class="sub" style="margin-top:0">地面</h3>
+      <ul class="bul">
+        <li><b>中亚用火车。</b>塔什干–撒马尔罕的 Afrosiyob 高铁 2 小时、二等座约 ¥90，比包车省钱还省时间。</li>
+        <li><b>南疆 / 青甘拼车。</b>帕米尔包车约 ¥800/天/车，拼满 4 人人均 ¥200；独自包车是最贵的走法。</li>
+        <li><b>住宿早订。</b>喀什老城、塔县、雨崩这些床位总量少的地方，十一基本提前两周售罄，越晚越贵。</li>
+        <li><b>境外别买流量漫游包。</b>装 eSIM，中亚 / 高加索 / 土耳其 10GB 普遍在 ¥60–120。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note n-info">
+    <div class="ic">💳</div>
+    <div><strong>境外支付提醒</strong>
+    乌兹别克斯坦、格鲁吉亚、埃及现金使用率仍高，建议带美金现钞到当地换（汇率比国内换好）。
+    土耳其、阿联酋刷卡普及。中亚部分地方银联可用但覆盖不稳，<b>Visa/Master 至少带两张不同行的</b>。</div>
+  </div>
+
+</div>
+
+<!-- ══════════ 行前 ══════════ -->
+<div class="pane" id="p4">
+
+  <h2 class="sec"><span class="bar"></span>从今天到出发的时间表</h2>
+  <p class="lead">点一下可以打勾，进度存在本机浏览器里。</p>
+  <div id="ckList"></div>
+
+  <h2 class="sec"><span class="bar"></span>签证一览</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>国家</th><th>政策</th><th>停留</th><th>要提前做什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>乌兹别克斯坦</b></td><td><span class="chip g">免签</span></td><td>30 天</td><td>什么都不用办，护照直接走</td></tr>
+        <tr><td><b>哈萨克斯坦</b></td><td><span class="chip g">免签</span></td><td>30 天 / 180 天内累计 90 天</td><td>同上</td></tr>
+        <tr><td><b>格鲁吉亚</b></td><td><span class="chip g">免签</span></td><td>30 天 / 180 天内累计 90 天</td><td>需购买符合要求的旅行保险</td></tr>
+        <tr><td><b>亚美尼亚</b></td><td><span class="chip g">免签</span></td><td>180 天内累计 90 天</td><td>陆路从格鲁吉亚过境很顺</td></tr>
+        <tr><td><b>阿塞拜疆</b></td><td><span class="chip g">免签</span></td><td>30 天</td><td>注意：去过亚美尼亚的痕迹可能被盘问，建议先阿塞后亚美，或只选其一</td></tr>
+        <tr><td><b>土耳其</b></td><td><span class="chip b">电子签</span></td><td>30 天</td><td>官网 e-Visa 在线申请，通常几十分钟到 2 天出</td></tr>
+        <tr><td><b>埃及</b></td><td><span class="chip b">电子签</span></td><td>30 天</td><td>官方 e-Visa 建议留 5–7 个工作日；预留缓冲</td></tr>
+        <tr><td><b>摩洛哥</b></td><td><span class="chip g">免签</span></td><td>90 天</td><td>建议备好回程票和酒店订单备查</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tiny" style="margin:-4px 0 16px">签证与入境政策随时可能调整。出发前请再核对一次目的地移民部门、中国驻当地使领馆和承运航司的最新要求，尤其是电子入境卡（如马来 MDAC 类）和强制保险条款。</p>
+
+  <h2 class="sec"><span class="bar"></span>打包：按你选的线</h2>
+  <div class="grid2">
+    <div class="card" style="margin:0">
+      <h3 class="sub" style="margin-top:0">高原 / 大温差线<span class="tiny" style="font-weight:400"> · 南疆、西藏、青甘、滇西北</span></h3>
+      <ul class="bul">
+        <li><b>三层穿法</b>：速干内层 + 抓绒 + 硬壳冲锋衣。再加一件轻薄羽绒，早晚和垭口必用。</li>
+        <li><b>防晒是刚需</b>：SPF50+、墨镜、唇膏、帽子。高原紫外线比你想的狠得多。</li>
+        <li><b>身份证 + 护照都带</b>：塔县、帕米尔一带边防检查频繁，边境区域可能需办边防证（喀什当地可办）。</li>
+        <li><b>药</b>：西藏线备红景天（提前 5–7 天开始吃）、布洛芬；南疆干燥备润喉与鼻腔喷雾。</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <h3 class="sub" style="margin-top:0">境外线<span class="tiny" style="font-weight:400"> · 中亚、高加索、土耳其、埃及、摩洛哥</span></h3>
+      <ul class="bul">
+        <li><b>穿着分寸</b>：中亚、埃及、摩洛哥进清真寺需遮肩遮膝，女性备一条大围巾最省事。</li>
+        <li><b>转换头</b>：中亚 / 高加索 / 土耳其 / 摩洛哥都是欧标双圆脚；埃及同。带一个多国转换插座。</li>
+        <li><b>肠胃</b>：埃及、摩洛哥只喝瓶装水，冰块也算。备蒙脱石散和益生菌。</li>
+        <li><b>离线地图</b>：提前下好 Google Maps 离线包和 Maps.me；中亚很多小巷没有中文数据。</li>
+        <li><b>保险</b>：格鲁吉亚强制要求，其余线也强烈建议买含医疗转运的申根级保险。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec"><span class="bar"></span>最后三句话</h2>
+  <div class="quote">
+    <b>1. 今天就把机票定了。</b>已经有 128 万张出入境机票售出，热门航线不存在末班车低价，越等越贵是今年的确定趋势。<br><br>
+    <b>2. 先决定放弃什么。</b>13 天听起来很长，但一旦「我全都要」，就会变成每天在赶路。一条线两三个核心点，足够了。<br><br>
+    <b>3. 给天气留冗余。</b>不管选哪条，都别把最后一天排成「落地即上班」。留一天在出发城市，比什么都值。
+  </div>
+
+</div>
+
+  <div class="foot">
+    数据来源：国务院办公厅 2026 年节假日安排通知、外交部中外互免签证协定一览表、航旅纵横 / 去哪儿 / 广之旅 2026 中秋国庆出行数据。<br>
+    价格为旺季估算区间，仅供规划参考，请以实时报价为准。 · 更新于 2026-09-10
+  </div>
+
+</div>
+
+<button class="back" onclick="history.back()" title="返回">←</button>
+
+<script>
+/* ══════════════ 倒计时 ══════════════ */
+(function(){
+  var dep = new Date(2026,8,25,0,0,0);
+  var now = new Date();
+  var d = Math.ceil((dep - now)/86400000);
+  document.getElementById('cdN').textContent = d > 0 ? d : 0;
+  if (d <= 0) document.querySelector('.cd span').textContent = '假期进行中';
+})();
+
+/* ══════════════ 日历 ══════════════ */
+(function(){
+  // 2026-09-20 是周日；9/1 是周二
+  var cells = [], HD = ['一','二','三','四','五','六','日'];
+  var box = document.getElementById('cal');
+  HD.forEach(function(h){ cells.push('<div class="hd">'+h+'</div>'); });
+
+  // 展示 9/21(周一) ~ 10/11(周日)，正好 3 整周
+  var days = [];
+  for (var i=21;i<=30;i++) days.push({m:9,d:i});
+  for (var j=1;j<=11;j++) days.push({m:10,d:j});
+
+  var todayStr = '9-10';
+  days.forEach(function(o){
+    var key = o.m+'-'+o.d, cls='d', tag='';
+    var isHol = (o.m===9 && o.d>=25 && o.d<=27) || (o.m===10 && o.d>=1 && o.d<=7);
+    var isLeave = (o.m===9 && o.d>=28 && o.d<=30);
+    var isWorkSat = (o.m===10 && o.d===10);
+    if (isHol){ cls+=' hol'; tag = (o.m===9?'中秋':'国庆'); }
+    else if (isLeave){ cls+=' leave'; tag='年假'; }
+    else if (isWorkSat){ cls+=' work'; tag='补班'; }
+    else if (o.m===10 && o.d===11){ cls+=' off'; }
+    if (key===todayStr) cls+=' today';
+    cells.push('<div class="'+cls+'">'+o.d+(tag?'<small>'+tag+'</small>':'')+'</div>');
+  });
+  box.innerHTML = cells.join('');
+})();
+
+/* ══════════════ 地图渲染器 ══════════════ */
+function renderMap(svgId, lgId, cfg){
+  var svg = document.getElementById(svgId), lg = document.getElementById(lgId);
+  var vb = svg.getAttribute('viewBox').split(' ').map(Number);
+  var W = vb[2], H = vb[3], PAD = 26;
+  var b = cfg.bounds; // [lonMin, latMin, lonMax, latMax]
+  var lat0 = (b[1]+b[3])/2, k = Math.cos(lat0*Math.PI/180);
+  var gw = (b[2]-b[0])*k, gh = (b[3]-b[1]);
+  var iw = W-PAD*2, ih = H-PAD*2;
+  var s = Math.min(iw/gw, ih/gh);
+  var ox = PAD + (iw - gw*s)/2, oy = PAD + (ih - gh*s)/2;
+  function P(lon,lat){ return [ox + (lon-b[0])*k*s, oy + (b[3]-lat)*s]; }
+
+  var out = [];
+  // defs: glow
+  out.push('<defs><filter id="'+svgId+'g" x="-60%" y="-60%" width="220%" height="220%">'+
+    '<feGaussianBlur stdDeviation="4.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>');
+
+  // 经纬网
+  var grid = [];
+  for (var lo=Math.ceil(b[0]/10)*10; lo<=b[2]; lo+=10){
+    var a=P(lo,b[1]), c=P(lo,b[3]);
+    grid.push('<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+c[0].toFixed(1)+'" y2="'+c[1].toFixed(1)+'"/>');
+  }
+  for (var la=Math.ceil(b[1]/10)*10; la<=b[3]; la+=10){
+    var a2=P(b[0],la), c2=P(b[2],la);
+    grid.push('<line x1="'+a2[0].toFixed(1)+'" y1="'+a2[1].toFixed(1)+'" x2="'+c2[0].toFixed(1)+'" y2="'+c2[1].toFixed(1)+'"/>');
+  }
+  out.push('<g stroke="rgba(255,255,255,0.055)" stroke-width="1">'+grid.join('')+'</g>');
+
+  // 地理注记
+  (cfg.notes||[]).forEach(function(n){
+    var p = P(n.lon,n.lat);
+    out.push('<text x="'+p[0].toFixed(1)+'" y="'+p[1].toFixed(1)+'" text-anchor="middle" '+
+      'font-size="'+(n.size||13)+'" fill="rgba(255,255,255,0.14)" font-weight="700" letter-spacing="3">'+n.t+'</text>');
+  });
+
+  // 城市索引
+  var CI = {};
+  cfg.cities.forEach(function(c){ CI[c.id]=c; });
+
+  // 航段
+  var legHtml = [];
+  cfg.routes.forEach(function(r){
+    var segs = [];
+    r.legs.forEach(function(L){
+      var A=CI[L[0]], B=CI[L[1]];
+      if(!A||!B) return;
+      var p1=P(A.lon,A.lat), p2=P(B.lon,B.lat);
+      var mode = L[2]||'fly', bow = (L[3]===undefined?1:L[3]);
+      if (mode==='fly'){
+        var dx=p2[0]-p1[0], dy=p2[1]-p1[1], len=Math.hypot(dx,dy)||1;
+        var cx=(p1[0]+p2[0])/2 - dy/len*len*0.15*bow;
+        var cy=(p1[1]+p2[1])/2 + dx/len*len*0.15*bow;
+        segs.push('<path d="M'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+' Q'+cx.toFixed(1)+' '+cy.toFixed(1)+' '+p2[0].toFixed(1)+' '+p2[1].toFixed(1)+'" '+
+          'fill="none" stroke="'+r.color+'" stroke-width="2.1" stroke-linecap="round" opacity="0.9"/>');
+      } else {
+        segs.push('<line x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)+'" '+
+          'stroke="'+r.color+'" stroke-width="2.4" stroke-dasharray="6 5" stroke-linecap="round" opacity="0.85"/>');
+      }
+    });
+    legHtml.push('<g class="rt" data-r="'+r.id+'" filter="url(#'+svgId+'g)">'+segs.join('')+'</g>');
+  });
+  out.push(legHtml.join(''));
+
+  // ── 城市点 ──
+  var placed = [];  // 已占用的矩形，标签需要避开
+  var dots = [];
+  cfg.cities.forEach(function(c){
+    var p=P(c.lon,c.lat);
+    c._p = p;
+    var isHub = c.type==='hub', isVia = c.type==='via';
+    c._r = isHub?6.5:(isVia?3.4:4.8);
+    var fill = isHub?'#fff':(isVia?'rgba(255,255,255,0.5)':(c.color||'#fff'));
+    dots.push('<g class="ct" data-r="'+(c.r||'').split(',').join(' ')+'">'+
+      (isHub?'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="12" fill="'+(c.color||'#5fd4f0')+'" opacity="0.22"/>':'')+
+      '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+c._r+'" fill="'+fill+'" stroke="rgba(8,12,24,0.75)" stroke-width="1.6"/>'+
+      '</g>');
+    // 圆点本身也是障碍物
+    placed.push([p[0]-c._r-2, p[1]-c._r-2, p[0]+c._r+2, p[1]+c._r+2]);
+  });
+  out.push(dots.join(''));
+
+  // ── 标签自动避让 ──
+  function textW(s, fs){
+    var w=0;
+    for (var i=0;i<s.length;i++) w += (s.charCodeAt(i) > 0x2E80) ? fs : fs*0.56;
+    return w;
+  }
+  function boxOf(px,py,cd,w,fs){
+    var x=px+cd[0], y=py+cd[1];
+    var x0 = cd[2]==='middle' ? x-w/2 : (cd[2]==='start' ? x : x-w);
+    return [x0-2.5, y-fs*0.88, x0+w+2.5, y+fs*0.26];
+  }
+  function hits(b){
+    if (b[0] < 2 || b[2] > W-2 || b[1] < 2 || b[3] > H-2) return true;
+    for (var i=0;i<placed.length;i++){
+      var o=placed[i];
+      if (b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]) return true;
+    }
+    return false;
+  }
+  var CAND = [
+    [0,-12,'middle'], [0,17,'middle'],
+    [10,4.5,'start'], [-10,4.5,'end'],
+    [9,-8,'start'],   [-9,-8,'end'],
+    [9,16,'start'],   [-9,16,'end'],
+    [0,-26,'middle'], [0,31,'middle'],
+    [16,-16,'start'], [-16,-16,'end'],
+    [16,26,'start'],  [-16,26,'end'],
+    [0,-40,'middle'], [0,45,'middle']
+  ];
+  var labels = [];
+  cfg.cities.forEach(function(c){
+    if (!c.n) return;                       // 空名＝只画点不标注
+    var isHub = c.type==='hub', isVia = c.type==='via';
+    var fs = isHub ? 15.5 : (isVia ? 12.5 : 14);
+    var w  = textW(c.n, fs);
+    var list = CAND.slice();
+    if (c.dx !== undefined || c.dy !== undefined) list.unshift([c.dx||0, c.dy||-12, c.an||'middle']);
+    var chosen = null;
+    for (var i=0;i<list.length;i++){
+      var b = boxOf(c._p[0], c._p[1], list[i], w, fs);
+      if (!hits(b)) { chosen = {cd:list[i], b:b}; break; }
+    }
+    if (!chosen) chosen = {cd:list[0], b:boxOf(c._p[0],c._p[1],list[0],w,fs)};
+    placed.push(chosen.b);
+    var lx = c._p[0]+chosen.cd[0], ly = c._p[1]+chosen.cd[1];
+    // 标签离点较远时补一条细引线
+    var far = Math.abs(chosen.cd[1]) > 20 || Math.abs(chosen.cd[0]) > 12;
+    labels.push('<g class="ct" data-r="'+(c.r||'').split(',').join(' ')+'">'+
+      (far ? '<line x1="'+c._p[0].toFixed(1)+'" y1="'+c._p[1].toFixed(1)+'" x2="'+lx.toFixed(1)+'" y2="'+(ly-4).toFixed(1)+'" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>' : '')+
+      '<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="'+chosen.cd[2]+'" '+
+        'font-size="'+fs+'" font-weight="'+(isHub?800:700)+'" fill="'+(isVia?'rgba(255,255,255,0.6)':'#eaf0ff')+'" '+
+        'paint-order="stroke" stroke="rgba(8,12,24,0.92)" stroke-width="3.6" stroke-linejoin="round">'+c.n+'</text>'+
+      '</g>');
+  });
+  out.push(labels.join(''));
+  svg.innerHTML = out.join('');
+
+  // 图例 + 过滤
+  lg.innerHTML = '<button class="on" data-r="all"><i style="background:linear-gradient(90deg,#5fd4f0,#a78bfa)"></i>全部</button>' +
+    cfg.routes.map(function(r){ return '<button data-r="'+r.id+'"><i style="background:'+r.color+'"></i>'+r.name+'</button>'; }).join('');
+  lg.querySelectorAll('button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.dataset.r;
+      lg.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===btn); });
+      svg.querySelectorAll('.rt').forEach(function(g){
+        g.style.opacity = (id==='all' || g.dataset.r===id) ? 1 : 0.07;
+      });
+      svg.querySelectorAll('.ct').forEach(function(g){
+        var rs = (g.dataset.r||'').split(' ').filter(Boolean);
+        var show = id==='all' || rs.length===0 || rs.indexOf(id)>=0;
+        g.style.opacity = show ? 1 : 0.12;
+      });
+    });
+  });
+}
+
+/* ══════════════ 出境地图数据 ══════════════ */
+renderMap('mapIntl','lgIntl',{
+  bounds:[-20, 18, 118, 50],
+  notes:[
+    {lon:64,lat:47.5,t:'中　亚',size:15},
+    {lon:46,lat:45.5,t:'高加索',size:11},
+    {lon:12,lat:22,t:'撒 哈 拉',size:14},
+    {lon:62,lat:20,t:'阿 拉 伯 海',size:11},
+    {lon:103,lat:19,t:'南　海',size:11}
+  ],
+  cities:[
+    {id:'szx',n:'深圳',lon:114.05,lat:22.55,type:'hub',color:'#5fd4f0',dy:22},
+    {id:'urc',n:'乌鲁木齐',lon:87.62,lat:43.83,type:'via',dy:-11},
+    {id:'dxb',n:'迪拜',lon:55.27,lat:25.20,type:'via',dy:17},
+    {id:'tas',n:'塔什干',lon:69.24,lat:41.30,color:'#5fd4f0',dy:-12,r:'r1'},
+    {id:'skd',n:'撒马尔罕',lon:66.97,lat:39.65,color:'#5fd4f0',dy:18,r:'r1'},
+    {id:'buk',n:'布哈拉',lon:64.42,lat:39.77,color:'#5fd4f0',dy:-12,r:'r1'},
+    {id:'khv',n:'希瓦',lon:60.36,lat:41.38,color:'#5fd4f0',dx:-10,dy:4,an:'end',r:'r1'},
+    {id:'ala',n:'阿拉木图',lon:76.90,lat:43.24,color:'#5fd4f0',dy:-12,r:'r1'},
+    {id:'tbs',n:'第比利斯',lon:44.79,lat:41.72,color:'#a78bfa',dy:-12,r:'r2'},
+    {id:'evn',n:'埃里温',lon:44.51,lat:40.18,color:'#a78bfa',dx:10,dy:10,an:'start',r:'r2'},
+    {id:'kaz',n:'',lon:44.64,lat:42.66,type:'via',r:'r2'},
+    {id:'bat',n:'',lon:41.64,lat:41.64,type:'via',r:'r2'},
+    {id:'ist',n:'伊斯坦布尔',lon:28.98,lat:41.01,color:'#fb7185',dx:-10,dy:-6,an:'end',r:'r3'},
+    {id:'cap',n:'卡帕多奇亚',lon:34.71,lat:38.62,color:'#fb7185',dy:19,r:'r3'},
+    {id:'pam',n:'',lon:29.12,lat:37.92,type:'via',r:'r3'},
+    {id:'cai',n:'开罗',lon:31.24,lat:30.04,color:'#fbbf24',dx:-10,dy:4,an:'end',r:'r4'},
+    {id:'lxr',n:'卢克索',lon:32.64,lat:25.69,color:'#fbbf24',dx:-10,dy:4,an:'end',r:'r4'},
+    {id:'hrg',n:'红海潜点',lon:34.90,lat:25.07,color:'#fbbf24',dx:10,dy:8,an:'start',r:'r4'},
+    {id:'cmn',n:'卡萨布兰卡',lon:-7.59,lat:33.57,color:'#4ade80',dx:-10,dy:2,an:'end',r:'r5'},
+    {id:'chf',n:'舍夫沙万',lon:-5.27,lat:35.17,color:'#4ade80',dy:-12,r:'r5'},
+    {id:'rak',n:'马拉喀什',lon:-8.00,lat:31.63,color:'#4ade80',dy:19,r:'r5'},
+    {id:'mrz',n:'',lon:-4.01,lat:31.10,type:'via',r:'r5'}
+  ],
+  routes:[
+    {id:'r1',name:'中亚丝路',color:'#5fd4f0',legs:[['szx','urc','fly',1],['urc','tas','fly',1],['tas','skd','ground'],['skd','buk','ground'],['buk','khv','ground'],['khv','tas','fly',-1],['tas','ala','fly',-1],['ala','szx','fly',-0.8]]},
+    {id:'r2',name:'高加索双国',color:'#a78bfa',legs:[['szx','dxb','fly',1],['dxb','tbs','fly',1],['tbs','kaz','ground'],['tbs','evn','ground'],['tbs','bat','ground'],['tbs','dxb','fly',-1]]},
+    {id:'r3',name:'土耳其',color:'#fb7185',legs:[['szx','ist','fly',1],['ist','cap','fly',-1],['cap','pam','ground'],['pam','ist','fly',-1]]},
+    {id:'r4',name:'埃及·尼罗河+红海',color:'#fbbf24',legs:[['szx','dxb','fly',1],['dxb','cai','fly',1],['cai','lxr','ground'],['lxr','hrg','ground'],['hrg','cai','fly',-1]]},
+    {id:'r5',name:'摩洛哥',color:'#4ade80',legs:[['szx','dxb','fly',1],['dxb','cmn','fly',0.6],['cmn','chf','ground'],['chf','mrz','ground'],['mrz','rak','ground'],['rak','cmn','ground']]}
+  ]
+});
+
+/* ══════════════ 国内地图数据 ══════════════ */
+renderMap('mapCn','lgCn',{
+  bounds:[70, 20, 122, 50],
+  notes:[
+    {lon:84,lat:39.6,t:'塔克拉玛干',size:12},
+    {lon:87,lat:32,t:'青 藏 高 原',size:14},
+    {lon:73.6,lat:35.4,t:'帕米尔',size:10},
+    {lon:106,lat:42.5,t:'河西走廊',size:11}
+  ],
+  cities:[
+    {id:'szx',n:'深圳',lon:114.05,lat:22.55,type:'hub',color:'#5fd4f0',dy:22},
+    // 南疆
+    {id:'khg',n:'喀什',lon:75.99,lat:39.47,color:'#5fd4f0',dx:-10,dy:2,an:'end',r:'c1'},
+    {id:'klk',n:'',lon:75.05,lat:38.44,type:'via',r:'c1'},
+    {id:'tsg',n:'塔什库尔干',lon:75.23,lat:37.77,color:'#5fd4f0',dx:-10,dy:6,an:'end',r:'c1'},
+    {id:'kuc',n:'库车',lon:82.96,lat:41.72,color:'#5fd4f0',dy:-12,r:'c1'},
+    {id:'urc',n:'乌鲁木齐',lon:87.62,lat:43.83,color:'#5fd4f0',dx:10,dy:2,an:'start',r:'c1,c5'},
+    // 西藏
+    {id:'lxa',n:'拉萨',lon:91.14,lat:29.65,color:'#a78bfa',dx:-10,dy:2,an:'end',r:'c2'},
+    {id:'lzy',n:'林芝',lon:94.36,lat:29.65,color:'#a78bfa',dy:-12,r:'c2'},
+    {id:'nbw',n:'',lon:94.98,lat:29.63,type:'via',r:'c2'},
+    {id:'ynz',n:'',lon:90.70,lat:28.97,type:'via',r:'c2'},
+    // 青甘
+    {id:'xnn',n:'西宁',lon:101.78,lat:36.62,color:'#fbbf24',dx:10,dy:8,an:'start',r:'c3'},
+    {id:'qhh',n:'',lon:100.20,lat:36.90,type:'via',r:'c3'},
+    {id:'ck',n:'',lon:99.09,lat:36.77,type:'via',r:'c3'},
+    {id:'dcd',n:'',lon:95.37,lat:37.85,type:'via',r:'c3'},
+    {id:'dnh',n:'敦煌',lon:94.66,lat:40.14,color:'#fbbf24',dx:-10,dy:2,an:'end',r:'c3'},
+    {id:'jyg',n:'',lon:98.29,lat:39.77,type:'via',r:'c3'},
+    {id:'zye',n:'张掖',lon:100.45,lat:38.93,color:'#fbbf24',dx:10,dy:-2,an:'start',r:'c3'},
+    {id:'qil',n:'',lon:100.25,lat:38.18,type:'via',r:'c3'},
+    // 滇西北
+    {id:'ljg',n:'丽江',lon:100.23,lat:26.87,color:'#4ade80',dx:10,dy:10,an:'start',r:'c4'},
+    {id:'shl',n:'香格里拉',lon:99.71,lat:27.83,color:'#4ade80',dx:10,dy:-4,an:'start',r:'c4'},
+    {id:'ybg',n:'雨崩·梅里',lon:98.80,lat:28.45,color:'#4ade80',dx:-10,dy:2,an:'end',r:'c4'},
+    // 北疆备选
+    {id:'knc',n:'喀纳斯',lon:87.20,lat:48.65,color:'#fb7185',dy:-12,r:'c5'},
+    {id:'slm',n:'',lon:81.20,lat:44.60,type:'via',r:'c5'},
+    {id:'yin',n:'伊宁',lon:81.33,lat:43.92,color:'#fb7185',dx:-10,dy:4,an:'end',r:'c5'}
+  ],
+  routes:[
+    {id:'c1',name:'南疆·喀什帕米尔',color:'#5fd4f0',legs:[['szx','khg','fly',0.9],['khg','klk','ground'],['klk','tsg','ground'],['tsg','khg','ground'],['khg','kuc','ground'],['kuc','urc','ground'],['urc','szx','fly',-0.7]]},
+    {id:'c2',name:'西藏·拉萨林芝',color:'#a78bfa',legs:[['szx','lxa','fly',0.8],['lxa','ynz','ground'],['lxa','lzy','ground'],['lzy','nbw','ground'],['lxa','szx','fly',-0.6]]},
+    {id:'c3',name:'青甘大环线',color:'#fbbf24',legs:[['szx','xnn','fly',0.8],['xnn','qhh','ground'],['qhh','ck','ground'],['ck','dcd','ground'],['dcd','dnh','ground'],['dnh','jyg','ground'],['jyg','zye','ground'],['zye','qil','ground'],['qil','xnn','ground'],['xnn','szx','fly',-0.6]]},
+    {id:'c4',name:'滇西北·雨崩',color:'#4ade80',legs:[['szx','ljg','fly',0.7],['ljg','shl','ground'],['shl','ybg','ground'],['ybg','shl','ground'],['shl','szx','fly',-0.5]]},
+    {id:'c5',name:'北疆（备选）',color:'#fb7185',legs:[['szx','urc','fly',0.9],['urc','knc','ground'],['knc','urc','ground'],['urc','slm','ground'],['slm','yin','ground'],['yin','urc','fly',-1]]}
+  ]
+});
+
+/* ══════════════ 方案数据 ══════════════ */
+var INTL = [
+  {
+    rank:1, color:'#5fd4f0', tag:'出境首选',
+    title:'中亚丝路：乌兹别克斯坦 + 哈萨克斯坦',
+    why:'全程免签、10 月初几乎不下雨、13 天不多不少刚好走完撒马尔罕—布哈拉—希瓦这条丝路主轴，再顺一站阿拉木图看金秋。',
+    chips:[['g','双国免签'],['g','天气 A+'],['b','13 天刚好'],['b','¥1.3–1.7 万'],['y','需 1 次中转']],
+    days:[
+      ['D1','9/25 深圳 → 乌鲁木齐 → 塔什干','夜间落地，倒 3 小时时差。塔什干住一晚，先适应。'],
+      ['D2','塔什干','地铁站本身就是景点（每站不同主题的苏式马赛克穹顶），逛 Chorsu 巴扎，吃第一顿手抓饭。'],
+      ['D3','高铁 → 撒马尔罕','Afrosiyob 高铁 2 小时。下午先看雷吉斯坦广场外景，等日落后的亮灯。'],
+      ['D4','撒马尔罕','雷吉斯坦三神学院、比比哈努姆清真寺、沙赫静达陵墓群、兀鲁伯天文台。这一天是整趟行程的视觉高点。'],
+      ['D5','→ 布哈拉','火车约 1.5 小时。老城本身是活着的博物馆，尺度小、适合走路。'],
+      ['D6','布哈拉','卡扬宣礼塔、雅克城堡、四塔经学院。傍晚在 Lyabi-Hauz 水池边喝茶。'],
+      ['D7','→ 希瓦','陆路约 6 小时穿过红沙漠，或飞乌尔根奇再转车。'],
+      ['D8','希瓦','伊禅卡拉古城，整座城墙围起来的土黄色老城。登城墙看日落。'],
+      ['D9','希瓦 → 塔什干 → 阿拉木图','内陆飞回塔什干，转飞阿拉木图（1.5h）。'],
+      ['D10','阿拉木图','升天大教堂、绿色巴扎、潘菲洛夫公园。10 月初这里正是金秋。'],
+      ['D11','大阿拉木图湖 + 麦迪奥','半日包车上山，湖水在天气好时是极通透的蓝绿色。'],
+      ['D12','恰伦大峡谷（一日游）','中亚版「科罗拉多」，红色砂岩峡谷，往返约 10 小时。'],
+      ['D13','10/7 阿拉木图 → 深圳','直飞或经乌鲁木齐回。']
+    ],
+    tips:['乌兹和哈萨对中国普通护照都是免签 30 天，落地什么都不用办。',
+          '乌兹境内城际优先选火车，Afrosiyob 高铁便宜又准点，官网或代理提前订。',
+          '现金为王：带美金现钞到当地兑换 苏姆，汇率明显好于国内换。',
+          '如果只有 9–10 天可用，砍掉希瓦（最远、路最长），行程会舒服很多。']
+  },
+  {
+    rank:2, color:'#fbbf24', tag:'潜水向',
+    title:'埃及：尼罗河 + 红海潜水',
+    why:'你有潜水底子，红海 10 月水温 28℃、能见度全年最佳，同时开罗和卢克索这时候 30℃ 出头、基本零降雨。文化和水下一次吃满。',
+    chips:[['b','电子签'],['g','天气 A+'],['b','顶级潜点'],['b','¥1.6–2.1 万'],['y','签证留 5–7 工作日']],
+    days:[
+      ['D1','9/25 深圳 → 迪拜 → 开罗','中转约 16–19 小时门到门。'],
+      ['D2','吉萨金字塔 + 狮身人面像','清早进场避开人和热。下午大埃及博物馆（GEM）。'],
+      ['D3','开罗老城 + 汗哈利利市集','科普特区、萨拉丁城堡。晚上飞卢克索。'],
+      ['D4','卢克索东岸','卡尔纳克神庙、卢克索神庙。清晨可加飞热气球看帝王谷。'],
+      ['D5','卢克索西岸','帝王谷、哈特谢普苏特神庙、门农巨像。傍晚登尼罗河游轮。'],
+      ['D6','游轮 → 埃德富 / 康翁波','船上看两岸棕榈和农田，这是埃及最放松的一段。'],
+      ['D7','阿斯旺','菲莱神庙、努比亚村。可加阿布辛贝一日往返。'],
+      ['D8','阿斯旺 → 红海（马萨阿拉姆 / 赫尔格达）','陆路或内陆飞。当晚办潜店手续。'],
+      ['D9','潜水 Day 1','Elphinstone 或 Abu Dabbab 方向，2–3 潜。'],
+      ['D10','潜水 Day 2','有机会遇到儒艮、海龟、灰礁鲨。'],
+      ['D11','潜水 Day 3 / 或休息晒太阳','最后一潜要留出 18–24 小时再飞。'],
+      ['D12','红海 → 开罗','不安排潜水，市区收尾采买。'],
+      ['D13','10/7 开罗 → 深圳','']
+    ],
+    tips:['电子签走官方 e-Visa，建议今天就提交，留足 5–7 个工作日。',
+          '红海潜点分两类：赫尔格达便利热闹、马萨阿拉姆更野更好。想看大东西选后者。',
+          '最后一次下水与登机之间必须留 18 小时以上，行程表里已经预留。',
+          '只喝瓶装水，冰块也算。备蒙脱石散。']
+  },
+  {
+    rank:3, color:'#a78bfa', tag:'高性价比',
+    title:'高加索：格鲁吉亚 + 亚美尼亚',
+    why:'两国都免签，10 月初第比利斯 25℃ 晴、正逢葡萄采收季，卡兹别克雪山在这个季节最容易露脸。物价低，1.5 万左右能过得很舒服。',
+    chips:[['g','双国免签'],['g','天气 A'],['b','葡萄采收季'],['b','¥1.5–1.9 万'],['y','格国需买保险']],
+    days:[
+      ['D1','9/25 深圳 → 迪拜 / 阿斯塔纳 → 第比利斯',''],
+      ['D2','第比利斯老城','硫磺浴室区、纳里卡拉要塞缆车、和平桥。晚上找一家有 Polyphony 民谣的餐厅。'],
+      ['D3','姆茨赫塔 + 上斯瓦涅季方向取舍','半日看古都姆茨赫塔，下午决定往北（雪山）还是往西（黑海）。'],
+      ['D4','→ 卡兹别克（斯特潘茨明达）','军事公路一路向北，路上停 Ananuri 城堡和友谊纪念碑。'],
+      ['D5','圣三一教堂 + 格尔盖蒂','清晨山尖被照亮那十分钟是全程最好的画面。'],
+      ['D6','→ 卡赫季葡萄酒区（西格纳吉）','正值采收季，很多酒庄开放品鉴，能看到传统 Qvevri 陶罐酿造。'],
+      ['D7','西格纳吉 → 陆路进亚美尼亚 → 埃里温','边境过境约 1 小时，全程约 5–6 小时。'],
+      ['D8','埃里温','共和广场、阶梯瀑布（Cascade）、亚美尼亚大屠杀纪念馆。天气好能看到阿拉拉特山。'],
+      ['D9','加尼神庙 + 格加尔德修道院','一日往返，峡谷里的「石头交响乐」玄武岩柱值得下车走一段。'],
+      ['D10','塞万湖 + 迪利然','高山湖 + 森林小镇，被称作亚美尼亚的小瑞士。'],
+      ['D11','埃里温 → 第比利斯','飞或陆路回。'],
+      ['D12','第比利斯自由日 / 或去巴统看黑海',''],
+      ['D13','10/7 第比利斯 → 深圳','']
+    ],
+    tips:['格鲁吉亚免签入境要求持有符合规定的旅行保险，出发前一定买好并打印。',
+          '亚美尼亚与阿塞拜疆关系敏感：如果同时想去阿塞拜疆，务必先阿塞、后亚美，或干脆只选其一。',
+          '两国境内包车很便宜，四人拼车一天 SUV 常在 ¥400–600 之间。']
+  },
+  {
+    rank:4, color:'#fb7185', tag:'经典',
+    title:'土耳其：伊斯坦布尔 + 卡帕多奇亚',
+    why:'电子签几十分钟到两天就出。10 月初卡帕多奇亚 22℃、风小，是热气球全年起飞率最高的档期之一；海边这时还能下水。',
+    chips:[['b','电子签极快'],['g','天气 A'],['b','热气球黄金期'],['y','¥1.8–2.3 万'],['y','旺季机票偏贵']],
+    days:[
+      ['D1','9/25 深圳 → 伊斯坦布尔','直飞约 11 小时，或经中东转。'],
+      ['D2','老城区','蓝色清真寺、圣索菲亚、地下水宫、大巴扎。'],
+      ['D3','博斯普鲁斯 + 新城','渡轮过亚洲岸，去 Kadıköy 吃饭，回程看海峡日落。'],
+      ['D4','飞卡帕多奇亚','下午红线：格雷梅露天博物馆、玫瑰谷日落。住洞穴酒店。'],
+      ['D5','热气球 + 绿线','凌晨 4:30 起飞。下午地下城与鸽子谷。'],
+      ['D6','卡帕自由日 / 备用起飞日','热气球取消率不低，这一天就是给它留的保险。'],
+      ['D7','→ 棉花堡','石灰华梯田 + 希拉波利斯古城遗址。'],
+      ['D8','→ 以弗所（塞尔丘克）','保存度极高的古罗马城市，图书馆立面是标志画面。'],
+      ['D9','→ 安塔利亚','地中海沿岸，10 月海水还有 25℃ 左右，能游泳。'],
+      ['D10','安塔利亚老城 + 杜顿瀑布',''],
+      ['D11','飞回伊斯坦布尔','傍晚到，逛 Karaköy / Galata 一带。'],
+      ['D12','伊斯坦布尔自由日','补看的、买地毯和香料的一天。'],
+      ['D13','10/7 伊斯坦布尔 → 深圳','']
+    ],
+    tips:['热气球务必预订正规公司并买含取消退款的方案，一次约 ¥1,100–1,500。',
+          '国内段用土耳其航空或 Pegasus，提前订单程常在 ¥300–500。',
+          '如果 13 天觉得赶，砍掉安塔利亚，把时间还给卡帕和伊斯坦布尔。']
+  },
+  {
+    rank:5, color:'#4ade80', tag:'重口味',
+    title:'摩洛哥：撒哈拉 + 蓝城 + 马拉喀什',
+    why:'免签 90 天。10 月马拉喀什 30℃、撒哈拉夜里凉爽、基本不下雨，是一年里最舒服的月份之一。缺点是飞行时间长，13 天略紧。',
+    chips:[['g','免签'],['g','天气 A'],['r','飞行 20h+'],['y','¥1.9–2.5 万'],['y','13 天偏赶']],
+    days:[
+      ['D1','9/25 深圳 → 中东转 → 卡萨布兰卡','门到门约 20–24 小时。'],
+      ['D2','卡萨布兰卡 → 舍夫沙万','哈桑二世清真寺后北上，车程约 5 小时。'],
+      ['D3','舍夫沙万','一整天泡在蓝色小巷里，上西班牙清真寺看日落。'],
+      ['D4','→ 菲斯','世界上最大的中世纪步行老城，找当地向导，否则一定迷路。'],
+      ['D5','菲斯','皮革染坊、卡鲁因大学、老城手作街区。'],
+      ['D6','→ 梅祖卡（撒哈拉）','翻中阿特拉斯山，途经伊芙兰雪松林，车程约 8 小时。'],
+      ['D7','撒哈拉','骑骆驼进沙丘，住沙漠营地，晚上看银河。'],
+      ['D8','→ 托德拉峡谷 → 瓦尔扎扎特','千堡之路，途中的阿伊特本哈杜是《权游》取景地。'],
+      ['D9','→ 马拉喀什','翻越提兹恩提什卡山口进城。'],
+      ['D10','马拉喀什','马约尔花园、巴伊亚宫、库图比亚清真寺，晚上德吉玛广场。'],
+      ['D11','→ 索维拉（大西洋）','海风小城，海鲜和城墙。'],
+      ['D12','索维拉 → 卡萨布兰卡',''],
+      ['D13','10/7 卡萨布兰卡 → 深圳','']
+    ],
+    tips:['13 天在摩洛哥算紧，建议要么砍索维拉，要么砍菲斯，二选一。',
+          '撒哈拉两日团在梅祖卡当地订最便宜，也可提前网订省事，人均 ¥600–1,200。',
+          '进清真寺与老城要遮肩遮膝，带一条大围巾非常好用。']
+  }
+];
+
+var CN = [
+  {
+    rank:1, color:'#5fd4f0', tag:'国内首选',
+    title:'南疆：喀什 + 帕米尔高原 + 库车',
+    why:'全国十一期间天气最稳的一块。白天 20℃ 出头、几乎不下雨、空气通透度极高，慕士塔格和喀拉库勒几乎天天蓝天白云。而且南疆客流只有北疆的三分之一左右。',
+    chips:[['g','天气 A+'],['g','人少'],['b','11 天'],['b','¥0.95–1.4 万'],['y','需边防证']],
+    days:[
+      ['D1','9/25 深圳 → 喀什','直飞或经乌鲁木齐中转。落地先适应两小时时差感（新疆作息晚 2 小时）。'],
+      ['D2','喀什老城','高台民居、艾提尕尔清真寺、百年老茶馆。傍晚看老城门口的开城舞。'],
+      ['D3','喀什 + 香妃园 + 大巴扎','周日大巴扎和牲畜巴扎是南疆最生猛的人间烟火。'],
+      ['D4','喀什 → 白沙湖 → 卡拉库勒湖','沿中巴公路上帕米尔，海拔一路爬到 3,600 米。慕士塔格峰全程在窗外。'],
+      ['D5','卡拉库勒 → 塔什库尔干','石头城遗址 + 金草滩，日落时草滩会被染成金色。'],
+      ['D6','盘龙古道','六百多个弯的高原公路，无人机拍出来是这趟行程的封面。'],
+      ['D7','塔县 → 喀什','原路返回，路上再停一次卡湖，光线和来时完全不同。'],
+      ['D8','喀什 → 库车','火车或飞机。库车老城的清真寺和土黄色街巷很有味道。'],
+      ['D9','天山神秘大峡谷 + 独库公路南段','红褐色砂岩峡谷，走进去像进了另一个星球。'],
+      ['D10','库车 → 乌鲁木齐','火车或飞。晚上大巴扎吃一顿。'],
+      ['D11','10/5 乌鲁木齐 → 深圳','提前两天回，避开返程最高峰。']
+    ],
+    tips:['塔什库尔干属边境管理区，需办边防证——在喀什当地办即可，带身份证，很快。',
+          '帕米尔段包车约 ¥800–1,000/天/车，拼满 4 人非常划算。别独自包车。',
+          '海拔从喀什 1,300 米直上 4,000 米以上，第一晚在塔县可能轻微高反，当天别喝酒别洗澡。',
+          '气温跨度极大：喀什白天 22℃，帕米尔垭口可能 0℃ 以下。轻薄羽绒必带。']
+  },
+  {
+    rank:2, color:'#a78bfa', tag:'高原首选',
+    title:'西藏：拉萨 + 林芝 + 雅鲁藏布大峡谷',
+    why:'10 月雨季刚结束，是南迦巴瓦一年中最愿意露脸的月份，也是藏东南秋色开始的时候。拉萨这时白天 19℃、天空干净得不像话。',
+    chips:[['g','天气 A'],['b','南迦巴瓦黄金期'],['b','10 天'],['b','¥1.1–1.4 万'],['y','高反准备']],
+    days:[
+      ['D1','9/25 深圳 → 拉萨','落地当天什么都别安排，酒店躺平适应海拔。'],
+      ['D2','拉萨市区','布达拉宫（务必提前 7 天以上抢票）、大昭寺、八廓街转经。节奏放慢。'],
+      ['D3','羊卓雍措','翻岗巴拉山口，湖水在晴天是不真实的蓝。当天往返。'],
+      ['D4','拉萨 → 林芝','走拉林高速约 5 小时，沿途尼洋河谷。海拔下降到 3,000 米，会明显好受。'],
+      ['D5','林芝 → 派镇 / 索松村','正对南迦巴瓦，住村里，就为了第二天清晨。'],
+      ['D6','南迦巴瓦日照金山 + 雅鲁藏布大峡谷','10 月清晨露脸概率是全年最高的档期之一。'],
+      ['D7','鲁朗林海 + 色季拉山口','秋色最浓的一段，鲁朗石锅鸡值得一吃。'],
+      ['D8','巴松措 → 返拉萨','高原湖 + 湖心岛寺庙。'],
+      ['D9','拉萨自由日','补看色拉寺辩经（下午）、罗布林卡，买点东西。'],
+      ['D10','10/4 拉萨 → 深圳','']
+    ],
+    tips:['布达拉宫门票十一期间极紧张，官方渠道提前 7 天开放，定好日期就立刻抢。',
+          '红景天提前 5–7 天开始吃才有意义，落地才吃基本没用。',
+          '第一天绝对不要洗澡、不要剧烈活动、不要饮酒。这三条能挡掉大部分高反。',
+          '如果你想更进一步，可以把最后两天换成山南（藏文化发源地，人少）。']
+  },
+  {
+    rank:3, color:'#fbbf24', tag:'性价比',
+    title:'青甘大环线：西宁 → 敦煌 → 张掖 → 祁连',
+    why:'干燥晴朗、能见度高，一条线里能装下高原湖、盐湖、雅丹、戈壁、石窟和丹霞，风景密度极高。预算也友好。',
+    chips:[['g','天气 A'],['b','风景密度高'],['b','9 天'],['g','¥0.95–1.25 万'],['y','昼夜温差大']],
+    days:[
+      ['D1','9/25 深圳 → 西宁','落地取车或与拼车队伍会合。海拔 2,260 米，先适应。'],
+      ['D2','西宁 → 青海湖 → 黑马河','塔尔寺 + 日月山，傍晚到湖边。'],
+      ['D3','→ 茶卡 → 大柴旦','茶卡盐湖清早人少，之后进柴达木。'],
+      ['D4','→ 水上雅丹 → 敦煌','U 型公路 315 是这条线最出片的一段，车程长但值得。'],
+      ['D5','敦煌','莫高窟（提前一个月抢正常票）、鸣沙山月牙泉看日落。'],
+      ['D6','→ 嘉峪关 → 张掖','关城 + 悬臂长城，傍晚到张掖。'],
+      ['D7','七彩丹霞 → 祁连','丹霞下午光线最好。翻扁都口进祁连草原。'],
+      ['D8','祁连 → 门源 → 西宁','岗什卡雪峰、达坂山观景台，回西宁还车。'],
+      ['D9','10/3 西宁 → 深圳','']
+    ],
+    tips:['昼夜温差能拉到 −3℃ 到 15℃，厚外套是必需品不是可选项。',
+          '莫高窟正常票（看 8 个洞窟）提前一个月放票，十一必须抢；抢不到只能买应急票。',
+          '祁连山一带 10 月初有过降雪记录，出发前查一次天气，给行程留一天弹性。',
+          '拼车比自驾便宜：四人拼一台 SUV，人均车费通常 ¥1,600–2,000 全程。']
+  },
+  {
+    rank:4, color:'#4ade80', tag:'徒步向',
+    title:'滇西北：香格里拉 + 梅里雪山 + 雨崩徒步',
+    why:'预算最低的一条。10 月初雨季刚收尾，卡瓦格博日照金山的概率开始明显上升。雨崩两天徒步强度适中，风景回报很高。',
+    chips:[['y','天气 B+'],['g','预算最低'],['b','8 天'],['g','¥0.7–0.95 万'],['b','徒步 2 天']],
+    days:[
+      ['D1','9/25 深圳 → 丽江','落地住古城附近。'],
+      ['D2','丽江 → 虎跳峡 → 香格里拉','上虎跳栈道，下午到独克宗古城。海拔 3,300 米，慢一点。'],
+      ['D3','香格里拉','松赞林寺、纳帕海。这一天主要是适应海拔。'],
+      ['D4','→ 飞来寺（德钦）','白马雪山垭口停一次，傍晚到飞来寺正对梅里。'],
+      ['D5','日照金山 + 徒步进雨崩','清晨看卡瓦格博。之后西当温泉进山，徒步约 4–6 小时到雨崩村。'],
+      ['D6','雨崩神瀑 / 冰湖','二选一。神瀑轻松些，冰湖强度大但更震撼。'],
+      ['D7','出雨崩 → 香格里拉',''],
+      ['D8','10/2 香格里拉 → 深圳','或回丽江飞，看票价。']
+    ],
+    tips:['雨崩村床位总量很小，十一必须提前订，越晚越贵且可能没有。',
+          '进山可以雇骡马驮包（约 ¥300–500 一段），把负重交出去体验会好很多。',
+          '日照金山看运气：连住两晚飞来寺能把概率提上去不少。',
+          '这条线是四条国内线里天气确定性最低的，但也是最便宜的。想稳就别选它。']
+  }
+];
+
+/* ══════════════ 渲染方案卡 ══════════════ */
+function renderPlans(host, arr){
+  var el = document.getElementById(host);
+  el.innerHTML = arr.map(function(p,i){
+    return '<div class="plan'+(i===0?' open':'')+'">'+
+      '<div class="plan-h">'+
+        '<div class="rank" style="background:'+p.color+'">'+p.rank+'</div>'+
+        '<div class="plan-t"><h4>'+p.title+'</h4><div class="why">'+p.why+'</div></div>'+
+      '</div>'+
+      '<div class="chips">'+p.chips.map(function(c){return '<span class="chip '+c[0]+'">'+c[1]+'</span>';}).join('')+'</div>'+
+      '<div class="plan-b">'+
+        '<div class="days">'+p.days.map(function(d){
+          return '<div class="day"><div class="dn">'+d[0]+'</div><div class="dt">'+d[1]+'</div>'+
+            (d[2]?'<div class="dd">'+d[2]+'</div>':'')+'</div>';
+        }).join('')+'</div>'+
+        '<h3 class="sub">要注意的</h3><ul class="bul">'+p.tips.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  el.querySelectorAll('.plan-h').forEach(function(h){
+    h.addEventListener('click', function(){ h.parentNode.classList.toggle('open'); });
+  });
+}
+renderPlans('planIntl', INTL);
+renderPlans('planCn', CN);
+
+/* ══════════════ 预算 ══════════════ */
+var BUD = [
+  {n:'滇西北 · 雨崩',      d:8,  lo:7000,  hi:9500,  c:'#4ade80', f:[1800,2800], h:[2100,2900], g:[1500,2100], e:[1600,1700]},
+  {n:'南疆 · 喀什帕米尔',   d:11, lo:9500,  hi:14000, c:'#5fd4f0', f:[3000,4500], h:[3000,4200], g:[1500,2600], e:[2000,2700]},
+  {n:'青甘大环线',          d:9,  lo:9500,  hi:12500, c:'#fbbf24', f:[2400,3400], h:[2800,3800], g:[2500,3300], e:[1800,2000]},
+  {n:'西藏 · 拉萨林芝',     d:10, lo:11000, hi:14000, c:'#a78bfa', f:[3000,4200], h:[3200,4000], g:[2500,3200], e:[2300,2600]},
+  {n:'中亚 · 乌兹+哈萨',    d:13, lo:13000, hi:17000, c:'#5fd4f0', f:[5500,7500], h:[3800,5200], g:[1500,2200], e:[2200,2100]},
+  {n:'高加索 · 格+亚',      d:13, lo:15000, hi:19000, c:'#a78bfa', f:[6000,8500], h:[4200,5600], g:[2400,3100], e:[2400,1800]},
+  {n:'埃及 · 尼罗河+红海',  d:13, lo:16000, hi:21000, c:'#fbbf24', f:[6000,8000], h:[4000,5500], g:[2200,3000], e:[3800,4500]},
+  {n:'土耳其',              d:13, lo:18000, hi:23000, c:'#fb7185', f:[7000,9500], h:[5400,7000], g:[2600,3300], e:[3000,3200]},
+  {n:'摩洛哥',              d:13, lo:19000, hi:25000, c:'#4ade80', f:[7500,10000],h:[5200,7000], g:[3300,4500], e:[3000,3500]}
+];
+(function(){
+  var MAXV = 26000;
+  document.getElementById('bars').innerHTML = BUD.map(function(b){
+    var l = b.lo/MAXV*100, w = (b.hi-b.lo)/MAXV*100;
+    return '<div class="bb"><div class="bb-h"><b>'+b.n+'<span style="color:var(--tx3);font-weight:500;font-size:11.5px"> · '+b.d+'天</span></b>'+
+      '<span>¥'+(b.lo/10000).toFixed(2)+' – '+(b.hi/10000).toFixed(2)+' 万</span></div>'+
+      '<div class="bb-t"><div class="bb-f" style="left:'+l.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:linear-gradient(90deg,'+b.c+'cc,'+b.c+')"></div></div></div>';
+  }).join('');
+
+  document.getElementById('btbl').innerHTML = BUD.map(function(b){
+    function rng(a){ return a[0].toLocaleString()+'–'+a[1].toLocaleString(); }
+    return '<tr><td><b>'+b.n+'</b></td><td class="num">'+b.d+' 天</td>'+
+      '<td class="num">'+rng(b.f)+'</td><td class="num">'+rng(b.h)+'</td>'+
+      '<td class="num">'+rng(b.g)+'</td><td class="num">'+rng(b.e)+'</td>'+
+      '<td class="num"><b style="color:'+b.c+'">'+b.lo.toLocaleString()+'–'+b.hi.toLocaleString()+'</b></td></tr>';
+  }).join('');
+})();
+
+/* ══════════════ 清单 ══════════════ */
+var CK = [
+  ['now','今天（9/10）','定方向：出境还是国内，二选一','别再纠结了。剩下的每一天犹豫，机票都在涨。'],
+  ['now','今天（9/10）','下单往返机票','今年热门线没有临期低价。看到能接受的价格就锁。'],
+  ['now','9/10–9/11','提交电子签（如果选土耳其/埃及）','土耳其几十分钟到 2 天；埃及留 5–7 个工作日。免签线跳过这条。'],
+  ['now','9/11','向领导提 9/28–9/30 年假','机票已出票，正好作为「不可退改」的理由。'],
+  ['soon','9/12–9/14','订核心住宿','喀什老城、塔县、雨崩、洞穴酒店这类床位少的地方，越晚越贵。'],
+  ['soon','9/12','抢限量门票','布达拉宫（提前 7 天）、莫高窟正常票（提前 1 个月，可能已满）。'],
+  ['soon','9/14','买旅行保险','格鲁吉亚强制。其余线也建议买含医疗转运的。'],
+  ['soon','9/15–9/18','订内部段交通','中亚高铁、土耳其国内航段、埃及内陆飞、国内包车/拼车。'],
+  ['soon','9/16','办边防证（南疆线）','也可到喀什当地办，但提前办更稳。'],
+  ['soon','9/18','买 eSIM / 办国际漫游','境外线 10GB 通常 ¥60–120，比运营商漫游包便宜得多。'],
+  ['later','9/20（周日）','别忘了这天要补班','把交接工作在这天收尾。'],
+  ['later','9/20–9/22','换汇 / 备现金','中亚、埃及带美金现钞到当地换。带两张不同行的 Visa/Master。'],
+  ['later','9/22','开始吃红景天（仅西藏线）','提前 5–7 天才有意义。'],
+  ['later','9/23','打包 + 下载离线地图','三层穿法 + 轻薄羽绒；离线地图和翻译包提前下好。'],
+  ['later','9/24','工作交接完成、设好自动回复','把手机里的工作 App 通知关掉，这是长假的第一步。'],
+  ['later','9/25','出发','']
+];
+(function(){
+  var KEY='trip13_ck_v1';
+  var st={};
+  try{ st = JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ st={}; }
+  var WT = {now:['w-now','立刻'],soon:['w-soon','本周'],later:['w-later','节前']};
+  var box = document.getElementById('ckList');
+  box.innerHTML = CK.map(function(c,i){
+    var on = st['i'+i];
+    return '<div class="ck'+(on?' done':'')+'" data-i="'+i+'">'+
+      '<div class="ck-x">✓</div>'+
+      '<div class="ck-b"><div class="ck-t">'+c[2]+'</div>'+
+        '<div class="ck-d">'+c[1]+(c[3]?' · '+c[3]:'')+'</div></div>'+
+      '<div class="ck-w '+WT[c[0]][0]+'">'+WT[c[0]][1]+'</div></div>';
+  }).join('');
+  box.querySelectorAll('.ck').forEach(function(el){
+    el.addEventListener('click', function(){
+      el.classList.toggle('done');
+      st['i'+el.dataset.i] = el.classList.contains('done');
+      try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){}
+    });
+  });
+})();
+
+/* ══════════════ Tabs ══════════════ */
+// 窄屏下地图会横向溢出，默认对齐到右端——深圳（出发地）在那一侧
+function alignMaps(pane){
+  pane.querySelectorAll('.mapbox').forEach(function(box){
+    if (box.scrollWidth > box.clientWidth) box.scrollLeft = box.scrollWidth;
+  });
+}
+document.querySelectorAll('.tb').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.tb').forEach(function(x){ x.classList.remove('on'); });
+    document.querySelectorAll('.pane').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    var pane = document.getElementById(b.dataset.p);
+    pane.classList.add('on');
+    alignMaps(pane);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
