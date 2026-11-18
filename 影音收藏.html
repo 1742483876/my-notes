@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- ian-vault-v1 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Ian · 私密页面</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+    font-family: "Source Sans 3", "PingFang SC", system-ui, sans-serif; color: #efe8dc;
+    background: radial-gradient(ellipse 80% 60% at 75% 15%, rgba(42,107,90,0.32), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 15% 85%, rgba(196,90,44,0.2), transparent 50%),
+      linear-gradient(160deg, #1c2e28, #121c18 48%, #1a2621); }
+  h1 { font-family: "Fraunces", Georgia, serif; font-size: 2.4rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 8px; }
+  h1 em { font-style: italic; color: #e8a06a; font-weight: 500; }
+  p.sub { color: rgba(239,232,220,0.68); margin-bottom: 24px; font-size: 0.95rem; }
+  form { width: min(300px, 100%); display: flex; flex-direction: column; gap: 10px; }
+  input[type=password] { width: 100%; padding: 13px 14px; border-radius: 2px; border: 1px solid rgba(239,232,220,0.28);
+    background: rgba(0,0,0,0.25); color: #efe8dc; font-size: 1.05rem; outline: none; text-align: center; letter-spacing: 0.08em; }
+  input[type=password]:focus { border-color: #e8a06a; }
+  label { font-size: 0.82rem; color: rgba(239,232,220,0.62); display: flex; gap: 6px; align-items: center; justify-content: center; }
+  button { padding: 12px; border: none; border-radius: 2px; background: #e8a06a; color: #1a2420; font-weight: 600; font-size: 0.98rem; cursor: pointer; }
+  button:disabled { opacity: 0.6; }
+  .err { color: #f0a090; font-size: 0.85rem; min-height: 1.2em; text-align: center; }
+  .links { margin-top: 22px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; font-size: 0.85rem; }
+  .links a { color: rgba(239,232,220,0.7); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div id="box" class="hidden">
+  <h1>Ian <em>Notes</em></h1>
+  <p class="sub">此页面已加密，输入密码查看</p>
+  <form id="f">
+    <input type="password" id="pwd" placeholder="密码" autocomplete="current-password" autofocus>
+    <label><input type="checkbox" id="rem" checked> 本设备记住 30 天</label>
+    <div class="err" id="err"></div>
+    <button type="submit" id="btn">解锁</button>
+  </form>
+  <div class="links"><a href="/">← Ian Home</a><a href="/my-notes/market-reviews/">交易日题材复盘（公开）</a></div>
+</div>
+<script id="vault-payload" type="application/json">{"v":1,"salt":"wKs1AZeZLVlepZji+fBLtQ==","iter":600000,"iv":"c7D1oGZVb1iPoVGc","ct":"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"}</script>
+<script>
+
+const IanVault = (() => {
+  const STORE = 'ian_vault_key_v1';
+  const DAYS = 30;
+  const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const b64 = (u8) => btoa(String.fromCharCode(...u8));
+  async function derive(pwd, salt, iter) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pwd), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: unb64(salt), iterations: iter }, base, 256);
+    return new Uint8Array(bits);
+  }
+  async function decrypt(raw, p) {
+    const key = await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['decrypt']);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(p.iv) }, key, unb64(p.ct));
+    return new TextDecoder().decode(pt);
+  }
+  function load(salt) {
+    for (const st of [sessionStorage, localStorage]) {
+      try {
+        const d = JSON.parse(st.getItem(STORE) || 'null');
+        if (d && d.s === salt && (!d.exp || d.exp > Date.now())) return unb64(d.k);
+      } catch (e) {}
+    }
+    return null;
+  }
+  function save(salt, raw, remember) {
+    const k = b64(raw);
+    try { sessionStorage.setItem(STORE, JSON.stringify({ s: salt, k })); } catch (e) {}
+    try {
+      if (remember) localStorage.setItem(STORE, JSON.stringify({ s: salt, k, exp: Date.now() + DAYS * 864e5 }));
+      else localStorage.removeItem(STORE);
+    } catch (e) {}
+  }
+  function forget() {
+    try { sessionStorage.removeItem(STORE); localStorage.removeItem(STORE); } catch (e) {}
+  }
+  // 用已保存的 key 尝试解密；失败返回 null
+  async function tryStored(p) {
+    const raw = load(p.salt);
+    if (!raw) return null;
+    try { return await decrypt(raw, p); } catch (e) { forget(); return null; }
+  }
+  // 用密码解密；成功则按 remember 保存派生 key（不保存明文密码）
+  async function withPassword(p, pwd, remember) {
+    const raw = await derive(pwd, p.salt, p.iter);
+    const text = await decrypt(raw, p);
+    save(p.salt, raw, remember);
+    return text;
+  }
+  return { tryStored, withPassword, forget };
+})();
+
+(async () => {
+  const P = JSON.parse(document.getElementById('vault-payload').textContent);
+  const ready = () => new Promise((r) => (document.readyState === 'complete' ? r() : addEventListener('load', r, { once: true })));
+  const show = async (html) => { await ready(); document.open(); document.write(html); document.close(); };
+  const ok = await IanVault.tryStored(P);
+  if (ok !== null) return show(ok);
+  const box = document.getElementById('box'), f = document.getElementById('f'), err = document.getElementById('err'), btn = document.getElementById('btn'), pwd = document.getElementById('pwd');
+  box.classList.remove('hidden'); pwd.focus();
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!pwd.value) { err.textContent = '请输入密码'; return; }
+    btn.disabled = true; err.textContent = '解密中…';
+    try { show(await IanVault.withPassword(P, pwd.value, document.getElementById('rem').checked)); }
+    catch (x) { err.textContent = '密码错误'; pwd.value = ''; pwd.focus(); btn.disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>

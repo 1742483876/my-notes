@@ -1,0 +1,4 @@
+---
+layout: null
+---
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>交易日题材复盘</title><link rel="stylesheet" href="review.css"><main><nav><a href="../">← 知识库</a></nav><header><h1>交易日题材复盘</h1><p>A 股按北京时间，美股按纽约交易日。历史回补标在正文。</p></header>{% assign markets = "A 股,美股" | split: "," %}<div class="columns">{% for market in markets %}<section><h2>{{ market }}</h2>{% assign reports = site.pages | where: "market", market | sort: "trade_day" | reverse %}{% for report in reports %}<a class="entry" href="{{ report.url | relative_url }}"><time>{{ report.trade_day }}</time>{{ report.title | escape }}</a>{% endfor %}</section>{% endfor %}</div></main></html>
